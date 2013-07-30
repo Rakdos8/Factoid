@@ -1,0 +1,20 @@
+name: Factoid
+main: me.tabinol.factoid.Factoid
+version: 0.1
+description: Factoid
+author: [Kaz00,Tabinol]
+commands:
+   factoid:
+      description: Factoid Command
+      usage: /factoid help
+      permission: factoid.use
+      permission-message: you don't have permission for that!
+permissions:
+    factoid.*:
+        description: ModulMonde Command Permission
+        default: true
+        children:
+            factoid.use: true
+    factoid.use:
+        description: Permet d'utiliser la commande
+        default: true
