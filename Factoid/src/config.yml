@@ -1,0 +1,28 @@
+##################################################################
+# Author: Kazoo	 & Tabinol                                       #
+# Copyrigth 2013					                                       #
+# Website: http://dev.bukkit.org/profiles/darkkazoo/		         #
+# Contact: dev.kazoo@gmail.com                	                 #
+##################################################################
+general:                             #----General Config----
+  debug: false                       #Set to true to show DebugLog 
+  lang: english
+  worlds: [world]
+  UseEconomy: false
+land:
+  PriorityOld: false
+  CanMakeCollision: false
+  MaxLand: 1
+  MinLandSize: 1
+  MaxLandSize: 1
+  area: 
+    MinAreaSize: 1
+    MaxAreaSize: 1
+    MaxAreaPerLand: 1
+economy:
+  PricebyCube: 100
+  MinPriceLocation: 1
+  MaxPriceLocation: 1
+  MinPriceSell: 1
+  MaxPriceSell: 1
+   
