@@ -37,7 +37,9 @@ public class Factoid extends JavaPlugin implements Listener{
     private int MaxPriceLocation = 1;
     private int MinPriceSell = 1;
     private int MaxPriceSell = 1;
+    private OnCommand CommandLisener;
     
+    @Override
     public void onDisable() {
         log.write("Factoid is Disabled.");
         log.interrupt();
@@ -57,7 +59,8 @@ public class Factoid extends JavaPlugin implements Listener{
         language = new Lang(getDataFolder(),config.getString("general.lang"),this);
         log = new Log(getDataFolder(),debug);
         log.write("Factoid is Enabled.");
-        new OnCommand(language,log,this);
+        CommandLisener = new OnCommand(language,log,this);
+        getCommand("factoid").setExecutor(CommandLisener);
         UseEconomy = config.getBoolean("general.UseEconomy");
         PriorityOld = config.getBoolean("land.PriorityOld");
         CanMakeCollision = config.getBoolean("land.CanMakeCollision");
