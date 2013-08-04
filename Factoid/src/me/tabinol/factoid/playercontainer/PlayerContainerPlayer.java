@@ -7,4 +7,18 @@ public class PlayerContainerPlayer extends PlayerContainer implements PlayerCont
         super(playerName);
     }
     
+    @Override
+    public boolean equals(PlayerContainer container2) {
+        
+        return container2 instanceof PlayerContainerPlayer &&
+                name.equalsIgnoreCase(container2.getName());
+    }
+
+    @Override
+    public PlayerContainer copyOf() {
+        
+        return new PlayerContainerPlayer(name);
+    }
+
+    
 }
