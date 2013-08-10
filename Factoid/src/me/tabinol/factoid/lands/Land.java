@@ -6,7 +6,7 @@ import me.tabinol.factoid.playercontainer.PlayerContainer;
 
 public class Land {
 
-    public final short DEFAULT_PRIORITY = 10;
+    public static final short DEFAULT_PRIORITY = 10;
     private String name;
     private HashMap<Integer, CuboidArea> areas;
     private HashMap<String, Land> children = new HashMap<>();
