@@ -1,6 +1,5 @@
 package me.tabinol.factoid.lands;
 
-import java.util.Collection;
 import java.util.HashSet;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 
@@ -17,5 +16,10 @@ public class ContainerFlag {
         } else {
             this.flags = flags;
         }
+    }
+    
+    public boolean equals(ContainerFlag cf2) {
+        
+        return pc.equals(cf2.pc);
     }
 }
