@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import me.tabinol.factoid.utilities.Calculate;
 
 
 public class LandMakeSquare extends Thread{
@@ -21,19 +22,19 @@ public class LandMakeSquare extends Thread{
     public LandMakeSquare(Player player,Location loc){
         this.player = player;
         this.world = player.getWorld();
-        FrontCornerLeft = new Location(this.world,getConvert(loc.getX(),-6.0),this.world.getHighestBlockYAt(getConvertInt(loc.getBlockX(),-6),getConvertInt(loc.getBlockZ(),6))-1,getConvert(loc.getZ(),6.0));
-        BackCornerLeft = new Location(this.world,getConvert(loc.getX(),-6.0),this.world.getHighestBlockYAt(getConvertInt(loc.getBlockX(),-6),getConvertInt(loc.getBlockZ(),-6))-1,getConvert(loc.getZ(),-6.0));
-        FrontCornerRigth = new Location(this.world,getConvert(loc.getX(),6.0),this.world.getHighestBlockYAt(getConvertInt(loc.getBlockX(),6),getConvertInt(loc.getBlockZ(),6))-1,getConvert(loc.getZ(),6.0));
-        BackCornerRigth = new Location(this.world,getConvert(loc.getX(),6.0),this.world.getHighestBlockYAt(getConvertInt(loc.getBlockX(),6),getConvertInt(loc.getBlockZ(),-6))-1,getConvert(loc.getZ(),-6.0));
+        FrontCornerLeft = new Location(this.world,Calculate.AdditionDouble(loc.getX(),-6.0),this.world.getHighestBlockYAt(Calculate.AdditionInt(loc.getBlockX(),-6),Calculate.AdditionInt(loc.getBlockZ(),6))-1,Calculate.AdditionDouble(loc.getZ(),6.0));
+        BackCornerLeft = new Location(this.world,Calculate.AdditionDouble(loc.getX(),-6.0),this.world.getHighestBlockYAt(Calculate.AdditionInt(loc.getBlockX(),-6),Calculate.AdditionInt(loc.getBlockZ(),-6))-1,Calculate.AdditionDouble(loc.getZ(),-6.0));
+        FrontCornerRigth = new Location(this.world,Calculate.AdditionDouble(loc.getX(),6.0),this.world.getHighestBlockYAt(Calculate.AdditionInt(loc.getBlockX(),6),Calculate.AdditionInt(loc.getBlockZ(),6))-1,Calculate.AdditionDouble(loc.getZ(),6.0));
+        BackCornerRigth = new Location(this.world,Calculate.AdditionDouble(loc.getX(),6.0),this.world.getHighestBlockYAt(Calculate.AdditionInt(loc.getBlockX(),6),Calculate.AdditionInt(loc.getBlockZ(),-6))-1,Calculate.AdditionDouble(loc.getZ(),-6.0));
          
     }
     
     public Map<Location,Material> makeSquare(){
             Map<Location,Material> BlockList = new HashMap<Location,Material>();
-            Double DiffFrontX = getDifference(this.FrontCornerLeft.getX(),this.FrontCornerRigth.getX());
-            Double DiffBackX = getDifference(this.BackCornerLeft.getX(),this.BackCornerRigth.getX());
-            Double DiffLeftZ = getDifference(this.FrontCornerLeft.getZ(),this.BackCornerLeft.getZ());
-            Double DiffRigthZ = getDifference(this.FrontCornerRigth.getZ(),this.BackCornerRigth.getZ());
+            Double DiffFrontX = Calculate.getDifference(this.FrontCornerLeft.getX(),this.FrontCornerRigth.getX());
+            Double DiffBackX = Calculate.getDifference(this.BackCornerLeft.getX(),this.BackCornerRigth.getX());
+            Double DiffLeftZ = Calculate.getDifference(this.FrontCornerLeft.getZ(),this.BackCornerLeft.getZ());
+            Double DiffRigthZ = Calculate.getDifference(this.FrontCornerRigth.getZ(),this.BackCornerRigth.getZ());
             //player.sendMessage(ChatColor.GRAY+"[Factoid] Diff:"+DiffFrontX);
             //Corner
             //FrontLeft
@@ -53,7 +54,7 @@ public class LandMakeSquare extends Thread{
             for(Double i = 1.0;i<=DiffFrontX;i++){
                 int ii = (int)Math.floor(i + 0.5d);
                 //player.sendMessage(ChatColor.GRAY+"[Factoid] BlockChange:"+getConvert(FrontCornerLeft.getX(),i)+","+FrontCornerLeft.getY()+","+FrontCornerLeft.getZ());
-                Location newloc = new Location(this.world,getConvert(this.FrontCornerLeft.getX(),i),this.world.getHighestBlockYAt(getConvertInt(this.FrontCornerLeft.getBlockX(),ii),this.FrontCornerLeft.getBlockZ())-1,this.FrontCornerLeft.getZ());
+                Location newloc = new Location(this.world,Calculate.AdditionDouble(this.FrontCornerLeft.getX(),i),this.world.getHighestBlockYAt(Calculate.AdditionInt(this.FrontCornerLeft.getBlockX(),ii),this.FrontCornerLeft.getBlockZ())-1,this.FrontCornerLeft.getZ());
                 BlockList.put(newloc, newloc.getBlock().getType());
                 this.player.sendBlockChange(newloc,Material.SPONGE,this.by);
             }
@@ -61,7 +62,7 @@ public class LandMakeSquare extends Thread{
             for(Double i = 1.0;i<=DiffBackX;i++){
                 int ii = (int)Math.floor(i + 0.5d);
                 //player.sendMessage(ChatColor.GRAY+"[Factoid] BlockChange:"+getConvert(FrontCornerLeft.getX(),i)+","+FrontCornerLeft.getY()+","+FrontCornerLeft.getZ());
-                Location newloc = new Location(this.world,getConvert(this.BackCornerLeft.getX(),i),this.world.getHighestBlockYAt(getConvertInt(this.BackCornerLeft.getBlockX(),ii),this.BackCornerLeft.getBlockZ())-1,this.BackCornerLeft.getZ());
+                Location newloc = new Location(this.world,Calculate.AdditionDouble(this.BackCornerLeft.getX(),i),this.world.getHighestBlockYAt(Calculate.AdditionInt(this.BackCornerLeft.getBlockX(),ii),this.BackCornerLeft.getBlockZ())-1,this.BackCornerLeft.getZ());
                 BlockList.put(newloc, newloc.getBlock().getType());
                 this.player.sendBlockChange(newloc ,Material.SPONGE,this.by);
             }
@@ -69,7 +70,7 @@ public class LandMakeSquare extends Thread{
             for(Double i = 1.0;i<=DiffLeftZ;i++){
                 int ii = (int)Math.floor(i + 0.5d);
                 //player.sendMessage(ChatColor.GRAY+"[Factoid] BlockChange:"+getConvert(FrontCornerLeft.getX(),i)+","+FrontCornerLeft.getY()+","+FrontCornerLeft.getZ());
-                Location newloc = new Location(this.world,this.FrontCornerLeft.getX(),this.world.getHighestBlockYAt(this.FrontCornerLeft.getBlockX(),getConvertInt(this.FrontCornerLeft.getBlockZ(),-ii))-1,getConvert(this.FrontCornerLeft.getZ(),-i));
+                Location newloc = new Location(this.world,this.FrontCornerLeft.getX(),this.world.getHighestBlockYAt(this.FrontCornerLeft.getBlockX(),Calculate.AdditionInt(this.FrontCornerLeft.getBlockZ(),-ii))-1,Calculate.AdditionDouble(this.FrontCornerLeft.getZ(),-i));
                 BlockList.put(newloc, newloc.getBlock().getType());
                 this.player.sendBlockChange(newloc,Material.SPONGE,this.by);
             }
@@ -77,41 +78,11 @@ public class LandMakeSquare extends Thread{
             for(Double i = 1.0;i<=DiffRigthZ;i++){
                 int ii = (int)Math.floor(i + 0.5d);
                 //player.sendMessage(ChatColor.GRAY+"[Factoid] BlockChange:"+getConvert(FrontCornerLeft.getX(),i)+","+FrontCornerLeft.getY()+","+FrontCornerLeft.getZ());
-                Location newloc = new Location(this.world,this.FrontCornerRigth.getX(),this.world.getHighestBlockYAt(this.FrontCornerRigth.getBlockX(),getConvertInt(this.FrontCornerRigth.getBlockZ(),-ii))-1,getConvert(this.FrontCornerRigth.getZ(),-i));
+                Location newloc = new Location(this.world,this.FrontCornerRigth.getX(),this.world.getHighestBlockYAt(this.FrontCornerRigth.getBlockX(),Calculate.AdditionInt(this.FrontCornerRigth.getBlockZ(),-ii))-1,Calculate.AdditionDouble(this.FrontCornerRigth.getZ(),-i));
                 BlockList.put(newloc, newloc.getBlock().getType());
                 this.player.sendBlockChange(newloc,Material.SPONGE,this.by);
             }
             return BlockList;
-    }
-    
-    private Double getConvert(Double a, Double b){
-        Double t = null;
-        if(a<0){
-            t = a-b;
-        }else{
-            t = a+b;
-        }
-        return t;
-    }
-    
-    private int getConvertInt(int a, int b){
-        int t = 0;
-        if(a<0){
-            t = a-b;
-        }else{
-            t = a+b;
-        }
-        return t;
-    }
-    
-    private Double getDifference(Double a, Double b){
-        Double t = null;
-        if(a<0){
-            t = a-b;
-        }else{
-            t = a-b;
-        }
-        return (t < 0 ? -t : t);
     }
     
     public Map<String,Location> getCorner(){

@@ -24,4 +24,34 @@ public class Calculate {
         
         return nbSource >= nb1 && nbSource <= nb2;
     }
+    
+    public static Double AdditionDouble(Double a, Double b){
+        Double t = null;
+        if(a<0){
+            t = a-b;
+        }else{
+            t = a+b;
+        }
+        return t;
+    }
+    
+    public static int AdditionInt(int a, int b){
+        int t = 0;
+        if(a<0){
+            t = a-b;
+        }else{
+            t = a+b;
+        }
+        return t;
+    }
+    
+    public static Double getDifference(Double a, Double b){
+        Double t = null;
+        if(a<0){
+            t = a-b;
+        }else{
+            t = a-b;
+        }
+        return (t < 0 ? -t : t);
+    }
 }
