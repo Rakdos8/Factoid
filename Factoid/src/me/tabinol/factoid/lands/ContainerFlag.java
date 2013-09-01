@@ -1,5 +1,6 @@
 package me.tabinol.factoid.lands;
 
+import me.tabinol.factoid.lands.flags.LandFlag;
 import java.util.HashSet;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 

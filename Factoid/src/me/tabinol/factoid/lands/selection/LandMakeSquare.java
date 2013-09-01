@@ -35,7 +35,6 @@ public class LandMakeSquare extends Thread{
             Double DiffBackX = Calculate.getDifference(this.BackCornerLeft.getX(),this.BackCornerRigth.getX());
             Double DiffLeftZ = Calculate.getDifference(this.FrontCornerLeft.getZ(),this.BackCornerLeft.getZ());
             Double DiffRigthZ = Calculate.getDifference(this.FrontCornerRigth.getZ(),this.BackCornerRigth.getZ());
-            //player.sendMessage(ChatColor.GRAY+"[Factoid] Diff:"+DiffFrontX);
             //Corner
             //FrontLeft
             BlockList.put(FrontCornerLeft, FrontCornerLeft.getBlock().getType());

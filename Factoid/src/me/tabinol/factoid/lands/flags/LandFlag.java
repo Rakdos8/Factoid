@@ -1,4 +1,4 @@
-package me.tabinol.factoid.lands;
+package me.tabinol.factoid.lands.flags;
 
 public class LandFlag {
     
@@ -23,4 +23,6 @@ public class LandFlag {
         
         return flagType == lf2.flagType;
     }
+    
+    
 }

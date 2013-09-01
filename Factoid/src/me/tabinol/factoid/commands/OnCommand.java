@@ -22,6 +22,7 @@ public class OnCommand extends Thread implements CommandExecutor{
     private JavaPlugin plugin;
     private Map<String,LandSelection> PlayerSelecting = new HashMap<String,LandSelection>();
     private Map<String,LandExpansion> PlayerExpanding = new HashMap<String,LandExpansion>();
+    private Map<String,LandFlags> PlayerFlags = new HashMap<String,LandFlags>();
     
     public OnCommand(Lang lang,Log log,JavaPlugin plugin){
         this.language = lang;
@@ -41,34 +42,73 @@ public class OnCommand extends Thread implements CommandExecutor{
                 
                 if(arg.length > 0){
                     if(arg[0].equalsIgnoreCase("select")){
-                        if(!this.PlayerSelecting.containsKey(player.getName().toLowerCase())){
-                            player.sendMessage(ChatColor.GRAY+"[Factoid] You are now in Select Mode.");
-                            player.sendMessage(ChatColor.DARK_GRAY+"[Factoid] Type "+ChatColor.ITALIC+"'/factoid select done'"+ChatColor.RESET+ChatColor.DARK_GRAY+" to confirm your choice.");
-                            LandSelection select =  new LandSelection(player,player.getServer(),plugin);
-                            this.PlayerSelecting.put(player.getName().toLowerCase(),select);
-                        }else if(arg.length > 1 && arg[1].equalsIgnoreCase("done")){
-                            player.sendMessage(ChatColor.GREEN+"[Factoid] You have selectioned your land.");
-                            player.sendMessage(ChatColor.GRAY+"[Factoid] You are no longer in Select Mode.");
-                            LandSelection select = this.PlayerSelecting.get(player.getName().toLowerCase());
-                            select.setSelected();
-                           this.PlayerSelecting.remove(player.getName().toLowerCase());
+                        if(!this.PlayerFlags.containsKey(player.getName().toLowerCase())){
+                            if(!this.PlayerExpanding.containsKey(player.getName().toLowerCase())){
+                                if(!this.PlayerSelecting.containsKey(player.getName().toLowerCase())){
+                                    player.sendMessage(ChatColor.GRAY+"[Factoid] You are now in Select Mode.");
+                                    player.sendMessage(ChatColor.DARK_GRAY+"[Factoid] Type "+ChatColor.ITALIC+"'/factoid select done'"+ChatColor.RESET+ChatColor.DARK_GRAY+" to confirm your choice.");
+                                    LandSelection select =  new LandSelection(player,player.getServer(),plugin);
+                                    this.PlayerSelecting.put(player.getName().toLowerCase(),select);
+                                }else if(arg.length > 1 && arg[1].equalsIgnoreCase("done")){
+                                    player.sendMessage(ChatColor.GREEN+"[Factoid] You have selectioned your land.");
+                                    player.sendMessage(ChatColor.GRAY+"[Factoid] You are no longer in Select Mode.");
+                                    LandSelection select = this.PlayerSelecting.get(player.getName().toLowerCase());
+                                    select.setSelected();
+                                   this.PlayerSelecting.remove(player.getName().toLowerCase());
+                                }else{
+                                    player.sendMessage(ChatColor.GRAY+"[Factoid] You are already in Select Mode.");
+                                }
+                            }else{
+                                player.sendMessage(ChatColor.GRAY+"[Factoid] Quit the Expand Mode before.");
+                            }
                         }else{
-                            player.sendMessage(ChatColor.GRAY+"[Factoid] You are already in Select Mode.");
+                            player.sendMessage(ChatColor.GRAY+"[Factoid] Quit the Flags Mode before.");
                         }
                     }else if(arg[0].equalsIgnoreCase("expand")){
-                        if(!this.PlayerExpanding.containsKey(player.getName().toLowerCase())){
-                            player.sendMessage(ChatColor.GRAY+"[Factoid] You are now in Expand Mode.");
-                            player.sendMessage(ChatColor.DARK_GRAY+"[Factoid] Type "+ChatColor.ITALIC+"'/factoid expand done'"+ChatColor.RESET+ChatColor.DARK_GRAY+" to confirm your choice.");
-                            LandExpansion expand =  new LandExpansion(player,player.getServer(),plugin);
-                            this.PlayerExpanding.put(player.getName().toLowerCase(),expand);
-                        }else if(arg.length > 1 && arg[1].equalsIgnoreCase("done")){
-                            player.sendMessage(ChatColor.GREEN+"[Factoid] You have Expanded your land.");
-                            player.sendMessage(ChatColor.GRAY+"[Factoid] You are no longer in Expand Mode.");
-                            LandExpansion expand = this.PlayerExpanding.get(player.getName().toLowerCase());
-                            expand.setSelected();
-                           this.PlayerExpanding.remove(player.getName().toLowerCase());
+                        if(!this.PlayerFlags.containsKey(player.getName().toLowerCase())){
+                            if(!this.PlayerSelecting.containsKey(player.getName().toLowerCase())){
+                                if(!this.PlayerExpanding.containsKey(player.getName().toLowerCase())){
+                                    player.sendMessage(ChatColor.GRAY+"[Factoid] You are now in Expand Mode.");
+                                    player.sendMessage(ChatColor.DARK_GRAY+"[Factoid] Type "+ChatColor.ITALIC+"'/factoid expand done'"+ChatColor.RESET+ChatColor.DARK_GRAY+" to confirm your choice.");
+                                    LandExpansion expand =  new LandExpansion(player,player.getServer(),plugin);
+                                    this.PlayerExpanding.put(player.getName().toLowerCase(),expand);
+                                }else if(arg.length > 1 && arg[1].equalsIgnoreCase("done")){
+                                    player.sendMessage(ChatColor.GREEN+"[Factoid] You have Expanded your land.");
+                                    player.sendMessage(ChatColor.GRAY+"[Factoid] You are no longer in Expand Mode.");
+                                    LandExpansion expand = this.PlayerExpanding.get(player.getName().toLowerCase());
+                                    expand.setSelected();
+                                   this.PlayerExpanding.remove(player.getName().toLowerCase());
+                                }else{
+                                    player.sendMessage(ChatColor.GRAY+"[Factoid] You are already in Expand Mode.");
+                                }
+                            }else{
+                                player.sendMessage(ChatColor.GRAY+"[Factoid] Quit the Select Mode before.");
+                            }
                         }else{
-                            player.sendMessage(ChatColor.GRAY+"[Factoid] You are already in Expand Mode.");
+                            player.sendMessage(ChatColor.GRAY+"[Factoid] Quit the Flags Mode before.");
+                        }
+                    }else if(arg[0].equalsIgnoreCase("flags")){
+                        if(!this.PlayerExpanding.containsKey(player.getName().toLowerCase())){
+                            if(!this.PlayerSelecting.containsKey(player.getName().toLowerCase())){
+                                if(!this.PlayerExpanding.containsKey(player.getName().toLowerCase())){
+                                    player.sendMessage(ChatColor.GRAY+"[Factoid] You are now in Flags Mode.");
+                                    player.sendMessage(ChatColor.DARK_GRAY+"[Factoid] Type "+ChatColor.ITALIC+"'/factoid flags done'"+ChatColor.RESET+ChatColor.DARK_GRAY+" to confirm your choice.");
+                                    LandExpansion expand =  new LandExpansion(player,player.getServer(),plugin);
+                                    this.PlayerExpanding.put(player.getName().toLowerCase(),expand);
+                                }else if(arg.length > 1 && arg[1].equalsIgnoreCase("done")){
+                                    player.sendMessage(ChatColor.GREEN+"[Factoid] You have modified your landFlags.");
+                                    player.sendMessage(ChatColor.GRAY+"[Factoid] You are no longer in Flags Mode.");
+                                    LandExpansion expand = this.PlayerExpanding.get(player.getName().toLowerCase());
+                                    expand.setSelected();
+                                   this.PlayerExpanding.remove(player.getName().toLowerCase());
+                                }else{
+                                    player.sendMessage(ChatColor.GRAY+"[Factoid] You are already in Flags Mode.");
+                                }
+                        }else{
+                                player.sendMessage(ChatColor.GRAY+"[Factoid] Quit the Select Mode before.");
+                            }
+                        }else{
+                            player.sendMessage(ChatColor.GRAY+"[Factoid] Quit the Expand Mode before.");
                         }
                     }
                     //log.write("Supposly block changed");
