@@ -77,4 +77,13 @@ public class LandSelection extends Thread implements Listener{
     public Map<String,Location> getCorner(){
         return this.CornerList;
     }
+    
+    public void resetSelection(){
+        if(!this.BlockList.isEmpty() && this.CornerList.isEmpty()){
+           boolean done = new LandResetSelection(this.BlockList,this.CornerList,this.player).Reset();
+           if(done){
+               this.BlockList.clear();
+           }
+        }
+    }
 }

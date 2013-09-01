@@ -2,7 +2,7 @@ package me.tabinol.factoid.lands.flags;
 
 public class LandFlag {
     
-    // public static final int *** Définir les sortes de flags ****
+    // public static final int *** Définir les sortes de flags **** //FAIT!
     int flagType;
     boolean inheritance;
     boolean value;
