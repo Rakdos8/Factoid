@@ -33,6 +33,7 @@ public class OnCommand extends Thread implements CommandExecutor{
         this.plugin = plugin;
     }
     
+    @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] arg) {
         if (!(sender instanceof Player)) {
             sender.sendMessage("Console.");

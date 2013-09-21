@@ -9,14 +9,15 @@ import java.util.List;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.tabinol.factoid.utilities.Lang;
 import me.tabinol.factoid.utilities.Log;
 import me.tabinol.factoid.commands.OnCommand;
+import me.tabinol.factoid.lands.Lands;
+import me.tabinol.factoid.listeners.PlayerListener;
 
-public class Factoid extends JavaPlugin implements Listener{
+public class Factoid extends JavaPlugin {
     private File configFile;
     private FileConfiguration config;
     private boolean debug = false;
@@ -37,7 +38,11 @@ public class Factoid extends JavaPlugin implements Listener{
     private int MaxPriceLocation = 1;
     private int MinPriceSell = 1;
     private int MaxPriceSell = 1;
-    private OnCommand CommandLisener;
+    private OnCommand CommandListener;
+    private PlayerListener playerListener;
+    private static Factoid thisPlugin;
+    // Access to lands (static)
+    private static Lands lands;
     
     @Override
     public void onDisable() {
@@ -49,7 +54,11 @@ public class Factoid extends JavaPlugin implements Listener{
 	
     @Override
     public void onEnable() {
-        getServer().getPluginManager().registerEvents(this, this);
+        // Static access to «this» Factoid
+        thisPlugin = this;
+        playerListener = new PlayerListener();
+        getServer().getPluginManager().registerEvents(playerListener, this);
+        lands = new Lands();
         configFile = new File(getDataFolder(), "config.yml");
         firstRun();
         config = new YamlConfiguration();
@@ -59,8 +68,8 @@ public class Factoid extends JavaPlugin implements Listener{
         language = new Lang(getDataFolder(),config.getString("general.lang"),this);
         log = new Log(getDataFolder(),debug);
         log.write("Factoid is Enabled.");
-        CommandLisener = new OnCommand(language,log,this);
-        getCommand("factoid").setExecutor(CommandLisener);
+        CommandListener = new OnCommand(language,log,this);
+        getCommand("factoid").setExecutor(CommandListener);
         UseEconomy = config.getBoolean("general.UseEconomy");
         PriorityOld = config.getBoolean("land.PriorityOld");
         CanMakeCollision = config.getBoolean("land.CanMakeCollision");
@@ -120,5 +129,15 @@ public class Factoid extends JavaPlugin implements Listener{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public static Factoid getThisPlugin() {
+        
+        return thisPlugin;
+    }
+    
+    public static Lands getLands() {
+        
+        return lands;
     }
 }

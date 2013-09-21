@@ -1,15 +1,15 @@
 package me.tabinol.factoid.lands;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.TreeMap;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 
 public class Land {
 
     public static final short DEFAULT_PRIORITY = 10;
     private String name;
-    private HashMap<Integer, CuboidArea> areas;
-    private HashMap<String, Land> children = new HashMap<>();
+    private TreeMap<Integer, CuboidArea> areas = new TreeMap<>();
+    private TreeMap<String, Land> children = new TreeMap<>();
     private int nextAreaId = 0; // start to 0 increase 1 each time there are an area added
     private short priority = DEFAULT_PRIORITY;
     private Land parent = null;
@@ -17,46 +17,27 @@ public class Land {
 
     public Land(String landName, PlayerContainer owner, CuboidArea area) {
 
-        setAreaBeforeCreate(landName, owner, area);
-    }
-
-    public Land(String landName, PlayerContainer owner, HashMap<Integer, CuboidArea> areas) {
-
-        createLand(landName, owner, areas);
+        createLand(landName, owner, area);
     }
 
     // 2 next one for a child
     public Land(String landName, PlayerContainer owner, CuboidArea area, Land parent) {
 
-        this.parent = parent;
-        setAreaBeforeCreate(landName, owner, area);
+        createLand(landName, owner, area);
     }
 
-    public Land(String landName, PlayerContainer owner, HashMap<Integer, CuboidArea> areas, Land parent) {
-
-        this.parent = parent;
-        createLand(landName, owner, areas);
-    }
-
-    private void setAreaBeforeCreate(String landName, PlayerContainer owner, CuboidArea area) {
-
-        HashMap<Integer, CuboidArea> genAreas = new HashMap<>();
-        genAreas.put(nextAreaId++, area);
-        createLand(landName, owner, genAreas);
-    }
-
-    private void createLand(String landName, PlayerContainer owner, HashMap<Integer, CuboidArea> areas) {
+    private void createLand(String landName, PlayerContainer owner, CuboidArea area) {
 
         name = landName;
         this.owner = owner;
-        this.areas = areas;
-        nextAreaId = areas.size();
+        addArea(area);
     }
 
     public int addArea(CuboidArea area) {
 
         int areaId = nextAreaId++;
 
+        area.setLand(this);
         areas.put(areaId, area);
 
         return areaId;
@@ -81,7 +62,7 @@ public class Land {
         return false;
     }
 
-    public Collection getAreas() {
+    public Collection<CuboidArea> getAreas() {
 
         return areas.values();
     }

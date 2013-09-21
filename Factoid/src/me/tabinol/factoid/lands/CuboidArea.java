@@ -2,10 +2,11 @@ package me.tabinol.factoid.lands;
 
 import me.tabinol.factoid.utilities.Calculate;
 
-public class CuboidArea {
+public class CuboidArea implements Comparable<CuboidArea> {
 
     private String worldName;
     private int x1, y1, z1, x2, y2, z2;
+    private Land land = null;
 
     public CuboidArea(String worldName, int x1, int y1, int z1, int x2, int y2, int z2) {
 
@@ -30,6 +31,52 @@ public class CuboidArea {
         return new CuboidArea(worldName, x1, y1, z1, x2, y2, z2);
     }
 
+    @Override
+    public int compareTo(CuboidArea t) {
+        
+        int worldCompare = worldName.compareTo(t.worldName);
+        if(worldCompare != 0) {
+            return worldCompare;
+        }
+        if(x1 < t.x1) {
+            return -1;
+        }
+        if(x1 > t.x1) {
+            return 1;
+        }
+        if(z1 < t.z1) {
+            return -1;
+        }
+        if(z1 > t.z1) {
+            return 1;
+        }
+        if(y1 < t.y1) {
+            return -1;
+        }
+        if(y1 > t.y1) {
+            return 1;
+        }
+        if(x2 < t.x2) {
+            return -1;
+        }
+        if(x2 > t.x2) {
+            return 1;
+        }
+        if(z2 < t.z2) {
+            return -1;
+        }
+        if(z2 > t.z2) {
+            return 1;
+        }
+        if(y2 < t.y2) {
+            return -1;
+        }
+        if(y2 > t.y2) {
+            return 1;
+        }
+        return 0;
+    }
+
     public boolean isCollision(CuboidArea area2) {
 
         return ((Calculate.isInInterval(x1, area2.x1, area2.x2)
@@ -38,6 +85,16 @@ public class CuboidArea {
                 || Calculate.isInInterval(area2.y1, y1, y2)))
                 && ((Calculate.isInInterval(z1, area2.z1, area2.z2)
                 || Calculate.isInInterval(area2.z1, z1, z2)));
+    }
+    
+    public final void setLand(Land land) {
+        
+        this.land = land;
+    }
+    
+    public void setWorldName(String worldName) {
+        
+        this.worldName = worldName;
     }
     
     public void setX1(int x1) {
@@ -68,6 +125,16 @@ public class CuboidArea {
     public void setZ2(int z2) {
         
         this.z2 = z2;
+    }
+    
+    public Land getLand() {
+        
+        return land;
+    }
+    
+    public String getWorldName() {
+        
+        return worldName;
     }
     
     public int getX1() {
