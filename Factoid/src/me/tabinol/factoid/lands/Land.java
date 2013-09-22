@@ -2,6 +2,7 @@ package me.tabinol.factoid.lands;
 
 import java.util.Collection;
 import java.util.TreeMap;
+import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 
 public class Land {
@@ -11,25 +12,27 @@ public class Land {
     private TreeMap<Integer, CuboidArea> areas = new TreeMap<>();
     private TreeMap<String, Land> children = new TreeMap<>();
     private int nextAreaId = 0; // start to 0 increase 1 each time there are an area added
-    private short priority = DEFAULT_PRIORITY;
+    private short priority = DEFAULT_PRIORITY; // Do not put more then 100000!!!!
+    private int genealogy = 0; // 0 = first, 1 = child, 2 = child of child, ...
     private Land parent = null;
     private PlayerContainer owner;
 
     public Land(String landName, PlayerContainer owner, CuboidArea area) {
 
-        createLand(landName, owner, area);
+        createLand(landName, owner, area, 0);
     }
 
     // 2 next one for a child
     public Land(String landName, PlayerContainer owner, CuboidArea area, Land parent) {
 
-        createLand(landName, owner, area);
+        createLand(landName, owner, area, parent.getGenealogy() + 1);
     }
 
-    private void createLand(String landName, PlayerContainer owner, CuboidArea area) {
+    private void createLand(String landName, PlayerContainer owner, CuboidArea area, int genealogy) {
 
         name = landName;
         this.owner = owner;
+        this.genealogy = genealogy;
         addArea(area);
     }
 
@@ -39,13 +42,16 @@ public class Land {
 
         area.setLand(this);
         areas.put(areaId, area);
+        Factoid.getLands().addAreaToList(area);
 
         return areaId;
     }
 
     public boolean removeArea(int areaId) {
 
-        if (areas.remove(areaId) != null) {
+        CuboidArea area;
+        if ((area = areas.remove(areaId)) != null) {
+            Factoid.getLands().removeAreaToList(area);
             return true;
         }
 
@@ -55,7 +61,10 @@ public class Land {
     public boolean updateArea(int areaId, CuboidArea newArea) {
 
         if (areas.containsKey(areaId)) {
+            Factoid.getLands().removeAreaToList(areas.get(areaId));
+            newArea.setLand(this);
             areas.put(areaId, newArea);
+            Factoid.getLands().addAreaToList(newArea);
             return true;
         }
 
@@ -87,14 +96,14 @@ public class Land {
 
         this.name = newName;
     }
-    
+
     public PlayerContainer getOwner() {
-        
+
         return owner;
     }
-    
+
     public void setOwner(PlayerContainer owner) {
-        
+
         this.owner = owner;
     }
 
@@ -106,6 +115,11 @@ public class Land {
         }
 
         return priority;
+    }
+    
+    public int getGenealogy() {
+        
+        return genealogy;
     }
 
     public void setPriority(short priority) {

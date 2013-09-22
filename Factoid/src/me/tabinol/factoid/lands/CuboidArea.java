@@ -1,6 +1,7 @@
 package me.tabinol.factoid.lands;
 
 import me.tabinol.factoid.utilities.Calculate;
+import org.bukkit.Location;
 
 public class CuboidArea implements Comparable<CuboidArea> {
 
@@ -33,45 +34,45 @@ public class CuboidArea implements Comparable<CuboidArea> {
 
     @Override
     public int compareTo(CuboidArea t) {
-        
+
         int worldCompare = worldName.compareTo(t.worldName);
-        if(worldCompare != 0) {
+        if (worldCompare != 0) {
             return worldCompare;
         }
-        if(x1 < t.x1) {
+        if (x1 < t.x1) {
             return -1;
         }
-        if(x1 > t.x1) {
+        if (x1 > t.x1) {
             return 1;
         }
-        if(z1 < t.z1) {
+        if (z1 < t.z1) {
             return -1;
         }
-        if(z1 > t.z1) {
+        if (z1 > t.z1) {
             return 1;
         }
-        if(y1 < t.y1) {
+        if (y1 < t.y1) {
             return -1;
         }
-        if(y1 > t.y1) {
+        if (y1 > t.y1) {
             return 1;
         }
-        if(x2 < t.x2) {
+        if (x2 < t.x2) {
             return -1;
         }
-        if(x2 > t.x2) {
+        if (x2 > t.x2) {
             return 1;
         }
-        if(z2 < t.z2) {
+        if (z2 < t.z2) {
             return -1;
         }
-        if(z2 > t.z2) {
+        if (z2 > t.z2) {
             return 1;
         }
-        if(y2 < t.y2) {
+        if (y2 < t.y2) {
             return -1;
         }
-        if(y2 > t.y2) {
+        if (y2 > t.y2) {
             return 1;
         }
         return 0;
@@ -86,84 +87,92 @@ public class CuboidArea implements Comparable<CuboidArea> {
                 && ((Calculate.isInInterval(z1, area2.z1, area2.z2)
                 || Calculate.isInInterval(area2.z1, z1, z2)));
     }
-    
+
+    public boolean isLocationInside(Location loc) {
+
+        return loc.getWorld().getName().equals(worldName)
+                && Calculate.isInInterval(loc.getBlockX(), x1, x2)
+                && Calculate.isInInterval(loc.getBlockY(), y1, y2)
+                && Calculate.isInInterval(loc.getBlockZ(), z1, z2);
+    }
+
     public final void setLand(Land land) {
-        
+
         this.land = land;
     }
-    
+
     public void setWorldName(String worldName) {
-        
+
         this.worldName = worldName;
     }
-    
+
     public void setX1(int x1) {
-        
+
         this.x1 = x1;
     }
 
     public void setY1(int y1) {
-        
+
         this.y1 = y1;
     }
 
     public void setZ1(int z1) {
-        
+
         this.z1 = z1;
     }
 
     public void setX2(int x2) {
-        
+
         this.x2 = x2;
     }
-    
+
     public void setY2(int y2) {
-        
+
         this.y2 = y2;
     }
-    
+
     public void setZ2(int z2) {
-        
+
         this.z2 = z2;
     }
-    
+
     public Land getLand() {
-        
+
         return land;
     }
-    
+
     public String getWorldName() {
-        
+
         return worldName;
     }
-    
+
     public int getX1() {
-        
+
         return x1;
     }
 
     public int getY1() {
-        
+
         return y1;
     }
 
     public int getZ1() {
-        
+
         return z1;
     }
 
     public int getX2() {
-        
+
         return x2;
     }
 
     public int getY2() {
-        
+
         return y2;
     }
 
     public int getZ2() {
-        
+
         return z2;
     }
 }

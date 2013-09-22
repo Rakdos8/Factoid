@@ -16,6 +16,8 @@ import me.tabinol.factoid.utilities.Log;
 import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.lands.Lands;
 import me.tabinol.factoid.listeners.PlayerListener;
+import me.tabinol.factoid.storage.Storage;
+import me.tabinol.factoid.storage.StorageFlat;
 
 public class Factoid extends JavaPlugin {
     private File configFile;
@@ -40,6 +42,7 @@ public class Factoid extends JavaPlugin {
     private int MaxPriceSell = 1;
     private OnCommand CommandListener;
     private PlayerListener playerListener;
+    private Storage storage;
     private static Factoid thisPlugin;
     // Access to lands (static)
     private static Lands lands;
@@ -58,6 +61,7 @@ public class Factoid extends JavaPlugin {
         thisPlugin = this;
         playerListener = new PlayerListener();
         getServer().getPluginManager().registerEvents(playerListener, this);
+        storage = new StorageFlat();
         lands = new Lands();
         configFile = new File(getDataFolder(), "config.yml");
         firstRun();
