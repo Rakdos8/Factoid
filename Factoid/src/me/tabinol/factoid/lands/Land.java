@@ -131,6 +131,17 @@ public class Land {
 
         return parent;
     }
+    
+    public Land getAncestor(int gen) { // 1 parent, 2 grand-parent, 3 ...
+        
+        Land ancestor = this;
+        
+        for (int t = 0; t < gen; t ++) {
+            ancestor = ancestor.getParent();
+        }
+        
+        return ancestor;
+    }
 
     public void addChild(Land land) {
 

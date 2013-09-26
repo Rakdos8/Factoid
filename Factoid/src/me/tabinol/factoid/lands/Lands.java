@@ -1,7 +1,11 @@
 package me.tabinol.factoid.lands;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import me.tabinol.factoid.playercontainer.PlayerContainer;
 import org.bukkit.Location;
 
 public class Lands {
@@ -61,16 +65,40 @@ public class Lands {
         return getCuboidArea(loc).getLand();
     }
 
-    public CuboidArea getCuboidArea(Location loc) {
+    public Collection getLands(Location loc) {
 
+        Collection<CuboidArea> areas = getCuboidAreas(loc);
+        HashMap<String, Land> lands = new HashMap<>();
+
+        for (CuboidArea area : areas) {
+            lands.put(area.getLand().getName(), area.getLand());
+        }
+
+        return lands.values();
+    }
+
+    public Collection getLands(PlayerContainer owner) {
+
+        Collection<Land> lands = new TreeSet<>();
+
+        for (Land land : landList.values()) {
+            if (land.getOwner().equals(owner)) {
+                lands.add(land);
+            }
+        }
+
+        return lands;
+    }
+
+    public Collection getCuboidAreas(Location loc) {
+
+        Collection<CuboidArea> areas = new ArrayList<>();
         String worldName = loc.getWorld().getName();
         int SearchIndex;
         int nbToFind;
         boolean ForwardSearch;
         TreeSet<AreaIndex> ais;
         AreaIndex ai;
-        int actualPrio = Short.MIN_VALUE;
-        CuboidArea actualArea = null;
 
         // First, determinate if what is the higest number between x1, x2, z1 and z2
         if (Math.abs(loc.getBlockX()) > Math.abs(loc.getBlockZ())) {
@@ -101,15 +129,48 @@ public class Lands {
             ai = ais.pollLast();
         }
 
+        // Adds all areas to the list
         while (ai != null && checkContinueSearch(ai.getArea(), nbToFind, SearchIndex)) {
 
-            if (ai.getArea().isLocationInside(loc)
-                    && ai.getArea().getLand().getPriority() > actualPrio + (ai.getArea().getLand().getGenealogy() * 100000)) {
-                actualArea = ai.getArea();
-                actualPrio = actualArea.getLand().getPriority();
+            if (ai.getArea().isLocationInside(loc)) {
+                areas.add(ai.getArea());
             }
 
             ai = searchNext(ais, ai, ForwardSearch);
+        }
+
+        return areas;
+    }
+
+    public CuboidArea getCuboidArea(Location loc) {
+
+        int actualPrio = Short.MIN_VALUE;
+        int curPrio;
+        int actualGen = 0;
+        CuboidArea actualArea = null;
+        Collection<CuboidArea> areas = getCuboidAreas(loc);
+
+        // Compare priorities of parents (or main)
+        for (CuboidArea area : areas) {
+
+            if (actualPrio < (curPrio = area.getLand().getAncestor(area.getLand().getGenealogy()).getPriority())) {
+                actualArea = area;
+                actualPrio = curPrio;
+                actualGen = area.getLand().getGenealogy();
+            }
+        }
+
+        // If we need a second pass and more (for children)
+        for (int t = 1; t <= actualGen; t++) {
+            actualPrio = Short.MIN_VALUE;
+            for (CuboidArea area : areas) {
+                if (area.getLand() == actualArea.getLand().getAncestor(actualGen - t)
+                        && actualPrio < (curPrio = area.getLand().getPriority())) {
+                    actualArea = area;
+                    actualPrio = curPrio;
+                }
+            }
+
         }
 
         return actualArea;
