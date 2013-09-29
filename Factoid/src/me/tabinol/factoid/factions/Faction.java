@@ -1,11 +1,11 @@
 package me.tabinol.factoid.factions;
 
-import java.util.HashSet;
+import java.util.TreeSet;
 
 public class Faction {
     
     private String name;
-    private HashSet<String> players = new HashSet<>();
+    private TreeSet<String> players = new TreeSet<>();
     
     public Faction(String name) {
         

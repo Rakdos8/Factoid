@@ -170,7 +170,6 @@ public class Lands {
                     actualPrio = curPrio;
                 }
             }
-
         }
 
         return actualArea;

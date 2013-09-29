@@ -7,11 +7,11 @@ public interface StorageInt {
     
     public void loadAll();
     
-    public void addLand(Land land);
+    public void saveLand(Land land);
     
     public void removeLand(Land land);
 
-    public void addFaction(Faction faction);
+    public void saveFaction(Faction faction);
     
     public void removeFaction(Faction faction);
 }
