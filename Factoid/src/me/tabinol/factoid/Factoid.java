@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import me.tabinol.factoid.utilities.Lang;
 import me.tabinol.factoid.utilities.Log;
 import me.tabinol.factoid.commands.OnCommand;
+import me.tabinol.factoid.factions.Factions;
 import me.tabinol.factoid.lands.Lands;
 import me.tabinol.factoid.listeners.PlayerListener;
 import me.tabinol.factoid.storage.Storage;
@@ -44,7 +45,8 @@ public class Factoid extends JavaPlugin {
     private PlayerListener playerListener;
     private Storage storage;
     private static Factoid thisPlugin;
-    // Access to lands (static)
+    // Access to Factions and Lands (static)
+    private static Factions factions;
     private static Lands lands;
     
     @Override
@@ -62,6 +64,7 @@ public class Factoid extends JavaPlugin {
         playerListener = new PlayerListener();
         getServer().getPluginManager().registerEvents(playerListener, this);
         storage = new StorageFlat();
+        factions = new Factions();
         lands = new Lands();
         configFile = new File(getDataFolder(), "config.yml");
         firstRun();
@@ -138,6 +141,11 @@ public class Factoid extends JavaPlugin {
     public static Factoid getThisPlugin() {
         
         return thisPlugin;
+    }
+    
+    public static Factions getFactions() {
+        
+        return factions;
     }
     
     public static Lands getLands() {

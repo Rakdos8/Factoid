@@ -1,5 +1,6 @@
 package me.tabinol.factoid.factions;
 
+import java.util.Collection;
 import java.util.TreeSet;
 
 public class Faction {
@@ -30,5 +31,10 @@ public class Faction {
     public boolean isPlayerInList(String playerName) {
         
         return players.contains(playerName.toLowerCase());
+    }
+    
+    public Collection<String> getPlayers() {
+        
+        return players;
     }
 }
