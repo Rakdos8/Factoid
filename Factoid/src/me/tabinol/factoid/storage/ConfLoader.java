@@ -6,89 +6,109 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ConfLoader {
-    
-    String newline;
-    String name;
-    String[] configs;
-    String param = null;
-    String value = null;
-    BufferedReader br;
+
+    private String name;
+    private String param = null;
+    private String value = null;
+    private BufferedReader br;
+    private ConfLoader child;
 
     public ConfLoader(BufferedReader br) {
 
         this.br = br;
-        newline = System.getProperty("line.separator");
+        readName();
+    }
+
+    private void readName() {
+
         readParam();
         name = value;
+
     }
-    
+
     public String readln() {
+
+        String lrt;
+
         try {
-            return br.readLine().trim();
+            String lr = br.readLine();
+            if (lr == null) {
+                return null;
+            }
+            lrt = lr.trim();
+            if (lrt.equals("") || lrt.equals("}")) {
+                return null;
+            }
+            return lrt;
         } catch (IOException ex) {
             Logger.getLogger(ConfLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
 
-    public void readParam() {
-        
+    public boolean readParam() {
+
         String str = readln();
-        if()
-        
-    }
 
-    public void writeParam(String paramName, int param) {
-
-        writeln(paramName + ":" + param);
-    }
-
-    public void writeParam(String paramName, short param) {
-
-        writeln(paramName + ":" + param);
-    }
-
-    public void writeParam(String ParamName, String[] params) {
-
-        if (params == null) {
-            return;
+        if (str == null) {
+            return false;
         }
-        writeln(ParamName + ": {");
-        for (String param : params) {
-            writeln("  " + param);
-        }
-        writeln("}");
-    }
-
-    public void writeParam(String paramName, ConfBuilder[] cfs) {
-
-        if (cfs == null) {
-            return;
-        }
-        writeln(paramName + ": {");
-        for (ConfBuilder cf : cfs) {
-            writeln("  {");
-            for (String line : cf.getConf().split(newline)) {
-                writeln("    " + line);
+        if (str.endsWith(":conflist{")) {
+            param = str.replaceAll(":conflist\\{", "");
+            value = null;
+        } else if (str.endsWith("\\{")) {
+            param = str.replaceAll("\\{", "");
+            value = null;
+        } else if (str.contains(":")) {
+            String[] chn = str.split(":");
+            param = chn[0];
+            if (chn[1].equals("-null-")) {
+                value = null;
+            } else {
+                value = chn[1];
             }
-            writeln("  }");
         }
-        writeln("}");
+
+        return true;
     }
 
-    public String getConf() {
+    public String getParamName() {
 
-        return sb.toString();
+        return param;
     }
 
-    public void close() {
-        try {
-            br.close();
-        } catch (IOException ex) {
-            Logger.getLogger(ConfBuilder.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-}
+    public String getValueString() {
 
-    
+        return value;
+    }
+
+    public int getValueInt() {
+
+        return Integer.parseInt(value);
+    }
+
+    public short getValueShort() {
+
+        return Short.parseShort(value);
+    }
+
+    public String getNextString() {
+
+        return readln();
+    }
+
+    public String getName() {
+
+        return name;
+    }
+
+    public void startChild() {
+
+        child = new ConfLoader(br);
+    }
+
+    public ConfLoader getChild() {
+
+        return child;
+    }
 }

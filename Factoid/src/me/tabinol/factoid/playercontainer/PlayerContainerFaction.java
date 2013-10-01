@@ -8,7 +8,7 @@ public class PlayerContainerFaction extends PlayerContainer implements PlayerCon
     
     public PlayerContainerFaction(Faction faction) {
         
-        super(faction.getName());
+        super(faction.getName(), "Faction");
         this.faction = faction;
     }
     

@@ -1,6 +1,7 @@
 package me.tabinol.factoid.storage;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -8,13 +9,18 @@ import java.util.logging.Logger;
 
 public class ConfBuilder {
 
-    String newline;
-    StringBuffer sb;
+    private String newline;
+    private StringBuffer sb;
 
     public ConfBuilder(String name) {
 
         sb = new StringBuffer();
         newline = System.getProperty("line.separator");
+        writeName(name);
+    }
+
+    private void writeName(String name) {
+
         writeParam("Name", name);
     }
 
@@ -25,7 +31,11 @@ public class ConfBuilder {
 
     public void writeParam(String paramName, String param) {
 
-        writeln(paramName + ":" + param);
+        if (param == null) {
+            writeln(paramName + ":-null-");
+        } else {
+            writeln(paramName + ":" + param);
+        }
     }
 
     public void writeParam(String paramName, int param) {
@@ -43,7 +53,7 @@ public class ConfBuilder {
         if (params == null) {
             return;
         }
-        writeln(ParamName + ": {");
+        writeln(ParamName + "{");
         for (String param : params) {
             writeln("  " + param);
         }
@@ -55,7 +65,7 @@ public class ConfBuilder {
         if (cfs == null) {
             return;
         }
-        writeln(paramName + ": {");
+        writeln(paramName + ":conflist{");
         for (ConfBuilder cf : cfs) {
             writeln("  {");
             for (String line : cf.getConf().split(newline)) {
@@ -71,12 +81,12 @@ public class ConfBuilder {
         return sb.toString();
     }
 
-    public void save(String fileName) {
+    public void save(File file) {
         try {
-            FileWriter fr = new FileWriter(fileName, false);
-            BufferedWriter br = new BufferedWriter(fr);
-            br.write(sb.toString());
-            br.close();
+            FileWriter fr = new FileWriter(file, false);
+            try (BufferedWriter br = new BufferedWriter(fr)) {
+                br.write(sb.toString());
+            }
         } catch (IOException ex) {
             Logger.getLogger(ConfBuilder.class.getName()).log(Level.SEVERE, null, ex);
         }

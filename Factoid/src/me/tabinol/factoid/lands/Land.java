@@ -22,7 +22,7 @@ public class Land {
         createLand(landName, owner, area, 0);
     }
 
-    // 2 next one for a child
+    // next one for a child
     public Land(String landName, PlayerContainer owner, CuboidArea area, Land parent) {
 
         createLand(landName, owner, area, parent.getGenealogy() + 1);

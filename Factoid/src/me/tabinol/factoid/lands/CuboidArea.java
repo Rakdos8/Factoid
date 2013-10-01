@@ -77,6 +77,12 @@ public class CuboidArea implements Comparable<CuboidArea> {
         }
         return 0;
     }
+    
+    @Override
+    public String toString() {
+        
+        return worldName + ":" + x1 + ":" + y1 + ":" + z1 + ":" + x2 + ":" + y2 + ":" + z2;
+    }
 
     public boolean isCollision(CuboidArea area2) {
 
