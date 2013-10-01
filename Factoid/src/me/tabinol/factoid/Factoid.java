@@ -28,6 +28,7 @@ public class Factoid extends JavaPlugin {
     private List<String> Worlds = null;
     private Log log;
     private boolean UseEconomy = false;
+    public static int InfoItem = 361;
     private boolean PriorityOld = false;
     private boolean CanMakeCollision = false;
     private int MaxLand = 1;
@@ -78,6 +79,7 @@ public class Factoid extends JavaPlugin {
         CommandListener = new OnCommand(language,log,this);
         getCommand("factoid").setExecutor(CommandListener);
         UseEconomy = config.getBoolean("general.UseEconomy");
+        InfoItem = config.getInt("general.InfoItem");
         PriorityOld = config.getBoolean("land.PriorityOld");
         CanMakeCollision = config.getBoolean("land.CanMakeCollision");
         MaxLand = config.getInt("land.MaxLand");
