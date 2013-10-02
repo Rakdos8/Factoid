@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.command.CommandExecutor;
 import java.util.Map;
+import me.tabinol.factoid.Factoid;
 
 import me.tabinol.factoid.utilities.Lang;
 import me.tabinol.factoid.utilities.Log;
@@ -27,10 +28,11 @@ public class OnCommand extends Thread implements CommandExecutor{
     private Map<String,LandExpansion> PlayerExpanding = new HashMap<String,LandExpansion>();
     private Map<String,LandExpansion> PlayerFlags = new HashMap<String,LandExpansion>();
     
-    public OnCommand(Lang lang,Log log,JavaPlugin plugin){
-        this.language = lang;
-        this.log = log;
-        this.plugin = plugin;
+    public OnCommand(){
+
+        this.language = Factoid.getLanguage();
+        this.plugin = Factoid.getThisPlugin();
+        this.log = Factoid.getLog();
     }
     
     @Override

@@ -22,7 +22,7 @@ public class Lands {
     public Lands() {
 
         areaList = new TreeMap[4];
-        for (int t = 0; t < 6; t++) {
+        for (int t = 0; t < areaList.length; t++) {
             areaList[t] = new TreeMap<>();
         }
         landList = new TreeMap<>();
