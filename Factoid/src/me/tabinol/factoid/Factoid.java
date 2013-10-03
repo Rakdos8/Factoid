@@ -23,7 +23,7 @@ public class Factoid extends JavaPlugin {
     private FileConfiguration config;
     private OnCommand CommandListener;
     private PlayerListener playerListener;
-    private Storage storage;
+    private static Storage storage;
     private static Log log;
     private static Factoid thisPlugin;
     private static Config conf;
@@ -58,34 +58,6 @@ public class Factoid extends JavaPlugin {
         language.interrupt();
     }
 
-    // Remplacé par la classe Config
-    private void firstRun(){
-        try{
-            if(!configFile.exists()){
-                configFile.getParentFile().mkdirs();
-                copy(getResource("config.yml"), configFile);
-            }
-        } catch (Exception e) {
-                e.printStackTrace();
-        }
-    }
-
-    // Remplacé par la classe Config
-    private void copy(InputStream in, File file) {
-        try {
-            OutputStream out = new FileOutputStream(file);
-            byte[] buf = new byte[1024];
-            int len;
-            while((len=in.read(buf))>0){
-                out.write(buf,0,len);
-            }
-            out.close();
-            in.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public static Factoid getThisPlugin() {
         
         return thisPlugin;
@@ -114,5 +86,10 @@ public class Factoid extends JavaPlugin {
     public static Lands getLands() {
         
         return lands;
+    }
+    
+    public static Storage getStorage() {
+        
+        return storage;
     }
 }

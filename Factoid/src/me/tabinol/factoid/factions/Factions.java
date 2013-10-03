@@ -1,6 +1,7 @@
 package me.tabinol.factoid.factions;
 
 import java.util.TreeMap;
+import me.tabinol.factoid.Factoid;
 
 public class Factions {
     
@@ -25,6 +26,7 @@ public class Factions {
         if (!factionList.containsKey(faction.getName())) {
             return false;
         }
+        Factoid.getStorage().removeFaction(faction);
         factionList.remove(faction.getName());
         return true;
     }

@@ -10,7 +10,7 @@ public class Land {
     public static final short DEFAULT_PRIORITY = 10;
     private String name;
     private TreeMap<Integer, CuboidArea> areas = new TreeMap<>();
-    private TreeMap<String, Land> children = new TreeMap<>();
+//    private TreeMap<String, Land> children = new TreeMap<>();
     private int nextAreaId = 0; // start to 0 increase 1 each time there are an area added
     private short priority = DEFAULT_PRIORITY; // Do not put more then 100000!!!!
     private int genealogy = 0; // 0 = first, 1 = child, 2 = child of child, ...
@@ -25,6 +25,7 @@ public class Land {
     // next one for a child
     public Land(String landName, PlayerContainer owner, CuboidArea area, Land parent) {
 
+        this.parent = parent;
         createLand(landName, owner, area, parent.getGenealogy() + 1);
     }
 
@@ -43,6 +44,7 @@ public class Land {
         area.setLand(this);
         areas.put(areaId, area);
         Factoid.getLands().addAreaToList(area);
+        Factoid.getStorage().saveLand(this);
 
         return areaId;
     }
@@ -52,6 +54,7 @@ public class Land {
         CuboidArea area;
         if ((area = areas.remove(areaId)) != null) {
             Factoid.getLands().removeAreaToList(area);
+            Factoid.getStorage().saveLand(this);
             return true;
         }
 
@@ -65,6 +68,7 @@ public class Land {
             newArea.setLand(this);
             areas.put(areaId, newArea);
             Factoid.getLands().addAreaToList(newArea);
+            Factoid.getStorage().saveLand(this);
             return true;
         }
 
@@ -94,7 +98,9 @@ public class Land {
 
     public void setName(String newName) {
 
+        Factoid.getStorage().removeLand(this);
         this.name = newName;
+        Factoid.getStorage().saveLand(this);
     }
 
     public PlayerContainer getOwner() {
@@ -105,6 +111,7 @@ public class Land {
     public void setOwner(PlayerContainer owner) {
 
         this.owner = owner;
+        Factoid.getStorage().saveLand(this);
     }
 
     // Note : a child get the parent priority
@@ -125,6 +132,7 @@ public class Land {
     public void setPriority(short priority) {
 
         this.priority = priority;
+        Factoid.getStorage().saveLand(this);
     }
 
     public Land getParent() {
@@ -143,23 +151,25 @@ public class Land {
         return ancestor;
     }
 
-    public void addChild(Land land) {
+//    private void addChild(Land land) {
+//
+//        children.put(land.name, land);
+//        Factoid.getStorage().saveLand(this);
+//    }
 
-        children.put(land.name, land);
-    }
+//    private void removeChild(String landName) {
+//
+//        children.remove(landName);
+//        Factoid.getStorage().saveLand(this);
+//    }
 
-    public void removeChild(String landName) {
+//    public Land getChild(String landName) {
+//
+//       return children.get(landName);
+//    }
 
-        children.remove(landName);
-    }
-
-    public Land getChild(String landName) {
-
-        return children.get(landName);
-    }
-
-    public Collection getChildren() {
-
-        return children.values();
-    }
+//    public Collection getChildren() {
+//
+//        return children.values();
+//    }
 }

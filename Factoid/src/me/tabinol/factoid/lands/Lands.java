@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import org.bukkit.Location;
 
@@ -43,6 +44,8 @@ public class Lands {
             return false;
         }
         removeLandToList(land);
+        Factoid.getStorage().removeLand(land);
+        
         return true;
     }
 
@@ -243,5 +246,8 @@ public class Lands {
     private void removeLandToList(Land land) {
 
         landList.remove(land.getName());
+        for (CuboidArea area : land.getAreas()) {
+            removeAreaToList(area);
+        }
     }
 }
