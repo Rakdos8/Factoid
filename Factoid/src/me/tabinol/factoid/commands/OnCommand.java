@@ -19,8 +19,9 @@ import me.tabinol.factoid.lands.expansion.LandExpansion;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
+import org.bukkit.event.Listener;
 
-public class OnCommand extends Thread implements CommandExecutor{
+public class OnCommand extends Thread implements CommandExecutor, Listener{
     private Lang language;
     private Log log;
     private JavaPlugin plugin;
@@ -41,16 +42,22 @@ public class OnCommand extends Thread implements CommandExecutor{
             sender.sendMessage("Console.");
             return false;
 	}else{
+             sender.sendMessage("-1");
             if(cmd.getName().equalsIgnoreCase("factoid") || cmd.getName().equalsIgnoreCase("claim")){
                 Player player = (Player) sender;
                 World world = player.getWorld();
                 Location loc = player.getLocation();
                 
                 if(arg.length > 0){
+                    player.sendMessage("1");
                     if(arg[0].equalsIgnoreCase("select")){
+                        player.sendMessage("2");
                         if(!this.PlayerFlags.containsKey(player.getName().toLowerCase())){
+                            player.sendMessage("3");
                             if(!this.PlayerExpanding.containsKey(player.getName().toLowerCase())){
+                                player.sendMessage("4");
                                 if(arg.length > 1 && !arg[1].equalsIgnoreCase("done")){
+                                    player.sendMessage("5");
                                     player.sendMessage(ChatColor.GRAY+"[Factoid] You are now in Select Mode.");
                                     player.sendMessage(ChatColor.DARK_GRAY+"[Factoid] Trying to select '"+arg[1]+"'");
                                 }else{
@@ -71,8 +78,10 @@ public class OnCommand extends Thread implements CommandExecutor{
                                        int y2 = corner.get("BackCornerRigth").getBlockY();
                                        int z1 = corner.get("FrontCornerLeft").getBlockZ();
                                        int z2 = corner.get("BackCornerRigth").getBlockZ();
+                                       
                                        CuboidArea cuboidarea = new CuboidArea(player.getWorld().getName(),x1,y1,z1,x2,y2,z2);
                                        Land land  = new Land("",new PlayerContainerPlayer(player.getName()),cuboidarea);
+                                       Factoid.getLands().createLand(land);
                                        this.PlayerSelecting.remove(player.getName().toLowerCase());
                                        select.resetSelection();
                                     }else{
@@ -109,24 +118,24 @@ public class OnCommand extends Thread implements CommandExecutor{
                             player.sendMessage(ChatColor.GRAY+"[Factoid] Quit the Flags Mode before.");
                         }
                         }else if(arg[0].equalsIgnoreCase("create")){
-                        if(!this.PlayerFlags.containsKey(player.getName().toLowerCase())){
-                            if(this.PlayerSelecting.containsKey(player.getName().toLowerCase())){
-                                if(!this.PlayerExpanding.containsKey(player.getName().toLowerCase())){
-                                    player.sendMessage(ChatColor.GRAY+"[Factoid] You are now in Create Mode.");
-                                   
-                                    player.sendMessage(ChatColor.GREEN+"[Factoid] You have Create your land.");
-                                    player.sendMessage(ChatColor.GRAY+"[Factoid] You are no longer in Create Mode.");
-                                    LandExpansion expand = this.PlayerExpanding.get(player.getName().toLowerCase());
-                                 //  this.PlayerCreate.remove(player.getName().toLowerCase());
+                            if(!this.PlayerFlags.containsKey(player.getName().toLowerCase())){
+                                if(this.PlayerSelecting.containsKey(player.getName().toLowerCase())){
+                                    if(!this.PlayerExpanding.containsKey(player.getName().toLowerCase())){
+                                        player.sendMessage(ChatColor.GRAY+"[Factoid] You are now in Create Mode.");
+
+                                        player.sendMessage(ChatColor.GREEN+"[Factoid] You have Create your land.");
+                                        player.sendMessage(ChatColor.GRAY+"[Factoid] You are no longer in Create Mode.");
+                                        LandExpansion expand = this.PlayerExpanding.get(player.getName().toLowerCase());
+                                     //  this.PlayerCreate.remove(player.getName().toLowerCase());
+                                    }else{
+                                        player.sendMessage(ChatColor.GRAY+"[Factoid] You are already in Create Mode.");
+                                    }
                                 }else{
-                                    player.sendMessage(ChatColor.GRAY+"[Factoid] You are already in Create Mode.");
+                                    player.sendMessage(ChatColor.GRAY+"[Factoid] You must be in Select Mode before.");
                                 }
                             }else{
-                                player.sendMessage(ChatColor.GRAY+"[Factoid] You must be in Select Mode before.");
+                                player.sendMessage(ChatColor.GRAY+"[Factoid] Quit the Flags Mode before.");
                             }
-                        }else{
-                            player.sendMessage(ChatColor.GRAY+"[Factoid] Quit the Flags Mode before.");
-                        }
                     }else if(arg[0].equalsIgnoreCase("flags")){
                         if(!this.PlayerExpanding.containsKey(player.getName().toLowerCase())){
                             if(!this.PlayerSelecting.containsKey(player.getName().toLowerCase())){
@@ -153,7 +162,7 @@ public class OnCommand extends Thread implements CommandExecutor{
                     }
                     //log.write("Supposly block changed");
                     //player.sendMessage(ChatColor.GRAY+"[Factoid] Claimed.");
-                return true;
+                    return true;
                 }
             }
         }

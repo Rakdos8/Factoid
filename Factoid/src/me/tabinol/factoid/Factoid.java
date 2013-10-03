@@ -38,11 +38,12 @@ public class Factoid extends JavaPlugin {
         // Static access to «this» Factoid
         thisPlugin = this;
         playerListener = new PlayerListener();
+        CommandListener = new OnCommand();
         getServer().getPluginManager().registerEvents(playerListener, this);
+        getServer().getPluginManager().registerEvents(CommandListener, this);
         conf = new Config();
         log = new Log();
         language = new Lang();
-        CommandListener = new OnCommand();
         storage = new StorageFlat();
         factions = new Factions();
         lands = new Lands();
