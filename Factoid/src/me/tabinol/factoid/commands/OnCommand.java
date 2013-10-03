@@ -54,6 +54,12 @@ public class OnCommand extends Thread implements CommandExecutor{
                                         player.sendMessage(ChatColor.DARK_GRAY+"[Factoid] Type "+ChatColor.ITALIC+"'/factoid select done'"+ChatColor.RESET+ChatColor.DARK_GRAY+" to confirm your choice.");
                                         LandSelection select =  new LandSelection(player,player.getServer(),plugin);
                                         this.PlayerSelecting.put(player.getName().toLowerCase(),select);
+                                        if(arg.length == 1){
+                                            Land landtest = Factoid.getLands().getLand(arg[1].toString());
+                                            if(landtest == null){
+                                                
+                                            }
+                                        }
                                     }else if(arg.length > 1 && arg[1].equalsIgnoreCase("done")){
                                         LandSelection select = this.PlayerSelecting.get(player.getName().toLowerCase());
                                         select.setSelected();
