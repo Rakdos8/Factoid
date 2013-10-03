@@ -37,16 +37,16 @@ public class Factoid extends JavaPlugin {
         
         // Static access to «this» Factoid
         thisPlugin = this;
-        playerListener = new PlayerListener();
-        CommandListener = new OnCommand();
-        getServer().getPluginManager().registerEvents(playerListener, this);
-        getCommand("factoid").setExecutor(CommandListener);
         conf = new Config();
         log = new Log();
         language = new Lang();
         storage = new StorageFlat();
         factions = new Factions();
         lands = new Lands();
+        playerListener = new PlayerListener();
+        CommandListener = new OnCommand();
+        getServer().getPluginManager().registerEvents(playerListener, this);
+        getCommand("factoid").setExecutor(CommandListener);
         log.write("Factoid is Enabled.");
     }
     
