@@ -1,5 +1,7 @@
 package me.tabinol.factoid.playercontainer;
 
+import org.bukkit.entity.Player;
+
 public class PlayerContainerGroup extends PlayerContainer implements PlayerContainerInterface {
     
     public PlayerContainerGroup(String groupName) {
@@ -18,6 +20,13 @@ public class PlayerContainerGroup extends PlayerContainer implements PlayerConta
     public PlayerContainer copyOf() {
         
         return new PlayerContainerGroup(name);
+    }
+    
+    public String getGroup(Player player){
+            if(player != null){
+            
+            }
+        return null;
     }
 
     
