@@ -43,6 +43,7 @@ public class Factoid extends JavaPlugin {
         storage = new StorageFlat();
         factions = new Factions();
         lands = new Lands();
+        storage.loadAll();
         playerListener = new PlayerListener();
         CommandListener = new OnCommand();
         getServer().getPluginManager().registerEvents(playerListener, this);
