@@ -40,22 +40,16 @@ public class OnCommand extends Thread implements CommandExecutor{
             sender.sendMessage("Console.");
             return false;
 	}else{
-             sender.sendMessage("-1");
             if(cmd.getName().equalsIgnoreCase("factoid") || cmd.getName().equalsIgnoreCase("claim")){
                 Player player = (Player) sender;
                 World world = player.getWorld();
                 Location loc = player.getLocation();
                 
                 if(arg.length > 0){
-                    player.sendMessage("1");
                     if(arg[0].equalsIgnoreCase("select")){
-                        player.sendMessage("2");
                         if(!this.PlayerFlags.containsKey(player.getName().toLowerCase())){
-                            player.sendMessage("3");
                             if(!this.PlayerExpanding.containsKey(player.getName().toLowerCase())){
-                                player.sendMessage("4");
                                 if(arg.length > 1 && !arg[1].equalsIgnoreCase("done")){
-                                    player.sendMessage("5");
                                     player.sendMessage(ChatColor.GRAY+"[Factoid] You are now in Select Mode.");
                                     player.sendMessage(ChatColor.DARK_GRAY+"[Factoid] Trying to select '"+arg[1]+"'");
                                 }else{
@@ -65,8 +59,6 @@ public class OnCommand extends Thread implements CommandExecutor{
                                         LandSelection select =  new LandSelection(player,player.getServer(),plugin);
                                         this.PlayerSelecting.put(player.getName().toLowerCase(),select);
                                     }else if(arg.length > 1 && arg[1].equalsIgnoreCase("done")){
-                                        player.sendMessage(ChatColor.GREEN+"[Factoid] You have selectioned your land.");
-                                        player.sendMessage(ChatColor.GRAY+"[Factoid] You are no longer in Select Mode.");
                                         LandSelection select = this.PlayerSelecting.get(player.getName().toLowerCase());
                                         select.setSelected();
                                         Map<String,Location> corner = select.getCorner();
@@ -79,7 +71,13 @@ public class OnCommand extends Thread implements CommandExecutor{
 
                                         CuboidArea cuboidarea = new CuboidArea(player.getWorld().getName(),x1,y1,z1,x2,y2,z2);
                                         Land land  = new Land("",new PlayerContainerPlayer(player.getName()),cuboidarea);
-                                        Factoid.getLands().createLand(land);
+                                        if(Factoid.getLands().createLand(land)){
+                                            player.sendMessage(ChatColor.GREEN+"[Factoid] You have selectioned your land.");
+                                            player.sendMessage(ChatColor.GRAY+"[Factoid] You are no longer in Select Mode.");
+                                        }else{
+                                            player.sendMessage(ChatColor.RED+"[Factoid] An Error Occur Please contact an Administrator.");
+                                            player.sendMessage(ChatColor.GRAY+"[Factoid] You are no longer in Select Mode.");
+                                        }
                                         this.PlayerSelecting.remove(player.getName().toLowerCase());
                                         select.resetSelection();
                                     }else{
