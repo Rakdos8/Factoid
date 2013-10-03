@@ -68,20 +68,20 @@ public class OnCommand extends Thread implements CommandExecutor{
                                         player.sendMessage(ChatColor.GREEN+"[Factoid] You have selectioned your land.");
                                         player.sendMessage(ChatColor.GRAY+"[Factoid] You are no longer in Select Mode.");
                                         LandSelection select = this.PlayerSelecting.get(player.getName().toLowerCase());
-                                       select.setSelected();
-                                       Map<String,Location> corner = select.getCorner();
-                                       int x1 = corner.get("FrontCornerLeft").getBlockX();
-                                       int x2 = corner.get("BackCornerRigth").getBlockX();
-                                       int y1 = corner.get("FrontCornerLeft").getBlockY();
-                                       int y2 = corner.get("BackCornerRigth").getBlockY();
-                                       int z1 = corner.get("FrontCornerLeft").getBlockZ();
-                                       int z2 = corner.get("BackCornerRigth").getBlockZ();
-                                       
-                                       CuboidArea cuboidarea = new CuboidArea(player.getWorld().getName(),x1,y1,z1,x2,y2,z2);
-                                       Land land  = new Land("",new PlayerContainerPlayer(player.getName()),cuboidarea);
-                                       Factoid.getLands().createLand(land);
-                                       this.PlayerSelecting.remove(player.getName().toLowerCase());
-                                       select.resetSelection();
+                                        select.setSelected();
+                                        Map<String,Location> corner = select.getCorner();
+                                        int x1 = corner.get("FrontCornerLeft").getBlockX();
+                                        int x2 = corner.get("BackCornerRigth").getBlockX();
+                                        int y1 = corner.get("FrontCornerLeft").getBlockY();
+                                        int y2 = corner.get("BackCornerRigth").getBlockY();
+                                        int z1 = corner.get("FrontCornerLeft").getBlockZ();
+                                        int z2 = corner.get("BackCornerRigth").getBlockZ();
+
+                                        CuboidArea cuboidarea = new CuboidArea(player.getWorld().getName(),x1,y1,z1,x2,y2,z2);
+                                        Land land  = new Land("",new PlayerContainerPlayer(player.getName()),cuboidarea);
+                                        Factoid.getLands().createLand(land);
+                                        this.PlayerSelecting.remove(player.getName().toLowerCase());
+                                        select.resetSelection();
                                     }else{
                                         player.sendMessage(ChatColor.GRAY+"[Factoid] You are already in Select Mode.");
                                     }
