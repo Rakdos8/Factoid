@@ -19,6 +19,7 @@ import me.tabinol.factoid.lands.expansion.LandExpansion;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
+import me.tabinol.factoid.playercontainer.PlayerContainer;
 
 public class OnCommand extends Thread implements CommandExecutor{
     private Lang language;
@@ -54,10 +55,23 @@ public class OnCommand extends Thread implements CommandExecutor{
                                         player.sendMessage(ChatColor.DARK_GRAY+"[Factoid] Type "+ChatColor.ITALIC+"'/factoid select done'"+ChatColor.RESET+ChatColor.DARK_GRAY+" to confirm your choice.");
                                         LandSelection select =  new LandSelection(player,player.getServer(),plugin);
                                         this.PlayerSelecting.put(player.getName().toLowerCase(),select);
-                                        if(arg.length == 1){
+                                        if(arg.length == 2){
                                             Land landtest = Factoid.getLands().getLand(arg[1].toString());
-                                            if(landtest == null){
-                                                
+                                            if(landtest != null){
+                                              PlayerContainer owner = landtest.getOwner();
+                                              if(owner.getContainerType()=="Faction"){
+                                                  
+                                              }else if(owner.getContainerType()=="Group"){
+                                                  
+                                              }else if(owner.getContainerType()=="Player"){
+                                                  if(owner.getName().equals(player.getName())){
+                                                      
+                                                  }else{
+                                                      player.sendMessage(ChatColor.RED+"[Factoid] You must be the owner of this Land.");
+                                                  }
+                                              }
+                                            }else{
+                                                player.sendMessage(ChatColor.RED+"[Factoid] This land doesn't Exist.");
                                             }
                                         }
                                     }else if(arg.length > 1 && arg[1].equalsIgnoreCase("done")){
@@ -105,34 +119,39 @@ public class OnCommand extends Thread implements CommandExecutor{
                                 if(this.PlayerSelecting.containsKey(player.getName().toLowerCase())){
                                     if(!this.PlayerExpanding.containsKey(player.getName().toLowerCase())){
                                         if(arg[1] != null){
-                                            Land landtest = Factoid.getLands().getLand(arg[1].toString());
-                                            if(landtest == null){
-                                                LandSelection select = this.PlayerSelecting.get(player.getName().toLowerCase());
-                                                Map<String,Location> corner = select.getCorner();
-                                                int x1 = corner.get("FrontCornerLeft").getBlockX();
-                                                int x2 = corner.get("BackCornerRigth").getBlockX();
-                                                int y1 = corner.get("FrontCornerLeft").getBlockY();
-                                                int y2 = corner.get("BackCornerRigth").getBlockY();
-                                                int z1 = corner.get("FrontCornerLeft").getBlockZ();
-                                                int z2 = corner.get("BackCornerRigth").getBlockZ();
+                                            if(!arg[1].equalsIgnoreCase("cancel") && !arg[1].equalsIgnoreCase("done")){
+                                                Land landtest = Factoid.getLands().getLand(arg[1].toString());
+                                                if(landtest == null){
+                                                    LandSelection select = this.PlayerSelecting.get(player.getName().toLowerCase());
+                                                    Map<String,Location> corner = select.getCorner();
+                                                    int x1 = corner.get("FrontCornerLeft").getBlockX();
+                                                    int x2 = corner.get("BackCornerRigth").getBlockX();
+                                                    int y1 = corner.get("FrontCornerLeft").getBlockY();
+                                                    int y2 = corner.get("BackCornerRigth").getBlockY();
+                                                    int z1 = corner.get("FrontCornerLeft").getBlockZ();
+                                                    int z2 = corner.get("BackCornerRigth").getBlockZ();
 
-                                                CuboidArea cuboidarea = new CuboidArea(player.getWorld().getName(),x1,y1,z1,x2,y2,z2);
-                                                Land land  = new Land(arg[1].toString(),new PlayerContainerPlayer(player.getName()),cuboidarea);
-                                                if(Factoid.getLands().createLand(land)){
-                                                    player.sendMessage(ChatColor.GREEN+"[Factoid] You have selectioned your land.");
-                                                    player.sendMessage(ChatColor.GRAY+"[Factoid] You are no longer in Select Mode.");
+                                                    CuboidArea cuboidarea = new CuboidArea(player.getWorld().getName(),x1,y1,z1,x2,y2,z2);
+                                                    Land land  = new Land(arg[1].toString(),new PlayerContainerPlayer(player.getName()),cuboidarea);
+                                                    if(Factoid.getLands().createLand(land)){
+                                                        player.sendMessage(ChatColor.GREEN+"[Factoid] You have selectioned your land.");
+                                                        player.sendMessage(ChatColor.GRAY+"[Factoid] You are no longer in Select Mode.");
+                                                    }else{
+                                                        player.sendMessage(ChatColor.RED+"[Factoid] An Error Occur Please contact an Administrator.");
+                                                        player.sendMessage(ChatColor.GRAY+"[Factoid] You are no longer in Select Mode.");
+                                                    }
+                                                    this.PlayerSelecting.remove(player.getName().toLowerCase());
+                                                    select.resetSelection();
                                                 }else{
-                                                    player.sendMessage(ChatColor.RED+"[Factoid] An Error Occur Please contact an Administrator.");
-                                                    player.sendMessage(ChatColor.GRAY+"[Factoid] You are no longer in Select Mode.");
-                                                }
-                                                this.PlayerSelecting.remove(player.getName().toLowerCase());
-                                                select.resetSelection();
+                                                player.sendMessage(ChatColor.RED+"[Factoid] This Land name is already used.");
+                                                player.sendMessage(ChatColor.GRAY+"[Factoid] /factoid create [land Name]");
+                                            }
                                             }else{
-                                            player.sendMessage(ChatColor.RED+"[Factoid] This Land name is already used.");
-                                            player.sendMessage(ChatColor.GRAY+"[Factoid] /factoid create [land Name]");
-                                        }
+                                                player.sendMessage(ChatColor.RED+"[Factoid] You have to provide a Land Name.");
+                                                player.sendMessage(ChatColor.GRAY+"[Factoid] /factoid create [land Name]");
+                                            }
                                         }else{
-                                            player.sendMessage(ChatColor.RED+"[Factoid] You have to provide a Land Name.");
+                                            player.sendMessage(ChatColor.RED+"[Factoid] This Land name is already used.");
                                             player.sendMessage(ChatColor.GRAY+"[Factoid] /factoid create [land Name]");
                                         }
                                     }else{
