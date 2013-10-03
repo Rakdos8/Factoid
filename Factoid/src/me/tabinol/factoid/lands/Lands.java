@@ -65,6 +65,9 @@ public class Lands {
 
     public Land getLand(Location loc) {
 
+        if(getCuboidArea(loc) == null) {
+            return null;
+        }
         return getCuboidArea(loc).getLand();
     }
 
