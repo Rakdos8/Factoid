@@ -19,9 +19,8 @@ import me.tabinol.factoid.lands.expansion.LandExpansion;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
-import org.bukkit.event.Listener;
 
-public class OnCommand extends Thread implements CommandExecutor, Listener{
+public class OnCommand extends Thread implements CommandExecutor{
     private Lang language;
     private Log log;
     private JavaPlugin plugin;
@@ -30,7 +29,6 @@ public class OnCommand extends Thread implements CommandExecutor, Listener{
     private Map<String,LandExpansion> PlayerFlags = new HashMap<String,LandExpansion>();
     
     public OnCommand(){
-
         this.language = Factoid.getLanguage();
         this.plugin = Factoid.getThisPlugin();
         this.log = Factoid.getLog();

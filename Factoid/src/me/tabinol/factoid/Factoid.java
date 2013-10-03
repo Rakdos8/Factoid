@@ -40,7 +40,7 @@ public class Factoid extends JavaPlugin {
         playerListener = new PlayerListener();
         CommandListener = new OnCommand();
         getServer().getPluginManager().registerEvents(playerListener, this);
-        getServer().getPluginManager().registerEvents(CommandListener, this);
+        getCommand("factoid").setExecutor(CommandListener);
         conf = new Config();
         log = new Log();
         language = new Lang();
