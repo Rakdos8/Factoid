@@ -184,7 +184,11 @@ public class StorageFlat extends Storage implements StorageInt {
             ConfBuilder cb = new ConfBuilder(land.getName());
             cb.writeParam("OwnerType", land.getOwner().getContainerType());
             cb.writeParam("Owner", land.getOwner().getName());
-            cb.writeParam("Parent", land.getParent().getName());
+            if(land.getParent() == null) {
+                cb.writeParam("Parent", (String) null);
+            } else {   
+                cb.writeParam("Parent", land.getParent().getName());
+            }
             cb.writeParam("CuboidAreas", (String[]) land.getAreas().toArray());
             cb.writeParam("Priority", land.getParent().getName());
             cb.save(getLandFile(land));
