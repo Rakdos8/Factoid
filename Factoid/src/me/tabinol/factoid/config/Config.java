@@ -12,7 +12,7 @@ public class Config {
     public List<String> Worlds = null;
     public String Lang = "english";
     public boolean UseEconomy = false;
-    public int InfoItem = 361;
+    public int InfoItem = 352;
     public boolean PriorityOld = false;
     public boolean CanMakeCollision = false;
     public int MaxLand = 1;

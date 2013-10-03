@@ -189,7 +189,7 @@ public class StorageFlat extends Storage implements StorageInt {
             } else {   
                 cb.writeParam("Parent", land.getParent().getName());
             }
-            cb.writeParam("CuboidAreas", (String[]) land.getAreas().toArray());
+            cb.writeParam("CuboidAreas", land.getAreas());
             cb.writeParam("Priority", land.getParent().getName());
             cb.save(getLandFile(land));
         }

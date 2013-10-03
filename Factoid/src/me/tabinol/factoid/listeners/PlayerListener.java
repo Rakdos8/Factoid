@@ -23,7 +23,6 @@ public class PlayerListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
 
         // For infoItem
-        event.getPlayer().sendMessage("BlockBreak");
         if (event.getPlayer() != null && event.getPlayer().getItemInHand() != null
                 && event.getPlayer().getItemInHand().getTypeId() == conf.InfoItem) {
             Land land = Factoid.getLands().getLand(event.getPlayer().getLocation());

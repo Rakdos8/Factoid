@@ -4,8 +4,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import me.tabinol.factoid.lands.CuboidArea;
 
 public class ConfBuilder {
 
@@ -56,6 +58,18 @@ public class ConfBuilder {
         writeln(ParamName + "{");
         for (String param : params) {
             writeln("  " + param);
+        }
+        writeln("}");
+    }
+    
+    public void writeParam(String ParamName, Collection<CuboidArea> params) {
+        
+        if (params == null) {
+            return;
+        }
+        writeln(ParamName + "{");
+        for (CuboidArea param : params) {
+            writeln("  " + param.toString());
         }
         writeln("}");
     }
