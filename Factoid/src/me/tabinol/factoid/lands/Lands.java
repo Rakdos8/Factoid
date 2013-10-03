@@ -126,6 +126,9 @@ public class Lands {
 
         // Now check for area in location
         ais = areaList[SearchIndex].get(worldName);
+        if(ais.isEmpty()) {
+            return null;
+        }
         if (ForwardSearch) {
             ai = ais.pollFirst();
         } else {

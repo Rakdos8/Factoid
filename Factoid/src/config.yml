@@ -10,7 +10,7 @@ general:                             #----General Config----
   Storage: flat                      # Only flat is supported for now
   worlds: [world]
   UseEconomy: false
-  InfoItem : 352                     # Item that give Land information
+  InfoItem: 352                      # Item that give Land information
 land:
   PriorityOld: false
   CanMakeCollision: false
