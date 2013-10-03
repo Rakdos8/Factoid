@@ -79,7 +79,7 @@ public class LandSelection extends Thread implements Listener{
     }
     
     public void resetSelection(){
-        if(!this.BlockList.isEmpty() && this.CornerList.isEmpty()){
+        if(!this.BlockList.isEmpty() && !this.CornerList.isEmpty()){
            boolean done = new LandResetSelection(this.BlockList,this.CornerList,this.player).Reset();
            if(done){
                this.BlockList.clear();
