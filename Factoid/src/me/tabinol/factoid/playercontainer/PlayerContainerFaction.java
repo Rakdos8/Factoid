@@ -29,4 +29,10 @@ public class PlayerContainerFaction extends PlayerContainer implements PlayerCon
         
         return new PlayerContainerFaction(faction);
     }
+
+    @Override
+    public boolean hasAccess(String playerName) {
+        
+        return faction.isPlayerInList(playerName);
+    }
 }

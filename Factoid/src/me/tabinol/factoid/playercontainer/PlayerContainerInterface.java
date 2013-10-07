@@ -10,4 +10,6 @@ public interface PlayerContainerInterface {
     
     public PlayerContainer copyOf();
     
+    public boolean hasAccess(String playerName);
+    
 }

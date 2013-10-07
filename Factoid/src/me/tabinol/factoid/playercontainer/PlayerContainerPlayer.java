@@ -20,5 +20,9 @@ public class PlayerContainerPlayer extends PlayerContainer implements PlayerCont
         return new PlayerContainerPlayer(name);
     }
 
-    
+    @Override
+    public boolean hasAccess(String playerName) {
+        
+        return (name.equalsIgnoreCase(playerName));
+    }
 }

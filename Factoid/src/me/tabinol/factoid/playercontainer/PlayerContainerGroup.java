@@ -1,5 +1,6 @@
 package me.tabinol.factoid.playercontainer;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class PlayerContainerGroup extends PlayerContainer implements PlayerContainerInterface {
@@ -21,13 +22,16 @@ public class PlayerContainerGroup extends PlayerContainer implements PlayerConta
         
         return new PlayerContainerGroup(name);
     }
-    
-    public String getGroup(Player player){
-            if(player != null){
-            
-            }
-        return null;
-    }
 
-    
+    @Override
+    public boolean hasAccess(String playerName) {
+        
+        Player player = Bukkit.getPlayer(playerName);
+        
+        if(player != null) {
+            return player.hasPermission("group." + name);
+        } else {
+            return false;
+        }
+    }
 }
