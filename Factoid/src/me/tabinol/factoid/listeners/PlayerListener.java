@@ -6,8 +6,9 @@ import me.tabinol.factoid.lands.Land;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 public class PlayerListener implements Listener {
 
@@ -20,10 +21,11 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onBlockBreak(BlockBreakEvent event) {
+    public void onPlayerInteract(PlayerInteractEvent event) {
 
         // For infoItem
         if (event.getPlayer() != null && event.getPlayer().getItemInHand() != null
+                && event.getAction() == Action.LEFT_CLICK_BLOCK
                 && event.getPlayer().getItemInHand().getTypeId() == conf.InfoItem) {
             Land land = Factoid.getLands().getLand(event.getPlayer().getLocation());
             if (land != null) {
