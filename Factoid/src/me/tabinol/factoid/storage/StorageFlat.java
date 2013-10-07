@@ -31,8 +31,8 @@ public class StorageFlat extends Storage implements StorageInt {
 
     private void createDirFiles() {
 
-        factionsDir = Factoid.getThisPlugin().getDataFolder() + "/" + "factions";
-        landsDir = Factoid.getThisPlugin().getDataFolder() + "/" + "lands";
+        factionsDir = Factoid.getThisPlugin().getDataFolder() + "/" + "factions" + "/";
+        landsDir = Factoid.getThisPlugin().getDataFolder() + "/" + "lands" + "/";
 
         createDir(landsDir);
         createDir(factionsDir);
@@ -99,13 +99,14 @@ public class StorageFlat extends Storage implements StorageInt {
         while (!empty) {
             for (File file : files) {
                 empty = true;
-                if (file.isFile() && file.getName().toLowerCase().endsWith(pass + "." + EXT_CONF)) {
+                if (file.isFile() && file.getName().toLowerCase().endsWith(pass + EXT_CONF)) {
                     empty = false;
                     try {
                         FileReader fr = new FileReader(file);
                         try (BufferedReader br = new BufferedReader(fr)) {
                             loadLand(br);
                             br.close();
+                            loadedlands++;
                         }
                     } catch (IOException ex) {
                         Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, null, ex);
