@@ -26,7 +26,7 @@ public class Lang extends Thread {
         loadYamls();
     }
 
-    public static String getMessage(String path) {
+    public static String getMessage(String path,String... param) {
         return langconfig.getString(path);
     }
 

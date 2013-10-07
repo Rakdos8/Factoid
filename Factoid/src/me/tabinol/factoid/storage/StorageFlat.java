@@ -69,6 +69,7 @@ public class StorageFlat extends Storage implements StorageInt {
     private void loadFactions() {
 
         File[] files = new File(factionsDir).listFiles();
+        int loadedfactions = 0;
 
         for (File file : files) {
             if (file.isFile() && file.getName().toLowerCase().endsWith(EXT_CONF)) {
@@ -77,17 +78,21 @@ public class StorageFlat extends Storage implements StorageInt {
                     try (BufferedReader br = new BufferedReader(fr)) {
                         loadFaction(br);
                         br.close();
+                        loadedfactions++;
                     }
                 } catch (IOException ex) {
                     Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, null, ex);
+                    Factoid.getLog().write("[Error] '"+ex.getMessage()+"'");
                 }
             }
         }
+                Factoid.getLog().write("[Factoid] Loaded '"+loadedfactions+"' Factions");
     }
 
     private void loadLands() {
 
         File[] files = new File(landsDir).listFiles();
+        int loadedlands = 0;
         int pass = 0;
         boolean empty = false;
 
@@ -104,11 +109,13 @@ public class StorageFlat extends Storage implements StorageInt {
                         }
                     } catch (IOException ex) {
                         Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, null, ex);
+                        Factoid.getLog().write("[Error] '"+ex.getMessage()+"'");
                     }
                 }
             }
             pass++;
         }
+        Factoid.getLog().write("[Factoid] Loaded '"+loadedlands+"' Lands");
     }
 
     private void loadFaction(BufferedReader br) {
