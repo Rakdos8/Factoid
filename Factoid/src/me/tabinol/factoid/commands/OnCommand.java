@@ -65,7 +65,9 @@ public class OnCommand extends Thread implements CommandExecutor{
                                                     Faction faction = Factoid.getFactions().getPlayerFaction(player.getName());
                                                     if(faction.getName().equals(owner.getName())){
                                                         
-                                                    }
+                                                    }else{
+                                                      player.sendMessage(ChatColor.RED+"[Factoid] You must be in the faction of this Land.");
+                                                  }
                                                 }
                                               }else if(owner.getContainerType()=="Group"){
                       
@@ -82,7 +84,15 @@ public class OnCommand extends Thread implements CommandExecutor{
                                         }
                                     }else if(arg.length > 1 && arg[1].equalsIgnoreCase("done")){
                                         LandSelection select = this.PlayerSelecting.get(player.getName().toLowerCase());
-                                        select.setSelected();
+                                        if(!Factoid.getConf().CanMakeCollision){
+                                            if(!select.getCollision()){
+                                                select.setSelected();
+                                            }else{
+                                                player.sendMessage(ChatColor.RED+"[Factoid] Your selection have an collision with an another Land.");
+                                            }
+                                        }else{
+                                            select.setSelected();
+                                        }
                                     }else if(arg.length > 1 && arg[1].equalsIgnoreCase("cancel")){
                                         LandSelection select = this.PlayerSelecting.get(player.getName().toLowerCase());
                                         this.PlayerSelecting.remove(player.getName().toLowerCase());

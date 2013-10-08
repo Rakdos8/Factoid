@@ -22,6 +22,7 @@ public class LandSelection extends Thread implements Listener{
     private Map<Location,Material> BlockList = new HashMap<Location,Material>();
     private Map<String,Location> CornerList = new HashMap<String,Location>();
     private Location LandPos;
+    private boolean IsCollision;
     
     public LandSelection(Player player,Server server,JavaPlugin plugin){
         server.getPluginManager().registerEvents(this, plugin);
@@ -31,6 +32,7 @@ public class LandSelection extends Thread implements Listener{
         this.BlockList = landmake.makeSquare();
         this.CornerList = landmake.getCorner();
         this.LandPos = player.getLocation();
+        this.IsCollision = landmake.getCollision();
     }
     
     @EventHandler(priority = EventPriority.MONITOR)
@@ -47,6 +49,7 @@ public class LandSelection extends Thread implements Listener{
                            this.BlockList = landmake.makeSquare();
                            this.CornerList = landmake.getCorner();
                            this.LandPos = event.getTo();
+                           this.IsCollision = landmake.getCollision();
                        }
                     }
                 }
@@ -85,5 +88,9 @@ public class LandSelection extends Thread implements Listener{
                this.BlockList.clear();
            }
         }
+    }
+    
+    public boolean getCollision(){
+        return IsCollision;
     }
 }

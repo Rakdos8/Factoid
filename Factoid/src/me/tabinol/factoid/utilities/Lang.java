@@ -27,7 +27,34 @@ public class Lang extends Thread {
     }
 
     public static String getMessage(String path,String... param) {
+       if(param != null){
+          String returnmessage = null;
+          int i = 0;
+          String message = langconfig.getString(path);
+          String[] messages = message.split("%");
+          for(String mess : messages){
+            returnmessage = replace(message,"%",param[i]);
+          }
+          return returnmessage;
+       }
         return langconfig.getString(path);
+    }
+    
+    public static String replace(String s_original, String s_cherche, String s_nouveau)  
+    {  
+      if ((s_original == null) || (s_original.equals("")))  
+         return "";  
+      if ((s_nouveau == null) || (s_nouveau.equals("")) || (s_cherche == null) || (s_cherche.equals("")))  
+         return new String(s_original);  
+
+      StringBuffer s_final;  
+      int index = s_original.indexOf(s_cherche);  
+
+      s_final = new StringBuffer(s_original.substring(0,index));  
+      s_final.append(s_nouveau);  
+      s_final.append(s_original.substring(index+s_cherche.length()));  
+
+      return s_final.toString();  
     }
 
     private void loadYamls() {
