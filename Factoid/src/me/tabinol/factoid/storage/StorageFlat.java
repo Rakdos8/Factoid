@@ -96,6 +96,10 @@ public class StorageFlat extends Storage implements StorageInt {
         int pass = 0;
         boolean empty = false;
 
+        if(files.length == 0) {
+            return;
+        }
+        
         while (!empty) {
             for (File file : files) {
                 empty = true;

@@ -65,10 +65,12 @@ public class Lands {
 
     public Land getLand(Location loc) {
 
-        if(getCuboidArea(loc) == null) {
+        CuboidArea ca;
+        
+        if((ca = getCuboidArea(loc)) == null) {
             return null;
         }
-        return getCuboidArea(loc).getLand();
+        return ca.getLand();
     }
 
     public Collection getLands(Location loc) {
@@ -227,6 +229,7 @@ public class Lands {
                 areaList[t].put(area.getWorldName(), new TreeSet<AreaIndex>());
             }
         }
+        Factoid.getLog().write("Add area for " + area.getLand().getName());
         areaList[INDEX_X1].get(area.getWorldName()).add(new AreaIndex(area.getX1(), area));
         areaList[INDEX_Z1].get(area.getWorldName()).add(new AreaIndex(area.getZ1(), area));
         areaList[INDEX_X2].get(area.getWorldName()).add(new AreaIndex(area.getX2(), area));
@@ -244,9 +247,6 @@ public class Lands {
     private void addLandToList(Land land) {
 
         landList.put(land.getName(), land);
-        for (CuboidArea area : land.getAreas()) {
-            addAreaToList(area);
-        }
     }
 
     private void removeLandToList(Land land) {
