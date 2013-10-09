@@ -3,6 +3,7 @@ package me.tabinol.factoid.lands;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
@@ -45,7 +46,7 @@ public class Lands {
         }
         removeLandToList(land);
         Factoid.getStorage().removeLand(land);
-        
+
         return true;
     }
 
@@ -66,8 +67,8 @@ public class Lands {
     public Land getLand(Location loc) {
 
         CuboidArea ca;
-        
-        if((ca = getCuboidArea(loc)) == null) {
+
+        if ((ca = getCuboidArea(loc)) == null) {
             return null;
         }
         return ca.getLand();
@@ -107,6 +108,7 @@ public class Lands {
         boolean ForwardSearch;
         TreeSet<AreaIndex> ais;
         AreaIndex ai;
+        Iterator<AreaIndex> it;
 
         // First, determinate if what is the higest number between x1, x2, z1 and z2
         if (Math.abs(loc.getBlockX()) > Math.abs(loc.getBlockZ())) {
@@ -128,27 +130,28 @@ public class Lands {
                 ForwardSearch = false;
             }
         }
+        Factoid.getLog().write("Search Index dir: " + SearchIndex + ", Forward Search: " + ForwardSearch);
 
         // Now check for area in location
         ais = areaList[SearchIndex].get(worldName);
-        if(ais ==null || ais.isEmpty()) {
+        if (ais == null || ais.isEmpty()) {
             return areas;
         }
         if (ForwardSearch) {
-            ai = ais.pollFirst();
+            it = ais.iterator();
         } else {
-            ai = ais.pollLast();
+            it = ais.descendingIterator();
         }
 
         // Adds all areas to the list
-        while (ai != null && checkContinueSearch(ai.getArea(), nbToFind, SearchIndex)) {
+        while (it.hasNext() && checkContinueSearch((ai = it.next()).getArea(), nbToFind, SearchIndex)) {
 
             if (ai.getArea().isLocationInside(loc)) {
+                Factoid.getLog().write("add this area in list for cuboid: " + ai.getArea().getLand().getName());
                 areas.add(ai.getArea());
             }
-
-            ai = searchNext(ais, ai, ForwardSearch);
         }
+        Factoid.getLog().write("Number of Areas found for location : " + areas.size());
 
         return areas;
     }
@@ -190,36 +193,28 @@ public class Lands {
 
         switch (SearchIndex) {
             case INDEX_X1:
-                if (nbToFind > area.getX1()) {
-                    return false;
+                if (nbToFind >= area.getX1()) {
+                    return true;
                 }
-                return true;
+                return false;
             case INDEX_X2:
-                if (nbToFind < area.getX2()) {
-                    return false;
+                if (nbToFind <= area.getX2()) {
+                    return true;
                 }
-                return true;
+                return false;
             case INDEX_Z1:
-                if (nbToFind > area.getZ1()) {
-                    return false;
+                if (nbToFind >= area.getZ1()) {
+                    return true;
                 }
-                return true;
+                return false;
             case INDEX_Z2:
-                if (nbToFind < area.getZ2()) {
-                    return false;
+                if (nbToFind <= area.getZ2()) {
+                    return true;
                 }
-                return true;
+                return false;
             default:
                 return false;
         }
-    }
-
-    private AreaIndex searchNext(TreeSet<AreaIndex> ais, AreaIndex ai, boolean ForwardSearch) {
-
-        if (ForwardSearch) {
-            return ais.higher(ai);
-        }
-        return ais.lower(ai);
     }
 
     protected void addAreaToList(CuboidArea area) {
