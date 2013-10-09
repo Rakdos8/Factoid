@@ -2,7 +2,6 @@ package me.tabinol.factoid.lands;
 
 import java.util.Collection;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
@@ -21,6 +20,7 @@ public class Land {
     private int genealogy = 0; // 0 = first, 1 = child, 2 = child of child, ...
     private Land parent = null;
     private PlayerContainer owner;
+    private boolean autoSave = true;
 
     public Land(String landName, PlayerContainer owner, CuboidArea area) {
 
@@ -48,14 +48,14 @@ public class Land {
         area.setLand(this);
         areas.add(area);
         Factoid.getLands().addAreaToList(area);
-        Factoid.getStorage().saveLand(this);
+        forceSave();
     }
 
     public boolean removeArea(CuboidArea area) {
 
         if (areas.remove(area)) {
             Factoid.getLands().removeAreaToList(area);
-            Factoid.getStorage().saveLand(this);
+            forceSave();
             return true;
         }
 
@@ -69,7 +69,7 @@ public class Land {
             newArea.setLand(this);
             areas.add(newArea);
             Factoid.getLands().addAreaToList(newArea);
-            Factoid.getStorage().saveLand(this);
+            forceSave();
             return true;
         }
 
@@ -101,7 +101,7 @@ public class Land {
 
         Factoid.getStorage().removeLand(this);
         this.name = newName;
-        Factoid.getStorage().saveLand(this);
+        forceSave();
     }
 
     public PlayerContainer getOwner() {
@@ -112,7 +112,7 @@ public class Land {
     public void setOwner(PlayerContainer owner) {
 
         this.owner = owner;
-        Factoid.getStorage().saveLand(this);
+        forceSave();
     }
 
     // Note : a child get the parent priority
@@ -133,7 +133,7 @@ public class Land {
     public void setPriority(short priority) {
 
         this.priority = priority;
-        Factoid.getStorage().saveLand(this);
+        forceSave();
     }
 
     public Land getParent() {
@@ -155,13 +155,13 @@ public class Land {
     private void addChild(Land land) {
 
         children.put(land.name, land);
-        Factoid.getStorage().saveLand(this);
+        forceSave();
     }
 
     protected void removeChild(String landName) {
 
         children.remove(landName);
-        Factoid.getStorage().saveLand(this);
+        forceSave();
     }
     
     public void addPermission(PlayerContainer pc, Permission perm) {
@@ -174,7 +174,7 @@ public class Land {
             permPlayer = permissions.get(pc);
         }
         permPlayer.put(perm.getPermType(), perm);
-        Factoid.getStorage().saveLand(this);
+        forceSave();
     }
     
     public boolean removePermission(PlayerContainer pc, PermissionType permType) {
@@ -189,7 +189,7 @@ public class Land {
             return false;
         }
 
-        Factoid.getStorage().saveLand(this);
+        forceSave();
         return true;
     }
 
@@ -201,5 +201,15 @@ public class Land {
     public Collection getChildren() {
 
         return children.values();
+    }
+    
+    public void setAutoSave(boolean autoSave) {
+        
+        this.autoSave = autoSave;
+    }
+    
+    public void forceSave() {
+        
+        Factoid.getStorage().saveLand(this);
     }
 }

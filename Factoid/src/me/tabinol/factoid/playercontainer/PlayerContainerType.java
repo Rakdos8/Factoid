@@ -2,35 +2,38 @@ package me.tabinol.factoid.playercontainer;
 
 public enum PlayerContainerType {
     
-    UNDEFINED(0),
-    FACTION(1),
-    GROUP(2),
-    PLAYER(3);
+    UNDEFINED(0,"UNDEFINED"),
+    FACTION(1,"Faction"),
+    GROUP(2,"Group"),
+    PLAYER(3,"Player");
     
     private final int value;
+    private final String pcName;
     
-    private PlayerContainerType(final int value) {
+    private PlayerContainerType(final int value, final String pcName) {
         
         this.value = value;
-    }
-    
-    @Override
-    public String toString() {
-        
-        if(this == PLAYER) {
-            return "Player";
-        }
-        if(this == GROUP) {
-            return "Group";
-        }
-        if(this == FACTION) {
-            return "Faction";
-        }
-        return "Undefined";
+        this.pcName = pcName;
     }
     
     public int getValue() {
         
         return value;
+    }
+    
+    @Override
+    public String toString() {
+        
+        return pcName;
+    }
+    
+    public static PlayerContainerType getFromString(String permName) {
+        
+        for(PlayerContainerType pct : values()) {
+            if(pct.toString().equals(permName)) {
+                return pct;
+            }
+        }
+        return null;
     }
 }
