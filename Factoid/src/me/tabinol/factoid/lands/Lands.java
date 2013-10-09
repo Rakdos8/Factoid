@@ -17,9 +17,9 @@ public class Lands {
     public final static int INDEX_X2 = 2;
     public final static int INDEX_Z2 = 3;
     // INDEX first, Tree by worlds (then by Areas)
-    TreeMap<String, TreeSet<AreaIndex>>[] areaList;
+    protected TreeMap<String, TreeSet<AreaIndex>>[] areaList;
     // Tree by name
-    TreeMap<String, Land> landList;
+    protected TreeMap<String, Land> landList;
 
     public Lands() {
 
@@ -45,6 +45,7 @@ public class Lands {
             return false;
         }
         removeLandToList(land);
+        land.getParent().removeChild(land.getName());
         Factoid.getStorage().removeLand(land);
 
         return true;

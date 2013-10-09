@@ -2,6 +2,7 @@ package me.tabinol.factoid.listeners;
 
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
+import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.lands.Land;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -31,6 +32,12 @@ public class PlayerListener implements Listener {
             if (land != null) {
                 event.getPlayer().sendMessage("The Land name is: "
                         + land.getName());
+                event.getPlayer().sendMessage("Owner: " + land.getOwner().getContainerType()
+                        + ":" + land.getOwner().getName());
+                event.getPlayer().sendMessage("Area(s):");
+                for(CuboidArea area : land.getAreas()) {
+                    event.getPlayer().sendMessage(area.toString());
+                }
             } else {
                 event.getPlayer().sendMessage("There is no land here!");
             }

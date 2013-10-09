@@ -7,7 +7,7 @@ public class PlayerContainerGroup extends PlayerContainer implements PlayerConta
     
     public PlayerContainerGroup(String groupName) {
         
-        super(groupName, "Group");
+        super(groupName, PlayerContainerType.GROUP);
     }
     
     @Override

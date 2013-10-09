@@ -4,7 +4,7 @@ public class PlayerContainerPlayer extends PlayerContainer implements PlayerCont
     
     public PlayerContainerPlayer(String playerName) {
         
-        super(playerName, "Player");
+        super(playerName, PlayerContainerType.PLAYER);
     }
     
     @Override

@@ -1,11 +1,9 @@
 package me.tabinol.factoid.lands;
 
-import me.tabinol.factoid.lands.CuboidArea;
-
 public class AreaIndex implements Comparable<AreaIndex> {
     
-    protected int indexNb;
-    protected CuboidArea area;
+    private int indexNb;
+    private CuboidArea area;
     
     public AreaIndex(int indexNb, CuboidArea area) {
         

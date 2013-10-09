@@ -21,6 +21,7 @@ import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.factions.*;
+import me.tabinol.factoid.playercontainer.PlayerContainerType;
 
 public class OnCommand extends Thread implements CommandExecutor{
     private Lang language;
@@ -60,7 +61,8 @@ public class OnCommand extends Thread implements CommandExecutor{
                                             Land landtest = Factoid.getLands().getLand(arg[1].toString());
                                             if(landtest != null){
                                               PlayerContainer owner = landtest.getOwner();
-                                              if(owner.getContainerType()=="Faction"){
+                                              // ****** REMPLACE TOUT CECI par if(owner.hasAccess(player.getName());
+                                              if(owner.getContainerType()==PlayerContainerType.FACTION){
                                                 if(Factoid.getFactions().getPlayerFaction(player.getName()) != null){
                                                     Faction faction = Factoid.getFactions().getPlayerFaction(player.getName());
                                                     if(faction.getName().equals(owner.getName())){
@@ -69,11 +71,11 @@ public class OnCommand extends Thread implements CommandExecutor{
                                                       player.sendMessage(ChatColor.RED+"[Factoid] You must be in the faction of this Land.");
                                                   }
                                                 }
-                                              }else if(owner.getContainerType()=="Group"){
+                                              }else if(owner.getContainerType()==PlayerContainerType.GROUP){
                       
-                                              }else if(owner.getContainerType()=="Player"){
+                                              }else if(owner.getContainerType()==PlayerContainerType.PLAYER){
                                                   if(owner.getName().equals(player.getName())){
-                                                      
+                                                      // *********************************************
                                                   }else{
                                                       player.sendMessage(ChatColor.RED+"[Factoid] You must be the owner of this Land.");
                                                   }

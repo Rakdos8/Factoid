@@ -4,7 +4,7 @@ public interface PlayerContainerInterface {
     
     public String getName();
     
-    public String getContainerType();
+    public PlayerContainerType getContainerType();
     
     public boolean equals(PlayerContainer container2);
     

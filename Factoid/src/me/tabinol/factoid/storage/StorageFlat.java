@@ -145,19 +145,17 @@ public class StorageFlat extends Storage implements StorageInt {
         boolean isLandCreated = false;
         PlayerContainer owner;
         cf.readParam();
-        String ownerType = cf.getValueString();
-        cf.readParam();
-        String ownerName = cf.getValueString();
+        String[] ownerS = cf.getValueString().split(":");
         cf.readParam();
         String parentName = cf.getValueString();
 
         // create owner (PlayerContainer)
-        if (ownerType.equals("Faction")) {
-            owner = new PlayerContainerFaction(Factoid.getFactions().getFaction(ownerName));
-        } else if (ownerType.equals("Group")) {
-            owner = new PlayerContainerGroup(ownerName);
+        if (ownerS[0].equals("Faction")) {
+            owner = new PlayerContainerFaction(Factoid.getFactions().getFaction(ownerS[1]));
+        } else if (ownerS[0].equals("Group")) {
+            owner = new PlayerContainerGroup(ownerS[1]);
         } else {
-            owner = new PlayerContainerPlayer(ownerName);
+            owner = new PlayerContainerPlayer(ownerS[1]);
         }
         cf.readParam();
 
@@ -194,8 +192,7 @@ public class StorageFlat extends Storage implements StorageInt {
 
         if (!inLoad) {
             ConfBuilder cb = new ConfBuilder(land.getName());
-            cb.writeParam("OwnerType", land.getOwner().getContainerType());
-            cb.writeParam("Owner", land.getOwner().getName());
+            cb.writeParam("Owner", land.getOwner().toString());
             if(land.getParent() == null) {
                 cb.writeParam("Parent", (String) null);
             } else {   
