@@ -18,7 +18,10 @@ public class LandMakeSquare extends Thread{
     private Location BackCornerLeft;
     private Location FrontCornerRigth;
     private Location BackCornerRigth;
-    private boolean IsCollision = false;
+    private boolean IsCollisionFront = false;
+    private boolean IsCollisionBack = false;
+    private boolean IsCollisionLeft = false;
+    private boolean IsCollisionRigth = false;
     
     
     public LandMakeSquare(Player player,Location loc){
@@ -46,8 +49,7 @@ public class LandMakeSquare extends Thread{
                 player.sendBlockChange(FronCornerLeftLoc,Material.SPONGE,this.by);
             }else{
                 player.sendBlockChange(FronCornerLeftLoc,Material.REDSTONE_BLOCK,this.by);
-                IsCollision = true;
-                System.out.print("COLLEFT");
+                IsCollisionFront = true;
             }
             //FrontRigth
             BlockList.put(FrontCornerRigth, FrontCornerRigth.getBlock().getType());
@@ -57,8 +59,7 @@ public class LandMakeSquare extends Thread{
                 player.sendBlockChange(FrontCornerRigthLoc,Material.SPONGE,this.by);
             }else{
                 player.sendBlockChange(FrontCornerRigthLoc,Material.REDSTONE_BLOCK,this.by);
-                IsCollision = true;
-                System.out.print("COLfrontrigth");
+                IsCollisionFront = true;
             }
             //BackLeft
             BlockList.put(this.BackCornerLeft, this.BackCornerLeft.getBlock().getType());
@@ -68,8 +69,7 @@ public class LandMakeSquare extends Thread{
                 player.sendBlockChange(BackCornerLeftLoc,Material.SPONGE,this.by);
             }else{
                 player.sendBlockChange(BackCornerLeftLoc,Material.REDSTONE_BLOCK,this.by);
-                IsCollision = true;
-                System.out.print("COLbackLEFT");
+                IsCollisionBack = true;
             }
             //BackRigth
             BlockList.put(this.BackCornerRigth, this.BackCornerRigth.getBlock().getType());
@@ -79,8 +79,7 @@ public class LandMakeSquare extends Thread{
                 player.sendBlockChange(BackCornerRigthLoc,Material.SPONGE,this.by);
             }else{
                 player.sendBlockChange(BackCornerRigthLoc,Material.REDSTONE_BLOCK,this.by);
-                IsCollision = true;
-                System.out.print("COLbackrigth");
+                IsCollisionBack = true; 
             }
             //Front
             for(Double i = 1.0;i<=DiffFrontX;i++){
@@ -93,8 +92,7 @@ public class LandMakeSquare extends Thread{
                     this.player.sendBlockChange(newloc,Material.SPONGE,this.by);
                 }else{
                     this.player.sendBlockChange(newloc,Material.REDSTONE_BLOCK,this.by);
-                    IsCollision = true;
-                    System.out.print("COLFront");
+                    IsCollisionFront = true;
                 }
             }
             //Back
@@ -108,8 +106,7 @@ public class LandMakeSquare extends Thread{
                     this.player.sendBlockChange(newloc,Material.SPONGE,this.by);
                 }else{
                     this.player.sendBlockChange(newloc,Material.REDSTONE_BLOCK,this.by);
-                    IsCollision = true;
-                    System.out.print("COLBack");
+                    IsCollisionBack = true;
                 }
             }
             //Left
@@ -123,8 +120,7 @@ public class LandMakeSquare extends Thread{
                     this.player.sendBlockChange(newloc,Material.SPONGE,this.by);
                 }else{
                     this.player.sendBlockChange(newloc,Material.REDSTONE_BLOCK,this.by);
-                    IsCollision = true;
-                    System.out.print("COLLEFT");
+                    IsCollisionLeft = true;
                 }
             }
             //Rigth
@@ -138,8 +134,7 @@ public class LandMakeSquare extends Thread{
                     this.player.sendBlockChange(newloc,Material.SPONGE,this.by);
                 }else{
                     this.player.sendBlockChange(newloc,Material.REDSTONE_BLOCK,this.by);
-                    IsCollision = true;
-                    System.out.print("COLRiGTH");
+                    IsCollisionRigth = true;
                 }
             }
             return BlockList;
@@ -155,7 +150,12 @@ public class LandMakeSquare extends Thread{
     }
     
     public boolean getCollision(){
-        return IsCollision;
+        
+        if(IsCollisionFront || IsCollisionBack || IsCollisionLeft || IsCollisionRigth){
+            return true;
+        }
+        
+        return false;
     }
     
 }
