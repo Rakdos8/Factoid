@@ -30,15 +30,15 @@ public class Lang extends Thread {
        if(param.length >= 1){
           String message = langconfig.getString(path);
           if(message != null){
-              int occurence = getOccurence(message,'%');
-              if(occurence==param.length){
-                    for(int i = 0;i<occurence;i++){
-                        message = replace(message,"%",param[i]);
-                        System.out.print(message);
-                    }
-                }else{
-                    return "Error! variable missing for Entries.";
-                }
+                int occurence = getOccurence(message,'%');
+                if(occurence==param.length){
+                      for(int i = 0;i<occurence;i++){
+                          message = replace(message,"%",param[i]);
+                          System.out.print(message);
+                      }
+                  }else{
+                      return "Error! variable missing for Entries.";
+                  }
             return message;
           }
        }

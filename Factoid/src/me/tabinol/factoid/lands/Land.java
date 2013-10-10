@@ -266,6 +266,7 @@ public class Land {
     public void forceSave() {
         
         Factoid.getStorage().saveLand(this);
+        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.SAVE",name));
     }
     
     private void doSave() {

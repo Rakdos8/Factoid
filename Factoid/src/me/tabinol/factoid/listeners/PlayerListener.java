@@ -4,6 +4,7 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.lands.Land;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -29,17 +30,15 @@ public class PlayerListener implements Listener {
                 && event.getAction() == Action.LEFT_CLICK_BLOCK
                 && event.getPlayer().getItemInHand().getTypeId() == conf.InfoItem) {
             Land land = Factoid.getLands().getLand(event.getPlayer().getLocation());
-            if (land != null) {
-                event.getPlayer().sendMessage("The Land name is: "
-                        + land.getName());
-                event.getPlayer().sendMessage("Owner: " + land.getOwner().getContainerType()
-                        + ":" + land.getOwner().getName());
-                event.getPlayer().sendMessage("Area(s):");
+            if(land != null){
+                event.getPlayer().sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.CURRENT.LAND.NAME",land.getName()));
+                event.getPlayer().getPlayer().sendMessage(ChatColor.GRAY+Factoid.getLanguage().getMessage("COMMAND.CURRENT.LAND.OWNER",land.getOwner().getContainerType().name(),land.getOwner().getName()));
+                event.getPlayer().getPlayer().sendMessage(ChatColor.GRAY+Factoid.getLanguage().getMessage("COMMAND.CURRENT.LAND.AREA"));
                 for(CuboidArea area : land.getAreas()) {
-                    event.getPlayer().sendMessage(area.toString());
+                    event.getPlayer().getPlayer().sendMessage(ChatColor.GRAY+area.toString());
                 }
-            } else {
-                event.getPlayer().sendMessage("There is no land here!");
+            }else{
+                event.getPlayer().sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.CURRENT.NOLAND"));
             }
             event.setCancelled(true);
         }

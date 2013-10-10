@@ -47,14 +47,13 @@ public class Factoid extends JavaPlugin {
         CommandListener = new OnCommand();
         getServer().getPluginManager().registerEvents(playerListener, this);
         getCommand("factoid").setExecutor(CommandListener);
-        log.write(Factoid.language.getMessage("ENABLE"));
-        log.write(Factoid.language.getMessage("PLAYER","kaz00"));
+        log.write(Factoid.getLanguage().getMessage("ENABLE"));
     }
     
     @Override
     public void onDisable() {
         
-        log.write("Factoid is Disabled.");
+        log.write(Factoid.getLanguage().getMessage("DISABLE"));
         log.interrupt();
         language.interrupt();
     }

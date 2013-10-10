@@ -86,11 +86,11 @@ public class StorageFlat extends Storage implements StorageInt {
                     }
                 } catch (IOException ex) {
                     Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, null, ex);
-                    Factoid.getLog().write("[Error] '"+ex.getMessage()+"'");
+                    Factoid.getLog().write("[Factoid]"+Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.FACTION.ERROR",ex.getMessage()));
                 }
             }
         }
-                Factoid.getLog().write("[Factoid] Loaded '"+loadedfactions+"' Factions");
+                Factoid.getLog().write("[Factoid] "+Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.FACTION.LOADED",loadedfactions+""));
     }
 
     private void loadLands() {
@@ -118,13 +118,13 @@ public class StorageFlat extends Storage implements StorageInt {
                         }
                     } catch (IOException ex) {
                         Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, null, ex);
-                        Factoid.getLog().write("[Error] '"+ex.getMessage()+"'");
+                        Factoid.getLog().write("[Factoid] "+Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.LAND.ERROR",ex.getMessage()));
                     }
                 }
             }
             pass++;
         }
-        Factoid.getLog().write("[Factoid] Loaded '"+loadedlands+"' Lands");
+        Factoid.getLog().write("[Factoid] "+Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.LAND.LOADED",loadedlands+""));
     }
 
     private void loadFaction(BufferedReader br) {

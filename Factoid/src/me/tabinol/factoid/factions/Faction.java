@@ -26,12 +26,14 @@ public class Faction {
 
         players.add(playerName.toLowerCase());
         doSave();
+        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.FACTION.ADD.PLAYER",playerName,name));
     }
 
     public boolean removePlayer(String playerName) {
 
         if (players.remove(playerName.toLowerCase())) {
             doSave();
+            Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.FACTION.REMOVE.PLAYER",playerName,name));
             return true;
         }
 
@@ -56,6 +58,7 @@ public class Faction {
     public void forceSave() {
         
         Factoid.getStorage().saveFaction(this);
+        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.FACTION.SAVE",name));
     }
     
     private void doSave() {

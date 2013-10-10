@@ -18,6 +18,7 @@ public class Factions {
             return false;
         }
         factionList.put(faction.getName(), faction);
+        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.FACTION.ADD.FACTION",faction.getName()));
         return true;
     }
     
@@ -28,6 +29,7 @@ public class Factions {
         }
         Factoid.getStorage().removeFaction(faction);
         factionList.remove(faction.getName());
+        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.FACTION.REMOVE.FACTION",faction.getName()));
         return true;
     }
     
@@ -36,6 +38,7 @@ public class Factions {
         if (factionName == null || !factionList.containsKey(factionName)) {
             return false;
         }
+        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.FACTION.REMOVE.FACTION",factionName));
         return removeFaction(factionList.get(factionName));
         
     }

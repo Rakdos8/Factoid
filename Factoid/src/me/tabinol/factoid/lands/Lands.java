@@ -36,6 +36,7 @@ public class Lands {
             return false;
         }
         addLandToList(land);
+        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.CREATE",land.getName()));
         return true;
     }
 
@@ -47,7 +48,7 @@ public class Lands {
         removeLandToList(land);
         land.getParent().removeChild(land.getName());
         Factoid.getStorage().removeLand(land);
-
+        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.REMOVE",land.getName()));
         return true;
     }
 
@@ -56,6 +57,7 @@ public class Lands {
         if (landName == null || !landList.containsKey(landName)) {
             return false;
         }
+        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.REMOVE",landName));
         return removeLand(landList.get(landName));
 
     }
