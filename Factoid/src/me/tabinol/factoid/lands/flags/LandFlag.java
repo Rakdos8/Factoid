@@ -34,6 +34,11 @@ public class LandFlag {
         return flagType == lf2.flagType;
     }
     
+    public final FlagType getFlagType() {
+        
+        return flagType;
+    }
+    
     public final boolean getValueBoolean() {
         
         return valueBoolean;

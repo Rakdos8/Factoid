@@ -11,12 +11,12 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.lands.flags.FlagType;
+import me.tabinol.factoid.lands.flags.FlagValueType;
+import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.Permission;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
-import me.tabinol.factoid.playercontainer.PlayerContainerFaction;
-import me.tabinol.factoid.playercontainer.PlayerContainerGroup;
-import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
 
 public class StorageFlat extends Storage implements StorageInt {
@@ -25,6 +25,7 @@ public class StorageFlat extends Storage implements StorageInt {
     private String factionsDir;
     private String landsDir;
     private boolean inLoad = false; // True if the Database is in Load
+    private FlagValueType FlagTypeValue;
 
     public StorageFlat() {
 
@@ -189,8 +190,22 @@ public class StorageFlat extends Storage implements StorageInt {
             land.addPermission(pc, new Permission(PermissionType.getFromString(multiStr[2]),
                     Boolean.parseBoolean(multiStr[3]), Boolean.parseBoolean(multiStr[4])));
         }
-        
         cf.readParam();
+        
+        //Create flags
+        while ((str = cf.getNextString()) != null) {
+            String[] multiStr = str.split(":");
+            FlagType ft = FlagType.getFromString(multiStr[0]);
+            if(ft.getFlagValueType() == FlagTypeValue.BOOLEAN) {
+                land.addFlag(new LandFlag(ft, Boolean.parseBoolean(multiStr[1]), Boolean.parseBoolean(multiStr[2])));
+            } else if(ft.getFlagValueType() == FlagTypeValue.STRING) {
+                land.addFlag(new LandFlag(ft, multiStr[1], Boolean.parseBoolean(multiStr[2])));
+            } else {
+                land.addFlag(new LandFlag(ft, multiStr[1].split(";"), Boolean.parseBoolean(multiStr[2])));
+            }
+        }
+        cf.readParam();
+        
         land.setPriority(cf.getValueShort());
         
         Factoid.getLands().createLand(land);
@@ -224,7 +239,15 @@ public class StorageFlat extends Storage implements StorageInt {
                     strs.add(pc.toString() + ":" + perm.toString());
                 }
             }
-            cb.writeParam(landsDir, strs.toArray(new String[0]));
+            cb.writeParam("Permissions", strs.toArray(new String[0]));
+            
+            
+            //Falgs
+            strs = new ArrayList<>();
+            for(LandFlag flag : land.getFlags()) {
+                strs.add(flag.toString());
+            }
+            cb.writeParam("Flags", strs.toArray(new String[0]));
             
             cb.writeParam("Priority", land.getPriority());
             cb.save(getLandFile(land));

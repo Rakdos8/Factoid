@@ -5,6 +5,8 @@ import java.util.EnumMap;
 import java.util.Set;
 import java.util.TreeMap;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.lands.flags.FlagType;
+import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.Permission;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
@@ -16,6 +18,7 @@ public class Land {
     private TreeMap<Integer, CuboidArea> areas = new TreeMap<>();
     private TreeMap<String, Land> children = new TreeMap<>();
     private TreeMap<PlayerContainer, EnumMap<PermissionType,Permission>> permissions = new TreeMap<>(); // String for playerName
+    private EnumMap<FlagType,LandFlag> flags = new EnumMap<>(FlagType.class);
     private short priority = DEFAULT_PRIORITY; // Do not put more then 100000!!!!
     private int genealogy = 0; // 0 = first, 1 = child, 2 = child of child, ...
     private Land parent = null;
@@ -246,6 +249,26 @@ public class Land {
     public final Collection<Permission> getPermissionsForPC(PlayerContainer pc) {
         
         return permissions.get(pc).values();
+    }
+
+    public void addFlag(LandFlag flag) {
+        
+        flags.put(flag.getFlagType(), flag);
+        doSave();
+    }
+    
+    public boolean removeFlag(FlagType flagType) {
+        
+        if(flags.remove(flagType) == null) {
+            return false;
+        }
+        doSave();
+        return true;
+    }
+    
+    public Collection<LandFlag> getFlags() {
+        
+        return flags.values();
     }
 
     public Land getChild(String landName) {
