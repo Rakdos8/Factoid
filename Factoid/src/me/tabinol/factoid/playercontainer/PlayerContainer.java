@@ -1,5 +1,7 @@
 package me.tabinol.factoid.playercontainer;
 
+import me.tabinol.factoid.Factoid;
+
 public abstract class PlayerContainer implements PlayerContainerInterface,Comparable<PlayerContainer> {
     
     protected String name;
@@ -9,6 +11,17 @@ public abstract class PlayerContainer implements PlayerContainerInterface,Compar
         
         this.name = name;
         this.containerType = containerType;
+    }
+    
+    public static PlayerContainer create(PlayerContainerType pct, String name) {
+        
+        if(pct == PlayerContainerType.FACTION) {
+            return new PlayerContainerFaction(Factoid.getFactions().getFaction(name));
+        }
+        if(pct == PlayerContainerType.GROUP) {
+            return new PlayerContainerGroup(name);
+        }
+        return new PlayerContainerPlayer(name);
     }
     
     @Override

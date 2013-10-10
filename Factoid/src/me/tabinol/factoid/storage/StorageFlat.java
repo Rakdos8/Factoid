@@ -4,16 +4,20 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.lands.permissions.Permission;
+import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerFaction;
 import me.tabinol.factoid.playercontainer.PlayerContainerGroup;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
+import me.tabinol.factoid.playercontainer.PlayerContainerType;
 
 public class StorageFlat extends Storage implements StorageInt {
 
@@ -143,20 +147,15 @@ public class StorageFlat extends Storage implements StorageInt {
         String landName = cf.getName();
         Land land = null;
         boolean isLandCreated = false;
-        PlayerContainer owner;
+        PlayerContainer pc;
         cf.readParam();
         String[] ownerS = cf.getValueString().split(":");
         cf.readParam();
         String parentName = cf.getValueString();
 
         // create owner (PlayerContainer)
-        if (ownerS[0].equals("Faction")) {
-            owner = new PlayerContainerFaction(Factoid.getFactions().getFaction(ownerS[1]));
-        } else if (ownerS[0].equals("Group")) {
-            owner = new PlayerContainerGroup(ownerS[1]);
-        } else {
-            owner = new PlayerContainerPlayer(ownerS[1]);
-        }
+        pc = PlayerContainer.create(PlayerContainerType.getFromString(ownerS[0]), ownerS[1]);
+
         cf.readParam();
 
         // Create Land and add areas
@@ -171,14 +170,23 @@ public class StorageFlat extends Storage implements StorageInt {
                     Integer.parseInt(multiStr[6]));
             if (!isLandCreated) {
                 if (parentName != null) {
-                    land = new Land(landName, owner, area, Factoid.getLands().getLand(parentName));
+                    land = new Land(landName, pc, area, Factoid.getLands().getLand(parentName));
                 } else {
-                    land = new Land(landName, owner, area);
+                    land = new Land(landName, pc, area);
                 }
                 isLandCreated = true;
             } else {
                 land.addArea(area);
             }
+        }
+        cf.readParam();
+        
+        //Create permissions
+        while ((str = cf.getNextString()) != null) {
+            String[] multiStr = str.split(":");
+            pc = PlayerContainer.create(PlayerContainerType.getFromString(multiStr[0]), multiStr[1]);
+            land.addPermission(pc, new Permission(PermissionType.getFromString(multiStr[2]),
+                    Boolean.parseBoolean(multiStr[3]), Boolean.parseBoolean(multiStr[4])));
         }
         
         cf.readParam();
@@ -190,6 +198,8 @@ public class StorageFlat extends Storage implements StorageInt {
     @Override
     public void saveLand(Land land) {
 
+        ArrayList<String> strs;
+        
         if (!inLoad) {
             ConfBuilder cb = new ConfBuilder(land.getName());
             cb.writeParam("Owner", land.getOwner().toString());
@@ -199,6 +209,16 @@ public class StorageFlat extends Storage implements StorageInt {
                 cb.writeParam("Parent", land.getParent().getName());
             }
             cb.writeParam("CuboidAreas", land.getAreas());
+            
+            //permissions
+            strs = new ArrayList<>();
+            for(PlayerContainer pc : land.getSetPCHavePermission()) {
+                for(Permission perm : land.getPermissionsForPC(pc)) {
+                    strs.add(pc.toString() + ":" + perm.toString());
+                }
+            }
+            cb.writeParam(landsDir, strs.toArray(new String[0]));
+            
             cb.writeParam("Priority", land.getPriority());
             cb.save(getLandFile(land));
         }

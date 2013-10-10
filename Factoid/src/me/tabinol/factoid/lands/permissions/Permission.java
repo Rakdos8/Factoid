@@ -27,4 +27,10 @@ public class Permission {
         
         return heritable;
     }
+    
+    @Override
+    public String toString() {
+        
+        return permType.toString() + ":" + value + ":" + heritable;
+    }
 }

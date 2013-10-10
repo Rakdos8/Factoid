@@ -2,6 +2,8 @@ package me.tabinol.factoid.lands;
 
 import java.util.Collection;
 import java.util.EnumMap;
+import java.util.NavigableSet;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
@@ -48,14 +50,14 @@ public class Land {
         area.setLand(this);
         areas.add(area);
         Factoid.getLands().addAreaToList(area);
-        forceSave();
+        doSave();
     }
 
     public boolean removeArea(CuboidArea area) {
 
         if (areas.remove(area)) {
             Factoid.getLands().removeAreaToList(area);
-            forceSave();
+            doSave();
             return true;
         }
 
@@ -69,7 +71,7 @@ public class Land {
             newArea.setLand(this);
             areas.add(newArea);
             Factoid.getLands().addAreaToList(newArea);
-            forceSave();
+            doSave();
             return true;
         }
 
@@ -101,7 +103,7 @@ public class Land {
 
         Factoid.getStorage().removeLand(this);
         this.name = newName;
-        forceSave();
+        doSave();
     }
 
     public PlayerContainer getOwner() {
@@ -112,7 +114,7 @@ public class Land {
     public void setOwner(PlayerContainer owner) {
 
         this.owner = owner;
-        forceSave();
+        doSave();
     }
 
     // Note : a child get the parent priority
@@ -133,7 +135,7 @@ public class Land {
     public void setPriority(short priority) {
 
         this.priority = priority;
-        forceSave();
+        doSave();
     }
 
     public Land getParent() {
@@ -155,13 +157,13 @@ public class Land {
     private void addChild(Land land) {
 
         children.put(land.name, land);
-        forceSave();
+        doSave();
     }
 
     protected void removeChild(String landName) {
 
         children.remove(landName);
-        forceSave();
+        doSave();
     }
     
     public void addPermission(PlayerContainer pc, Permission perm) {
@@ -174,7 +176,7 @@ public class Land {
             permPlayer = permissions.get(pc);
         }
         permPlayer.put(perm.getPermType(), perm);
-        forceSave();
+        doSave();
     }
     
     public boolean removePermission(PlayerContainer pc, PermissionType permType) {
@@ -189,8 +191,23 @@ public class Land {
             return false;
         }
 
-        forceSave();
+        // remove key for PC if it is empty
+        if(permPlayer.isEmpty()) {
+            permissions.remove(pc);
+        }
+        
+        doSave();
         return true;
+    }
+    
+    public final Set<PlayerContainer> getSetPCHavePermission() {
+        
+        return permissions.keySet();
+    }
+    
+    public final Collection<Permission> getPermissionsForPC(PlayerContainer pc) {
+        
+        return permissions.get(pc).values();
     }
 
     public Land getChild(String landName) {
@@ -211,5 +228,12 @@ public class Land {
     public void forceSave() {
         
         Factoid.getStorage().saveLand(this);
+    }
+    
+    private void doSave() {
+        
+        if(autoSave) {
+            forceSave();
+        }
     }
 }

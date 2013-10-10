@@ -14,7 +14,7 @@ public class Faction {
 
         this.name = name;
         this.players = new TreeSet<>();
-        forceSave();
+        doSave();
     }
 
     public String getName() {
@@ -25,13 +25,13 @@ public class Faction {
     public void addPlayer(String playerName) {
 
         players.add(playerName.toLowerCase());
-        forceSave();
+        doSave();
     }
 
     public boolean removePlayer(String playerName) {
 
         if (players.remove(playerName.toLowerCase())) {
-            forceSave();
+            doSave();
             return true;
         }
 
@@ -56,5 +56,12 @@ public class Faction {
     public void forceSave() {
         
         Factoid.getStorage().saveFaction(this);
+    }
+    
+    private void doSave() {
+        
+        if(autoSave) {
+            forceSave();
+        }
     }
 }
