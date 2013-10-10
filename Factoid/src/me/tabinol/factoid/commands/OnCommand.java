@@ -41,7 +41,7 @@ public class OnCommand extends Thread implements CommandExecutor{
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] arg) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("Console.");
+            sender.sendMessage("Hey Console! Wait...what?");
             return false;
 	}else{
             if(cmd.getName().equalsIgnoreCase("factoid") || cmd.getName().equalsIgnoreCase("claim")){
@@ -185,7 +185,7 @@ public class OnCommand extends Thread implements CommandExecutor{
                     }else if(arg[0].equalsIgnoreCase("flags")){
                         if(!this.PlayerExpanding.containsKey(player.getName().toLowerCase())){
                             if(!this.PlayerSelecting.containsKey(player.getName().toLowerCase())){
-                                if(!this.PlayerExpanding.containsKey(player.getName().toLowerCase())){
+                                if(!this.PlayerSetFlag.containsKey(player.getName().toLowerCase())){
                                     player.sendMessage(ChatColor.GRAY+"[Factoid] You are now in Flags Mode.");
                                     player.sendMessage(ChatColor.DARK_GRAY+"[Factoid] Your modification will be instantany effective.");
                                     CuboidArea area = Factoid.getLands().getCuboidArea(player.getLocation());
@@ -196,6 +196,35 @@ public class OnCommand extends Thread implements CommandExecutor{
                                 }
                         }else{
                                 player.sendMessage(ChatColor.GRAY+"[Factoid] Quit the Select Mode before.");
+                            }
+                        }else{
+                            player.sendMessage(ChatColor.GRAY+"[Factoid] Quit the Expand Mode before.");
+                        }
+                    }else if(arg[0].equalsIgnoreCase("remove")){
+                        if(!this.PlayerExpanding.containsKey(player.getName().toLowerCase())){
+                            if(this.PlayerSelecting.containsKey(player.getName().toLowerCase())){
+                                if(!this.PlayerSetFlag.containsKey(player.getName().toLowerCase())){
+                                   if(arg[1] != null){
+                                       if(arg[1].equalsIgnoreCase("land")){
+                                            Land land = Factoid.getLands().getLand(player.getLocation());
+                                            int i = 0;
+                                            for(CuboidArea area : land.getAreas()){
+                                                land.removeArea(area);
+                                                i++;
+                                            }
+                                            player.sendMessage(ChatColor.DARK_GRAY+"[Factoid] You have remove the land '"+land.getName()+"'.");
+                                       }else if(arg[1].equalsIgnoreCase("area")){
+                                           CuboidArea area = Factoid.getLands().getCuboidArea(player.getLocation());
+                                            player.sendMessage(ChatColor.DARK_GRAY+"[Factoid] You have remove the area of the land '"+area.getLand().getName()+"'.");
+                                       }
+                                   }else{
+                                       
+                                   }
+                                }else{
+                                    player.sendMessage(ChatColor.GRAY+"[Factoid] Quit the Flags Mode before.");
+                                }
+                            }else{
+                                player.sendMessage(ChatColor.GRAY+"[Factoid] you are already in the Select Mode.");
                             }
                         }else{
                             player.sendMessage(ChatColor.GRAY+"[Factoid] Quit the Expand Mode before.");

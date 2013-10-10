@@ -14,7 +14,7 @@ public enum FlagType {
     TNT(114,"TNT","Prevent TNT damage to this Area."),
     MOB(115,"MOB","Prevent Mob spawn in this Area."),
     PVP(116,"PVP","Prevent PVP in this Area."),
-    FACTION(117,"Faction","?"),
+    PVPFACTION(117,"Faction PVP","Prevent Faction PVP in this Area"),
     OWNER(118,"Owner","Owner of this Area."),
     RESIDENT(119,"Resident","Resident of this Area."),
     EXCLUDEBLOCK(120,"Exclude Block","Excluded block in this Area."),

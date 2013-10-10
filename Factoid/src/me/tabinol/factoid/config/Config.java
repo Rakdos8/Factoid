@@ -21,6 +21,8 @@ public class Config {
     public int MaxAreaPerLand = 1;
     public int MinAreaSize = 1;
     public int MaxAreaSize = 1;
+    public int MinLandHigh = 0;
+    public int MaxLandHigh = 255;
     public int PricebyCube = 1;
     public int MinPriceLocation = 1;
     public int MaxPriceLocation = 1;

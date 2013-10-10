@@ -17,6 +17,8 @@ land:
   MaxLand: 1
   MinLandSize: 1
   MaxLandSize: 1
+  MinLandHigh: 0
+  MaxLandHigh: 255
   area: 
     MinAreaSize: 1
     MaxAreaSize: 1
