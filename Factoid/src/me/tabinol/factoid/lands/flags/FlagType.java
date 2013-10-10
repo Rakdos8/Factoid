@@ -3,45 +3,53 @@ package me.tabinol.factoid.lands.flags;
 public enum FlagType {
 
     //Global Flags
-    UNDIFINED(0,"UNDEFINED","Undefined"),
-    FIRESPREAD(1,"FIRESPREAD","Prevent the spread of fire."),
-    FIRE(2,"FIRE","Prevent fire."),
+    UNDEFINED("UNDEFINED", FlagValueType.UNDEFINED),
+    FIRESPREAD("FIRESPREAD", FlagValueType.BOOLEAN),
+    FIRE("FIRE", FlagValueType.BOOLEAN),
     //Land Flags
-    BUY(100,"BUY","Can buy this Area."),
-    SELL(111,"SELL","Can sell this Area."),
-    RENT(112,"RENT","Can rent this Area."),
-    CREEPER(113,"CREEPER","Prevent creeper damage to this Area."),
-    TNT(114,"TNT","Prevent TNT damage to this Area."),
-    MOB(115,"MOB","Prevent Mob spawn in this Area."),
-    PVP(116,"PVP","Prevent PVP in this Area."),
-    FACTION_PVP("FACTION_PVP","?"),
-    RESIDENTS("RESIDENTS""Resident of this Area."),
-    EXCLUDE_BLOCKS("EXCLUDE_BLOCKS","Excluded block in this Area."),
-    EXCLUDE_ENTITIES("EXCLUDE_ENTITIES","Excluded entity in this Area."),
-    MESSAGE_JOIN("MESSAGE_JOIN","Message when player join this Area."),
-    MESSAGE_QUIT("MESSAGE_QUIT","Message when player quit this Area."),
-    KEEP_INVENTORY("KEEP_INVENTORY","If player can keep is Inventory.");
+    BUY("BUY", FlagValueType.BOOLEAN),
+    SELL("SELL", FlagValueType.BOOLEAN),
+    RENT("RENT", FlagValueType.BOOLEAN),
+    CREEPER("CREEPER", FlagValueType.BOOLEAN),
+    TNT("TNT", FlagValueType.BOOLEAN),
+    MOB("MOB", FlagValueType.BOOLEAN),
+    PVP("PVP", FlagValueType.BOOLEAN),
+    FACTION_PVP("FACTION_PVP", FlagValueType.BOOLEAN),
+    RESIDENTS("RESIDENTS", FlagValueType.STRING_LIST),
+    EXCLUDE_BLOCKS("EXCLUDE_BLOCKS", FlagValueType.STRING_LIST),
+    EXCLUDE_ENTITIES("EXCLUDE_ENTITIES", FlagValueType.STRING_LIST),
+    MESSAGE_JOIN("MESSAGE_JOIN", FlagValueType.STRING),
+    MESSAGE_QUIT("MESSAGE_QUIT", FlagValueType.STRING),
+    KEEP_INVENTORY("KEEP_INVENTORY", FlagValueType.BOOLEAN);
     
     private final String name;
-    private final String description;
+    private final FlagValueType valueType;
 
-    private FlagType(final String name,final String description) {
+    private FlagType(final String name, final FlagValueType valueType) {
 
-        this.value = value;
         this.name = name;
-        this.description = description;
+        this.valueType = valueType;
     }
     
-    public String getName(){
+    @Override
+    public String toString() {
+        
         return name;
     }
     
-    public String getDescription(){
-        return description;
+    public static FlagType getFromString(String flagName) {
+        
+        for(FlagType ft : values()) {
+            if(ft.toString().equals(flagName)) {
+                return ft;
+            }
+        }
+        return null;
     }
     
-    public int getCode(){
-        return value;
+    public final FlagValueType getFlagValueType() {
+        
+        return valueType;
     }
-    
+
 }
