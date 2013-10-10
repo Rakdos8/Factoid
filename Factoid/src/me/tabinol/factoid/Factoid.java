@@ -29,6 +29,7 @@ public class Factoid extends JavaPlugin {
     // Access to Factions and Lands (static)
     private static Factions factions;
     private static Lands lands;
+    private static String VERSION = "0.1";
 
     @Override
     public void onEnable() {
@@ -46,7 +47,7 @@ public class Factoid extends JavaPlugin {
         CommandListener = new OnCommand();
         getServer().getPluginManager().registerEvents(playerListener, this);
         getCommand("factoid").setExecutor(CommandListener);
-        log.write("Factoid is Enabled.");
+        log.write(Factoid.language.getMessage("ENABLE"));
     }
     
     @Override
@@ -90,5 +91,10 @@ public class Factoid extends JavaPlugin {
     public static Storage getStorage() {
         
         return storage;
+    }
+    
+    public static String getVersion() {
+        
+        return VERSION;
     }
 }

@@ -21,7 +21,10 @@ public class Log extends Thread {
 
     public void write(String text) {
 
-        File filename = new File(Folder, "log_" + Dates.date() + ".log");
+        File filename = new File(Folder+"/log/", "log_" + Dates.date() + ".log");
+        BufferedWriter bufWriter = null;
+        FileWriter fileWriter = null;
+        
         if (!filename.exists()) {
             try {
                 filename.createNewFile();
@@ -29,14 +32,12 @@ public class Log extends Thread {
                 Logger.getLogger(Log.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        BufferedWriter bufWriter = null;
-        FileWriter fileWriter = null;
-
+        
         try {
             fileWriter = new FileWriter(filename, true);
             bufWriter = new BufferedWriter(fileWriter);
             bufWriter.newLine();
-            bufWriter.write("[" + Dates.time() + "]" + text);
+            bufWriter.write("[Factoid][v."+Factoid.getVersion()+"]["+Dates.time()+"]" +text);
             bufWriter.close();
         } catch (IOException ex) {
             Logger.getLogger(Log.class.getName()).log(Level.SEVERE, null, ex);

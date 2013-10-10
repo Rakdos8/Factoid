@@ -26,21 +26,24 @@ public class Lang extends Thread {
         loadYamls();
     }
 
-    public static String getMessage(String path,String... param) {
+    public String getMessage(String path,String... param) {
        if(param != null){
           String returnmessage = null;
           int i = 0;
           String message = langconfig.getString(path);
           String[] messages = message.split("%");
           for(String mess : messages){
-            returnmessage = replace(message,"%",param[i]);
+            if(messages.length < messages.length){
+                returnmessage = replace(message,"%",param[i]);
+                i++;
+            }
           }
           return returnmessage;
        }
         return langconfig.getString(path);
     }
     
-    public static String replace(String s_original, String s_cherche, String s_nouveau)  
+    public String replace(String s_original, String s_cherche, String s_nouveau)  
     {  
       if ((s_original == null) || (s_original.equals("")))  
          return "";  

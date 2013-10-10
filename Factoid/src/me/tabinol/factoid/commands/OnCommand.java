@@ -131,8 +131,10 @@ public class OnCommand extends Thread implements CommandExecutor{
                                                     Map<String,Location> corner = select.getCorner();
                                                     int x1 = corner.get("FrontCornerLeft").getBlockX();
                                                     int x2 = corner.get("BackCornerRigth").getBlockX();
-                                                    int y1 = corner.get("FrontCornerLeft").getBlockY();
-                                                    int y2 = corner.get("BackCornerRigth").getBlockY();
+                                                    //int y1 = corner.get("FrontCornerLeft").getBlockY();
+                                                    //int y2 = corner.get("BackCornerRigth").getBlockY();
+                                                    int y1 = Factoid.getConf().MinLandHigh;
+                                                    int y2 = Factoid.getConf().MaxLandHigh;
                                                     int z1 = corner.get("FrontCornerLeft").getBlockZ();
                                                     int z2 = corner.get("BackCornerRigth").getBlockZ();
 
@@ -228,6 +230,21 @@ public class OnCommand extends Thread implements CommandExecutor{
                             }
                         }else{
                             player.sendMessage(ChatColor.GRAY+"[Factoid] Quit the Expand Mode before.");
+                        }
+                    }else if(arg[0].equalsIgnoreCase("here") || arg[0].equalsIgnoreCase("current")){
+                        Location playerloc = player.getLocation();
+                        Land land = Factoid.getLands().getLand(playerloc);
+                        if(land != null){
+                            player.sendMessage(ChatColor.GRAY+"The Land name is: "
+                            + land.getName());
+                            player.getPlayer().sendMessage(ChatColor.GRAY+"Owner: " + land.getOwner().getContainerType()
+                                    + ":" + land.getOwner().getName());
+                            player.getPlayer().sendMessage(ChatColor.GRAY+"Area(s):");
+                            for(CuboidArea area : land.getAreas()) {
+                                player.getPlayer().sendMessage(ChatColor.GRAY+area.toString());
+                            }
+                        }else{
+                            player.sendMessage(ChatColor.GRAY+"[Factoid] There's no Land here.");
                         }
                     }
                     //log.write("Supposly block changed");
