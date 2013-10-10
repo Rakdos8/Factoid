@@ -21,7 +21,7 @@ public class Log extends Thread {
 
     public void write(String text) {
 
-        File filename = new File(Folder+"/log/", "log_" + Dates.date() + ".log");
+        File filename = new File(Folder, "log_" + Dates.date() + ".log");
         BufferedWriter bufWriter = null;
         FileWriter fileWriter = null;
         

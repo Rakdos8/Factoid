@@ -27,18 +27,20 @@ public class Lang extends Thread {
     }
 
     public String getMessage(String path,String... param) {
-       if(param != null){
-          String returnmessage = null;
-          int i = 0;
+       if(param.length >= 1){
           String message = langconfig.getString(path);
-          String[] messages = message.split("%");
-          for(String mess : messages){
-            if(messages.length < messages.length){
-                returnmessage = replace(message,"%",param[i]);
-                i++;
-            }
+          if(message != null){
+              int occurence = getOccurence(message,'%');
+              if(occurence==param.length){
+                    for(int i = 0;i<occurence;i++){
+                        message = replace(message,"%",param[i]);
+                        System.out.print(message);
+                    }
+                }else{
+                    return "Error! variable missing for Entries.";
+                }
+            return message;
           }
-          return returnmessage;
        }
         return langconfig.getString(path);
     }
@@ -72,8 +74,7 @@ public class Lang extends Thread {
         try {
             if (!langFile.exists()) {
                 langFile.getParentFile().mkdirs();
-                copy(plugin.getResource("english.yml"), langFile);
-                copy(plugin.getResource("french.yml"), langFile);
+                copy(plugin.getResource(lang+".yml"), langFile);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,5 +94,15 @@ public class Lang extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    private int getOccurence(String s,char r){
+        int counter = 0;
+        for( int i=0; i<s.length(); i++ ) {
+            if( s.charAt(i) == r ) {
+                counter++;
+            } 
+        }
+        return counter;
     }
 }
