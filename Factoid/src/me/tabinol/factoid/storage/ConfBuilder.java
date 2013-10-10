@@ -62,18 +62,6 @@ public class ConfBuilder {
         writeln("}");
     }
     
-    public void writeParam(String ParamName, Collection<CuboidArea> params) {
-        
-        if (params == null) {
-            return;
-        }
-        writeln(ParamName + "{");
-        for (CuboidArea param : params) {
-            writeln("  " + param.toString());
-        }
-        writeln("}");
-    }
-
     public void writeParam(String paramName, ConfBuilder[] cfs) {
 
         if (cfs == null) {

@@ -161,18 +161,19 @@ public class StorageFlat extends Storage implements StorageInt {
         // Create Land and add areas
         while ((str = cf.getNextString()) != null) {
             String[] multiStr = str.split(":");
-            CuboidArea area = new CuboidArea(multiStr[0],
-                    Integer.parseInt(multiStr[1]),
+            CuboidArea area = new CuboidArea(multiStr[1],
                     Integer.parseInt(multiStr[2]),
                     Integer.parseInt(multiStr[3]),
                     Integer.parseInt(multiStr[4]),
                     Integer.parseInt(multiStr[5]),
-                    Integer.parseInt(multiStr[6]));
+                    Integer.parseInt(multiStr[6]),
+                    Integer.parseInt(multiStr[7]));
             if (!isLandCreated) {
                 if (parentName != null) {
-                    land = new Land(landName, pc, area, Factoid.getLands().getLand(parentName));
+                    land = new Land(landName, pc, area, Factoid.getLands().getLand(parentName),
+                            Integer.parseInt(multiStr[0]));
                 } else {
-                    land = new Land(landName, pc, area);
+                    land = new Land(landName, pc, area, Integer.parseInt(multiStr[0]));
                 }
                 isLandCreated = true;
             } else {
@@ -208,7 +209,13 @@ public class StorageFlat extends Storage implements StorageInt {
             } else {   
                 cb.writeParam("Parent", land.getParent().getName());
             }
-            cb.writeParam("CuboidAreas", land.getAreas());
+            
+            //CuboidAreas
+            strs = new ArrayList<>();
+            for(int index : land.getAreasKey()) {
+                strs.add(index + ":" + land.getArea(index).toString());
+            }
+            cb.writeParam("CuboidAreas", strs.toArray(new String[0]));
             
             //permissions
             strs = new ArrayList<>();

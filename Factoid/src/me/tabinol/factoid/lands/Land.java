@@ -2,10 +2,8 @@ package me.tabinol.factoid.lands;
 
 import java.util.Collection;
 import java.util.EnumMap;
-import java.util.NavigableSet;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.permissions.Permission;
 import me.tabinol.factoid.lands.permissions.PermissionType;
@@ -15,7 +13,7 @@ public class Land {
 
     public static final short DEFAULT_PRIORITY = 10;
     private String name;
-    private TreeSet<CuboidArea> areas = new TreeSet<>();
+    private TreeMap<Integer, CuboidArea> areas = new TreeMap<>();
     private TreeMap<String, Land> children = new TreeMap<>();
     private TreeMap<PlayerContainer, EnumMap<PermissionType,Permission>> permissions = new TreeMap<>(); // String for playerName
     private short priority = DEFAULT_PRIORITY; // Do not put more then 100000!!!!
@@ -26,7 +24,13 @@ public class Land {
 
     public Land(String landName, PlayerContainer owner, CuboidArea area) {
 
-        createLand(landName, owner, area, 0);
+        createLand(landName, owner, area, 0, 1);
+    }
+    
+    //for AreaID only
+    public Land(String landName, PlayerContainer owner, CuboidArea area, int areaId) {
+
+        createLand(landName, owner, area, 0, areaId);
     }
 
     // next one for a child
@@ -34,28 +38,50 @@ public class Land {
 
         this.parent = parent;
         parent.addChild(this);
-        createLand(landName, owner, area, parent.getGenealogy() + 1);
+        createLand(landName, owner, area, parent.getGenealogy() + 1, 1);
+    }
+    
+    // Only to load with a specific areaid
+    public Land(String landName, PlayerContainer owner, CuboidArea area, Land parent, int areaId) {
+
+        this.parent = parent;
+        parent.addChild(this);
+        createLand(landName, owner, area, parent.getGenealogy() + 1, areaId);
     }
 
-    private void createLand(String landName, PlayerContainer owner, CuboidArea area, int genealogy) {
+    private void createLand(String landName, PlayerContainer owner, CuboidArea area, int genealogy, int areaId) {
 
         name = landName;
         this.owner = owner;
         this.genealogy = genealogy;
-        addArea(area);
+        addArea(area, areaId);
     }
 
     public void addArea(CuboidArea area) {
 
+        int nextKey;
+        
+        if(areas.isEmpty()) {
+            nextKey = 1;
+        } else {
+            nextKey = areas.lastKey() + 1;
+        }
+        addArea(area, nextKey);
+    }
+    
+    public void addArea(CuboidArea area, int key) {
+        
         area.setLand(this);
-        areas.add(area);
+        areas.put(key, area);
         Factoid.getLands().addAreaToList(area);
         doSave();
     }
 
-    public boolean removeArea(CuboidArea area) {
+    public boolean removeArea(int key) {
 
-        if (areas.remove(area)) {
+        CuboidArea area;
+        
+        if ((area = areas.remove(key)) != null) {
             Factoid.getLands().removeAreaToList(area);
             doSave();
             return true;
@@ -64,12 +90,14 @@ public class Land {
         return false;
     }
 
-    public boolean replaceArea(CuboidArea oldArea, CuboidArea newArea) {
+    public boolean replaceArea(int key, CuboidArea newArea) {
 
-        if (areas.contains(oldArea)) {
-            Factoid.getLands().removeAreaToList(oldArea);
+        CuboidArea area;
+        
+        if ((area = areas.remove(key)) != null) {
+            Factoid.getLands().removeAreaToList(area);
             newArea.setLand(this);
-            areas.add(newArea);
+            areas.put(key, newArea);
             Factoid.getLands().addAreaToList(newArea);
             doSave();
             return true;
@@ -77,15 +105,25 @@ public class Land {
 
         return false;
     }
+    
+    public CuboidArea getArea(int key) {
+        
+        return areas.get(key);
+    }
 
+    public Set<Integer> getAreasKey() {
+        
+        return areas.keySet();
+    }
+    
     public Collection<CuboidArea> getAreas() {
 
-        return areas;
+        return areas.values();
     }
 
     public boolean isCollision(CuboidArea area2) {
 
-        for (CuboidArea area1 : areas) {
+        for (CuboidArea area1 : areas.values()) {
             if (area1.isCollision(area2)) {
                 return true;
             }
