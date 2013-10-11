@@ -23,6 +23,18 @@ land:
     MinAreaSize: 1
     MaxAreaSize: 1
     MaxAreaPerLand: 1
+World:
+  Default:
+    Global:
+      ContainerPermissions:
+      ContainerFlags:
+    LandDefault:
+      ContainerPermissions:
+      ContainerFlags:
+      OwnerCanSet:
+        Permissions:
+        Flags:
+    
 economy:
   PricebyCube: 100
   MinPriceLocation: 1

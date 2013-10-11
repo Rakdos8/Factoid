@@ -155,7 +155,7 @@ public class StorageFlat extends Storage implements StorageInt {
         String parentName = cf.getValueString();
 
         // create owner (PlayerContainer)
-        pc = PlayerContainer.create(PlayerContainerType.getFromString(ownerS[0]), ownerS[1]);
+        pc = PlayerContainer.create(null, PlayerContainerType.getFromString(ownerS[0]), ownerS[1]);
 
         cf.readParam();
 
@@ -186,7 +186,7 @@ public class StorageFlat extends Storage implements StorageInt {
         //Residents
         while ((str = cf.getNextString()) != null) {
             String[] multiStr = str.split(":");
-            pc = PlayerContainer.create(PlayerContainerType.getFromString(multiStr[0]), multiStr[1]);
+            pc = PlayerContainer.create(land, PlayerContainerType.getFromString(multiStr[0]), multiStr[1]);
             land.addResident(pc);
         }
         cf.readParam();

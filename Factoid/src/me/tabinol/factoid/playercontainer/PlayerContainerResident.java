@@ -4,11 +4,11 @@ import me.tabinol.factoid.lands.Land;
 
 public class PlayerContainerResident extends PlayerContainer implements PlayerContainerInterface {
     
-    Land land;
+    private Land land;
     
     public PlayerContainerResident(Land land) {
         
-        super(land.getName(), PlayerContainerType.RESIDENT);
+        super("", PlayerContainerType.RESIDENT);
         this.land = land;
     }
     
@@ -16,7 +16,7 @@ public class PlayerContainerResident extends PlayerContainer implements PlayerCo
     public boolean equals(PlayerContainer container2) {
         
         return container2 instanceof PlayerContainerResident &&
-                name.equalsIgnoreCase(container2.getName());
+                land == ((PlayerContainerResident)container2).land;
     }
 
     @Override
@@ -35,5 +35,10 @@ public class PlayerContainerResident extends PlayerContainer implements PlayerCo
         }
         
         return false;
+    }
+    
+    public Land getLand() {
+        
+        return land;
     }
 }

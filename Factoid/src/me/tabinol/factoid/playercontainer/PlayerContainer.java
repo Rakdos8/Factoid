@@ -14,11 +14,6 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
         this.containerType = containerType;
     }
 
-    public static PlayerContainer create(PlayerContainerType pct, String name) {
-        
-        return create(null, pct, name);
-    }
-    
     public static PlayerContainer create(Land land, PlayerContainerType pct, String name) {
 
         if (pct == PlayerContainerType.FACTION) {
@@ -29,6 +24,12 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
         }
         if (pct == PlayerContainerType.RESIDENT) {
             return new PlayerContainerResident(land);
+        }
+        if (pct == PlayerContainerType.OWNER) {
+            return new PlayerContainerOwner(land);
+        }
+        if (pct == PlayerContainerType.EVERYBODY) {
+            return new PlayerContainerEverybody();
         }
         return new PlayerContainerPlayer(name);
     }

@@ -5,8 +5,10 @@ public enum PlayerContainerType {
     UNDEFINED(0,"UNDEFINED"),
     FACTION(1,"Faction"),
     GROUP(2,"Group"),
-    RESIDENT(3,"Resident"),
-    PLAYER(4,"Player");
+    OWNER(3,"Owner"),
+    RESIDENT(4,"Resident"),
+    PLAYER(5,"Player"),
+    EVERYBODY(6,"Everybody");
     
     private final int value;
     private final String pcName;
@@ -31,7 +33,7 @@ public enum PlayerContainerType {
     public static PlayerContainerType getFromString(String permName) {
         
         for(PlayerContainerType pct : values()) {
-            if(pct.toString().equals(permName)) {
+            if(pct.toString().equalsIgnoreCase(permName)) {
                 return pct;
             }
         }
