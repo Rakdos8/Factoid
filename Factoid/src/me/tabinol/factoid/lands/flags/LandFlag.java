@@ -18,7 +18,13 @@ public class LandFlag {
     public LandFlag(final FlagType flagType, final String valueString, final boolean heritable) {
         
         this.flagType = flagType;
-        this.valueString = valueString;
+        if(flagType.getFlagValueType() == FlagValueType.BOOLEAN) {
+            this.valueBoolean = Boolean.parseBoolean(valueString);
+        } else if(flagType.getFlagValueType() == FlagValueType.STRING) {
+            this.valueString = valueString;
+        } else if(flagType.getFlagValueType() == FlagValueType.STRING_LIST) {
+            this.valueStringList = valueString.split(";");
+        }
         this.heritable = heritable;
     }
 

@@ -24,7 +24,7 @@ public class StorageFlat extends Storage implements StorageInt {
     public static final String EXT_CONF = ".conf";
     private String factionsDir;
     private String landsDir;
-    private boolean inLoad = false; // True if the Database is in Load
+    private boolean inLoad = true; // True if the Database is in Load
     private FlagValueType FlagTypeValue;
 
     public StorageFlat() {
@@ -65,7 +65,6 @@ public class StorageFlat extends Storage implements StorageInt {
     @Override
     public void loadAll() {
 
-        inLoad = true;
         loadFactions();
         loadLands();
         inLoad = false;
@@ -204,13 +203,7 @@ public class StorageFlat extends Storage implements StorageInt {
         while ((str = cf.getNextString()) != null) {
             String[] multiStr = str.split(":");
             FlagType ft = FlagType.getFromString(multiStr[0]);
-            if(ft.getFlagValueType() == FlagTypeValue.BOOLEAN) {
-                land.addFlag(new LandFlag(ft, Boolean.parseBoolean(multiStr[1]), Boolean.parseBoolean(multiStr[2])));
-            } else if(ft.getFlagValueType() == FlagTypeValue.STRING) {
-                land.addFlag(new LandFlag(ft, multiStr[1], Boolean.parseBoolean(multiStr[2])));
-            } else {
-                land.addFlag(new LandFlag(ft, multiStr[1].split(";"), Boolean.parseBoolean(multiStr[2])));
-            }
+            land.addFlag(new LandFlag(ft, multiStr[1], Boolean.parseBoolean(multiStr[2])));
         }
         cf.readParam();
         

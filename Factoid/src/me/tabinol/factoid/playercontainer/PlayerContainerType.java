@@ -8,7 +8,8 @@ public enum PlayerContainerType {
     OWNER(3,"Owner"),
     RESIDENT(4,"Resident"),
     PLAYER(5,"Player"),
-    EVERYBODY(6,"Everybody");
+    EVERYBODY(6,"Everybody"),
+    NOBODY(7,"Nobody");
     
     private final int value;
     private final String pcName;

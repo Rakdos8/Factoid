@@ -16,17 +16,25 @@ public class Lands {
     public final static int INDEX_Z1 = 1;
     public final static int INDEX_X2 = 2;
     public final static int INDEX_Z2 = 3;
-    // INDEX first, Tree by worlds (then by Areas)
-    protected TreeMap<String, TreeSet<AreaIndex>>[] areaList;
-    // Tree by name
-    protected TreeMap<String, Land> landList;
+    public final static String GLOBAL = "_GLOBAL_";
 
-    public Lands() {
+    // INDEX first, Tree by worlds (then by Areas)
+    private TreeMap<String, TreeSet<AreaIndex>>[] areaList;
+    // Tree by name
+    private TreeMap<String, Land> landList;
+    // Lands created for outside a Land, String = "Global" or WorldName
+    private TreeMap<String, Land> outsideArea;
+    // Default config of a land, String = "Global" or WorldName
+    private TreeMap<String, Land> defaultConf;
+
+    public Lands(TreeMap<String, Land> outsideArea, TreeMap<String, Land> defaultConf) {
 
         areaList = new TreeMap[4];
         for (int t = 0; t < areaList.length; t++) {
             areaList[t] = new TreeMap<>();
         }
+        this.outsideArea = outsideArea;
+        this.defaultConf = defaultConf;
         landList = new TreeMap<>();
     }
 
