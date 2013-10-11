@@ -183,10 +183,18 @@ public class StorageFlat extends Storage implements StorageInt {
         }
         cf.readParam();
         
-        //Create permissions
+        //Residents
         while ((str = cf.getNextString()) != null) {
             String[] multiStr = str.split(":");
             pc = PlayerContainer.create(PlayerContainerType.getFromString(multiStr[0]), multiStr[1]);
+            land.addResident(pc);
+        }
+        cf.readParam();
+        
+        //Create permissions
+        while ((str = cf.getNextString()) != null) {
+            String[] multiStr = str.split(":");
+            pc = PlayerContainer.create(land, PlayerContainerType.getFromString(multiStr[0]), multiStr[1]);
             land.addPermission(pc, new Permission(PermissionType.getFromString(multiStr[2]),
                     Boolean.parseBoolean(multiStr[3]), Boolean.parseBoolean(multiStr[4])));
         }
@@ -232,7 +240,14 @@ public class StorageFlat extends Storage implements StorageInt {
             }
             cb.writeParam("CuboidAreas", strs.toArray(new String[0]));
             
-            //permissions
+            //Residents
+            strs = new ArrayList<>();
+            for(PlayerContainer pc : land.getResidents()) {
+                strs.add(pc.toString());
+            }
+            cb.writeParam("Residents", strs.toArray(new String[0]));
+            
+            //Permissions
             strs = new ArrayList<>();
             for(PlayerContainer pc : land.getSetPCHavePermission()) {
                 for(Permission perm : land.getPermissionsForPC(pc)) {

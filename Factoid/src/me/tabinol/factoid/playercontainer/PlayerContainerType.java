@@ -5,7 +5,8 @@ public enum PlayerContainerType {
     UNDEFINED(0,"UNDEFINED"),
     FACTION(1,"Faction"),
     GROUP(2,"Group"),
-    PLAYER(3,"Player");
+    RESIDENT(3,"Resident"),
+    PLAYER(4,"Player");
     
     private final int value;
     private final String pcName;

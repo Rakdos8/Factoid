@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
@@ -23,6 +24,7 @@ public class Land {
     private int genealogy = 0; // 0 = first, 1 = child, 2 = child of child, ...
     private Land parent = null;
     private PlayerContainer owner;
+    private TreeSet<PlayerContainer> residents = new TreeSet<>();
     private boolean autoSave = true;
 
     public Land(String landName, PlayerContainer owner, CuboidArea area) {
@@ -156,6 +158,32 @@ public class Land {
 
         this.owner = owner;
         doSave();
+    }
+    
+    public void addResident(PlayerContainer resident) {
+        
+        residents.add(resident);
+        doSave();
+    }
+    
+    public boolean removeResident(PlayerContainer resident) {
+        
+        if(residents.remove(resident)) {
+            doSave();
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public final TreeSet<PlayerContainer> getResidents() {
+        
+        return residents;
+    }
+    
+    public boolean isResident(PlayerContainer resident) {
+        
+        return residents.contains(resident);
     }
 
     // Note : a child get the parent priority
