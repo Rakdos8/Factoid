@@ -13,7 +13,7 @@ public enum FlagType {
     CREEPER("CREEPER", FlagValueType.BOOLEAN),
     TNT("TNT", FlagValueType.BOOLEAN),
     MOB("MOB", FlagValueType.BOOLEAN),
-    PVP("PVP", FlagValueType.BOOLEAN),
+    FULL_PVP("FULL_PVP", FlagValueType.BOOLEAN),
     FACTION_PVP("FACTION_PVP", FlagValueType.BOOLEAN),
     EXCLUDE_BLOCKS("EXCLUDE_BLOCKS", FlagValueType.STRING_LIST),
     EXCLUDE_ENTITIES("EXCLUDE_ENTITIES", FlagValueType.STRING_LIST),

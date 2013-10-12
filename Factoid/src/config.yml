@@ -23,29 +23,41 @@ land:
     MinAreaSize: 1
     MaxAreaSize: 1
     MaxAreaPerLand: 1
-World:
-  Default:
-    Global:
-      ContainerPermissions:
-        - 'Everybody::BUILD_PLACE:True:False'
-        - 'Everybody::BUILD_DESTROY:True:False'
-        - 'Everybody::DROP:True:False'
-      ContainerFlags:
-        - 'FIRESPREAD:False'
-        - 'FIRE:True'
-        - 'CREEPER:False'
-    LandDefault:
-      ContainerPermissions:
-        - 'Everybody::BUILD_PLACE:False:True'
-        - 'Everybody::BUILD_DESTROY:False:True'
-        - 'Owner::BUILD_PLACE:False:True'
-        - 'Owner::BUILD_DESTROY:False:True'
-        - 'Resident::BUILD_PLACE:True:False'
-        - 'Resident::BUILD_DESTROY:True:False'
-      ContainerFlags:
-      OwnerCanSet:
-        Permissions: [BUILD_PLACE, BUILD_DESTROY]
-        Flags: [MESSAGE_JOIN, MESSAGE_QUIT]
+
+WorldsConfig:                        # Config for Global and specific worlds
+  _Global_:
+    ContainerPermissions:
+      - 'Group:Newbies:BUILD_PLACE:False:True'
+      - 'Group:Newbies:BUILD_DESTROY:False:True'
+      - 'Everybody::BUILD_PLACE:True:False'
+      - 'Everybody::BUILD_DESTROY:True:False'
+      - 'Everybody::DROP:True:False'
+    ContainerFlags:
+      - 'FIRESPREAD:False'
+      - 'FIRE:True'
+      - 'CREEPER:False'
+#  World1:
+#    ContainerPermissions:
+#      - 'Everybody::BUILD_PLACE:True:False'
+#      - 'Everybody::BUILD_DESTROY:True:False'
+#      - 'Everybody::DROP:True:False'
+#    ContainerFlags:
+#      - 'FIRESPREAD:False'
+#      - 'FIRE:True'
+#      - 'CREEPER:False'
+
+LandsDefault:                       # Default permissions and flags for lands
+  ContainerPermissions:
+    - 'Everybody::BUILD_PLACE:False:True'
+    - 'Everybody::BUILD_DESTROY:False:True'
+    - 'Owner::BUILD_PLACE:False:True'
+    - 'Owner::BUILD_DESTROY:False:True'
+    - 'Resident::BUILD_PLACE:True:False'
+    - 'Resident::BUILD_DESTROY:True:False'
+  ContainerFlags:
+  OwnerCanSet:
+    Permissions: [BUILD_PLACE, BUILD_DESTROY]
+    Flags: [MESSAGE_JOIN, MESSAGE_QUIT]
     
 economy:
   PricebyCube: 100

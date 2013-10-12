@@ -1,16 +1,15 @@
 package me.tabinol.factoid.config;
 
 import java.util.List;
+import java.util.Set;
 import java.util.TreeMap;
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.lands.Land;
-import me.tabinol.factoid.lands.Lands;
+import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.Permission;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
-import me.tabinol.factoid.playercontainer.PlayerContainerNobody;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -79,37 +78,43 @@ public class Config {
         }
     }
 
-    public TreeMap<String, Land> getLandOutsideArea() {
+    public TreeMap<String, DummyLand> getLandOutsideArea() {
+
+        TreeMap<String, DummyLand> landList = new TreeMap<>();
+        Set<String> keys = config.getConfigurationSection("WorldsConfig").getKeys(false);
+
+        for(String key : keys) {
+            String worldName = key.replace("WorldsConfig.", "");
+            List<String> permList = config.getStringList(key + ".ContainerPermissions");
+            List<String> flagList = config.getStringList(key + ".ContainerFlags");
+            landList.put(worldName, landCreate(permList, flagList));
+        }
         
-        
-        TreeMap<String, Land> landList = new TreeMap<>();
-        
-        // config.getConfigurationSection(Lang).getKeys(debug) Je suis rendu LA*********************************************
-        List<String> permlist = config.getStringList("World.Default.Global.ContainerPermissions");
-        List<String> flaglist = config.getStringList("World.Default.Global.ContainerFlags");
-        landList.put(Lands.GLOBAL, landCreate(Lands.GLOBAL, permlist, flaglist));
         return landList;
     }
     
-    private Land landCreate(String worldName, List<String> perms, List<String> flags) {
+    public DummyLand getLandDefaultConf() {
         
-        Land land = new Land(worldName, new PlayerContainerNobody(), null);
+            List<String> permList = config.getStringList("LandsDefault.ContainerPermissions");
+            List<String> flagList = config.getStringList("LandsDefault.ContainerFlags");
+            
+            return landCreate(permList, flagList);
+    }
+    
+    private DummyLand landCreate(List<String> perms, List<String> flags) {
+        
+        DummyLand dl = new DummyLand();
 
         for(String perm : perms) {
             String[] substr = perm.split(":");
-            land.addPermission(PlayerContainer.create(land, PlayerContainerType.getFromString(substr[0]), substr[1]), 
+            dl.addPermission(PlayerContainer.create(null, PlayerContainerType.getFromString(substr[0]), substr[1]), 
                     new Permission(PermissionType.getFromString(substr[2]), Boolean.parseBoolean(substr[3]), Boolean.parseBoolean(substr[4])));
         }
         for(String flag : flags) {
             String[] substr = flag.split(":");
-            land.addFlag(new LandFlag(FlagType.getFromString(substr[0]), substr[1], Boolean.parseBoolean(substr[2])));
+            dl.addFlag(new LandFlag(FlagType.getFromString(substr[0]), substr[1], Boolean.parseBoolean(substr[2])));
         }
         
-        return land;
+        return dl;
     }
-            
-    //publicTreeMap<String, Land> getLandDefaultConf() {
-        
-        
-    //}
 }
