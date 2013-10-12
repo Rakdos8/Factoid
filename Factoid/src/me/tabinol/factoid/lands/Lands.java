@@ -23,9 +23,9 @@ public class Lands {
     // Tree by name
     private TreeMap<String, Land> landList;
     // Lands created for outside a Land, String = "Global" or WorldName
-    private TreeMap<String, DummyLand> outsideArea;
+    protected TreeMap<String, DummyLand> outsideArea;
     // Default config of a land, String = "Global" or WorldName
-    private DummyLand defaultConf;
+    protected DummyLand defaultConf;
 
     public Lands(TreeMap<String, DummyLand> outsideArea, DummyLand defaultConf) {
 

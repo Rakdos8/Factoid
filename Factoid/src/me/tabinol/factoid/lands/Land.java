@@ -52,7 +52,18 @@ public class Land extends DummyLand {
         name = landName;
         this.owner = owner;
         this.genealogy = genealogy;
+        flags = Factoid.getLands().defaultConf.flags.clone();
+        copyPerms();
         addArea(area, areaId);
+    }
+    
+    private void copyPerms() {
+        
+        permissions = new TreeMap<>();
+        for(PlayerContainer pc : Factoid.getLands().defaultConf.permissions.keySet()) {
+            permissions.put(PlayerContainer.create(this, pc.getContainerType(), pc.getName()),
+                    Factoid.getLands().defaultConf.permissions.get(pc).clone());
+        }
     }
 
     public void addArea(CuboidArea area) {

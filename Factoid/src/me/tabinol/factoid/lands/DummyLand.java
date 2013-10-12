@@ -12,10 +12,13 @@ import me.tabinol.factoid.playercontainer.PlayerContainer;
 
 public class DummyLand {
 
-    private TreeMap<PlayerContainer, EnumMap<PermissionType,Permission>> permissions = new TreeMap<>(); // String for playerName
-    private EnumMap<FlagType,LandFlag> flags = new EnumMap<>(FlagType.class);
+    protected TreeMap<PlayerContainer, EnumMap<PermissionType,Permission>> permissions; // String for playerName
+    protected EnumMap<FlagType,LandFlag> flags;
     
     public DummyLand() {
+        
+        permissions = new TreeMap<>();
+        flags = new EnumMap<>(FlagType.class);
     }
     
     public void addPermission(PlayerContainer pc, Permission perm) {
