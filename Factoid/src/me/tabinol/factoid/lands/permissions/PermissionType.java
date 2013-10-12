@@ -3,46 +3,48 @@ package me.tabinol.factoid.lands.permissions;
 
 public enum PermissionType {
     
-    UNDEFINED("UNDEFINED"),
-    BUILD_PLACE("BUILD_PLACE"),
-    BUILD_DESTROY("BUILD_DESTROY"),
-    DROP("DROP"),
-    USE_CRAFT("USE_CRAFT"),
-    USE_BREW("USE_BREW"),
-    USE_SMELT("USE_SMELT"),
-    USE_CHEST("USE_CHEST"),
-    USE_DOOR("USE_DOOR"),
-    USE_SWITCH("USE_SWITCH"),
-    USE_PRESSUREPLATE("USE_PRESSUREPLATE"),
-    USE_TRAPPEDCHEST("USE_TRAPPEDCHEST"),
-    USE_STRING("USE_STRING"),
-    ANIMAL_KILL("ANIMAL_KILL"),
-    ANIMAL_CUT("ANIMAL_CUT"),
-    ANIMAL_FEED("ANIMAL_FEED"),
-    ANIMAL_ACCOUPLE("ANIMAL_ACCOUPLE"),
-    MOB_KILL("MOB_KILL"),
-    MOB_HEAL("MOB_HEAL"),
-    VILLAGER_KILL("VILLAGER_KILL"),
-    VILLAGER_GOLEM_KILL("VILLAGER_GOLEM_KILL"),
-    HORSE_KILL("HORSE_KILL"),
-    HORSE_EQUIP("HORSE_EQUIP"),
-    HORSE_CLIMB("HORSE_CLIMB"),
-    HARVEST("HARVEST"),
-    BUCKET_WATER("BUCKET_WATER"),
-    BUCKET_LAVA("BUCKET_LAVA"),
-    FIRE("FIRE"),
-    TNT("TNT"),
-    ENTER("ENTER"),
-    REMOVE("REMOVE"),
-    KICK("KICK"),
-    BAN("BAN"),
-    WHOS("WHOS");
+    UNDEFINED("UNDEFINED", false),
+    BUILD_PLACE("BUILD_PLACE", true),
+    BUILD_DESTROY("BUILD_DESTROY", true),
+    DROP("DROP", true),
+    USE_CRAFT("USE_CRAFT", true),
+    USE_BREW("USE_BREW", true),
+    USE_SMELT("USE_SMELT", true),
+    USE_CHEST("USE_CHEST", true),
+    USE_DOOR("USE_DOOR", true),
+    USE_SWITCH("USE_SWITCH", true),
+    USE_PRESSUREPLATE("USE_PRESSUREPLATE", true),
+    USE_TRAPPEDCHEST("USE_TRAPPEDCHEST", true),
+    USE_STRING("USE_STRING", true),
+    ANIMAL_KILL("ANIMAL_KILL", true),
+    ANIMAL_CUT("ANIMAL_CUT", true),
+    ANIMAL_FEED("ANIMAL_FEED", true),
+    ANIMAL_ACCOUPLE("ANIMAL_ACCOUPLE", true),
+    MOB_KILL("MOB_KILL", true),
+    MOB_HEAL("MOB_HEAL", true),
+    VILLAGER_KILL("VILLAGER_KILL", true),
+    VILLAGER_GOLEM_KILL("VILLAGER_GOLEM_KILL", true),
+    HORSE_KILL("HORSE_KILL", true),
+    HORSE_EQUIP("HORSE_EQUIP", true),
+    HORSE_CLIMB("HORSE_CLIMB", true),
+    HARVEST("HARVEST", true),
+    BUCKET_WATER("BUCKET_WATER", true),
+    BUCKET_LAVA("BUCKET_LAVA", true),
+    FIRE("FIRE", true),
+    TNT("TNT", true),
+    ENTER("ENTER", true),
+    REMOVE("REMOVE", true),
+    KICK("KICK", false),
+    BAN("BAN", false),
+    WHOS("WHOS", false);
     
     private final String permissionName;
+    private final boolean baseValue;
     
-    private PermissionType(final String permissionName) {
+    private PermissionType(final String permissionName, boolean baseValue) {
         
         this.permissionName = permissionName;
+        this.baseValue = baseValue;
     }
     
     @Override
@@ -59,5 +61,10 @@ public enum PermissionType {
             }
         }
         return null;
+    }
+    
+    public boolean baseValue() {
+        
+        return baseValue;
     }
 }

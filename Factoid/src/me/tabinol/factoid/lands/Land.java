@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 
 public class Land extends DummyLand {
@@ -293,5 +294,18 @@ public class Land extends DummyLand {
         if(autoSave) {
             forceSave();
         }
+    }
+
+    protected Boolean checkPermissionAndInherit(String playerName, PermissionType pt, boolean onlyInherit) {
+
+        Boolean permValue;
+        
+        if ((permValue = getPermission(playerName, pt, onlyInherit)) != null) {
+            return permValue;
+        } else if (parent != null) {
+            return parent.checkPermissionAndInherit(playerName, pt, true);
+        } 
+
+        return null;
     }
 }

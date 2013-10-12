@@ -64,6 +64,24 @@ public class DummyLand {
         
         return permissions.get(pc).values();
     }
+    
+    protected Boolean getPermission(String playerName, PermissionType pt, boolean onlyInherit) {
+        
+        Boolean value = null;
+        
+        for(PlayerContainer pc : permissions.keySet()) {
+            if(pc.hasAccess(playerName)) {
+                Permission perm = permissions.get(pc).get(pt);
+                if(perm != null) {
+                    if((onlyInherit && perm.isHeritable()) || !onlyInherit) {
+                        return perm.getValue();
+                    }
+                }
+            }
+        }
+        
+        return null;
+    }
 
     public void addFlag(LandFlag flag) {
         

@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import org.bukkit.Location;
 
@@ -108,6 +109,27 @@ public class Lands {
         }
 
         return lands;
+    }
+    
+    public boolean getPermission(Location loc, String playerName, PermissionType pt) {
+        
+        Land land;
+        Boolean result;
+        String worldName = loc.getWorld().getName();
+        DummyLand dl;
+        
+        if((land = getLand(loc)) != null 
+                && (result = land.checkPermissionAndInherit(playerName, pt, false)) != null) {
+            return result;
+        }
+        if((dl = outsideArea.get(worldName)) != null && (result = dl.getPermission(playerName, pt, land != null))) {
+            return result;
+        }
+        if((dl = outsideArea.get(Lands.GLOBAL)) != null && (result = dl.getPermission(playerName, pt, land != null))) {
+            return result;
+        }
+        
+        return pt.baseValue();
     }
 
     public Collection getCuboidAreas(Location loc) {

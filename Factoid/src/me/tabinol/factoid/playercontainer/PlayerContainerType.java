@@ -2,12 +2,13 @@ package me.tabinol.factoid.playercontainer;
 
 public enum PlayerContainerType {
     
+    // Order is important here The first is the permission checked first
     UNDEFINED(0,"UNDEFINED"),
-    FACTION(1,"Faction"),
-    GROUP(2,"Group"),
-    OWNER(3,"Owner"),
-    RESIDENT(4,"Resident"),
-    PLAYER(5,"Player"),
+    OWNER(1,"Owner"),
+    PLAYER(2,"Player"),
+    RESIDENT(3,"Resident"),
+    GROUP(4,"Group"),
+    FACTION(5,"Faction"),
     EVERYBODY(6,"Everybody"),
     NOBODY(7,"Nobody");
     

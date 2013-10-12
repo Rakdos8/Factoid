@@ -4,11 +4,15 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.lands.permissions.PermissionType;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -44,7 +48,32 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
     public void onBlockPlace(BlockPlaceEvent event) {
+        
+        if(!checkPermission(event.getBlock().getLocation(), event.getPlayer(),
+                PermissionType.BUILD_PLACE, true)) {
+            event.setCancelled(true);
+        }
+    }
+    
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+    public void onBlockBreak(BlockBreakEvent event) {
+        
+        if(!checkPermission(event.getBlock().getLocation(), event.getPlayer(),
+                PermissionType.BUILD_DESTROY, true)) {
+            event.setCancelled(true);
+        }
+    }
+
+    private boolean checkPermission(Location loc, Player player, PermissionType pt, boolean sendMessage) {
+        
+        if(Factoid.getLands().getPermission(loc, player.getName(), pt) != pt.baseValue()) {
+            if(sendMessage) {
+                player.sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("ACTION.MISSINGPERMISSION"));
+            }
+            return false;
+        }
+        return true;
     }
 }

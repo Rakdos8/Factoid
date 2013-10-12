@@ -57,6 +57,8 @@ COMMAND:
       OWNER: "Owner: % ; %"
       AREA: "Area(s):"
     NOLAND: "There's no Land here."
+ACTION:
+  MISSINGPERMISSION: "You can not do this action here!"
 LOG:
   STORAGE:
     LOAD:
