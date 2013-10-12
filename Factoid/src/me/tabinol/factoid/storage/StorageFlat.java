@@ -190,6 +190,14 @@ public class StorageFlat extends Storage implements StorageInt {
         }
         cf.readParam();
         
+        //Banneds
+        while ((str = cf.getNextString()) != null) {
+            String[] multiStr = str.split(":");
+            pc = PlayerContainer.create(land, PlayerContainerType.getFromString(multiStr[0]), multiStr[1]);
+            land.addBanned(pc);
+        }
+        cf.readParam();
+        
         //Create permissions
         while ((str = cf.getNextString()) != null) {
             String[] multiStr = str.split(":");
@@ -239,7 +247,14 @@ public class StorageFlat extends Storage implements StorageInt {
                 strs.add(pc.toString());
             }
             cb.writeParam("Residents", strs.toArray(new String[0]));
-            
+
+            //Banneds
+            strs = new ArrayList<>();
+            for(PlayerContainer pc : land.getBanneds()) {
+                strs.add(pc.toString());
+            }
+            cb.writeParam("Banneds", strs.toArray(new String[0]));
+
             //Permissions
             strs = new ArrayList<>();
             for(PlayerContainer pc : land.getSetPCHavePermission()) {

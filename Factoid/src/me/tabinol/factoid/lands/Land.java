@@ -18,6 +18,7 @@ public class Land extends DummyLand {
     private Land parent = null;
     private PlayerContainer owner;
     private TreeSet<PlayerContainer> residents = new TreeSet<>();
+    private TreeSet<PlayerContainer> banneds = new TreeSet<>();
     private boolean autoSave = true;
 
     public Land(String landName, PlayerContainer owner, CuboidArea area) {
@@ -188,6 +189,32 @@ public class Land extends DummyLand {
     public boolean isResident(PlayerContainer resident) {
         
         return residents.contains(resident);
+    }
+
+    public void addBanned(PlayerContainer banned) {
+        
+        banneds.add(banned);
+        doSave();
+    }
+    
+    public boolean removeBanned(PlayerContainer banned) {
+        
+        if(banneds.remove(banned)) {
+            doSave();
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public final TreeSet<PlayerContainer> getBanneds() {
+        
+        return banneds;
+    }
+    
+    public boolean isBanned(PlayerContainer banned) {
+        
+        return banneds.contains(banned);
     }
 
     // Note : a child get the parent priority
