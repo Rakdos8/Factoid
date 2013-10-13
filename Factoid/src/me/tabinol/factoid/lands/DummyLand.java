@@ -26,7 +26,8 @@ public class DummyLand {
        EnumMap<PermissionType, Permission> permPlayer;
         
         if(!permissions.containsKey(pc)) {
-            permPlayer = permissions.put(pc, new EnumMap<PermissionType,Permission>(PermissionType.class));
+            permPlayer = new EnumMap<>(PermissionType.class);
+            permissions.put(pc, permPlayer);
         } else {
             permPlayer = permissions.get(pc);
         }
@@ -66,8 +67,6 @@ public class DummyLand {
     }
     
     protected Boolean getPermission(String playerName, PermissionType pt, boolean onlyInherit) {
-        
-        Boolean value = null;
         
         for(PlayerContainer pc : permissions.keySet()) {
             if(pc.hasAccess(playerName)) {

@@ -122,10 +122,10 @@ public class Lands {
                 && (result = land.checkPermissionAndInherit(playerName, pt, false)) != null) {
             return result;
         }
-        if((dl = outsideArea.get(worldName)) != null && (result = dl.getPermission(playerName, pt, land != null))) {
+        if((dl = outsideArea.get(worldName)) != null && (result = dl.getPermission(playerName, pt, land != null)) != null) {
             return result;
         }
-        if((dl = outsideArea.get(Lands.GLOBAL)) != null && (result = dl.getPermission(playerName, pt, land != null))) {
+        if((dl = outsideArea.get(Lands.GLOBAL)) != null && (result = dl.getPermission(playerName, pt, land != null)) != null) {
             return result;
         }
         

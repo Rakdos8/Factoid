@@ -36,7 +36,7 @@ WorldsConfig:                        # Config for Global and specific worlds
       - 'FIRESPREAD:False'
       - 'FIRE:True'
       - 'CREEPER:False'
-#  World1:
+#  world1:
 #    ContainerPermissions:
 #      - 'Everybody::BUILD_PLACE:True:False'
 #      - 'Everybody::BUILD_DESTROY:True:False'
@@ -46,16 +46,16 @@ WorldsConfig:                        # Config for Global and specific worlds
 #      - 'FIRE:True'
 #      - 'CREEPER:False'
 
-LandsDefault:                       # Default permissions and flags for lands
+LandsConfig:                       # Default permissions and flags for lands
   ContainerPermissions:
     - 'Everybody::BUILD_PLACE:False:True'
     - 'Everybody::BUILD_DESTROY:False:True'
-    - 'Owner::BUILD_PLACE:False:True'
-    - 'Owner::BUILD_DESTROY:False:True'
+    - 'Owner::BUILD_PLACE:True:True'
+    - 'Owner::BUILD_DESTROY:True:True'
     - 'Resident::BUILD_PLACE:True:False'
     - 'Resident::BUILD_DESTROY:True:False'
   ContainerFlags:
-  OwnerCanSet:
+  OwnerCanSet:                     # What the owner can set on his land?
     Permissions: [BUILD_PLACE, BUILD_DESTROY]
     Flags: [MESSAGE_JOIN, MESSAGE_QUIT]
     
