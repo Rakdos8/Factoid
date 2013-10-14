@@ -5,6 +5,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.lands.flags.FlagType;
+import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 
@@ -304,6 +306,19 @@ public class Land extends DummyLand {
             return permValue;
         } else if (parent != null) {
             return parent.checkPermissionAndInherit(playerName, pt, true);
+        } 
+
+        return null;
+    }
+    
+    protected LandFlag getFlagAndInherit(FlagType ft, boolean onlyInherit) {
+
+        LandFlag flag;
+        
+        if ((flag = getFlag(ft, onlyInherit)) != null) {
+            return flag;
+        } else if (parent != null) {
+            return parent.getFlagAndInherit(ft, true);
         } 
 
         return null;

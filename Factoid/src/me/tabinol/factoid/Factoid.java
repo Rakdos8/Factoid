@@ -1,9 +1,5 @@
 package me.tabinol.factoid;
 
-import java.io.File;
-
-
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.tabinol.factoid.utilities.Lang;
@@ -13,14 +9,15 @@ import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.factions.Factions;
 import me.tabinol.factoid.lands.Lands;
 import me.tabinol.factoid.listeners.PlayerListener;
+import me.tabinol.factoid.listeners.WorldListener;
 import me.tabinol.factoid.storage.Storage;
 import me.tabinol.factoid.storage.StorageFlat;
 
 public class Factoid extends JavaPlugin {
-    private File configFile;
-    private FileConfiguration config;
+
     private OnCommand CommandListener;
     private PlayerListener playerListener;
+    private WorldListener worldListener;
     private static Storage storage;
     private static Log log;
     private static Factoid thisPlugin;
@@ -43,8 +40,10 @@ public class Factoid extends JavaPlugin {
         factions = new Factions();
         lands = new Lands(conf.getLandOutsideArea(), conf.getLandDefaultConf());
         storage.loadAll();
+        worldListener = new WorldListener();
         playerListener = new PlayerListener();
         CommandListener = new OnCommand();
+        getServer().getPluginManager().registerEvents(worldListener, this);
         getServer().getPluginManager().registerEvents(playerListener, this);
         getCommand("factoid").setExecutor(CommandListener);
         log.write(Factoid.getLanguage().getMessage("ENABLE"));

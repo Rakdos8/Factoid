@@ -60,6 +60,11 @@ public class LandFlag {
         return valueStringList;
     }
     
+    public boolean isHeritable() {
+        
+        return heritable;
+    }
+    
     @Override
     public String toString() {
         

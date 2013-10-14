@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.lands.flags.FlagType;
+import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import org.bukkit.Location;
@@ -130,6 +132,27 @@ public class Lands {
         }
         
         return pt.baseValue();
+    }
+
+    public LandFlag getFlag(Location loc, FlagType ft) {
+        
+        Land land;
+        LandFlag result;
+        String worldName = loc.getWorld().getName();
+        DummyLand dl;
+        
+        if((land = getLand(loc)) != null 
+                && (result = land.getFlagAndInherit(ft, false)) != null) {
+            return result;
+        }
+        if((dl = outsideArea.get(worldName)) != null && (result = dl.getFlag(ft, land != null)) != null) {
+            return result;
+        }
+        if((dl = outsideArea.get(Lands.GLOBAL)) != null && (result = dl.getFlag(ft, land != null)) != null) {
+            return result;
+        }
+        
+        return null;
     }
 
     public Collection getCuboidAreas(Location loc) {

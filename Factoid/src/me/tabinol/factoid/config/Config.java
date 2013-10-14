@@ -81,10 +81,10 @@ public class Config {
     public TreeMap<String, DummyLand> getLandOutsideArea() {
 
         TreeMap<String, DummyLand> landList = new TreeMap<>();
-        Set<String> keys = config.getConfigurationSection("WorldsConfig").getKeys(false);
+        Set<String> keys = config.getConfigurationSection("world").getKeys(false);
 
         for(String key : keys) {
-            String worldName = key.replace("WorldsConfig.", "");
+            String worldName = key.replace("world.", "");
             List<String> permList = config.getStringList(key + ".ContainerPermissions");
             List<String> flagList = config.getStringList(key + ".ContainerFlags");
             landList.put(worldName, landCreate(permList, flagList));
@@ -95,8 +95,8 @@ public class Config {
     
     public DummyLand getLandDefaultConf() {
         
-            List<String> permList = config.getStringList("LandsDefault.ContainerPermissions");
-            List<String> flagList = config.getStringList("LandsDefault.ContainerFlags");
+            List<String> permList = config.getStringList("land.DefaultConfig.ContainerPermissions");
+            List<String> flagList = config.getStringList("land.DefaultConfig.ContainerFlags");
             
             return landCreate(permList, flagList);
     }

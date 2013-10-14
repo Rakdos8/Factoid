@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import me.tabinol.factoid.Factoid;
 
 public class ConfLoader {
 
@@ -39,6 +40,7 @@ public class ConfLoader {
             if (lrt.equals("") || lrt.equals("}")) {
                 return null;
             }
+            Factoid.getLog().write("Readline: " + lrt);
             return lrt;
         } catch (IOException ex) {
             Logger.getLogger(ConfLoader.class.getName()).log(Level.SEVERE, null, ex);
@@ -60,7 +62,7 @@ public class ConfLoader {
             param = str.replaceAll("\\{", "");
             value = null;
         } else if (str.contains(":")) {
-            String[] chn = str.split(":");
+            String[] chn = str.split(":", 2);
             param = chn[0];
             if (chn[1].equals("-null-")) {
                 value = null;
