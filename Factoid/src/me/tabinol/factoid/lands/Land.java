@@ -287,7 +287,6 @@ public class Land extends DummyLand {
     public void forceSave() {
         
         Factoid.getStorage().saveLand(this);
-        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.SAVE",name));
     }
     
     @Override

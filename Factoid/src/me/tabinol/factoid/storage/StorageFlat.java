@@ -226,6 +226,7 @@ public class StorageFlat extends Storage implements StorageInt {
         ArrayList<String> strs;
         
         if (!inLoad) {
+            Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.SAVE",land.getName()));
             ConfBuilder cb = new ConfBuilder(land.getName());
             cb.writeParam("Owner", land.getOwner().toString());
             if(land.getParent() == null) {

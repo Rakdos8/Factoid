@@ -54,4 +54,9 @@ public class Calculate {
         }
         return (t < 0 ? -t : t);
     }
+    
+    public static boolean getRandomYield(float yield) {
+        
+        return Math.random() < yield;
+    }
 }
