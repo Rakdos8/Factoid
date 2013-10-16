@@ -297,29 +297,31 @@ public class Land extends DummyLand {
         }
     }
 
-    protected Boolean checkPermissionAndInherit(String playerName, PermissionType pt, boolean onlyInherit) {
+    @Override
+    protected Boolean checkPermissionAndInherit(String worldName, String playerName, PermissionType pt, boolean onlyInherit) {
 
         Boolean permValue;
         
         if ((permValue = getPermission(playerName, pt, onlyInherit)) != null) {
             return permValue;
         } else if (parent != null) {
-            return parent.checkPermissionAndInherit(playerName, pt, true);
-        } 
-
-        return null;
+            return parent.checkPermissionAndInherit(worldName, playerName, pt, true);
+        }
+        
+        return Factoid.getLands().getPermissionInWorld(worldName, playerName, pt, true);
     }
     
-    protected LandFlag getFlagAndInherit(FlagType ft, boolean onlyInherit) {
+    @Override
+    protected LandFlag getFlagAndInherit(String worldName, FlagType ft, boolean onlyInherit) {
 
         LandFlag flag;
         
         if ((flag = getFlag(ft, onlyInherit)) != null) {
             return flag;
         } else if (parent != null) {
-            return parent.getFlagAndInherit(ft, true);
+            return parent.getFlagAndInherit(worldName, ft, true);
         } 
 
-        return null;
+        return Factoid.getLands().getFlagInWorld(worldName, ft, true);
     }
 }

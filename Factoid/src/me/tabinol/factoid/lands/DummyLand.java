@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Set;
 import java.util.TreeMap;
+import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.Permission;
@@ -66,6 +67,17 @@ public class DummyLand {
         return permissions.get(pc).values();
     }
 
+    public Boolean checkPermissionAndInherit(String worldName, String playerName, PermissionType pt) {
+
+        return checkPermissionAndInherit(worldName, playerName, pt, false);
+
+    }
+
+    protected Boolean checkPermissionAndInherit(String worldName, String playerName, PermissionType pt, boolean onlyInherit) {
+
+        return Factoid.getLands().getPermissionInWorld(worldName, playerName, pt, true);
+    }
+
     protected Boolean getPermission(String playerName, PermissionType pt, boolean onlyInherit) {
 
         for (PlayerContainer pc : permissions.keySet()) {
@@ -100,6 +112,16 @@ public class DummyLand {
     public Collection<LandFlag> getFlags() {
 
         return flags.values();
+    }
+
+    public LandFlag getFlagAndInherit(String worldName, FlagType ft) {
+
+        return getFlagAndInherit(worldName, ft, false);
+    }
+
+    protected LandFlag getFlagAndInherit(String worldName, FlagType ft, boolean onlyInherit) {
+
+        return Factoid.getLands().getFlagInWorld(worldName, ft, true);
     }
 
     protected LandFlag getFlag(FlagType ft, boolean onlyInherit) {

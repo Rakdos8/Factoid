@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
+import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.utilities.Calculate;
@@ -15,6 +16,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
@@ -95,7 +97,8 @@ public class WorldListener implements Listener {
 
         // Check blocks to remove
         for (Block block : blocks) {
-            if ((flag = Factoid.getLands().getFlag(block.getLocation(), ft)) == null
+            if ((flag = Factoid.getLands().getLandOrOutsideArea(
+                    block.getLocation()).getFlagAndInherit(block.getLocation().getWorld().getName(), ft)) == null
                     || (flag != null && flag.getValueBoolean() == true)) {
                 listToRem.add(block);
             }
@@ -119,14 +122,20 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
 
+        DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
         LandFlag flag;
 
         // Enderman removeblock
         if (event.getEntityType() == EntityType.ENDERMAN
-                && (flag = Factoid.getLands().getFlag(event.getBlock().getLocation(), FlagType.ENDERMAN_DAMAGE)) != null
+                && (flag = land.getFlagAndInherit(
+                event.getBlock().getLocation().getWorld().getName(), FlagType.ENDERMAN_DAMAGE)) != null
                 && flag.getValueBoolean() == false) {
             event.setCancelled(true);
         }
 
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+    public void onBlockIgnite(BlockIgniteEvent event) {
     }
 }

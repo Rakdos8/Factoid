@@ -3,10 +3,10 @@ package me.tabinol.factoid.listeners;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.lands.CuboidArea;
+import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -51,7 +51,9 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
     public void onBlockPlace(BlockPlaceEvent event) {
         
-        if(!checkPermission(event.getBlock().getLocation(), event.getPlayer(),
+        DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
+        
+        if(!checkPermission(event.getBlock().getLocation().getWorld().getName(), land, event.getPlayer(),
                 PermissionType.BUILD_PLACE, true)) {
             event.setCancelled(true);
         }
@@ -60,15 +62,17 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
     public void onBlockBreak(BlockBreakEvent event) {
         
-        if(!checkPermission(event.getBlock().getLocation(), event.getPlayer(),
+        DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
+ 
+        if(!checkPermission(event.getBlock().getLocation().getWorld().getName(), land, event.getPlayer(),
                 PermissionType.BUILD_DESTROY, true)) {
             event.setCancelled(true);
         }
     }
 
-    private boolean checkPermission(Location loc, Player player, PermissionType pt, boolean sendMessage) {
+    private boolean checkPermission(String worldName, DummyLand land, Player player, PermissionType pt, boolean sendMessage) {
         
-        if(Factoid.getLands().getPermission(loc, player.getName(), pt) != pt.baseValue()) {
+        if(land.checkPermissionAndInherit(worldName, player.getName(), pt) != pt.baseValue()) {
             if(sendMessage) {
                 player.sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("ACTION.MISSINGPERMISSION"));
             }

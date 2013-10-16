@@ -20,7 +20,6 @@ public class Lands {
     public final static int INDEX_X2 = 2;
     public final static int INDEX_Z2 = 3;
     public final static String GLOBAL = "_Global_";
-
     // INDEX first, Tree by worlds (then by Areas)
     private TreeMap<String, TreeSet<AreaIndex>>[] areaList;
     // Tree by name
@@ -47,7 +46,7 @@ public class Lands {
             return false;
         }
         addLandToList(land);
-        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.CREATE",land.getName()));
+        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.CREATE", land.getName()));
         return true;
     }
 
@@ -59,7 +58,7 @@ public class Lands {
         removeLandToList(land);
         land.getParent().removeChild(land.getName());
         Factoid.getStorage().removeLand(land);
-        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.REMOVE",land.getName()));
+        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.REMOVE", land.getName()));
         return true;
     }
 
@@ -68,7 +67,7 @@ public class Lands {
         if (landName == null || !landList.containsKey(landName)) {
             return false;
         }
-        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.REMOVE",landName));
+        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.REMOVE", landName));
         return removeLand(landList.get(landName));
 
     }
@@ -86,6 +85,20 @@ public class Lands {
             return null;
         }
         return ca.getLand();
+    }
+
+    public DummyLand getLandOrOutsideArea(Location loc) {
+
+        DummyLand land;
+
+        if ((land = getLand(loc)) != null) {
+            return land;
+        }
+        if((land = outsideArea.get(loc.getWorld().getName())) != null) {
+            return land;
+        }
+        
+        return outsideArea.get(GLOBAL);
     }
 
     public Collection getLands(Location loc) {
@@ -112,46 +125,34 @@ public class Lands {
 
         return lands;
     }
-    
-    public boolean getPermission(Location loc, String playerName, PermissionType pt) {
-        
-        Land land;
+
+    protected boolean getPermissionInWorld(String worldName, String playerName, PermissionType pt, boolean onlyInherit) {
+
         Boolean result;
-        String worldName = loc.getWorld().getName();
         DummyLand dl;
-        
-        if((land = getLand(loc)) != null 
-                && (result = land.checkPermissionAndInherit(playerName, pt, false)) != null) {
+
+        if ((dl = outsideArea.get(worldName)) != null && (result = dl.getPermission(playerName, pt, onlyInherit)) != null) {
             return result;
         }
-        if((dl = outsideArea.get(worldName)) != null && (result = dl.getPermission(playerName, pt, land != null)) != null) {
+        if ((dl = outsideArea.get(Lands.GLOBAL)) != null && (result = dl.getPermission(playerName, pt, onlyInherit)) != null) {
             return result;
         }
-        if((dl = outsideArea.get(Lands.GLOBAL)) != null && (result = dl.getPermission(playerName, pt, land != null)) != null) {
-            return result;
-        }
-        
+
         return pt.baseValue();
     }
 
-    public LandFlag getFlag(Location loc, FlagType ft) {
-        
-        Land land;
+    protected LandFlag getFlagInWorld(String worldName, FlagType ft, boolean onlyInherit) {
+
         LandFlag result;
-        String worldName = loc.getWorld().getName();
         DummyLand dl;
-        
-        if((land = getLand(loc)) != null 
-                && (result = land.getFlagAndInherit(ft, false)) != null) {
+
+        if ((dl = outsideArea.get(worldName)) != null && (result = dl.getFlag(ft, onlyInherit)) != null) {
             return result;
         }
-        if((dl = outsideArea.get(worldName)) != null && (result = dl.getFlag(ft, land != null)) != null) {
+        if ((dl = outsideArea.get(Lands.GLOBAL)) != null && (result = dl.getFlag(ft, onlyInherit)) != null) {
             return result;
         }
-        if((dl = outsideArea.get(Lands.GLOBAL)) != null && (result = dl.getFlag(ft, land != null)) != null) {
-            return result;
-        }
-        
+
         return null;
     }
 

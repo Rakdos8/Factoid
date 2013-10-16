@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.DummyLand;
+import me.tabinol.factoid.lands.Lands;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.Permission;
@@ -104,20 +105,25 @@ public class Config {
         for (String key : keys) {
             String worldName = key;
             Factoid.getLog().write("Create conf for World: " + key);
-            landList.put(worldName, landCreate(worldConfig, key + ".ContainerPermissions",
+            landList.put(worldName, landCreate(key, worldConfig, key + ".ContainerPermissions",
                     key + ".ContainerFlags"));
         }
 
+        // Create Global if it is not created
+        if(!landList.containsKey(Lands.GLOBAL)) {
+            landList.put(Lands.GLOBAL, new DummyLand());
+        }
+        
         return landList;
     }
 
     public DummyLand getLandDefaultConf() {
 
         Factoid.getLog().write("Create default conf for lands");
-        return landCreate(landDefault, "ContainerPermissions", "ContainerFlags");
+        return landCreate(null, landDefault, "ContainerPermissions", "ContainerFlags");
     }
 
-    private DummyLand landCreate(FileConfiguration fc, String perms, String flags) {
+    private DummyLand landCreate(String worldName, FileConfiguration fc, String perms, String flags) {
 
         DummyLand dl = new DummyLand();
         ConfigurationSection csPerm = fc.getConfigurationSection(perms);
