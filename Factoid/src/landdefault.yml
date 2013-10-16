@@ -1,0 +1,26 @@
+ContainerPermissions:          # Default Config when land is created
+  Everybody:
+    BUILD_PLACE:
+      Value: false
+      Heritable: true
+    BUILD_DESTROY:
+      Value: false
+      Heritable: true
+  Owner:
+    BUILD_PLACE:
+      Value: true
+      Heritable: true
+    BUILD_DESTROY:
+      Value: true
+      Heritable: true
+  Resident:
+    BUILD_PLACE:
+      Value: true
+      Heritable: false
+    BUILD_DESTROY:
+      Value: true
+      Heritable: false
+ContainerFlags:
+  CREEPER_DAMAGE:
+    Value: false
+    Heritable: true

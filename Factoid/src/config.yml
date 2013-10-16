@@ -23,41 +23,9 @@ land:
     MinAreaSize: 1
     MaxAreaSize: 1
     MaxAreaPerLand: 1
-  DefaultConfig:
-    ContainerPermissions:          # Default Config when land is created
-      - 'Everybody::BUILD_PLACE:False:True'
-      - 'Everybody::BUILD_DESTROY:False:True'
-      - 'Owner::BUILD_PLACE:True:True'
-      - 'Owner::BUILD_DESTROY:True:True'
-      - 'Resident::BUILD_PLACE:True:False'
-      - 'Resident::BUILD_DESTROY:True:False'
-    ContainerFlags:
-      - 'CREEPER_DAMAGE:False:True'
   OwnerCanSet:                     # What the owner can set on his land?
     Permissions: [BUILD_PLACE, BUILD_DESTROY]
     Flags: [MESSAGE_JOIN, MESSAGE_QUIT]
-
-world:                             # Config for Global and specific worlds
-  _Global_:
-    ContainerPermissions:
-      - 'Group:Newbies:BUILD_PLACE:False:True'
-      - 'Group:Newbies:BUILD_DESTROY:False:True'
-      - 'Everybody::BUILD_PLACE:True:False'
-      - 'Everybody::BUILD_DESTROY:True:False'
-      - 'Everybody::DROP:True:False'
-    ContainerFlags:
-      - 'FIRESPREAD:False:True'
-      - 'FIRE:True:True'
-      - 'CREEPER_DAMAGE:True:True'
-#  world1:
-#    ContainerPermissions:
-#      - 'Everybody::BUILD_PLACE:True:False'
-#      - 'Everybody::BUILD_DESTROY:True:False'
-#      - 'Everybody::DROP:True:False'
-#    ContainerFlags:
-#      - 'FIRESPREAD:False:True'
-#      - 'FIRE:True:True'
-#      - 'CREEPER_DAMAGE:False:True'
     
 economy:
   PricebyCube: 100
