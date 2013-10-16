@@ -24,14 +24,20 @@ public class LandMakeSquare extends Thread{
     private boolean IsCollisionRigth = false;
     
     
-    public LandMakeSquare(Player player,Location loc){
+    public LandMakeSquare(Player player,Location loc,int x1,int x2,int y1,int y2,int z1,int z2){
         this.player = player;
         this.world = player.getWorld();
-        FrontCornerLeft = new Location(this.world,Calculate.AdditionDouble(loc.getX(),-6.0),this.world.getHighestBlockYAt(Calculate.AdditionInt(loc.getBlockX(),-6),Calculate.AdditionInt(loc.getBlockZ(),6))-1,Calculate.AdditionDouble(loc.getZ(),6.0));
-        BackCornerLeft = new Location(this.world,Calculate.AdditionDouble(loc.getX(),-6.0),this.world.getHighestBlockYAt(Calculate.AdditionInt(loc.getBlockX(),-6),Calculate.AdditionInt(loc.getBlockZ(),-6))-1,Calculate.AdditionDouble(loc.getZ(),-6.0));
-        FrontCornerRigth = new Location(this.world,Calculate.AdditionDouble(loc.getX(),6.0),this.world.getHighestBlockYAt(Calculate.AdditionInt(loc.getBlockX(),6),Calculate.AdditionInt(loc.getBlockZ(),6))-1,Calculate.AdditionDouble(loc.getZ(),6.0));
-        BackCornerRigth = new Location(this.world,Calculate.AdditionDouble(loc.getX(),6.0),this.world.getHighestBlockYAt(Calculate.AdditionInt(loc.getBlockX(),6),Calculate.AdditionInt(loc.getBlockZ(),-6))-1,Calculate.AdditionDouble(loc.getZ(),-6.0));
-         
+        if(loc != null){
+            FrontCornerLeft = new Location(this.world,Calculate.AdditionDouble(loc.getX(),-6.0),this.world.getHighestBlockYAt(Calculate.AdditionInt(loc.getBlockX(),-6),Calculate.AdditionInt(loc.getBlockZ(),6))-1,Calculate.AdditionDouble(loc.getZ(),6.0));
+            BackCornerLeft = new Location(this.world,Calculate.AdditionDouble(loc.getX(),-6.0),this.world.getHighestBlockYAt(Calculate.AdditionInt(loc.getBlockX(),-6),Calculate.AdditionInt(loc.getBlockZ(),-6))-1,Calculate.AdditionDouble(loc.getZ(),-6.0));
+            FrontCornerRigth = new Location(this.world,Calculate.AdditionDouble(loc.getX(),6.0),this.world.getHighestBlockYAt(Calculate.AdditionInt(loc.getBlockX(),6),Calculate.AdditionInt(loc.getBlockZ(),6))-1,Calculate.AdditionDouble(loc.getZ(),6.0));
+            BackCornerRigth = new Location(this.world,Calculate.AdditionDouble(loc.getX(),6.0),this.world.getHighestBlockYAt(Calculate.AdditionInt(loc.getBlockX(),6),Calculate.AdditionInt(loc.getBlockZ(),-6))-1,Calculate.AdditionDouble(loc.getZ(),-6.0));
+        }else{
+            FrontCornerLeft = new Location(this.world,x1,this.world.getHighestBlockYAt(x1,z1)-1,z1);
+            BackCornerLeft = new Location(this.world,x2,this.world.getHighestBlockYAt(x2,z2)-1,Calculate.getDifference(z1,z2));
+            FrontCornerRigth = new Location(this.world,Calculate.getDifference(x1,x2),this.world.getHighestBlockYAt(x1,z1)-1,z1);
+            BackCornerRigth = new Location(this.world,x2,this.world.getHighestBlockYAt(x2,z2)-1,z2);
+        }
     }
     
     public Map<Location,Material> makeSquare(){

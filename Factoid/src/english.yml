@@ -49,7 +49,7 @@ COMMAND:
       SELECTMODE: "Join the Select Mode before."
   REMOVE:
     DONE: 
-      LAND: "You have remove the land % ."
+      LAND: "You have remove the land % (% areas)."
       AREA: "You have remove the area of the land % ."
     QUIT:
       FLAGSMODE: "Quit the Flags Mode before."

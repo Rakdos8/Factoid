@@ -28,7 +28,7 @@ public class LandSelection extends Thread implements Listener{
         server.getPluginManager().registerEvents(this, plugin);
         this.player = player;
         this.world = player.getWorld();
-        LandMakeSquare landmake = new LandMakeSquare(player,player.getLocation());
+        LandMakeSquare landmake = new LandMakeSquare(player,player.getLocation(),0,0,0,0,0,0);
         this.BlockList = landmake.makeSquare();
         this.CornerList = landmake.getCorner();
         this.LandPos = player.getLocation();
@@ -45,7 +45,7 @@ public class LandSelection extends Thread implements Listener{
                        boolean done = new LandResetSelection(this.BlockList,this.CornerList,this.player).Reset();
                        if(done){
                            this.BlockList.clear();
-                           LandMakeSquare landmake = new LandMakeSquare(this.player,event.getTo());
+                           LandMakeSquare landmake = new LandMakeSquare(this.player,event.getTo(),0,0,0,0,0,0);
                            this.BlockList = landmake.makeSquare();
                            this.CornerList = landmake.getCorner();
                            this.LandPos = event.getTo();

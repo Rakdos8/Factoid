@@ -21,6 +21,7 @@ import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.lands.flags.LandSetFlag;
+import me.tabinol.factoid.lands.selection.LandMakeSquare;
 
 public class OnCommand extends Thread implements CommandExecutor{
     private Lang language;
@@ -53,11 +54,7 @@ public class OnCommand extends Thread implements CommandExecutor{
                         if(!this.PlayerSetFlag.containsKey(player.getName().toLowerCase())){
                             if(!this.PlayerExpanding.containsKey(player.getName().toLowerCase())){
                                     if(!this.PlayerSelecting.containsKey(player.getName().toLowerCase())){
-                                        player.sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.SELECT.JOINMODE"));
-                                        player.sendMessage(ChatColor.DARK_GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.SELECT.HINT",ChatColor.ITALIC.toString(),ChatColor.RESET.toString(), ChatColor.DARK_GRAY.toString()));
                                         log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.SELECT.JOIN",player.getName()));
-                                        LandSelection select =  new LandSelection(player,player.getServer(),plugin);
-                                        this.PlayerSelecting.put(player.getName().toLowerCase(),select);
                                         if(arg.length == 2){
                                             Land landtest = Factoid.getLands().getLand(arg[1].toString());
                                             if(landtest != null){
@@ -65,6 +62,9 @@ public class OnCommand extends Thread implements CommandExecutor{
                                                 if(owner.hasAccess(player.getName())){
                                                     if(!LandSelectioned.containsKey(player.getName().toLowerCase())){
                                                         LandSelectioned.put(player.getName().toLowerCase(), landtest);
+                                                        for(CuboidArea area : landtest.getAreas()){
+                                                            LandMakeSquare landmake = new LandMakeSquare(player,null,area.getX1(),area.getX2(),area.getY1(),area.getY2(),area.getZ1(),area.getZ2());
+                                                        }
                                                         player.sendMessage(ChatColor.GREEN+"[Factoid] "+ChatColor.DARK_GRAY+"You have selected the land '"+landtest.getName()+"'");
                                                     }else{
                                                         player.sendMessage(ChatColor.RED+"[Factoid] "+ChatColor.DARK_GRAY+"You have select the land '"+landtest.getName()+"' while someone is Modifying it.");
@@ -76,6 +76,11 @@ public class OnCommand extends Thread implements CommandExecutor{
                                             }else{
                                                 player.sendMessage(ChatColor.RED+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.SELECT.NOLAND"));
                                             }
+                                        }else{
+                                            player.sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.SELECT.JOINMODE"));
+                                            player.sendMessage(ChatColor.DARK_GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.SELECT.HINT",ChatColor.ITALIC.toString(),ChatColor.RESET.toString(), ChatColor.DARK_GRAY.toString()));
+                                            LandSelection select =  new LandSelection(player,player.getServer(),plugin);
+                                            this.PlayerSelecting.put(player.getName().toLowerCase(),select);
                                         }
                                     }else if(arg.length > 1 && arg[1].equalsIgnoreCase("done")){
                                         if(!LandSelectioned.containsKey(player.getName().toLowerCase())){
@@ -245,12 +250,12 @@ public class OnCommand extends Thread implements CommandExecutor{
                                                 //land.removeArea(area);
                                                 i++;
                                             }
-                                            player.sendMessage(ChatColor.DARK_GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.FLAGS.DONE.LAND",land.getName()));
-                                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.FLAGS.DONE.LAND",player.getName(),land.getName()));
+                                            player.sendMessage(ChatColor.DARK_GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.REMOVE.DONE.LAND",land.getName(),i+""));
+                                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.REMOVE.DONE.LAND",player.getName(),land.getName()));
                                        }else if(arg[1].equalsIgnoreCase("area")){
                                            CuboidArea area = Factoid.getLands().getCuboidArea(player.getLocation());
-                                            player.sendMessage(ChatColor.DARK_GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.FLAGS.DONE.AREA",area.getLand().getName()));
-                                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.FLAGS.DONE.AREA",player.getName(),area.getWorldName(),area.getLand().getName()));
+                                            player.sendMessage(ChatColor.DARK_GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.REMOVE.DONE.AREA",area.getLand().getName()));
+                                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.REMOVE.DONE.AREA",player.getName(),area.getWorldName(),area.getLand().getName()));
                                        }
                                    }else{
                                        
