@@ -14,6 +14,7 @@ COMMAND:
     LAND:
       COLLISION: "Your selection have an collision with an another Land."
     CANCEL: "You have cancelled your selection."
+    CANTDONE: "You cannot 'Done' a selection which's already a Land."
   EXPAND:
     JOINMODE: "You are now in Expand Mode."
     QUITMODE: "You are no longer in Expand Mode."
@@ -21,13 +22,16 @@ COMMAND:
     HINT: "Type % '/factoid expand done' % % to confirm your choice."
     COMPLETE: "You have Expanded your land."
     QUIT:
-      SELECTMODE: "Quit the Select Mode before."
       FLAGMODE: "Quit the Flags Mode before."
+    JOIN:
+      SELECTMODE: "Join the Select Mode before."
   CREATE:
     LAND: "You have created your land."
     QUIT:
       SELECTMODE: "You are no longer in Select Mode."
       FLAGMODE: "Quit the Flags Mode before."
+    JOIN:
+      SELECTMODE: "Join the Select Mode before."
     ERROR: "An Error Occur Please contact an Administrator."
     COLLISION: "Your selection have an collision with an another Land."
     DONE: "You have created your land."
@@ -40,8 +44,9 @@ COMMAND:
     HINT: "Your modification will be instantany effective."
     ALREADY: " You are already in Flags Mode."
     QUIT:
-      SELECTMODE: "Quit the Select Mode before."
       EXPANDMODE: "Quit the Expand Mode before."
+    JOIN:
+      SELECTMODE: "Join the Select Mode before."
   REMOVE:
     DONE: 
       LAND: "You have remove the land % ."
@@ -49,7 +54,7 @@ COMMAND:
     QUIT:
       FLAGSMODE: "Quit the Flags Mode before."
       EXPANDMODE: "Quit the Expand Mode before."
-    ALREADY:
+    JOIN:
       SELECTMODE: "you are already in the Select Mode."
   CURRENT:
     LAND:

@@ -20,17 +20,16 @@ import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
-import me.tabinol.factoid.factions.*;
 import me.tabinol.factoid.lands.flags.LandSetFlag;
-import me.tabinol.factoid.playercontainer.PlayerContainerType;
 
 public class OnCommand extends Thread implements CommandExecutor{
     private Lang language;
     private Log log;
     private JavaPlugin plugin;
-    private Map<String,LandSelection> PlayerSelecting = new HashMap<String,LandSelection>();
-    private Map<String,LandExpansion> PlayerExpanding = new HashMap<String,LandExpansion>();
-    private Map<String,LandSetFlag> PlayerSetFlag = new HashMap<String,LandSetFlag>();
+    private Map<String,LandSelection> PlayerSelecting = new HashMap();
+    private Map<String,Land> LandSelectioned = new HashMap();
+    private Map<String,LandExpansion> PlayerExpanding = new HashMap();
+    private Map<String,LandSetFlag> PlayerSetFlag = new HashMap();
     
     public OnCommand(){
         this.language = Factoid.getLanguage();
@@ -64,7 +63,12 @@ public class OnCommand extends Thread implements CommandExecutor{
                                             if(landtest != null){
                                                 PlayerContainer owner = landtest.getOwner();
                                                 if(owner.hasAccess(player.getName())){
-                                        
+                                                    if(!LandSelectioned.containsKey(player.getName().toLowerCase())){
+                                                        LandSelectioned.put(player.getName().toLowerCase(), landtest);
+                                                        player.sendMessage(ChatColor.GREEN+"[Factoid] "+ChatColor.DARK_GRAY+"You have selected the land '"+landtest.getName()+"'");
+                                                    }else{
+                                                        player.sendMessage(ChatColor.RED+"[Factoid] "+ChatColor.DARK_GRAY+"You have select the land '"+landtest.getName()+"' while someone is Modifying it.");
+                                                    }
                                                 }else{
                                                     player.sendMessage(ChatColor.RED+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.SELECT.MISSINGPERMISSION"));
                                                     log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.SELECT.MISSINGPERMISSION",player.getName()));
@@ -74,17 +78,25 @@ public class OnCommand extends Thread implements CommandExecutor{
                                             }
                                         }
                                     }else if(arg.length > 1 && arg[1].equalsIgnoreCase("done")){
-                                        LandSelection select = this.PlayerSelecting.get(player.getName().toLowerCase());
-                                        if(!Factoid.getConf().CanMakeCollision){
-                                            if(!select.getCollision()){
+                                        if(!LandSelectioned.containsKey(player.getName().toLowerCase())){
+                                            LandSelection select = this.PlayerSelecting.get(player.getName().toLowerCase());
+                                            if(!Factoid.getConf().CanMakeCollision){
+                                                if(!select.getCollision()){
+                                                    select.setSelected();
+                                                    player.sendMessage(ChatColor.GREEN+"[Factoid] "+ChatColor.DARK_GRAY+"You have selected a new Land.");
+                                                    log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.SELECT.SELECTWITHCOLISSION",player.getName()));
+                                                }else{
+                                                    player.sendMessage(ChatColor.RED+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.SELECT.LAND.COLLISION"));
+                                                }
+                                            }else{
                                                 select.setSelected();
                                                 log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.SELECT.SELECTWITHCOLISSION",player.getName()));
-                                            }else{
-                                                player.sendMessage(ChatColor.RED+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.SELECT.LAND.COLLISION"));
+                                                player.sendMessage(ChatColor.GREEN+"[Factoid] "+ChatColor.DARK_GRAY+"You have selected a new Land.");
                                             }
                                         }else{
-                                            select.setSelected();
+                                            player.sendMessage(ChatColor.RED+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.SELECT.CANTDONE"));
                                         }
+                                        
                                     }else if(arg.length > 1 && arg[1].equalsIgnoreCase("cancel")){
                                         LandSelection select = this.PlayerSelecting.get(player.getName().toLowerCase());
                                         this.PlayerSelecting.remove(player.getName().toLowerCase());
@@ -102,7 +114,7 @@ public class OnCommand extends Thread implements CommandExecutor{
                         }
                     }else if(arg[0].equalsIgnoreCase("expand")){
                         if(!this.PlayerSetFlag.containsKey(player.getName().toLowerCase())){
-                            if(!this.PlayerSelecting.containsKey(player.getName().toLowerCase())){
+                            if(this.LandSelectioned.containsKey(player.getName().toLowerCase())){
                                 if(!this.PlayerExpanding.containsKey(player.getName().toLowerCase())){
                                     player.sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.EXPAND.JOINMODE"));
                                     player.sendMessage(ChatColor.DARK_GRAY+"[Factoid] " +Factoid.getLanguage().getMessage("COMMAND.EXPAND.HINT",ChatColor.ITALIC.toString(),ChatColor.RESET.toString(),ChatColor.DARK_GRAY.toString()));
@@ -120,7 +132,7 @@ public class OnCommand extends Thread implements CommandExecutor{
                                     player.sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.EXPAND.ALREADY"));
                                 }
                             }else{
-                                player.sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.EXPAND.QUIT.SELECTMODE"));
+                                player.sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.EXPAND.JOIN.SELECTMODE"));
                             }
                         }else{
                             player.sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.EXPAND.QUIT.FLAGMODE"));
@@ -204,7 +216,7 @@ public class OnCommand extends Thread implements CommandExecutor{
                             }
                     }else if(arg[0].equalsIgnoreCase("flags")){
                         if(!this.PlayerExpanding.containsKey(player.getName().toLowerCase())){
-                            if(!this.PlayerSelecting.containsKey(player.getName().toLowerCase())){
+                            if(this.LandSelectioned.containsKey(player.getName().toLowerCase())){
                                 if(!this.PlayerSetFlag.containsKey(player.getName().toLowerCase())){
                                     player.sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.FLAGS.JOINMODE"));
                                     log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.FLAGS.JOINMODE",player.getName()));
@@ -215,15 +227,15 @@ public class OnCommand extends Thread implements CommandExecutor{
                                 }else{
                                     player.sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.FLAGS.ALREADY"));
                                 }
-                        }else{
-                                player.sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.FLAGS.QUIT.SELECTMODE"));
+                            }else{
+                                    player.sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.FLAGS.JOIN.SELECTMODE"));
                             }
                         }else{
                             player.sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.FLAGS.QUIT.EXPANDMODE"));
                         }
                     }else if(arg[0].equalsIgnoreCase("remove")){
                         if(!this.PlayerExpanding.containsKey(player.getName().toLowerCase())){
-                            if(this.PlayerSelecting.containsKey(player.getName().toLowerCase())){
+                            if(this.LandSelectioned.containsKey(player.getName().toLowerCase())){
                                 if(!this.PlayerSetFlag.containsKey(player.getName().toLowerCase())){
                                    if(arg[1] != null){
                                        if(arg[1].equalsIgnoreCase("land")){
@@ -247,7 +259,7 @@ public class OnCommand extends Thread implements CommandExecutor{
                                     player.sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.FLAGS.QUIT.FLAGSMODE"));
                                 }
                             }else{
-                                player.sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.FLAGS.ALREADY.SELECTMODE"));
+                                player.sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.FLAGS.JOIN.SELECTMODE"));
                             }
                         }else{
                             player.sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.FLAGS.QUIT.EXPANDMODE"));
@@ -266,8 +278,6 @@ public class OnCommand extends Thread implements CommandExecutor{
                             player.sendMessage(ChatColor.GRAY+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.CURRENT.NOLAND"));
                         }
                     }
-                    //log.write("Supposly block changed");
-                    //player.sendMessage(ChatColor.GRAY+"[Factoid] Claimed.");
                     return true;
                 }
             }
