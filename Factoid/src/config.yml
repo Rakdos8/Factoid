@@ -26,6 +26,7 @@ land:
   OwnerCanSet:                     # What the owner can set on his land?
     Permissions: [BUILD_PLACE, BUILD_DESTROY]
     Flags: [MESSAGE_JOIN, MESSAGE_QUIT]
+  BeaconLigth: false               #Set beacon ligth effect of an selection
     
 economy:
   PricebyCube: 100

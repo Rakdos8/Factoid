@@ -12,6 +12,7 @@ import me.tabinol.factoid.listeners.PlayerListener;
 import me.tabinol.factoid.listeners.WorldListener;
 import me.tabinol.factoid.storage.Storage;
 import me.tabinol.factoid.storage.StorageFlat;
+import org.bukkit.Server;
 
 public class Factoid extends JavaPlugin {
 
@@ -96,4 +97,5 @@ public class Factoid extends JavaPlugin {
         
         return VERSION;
     }
+    
 }

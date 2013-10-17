@@ -22,6 +22,8 @@ import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.lands.flags.LandSetFlag;
 import me.tabinol.factoid.lands.selection.LandMakeSquare;
+import me.tabinol.factoid.scoreboard.ScoreBoard;
+
 
 public class OnCommand extends Thread implements CommandExecutor{
     private Lang language;
@@ -64,10 +66,13 @@ public class OnCommand extends Thread implements CommandExecutor{
                                                         LandSelectioned.put(player.getName().toLowerCase(), landtest);
                                                         for(CuboidArea area : landtest.getAreas()){
                                                             LandMakeSquare landmake = new LandMakeSquare(player,null,area.getX1(),area.getX2(),area.getY1(),area.getY2(),area.getZ1(),area.getZ2());
+                                                            landmake.makeSquare();
                                                         }
-                                                        player.sendMessage(ChatColor.GREEN+"[Factoid] "+ChatColor.DARK_GRAY+"You have selected the land '"+landtest.getName()+"'");
+                                                        new ScoreBoard(player,landtest.getName());
+                                                        
+                                                        player.sendMessage(ChatColor.GREEN+"[Factoid] "+ChatColor.DARK_GRAY+Factoid.getLanguage().getMessage("COMMAND.SELECT.MISSINGPERMISSION",landtest.getName()));
                                                     }else{
-                                                        player.sendMessage(ChatColor.RED+"[Factoid] "+ChatColor.DARK_GRAY+"You have select the land '"+landtest.getName()+"' while someone is Modifying it.");
+                                                        player.sendMessage(ChatColor.RED+"[Factoid] "+ChatColor.DARK_GRAY+Factoid.getLanguage().getMessage("COMMAND.SELECT.CANNOTMPODIFY",landtest.getName()));
                                                     }
                                                 }else{
                                                     player.sendMessage(ChatColor.RED+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.SELECT.MISSINGPERMISSION"));
@@ -96,7 +101,7 @@ public class OnCommand extends Thread implements CommandExecutor{
                                             }else{
                                                 select.setSelected();
                                                 log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.SELECT.SELECTWITHCOLISSION",player.getName()));
-                                                player.sendMessage(ChatColor.GREEN+"[Factoid] "+ChatColor.DARK_GRAY+"You have selected a new Land.");
+                                                player.sendMessage(ChatColor.GREEN+"[Factoid] "+ChatColor.DARK_GRAY+Factoid.getLanguage().getMessage("COMMAND.SELECT.NEWLAND"));
                                             }
                                         }else{
                                             player.sendMessage(ChatColor.RED+"[Factoid] "+Factoid.getLanguage().getMessage("COMMAND.SELECT.CANTDONE"));

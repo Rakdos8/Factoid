@@ -44,6 +44,7 @@ public class Config {
     public int MaxPriceLocation = 1;
     public int MinPriceSell = 1;
     public int MaxPriceSell = 1;
+    public boolean BeaconLigth = false;
 
     public Config() {
 
@@ -87,6 +88,7 @@ public class Config {
         MaxAreaPerLand = config.getInt("land.area.MaxAreaPerLand");
         MinAreaSize = config.getInt("land.area.MinAreaSize");
         MaxAreaSize = config.getInt("land.area.MaxAreaSize");
+        BeaconLigth = config.getBoolean("land.BeaconLigth");
 
         if (UseEconomy) {
             PricebyCube = config.getInt("economy.PricebyCube");

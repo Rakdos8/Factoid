@@ -74,6 +74,11 @@ public class StorageFlat extends Storage implements StorageInt {
 
         File[] files = new File(factionsDir).listFiles();
         int loadedfactions = 0;
+        
+        if(files.length == 0) {
+            Factoid.getLog().write("[Factoid] "+Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.FACTION.LOADED",loadedfactions+""));
+            return;
+        }
 
         for (File file : files) {
             if (file.isFile() && file.getName().toLowerCase().endsWith(EXT_CONF)) {
@@ -101,10 +106,11 @@ public class StorageFlat extends Storage implements StorageInt {
         boolean empty = false;
 
         if(files.length == 0) {
+            Factoid.getLog().write("[Factoid] "+Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.LAND.LOADED",loadedlands+""));
             return;
         }
         
-        while (!empty) {
+        while(!empty){
             for (File file : files) {
                 empty = true;
                 if (file.isFile() && file.getName().toLowerCase().endsWith(pass + EXT_CONF)) {

@@ -22,6 +22,7 @@ public class LandMakeSquare extends Thread{
     private boolean IsCollisionBack = false;
     private boolean IsCollisionLeft = false;
     private boolean IsCollisionRigth = false;
+    private boolean SELECTING = false;
     
     
     public LandMakeSquare(Player player,Location loc,int x1,int x2,int y1,int y2,int z1,int z2){
@@ -33,10 +34,12 @@ public class LandMakeSquare extends Thread{
             FrontCornerRigth = new Location(this.world,Calculate.AdditionDouble(loc.getX(),6.0),this.world.getHighestBlockYAt(Calculate.AdditionInt(loc.getBlockX(),6),Calculate.AdditionInt(loc.getBlockZ(),6))-1,Calculate.AdditionDouble(loc.getZ(),6.0));
             BackCornerRigth = new Location(this.world,Calculate.AdditionDouble(loc.getX(),6.0),this.world.getHighestBlockYAt(Calculate.AdditionInt(loc.getBlockX(),6),Calculate.AdditionInt(loc.getBlockZ(),-6))-1,Calculate.AdditionDouble(loc.getZ(),-6.0));
         }else{
+            System.out.print("ENTER");
             FrontCornerLeft = new Location(this.world,x1,this.world.getHighestBlockYAt(x1,z1)-1,z1);
-            BackCornerLeft = new Location(this.world,x2,this.world.getHighestBlockYAt(x2,z2)-1,Calculate.getDifference(z1,z2));
-            FrontCornerRigth = new Location(this.world,Calculate.getDifference(x1,x2),this.world.getHighestBlockYAt(x1,z1)-1,z1);
+            BackCornerLeft = new Location(this.world,x1,this.world.getHighestBlockYAt(x2,z2)-1,z2);
+            FrontCornerRigth = new Location(this.world,x2,this.world.getHighestBlockYAt(x1,z1)-1,z1);
             BackCornerRigth = new Location(this.world,x2,this.world.getHighestBlockYAt(x2,z2)-1,z2);
+            SELECTING = true;
         }
     }
     
@@ -54,8 +57,24 @@ public class LandMakeSquare extends Thread{
             if(testCuboidareafcl == null){
                 player.sendBlockChange(FronCornerLeftLoc,Material.SPONGE,this.by);
             }else{
-                player.sendBlockChange(FronCornerLeftLoc,Material.REDSTONE_BLOCK,this.by);
-                IsCollisionFront = true;
+                if(!SELECTING){
+                    player.sendBlockChange(FronCornerLeftLoc,Material.REDSTONE_BLOCK,this.by);
+                    IsCollisionFront = true;
+                }else{
+                    player.sendBlockChange(FronCornerLeftLoc,Material.BEACON,this.by);
+ 
+                    if(Factoid.getConf().BeaconLigth){
+                        player.sendBlockChange(new Location(world,FronCornerLeftLoc.getX(),FronCornerLeftLoc.getY()-1,FronCornerLeftLoc.getZ()),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,FronCornerLeftLoc.getX()-1,FronCornerLeftLoc.getY()-1,FronCornerLeftLoc.getZ()),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,FronCornerLeftLoc.getX()+1,FronCornerLeftLoc.getY()-1,FronCornerLeftLoc.getZ()),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,FronCornerLeftLoc.getX(),FronCornerLeftLoc.getY()-1,FronCornerLeftLoc.getZ()+1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,FronCornerLeftLoc.getX(),FronCornerLeftLoc.getY()-1,FronCornerLeftLoc.getZ()-1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,FronCornerLeftLoc.getX()-1,FronCornerLeftLoc.getY()-1,FronCornerLeftLoc.getZ()+1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,FronCornerLeftLoc.getX()+1,FronCornerLeftLoc.getY()-1,FronCornerLeftLoc.getZ()-1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,FronCornerLeftLoc.getX()-1,FronCornerLeftLoc.getY()-1,FronCornerLeftLoc.getZ()-1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,FronCornerLeftLoc.getX()+1,FronCornerLeftLoc.getY()-1,FronCornerLeftLoc.getZ()+1),Material.IRON_BLOCK,this.by);
+                    }
+                }
             }
             //FrontRigth
             BlockList.put(FrontCornerRigth, FrontCornerRigth.getBlock().getType());
@@ -64,8 +83,23 @@ public class LandMakeSquare extends Thread{
             if(testCuboidareafcr == null){
                 player.sendBlockChange(FrontCornerRigthLoc,Material.SPONGE,this.by);
             }else{
-                player.sendBlockChange(FrontCornerRigthLoc,Material.REDSTONE_BLOCK,this.by);
-                IsCollisionFront = true;
+                if(!SELECTING){
+                    player.sendBlockChange(FrontCornerRigthLoc,Material.REDSTONE_BLOCK,this.by);
+                    IsCollisionFront = true;
+                }else{
+                    player.sendBlockChange(FrontCornerRigthLoc,Material.BEACON,this.by);
+                    if(Factoid.getConf().BeaconLigth){
+                        player.sendBlockChange(new Location(world,FrontCornerRigthLoc.getX(),FrontCornerRigthLoc.getY()-1,FrontCornerRigthLoc.getZ()),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,FrontCornerRigthLoc.getX()-1,FrontCornerRigthLoc.getY()-1,FrontCornerRigthLoc.getZ()),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,FrontCornerRigthLoc.getX()+1,FrontCornerRigthLoc.getY()-1,FrontCornerRigthLoc.getZ()),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,FrontCornerRigthLoc.getX(),FrontCornerRigthLoc.getY()-1,FrontCornerRigthLoc.getZ()+1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,FrontCornerRigthLoc.getX(),FrontCornerRigthLoc.getY()-1,FrontCornerRigthLoc.getZ()-1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,FrontCornerRigthLoc.getX()-1,FrontCornerRigthLoc.getY()-1,FrontCornerRigthLoc.getZ()+1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,FrontCornerRigthLoc.getX()+1,FrontCornerRigthLoc.getY()-1,FrontCornerRigthLoc.getZ()-1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,FrontCornerRigthLoc.getX()-1,FrontCornerRigthLoc.getY()-1,FrontCornerRigthLoc.getZ()-1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,FrontCornerRigthLoc.getX()+1,FrontCornerRigthLoc.getY()-1,FrontCornerRigthLoc.getZ()+1),Material.IRON_BLOCK,this.by);
+                    }
+                }
             }
             //BackLeft
             BlockList.put(this.BackCornerLeft, this.BackCornerLeft.getBlock().getType());
@@ -74,8 +108,23 @@ public class LandMakeSquare extends Thread{
             if(testCuboidareabcl == null){
                 player.sendBlockChange(BackCornerLeftLoc,Material.SPONGE,this.by);
             }else{
-                player.sendBlockChange(BackCornerLeftLoc,Material.REDSTONE_BLOCK,this.by);
-                IsCollisionBack = true;
+                if(!SELECTING){
+                    player.sendBlockChange(BackCornerLeftLoc,Material.REDSTONE_BLOCK,this.by);
+                    IsCollisionBack = true;
+                }else{
+                    player.sendBlockChange(BackCornerLeftLoc,Material.BEACON,this.by);
+                    if(Factoid.getConf().BeaconLigth){
+                        player.sendBlockChange(new Location(world,BackCornerLeftLoc.getX(),BackCornerLeftLoc.getY()-1,BackCornerLeftLoc.getZ()),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,BackCornerLeftLoc.getX()-1,BackCornerLeftLoc.getY()-1,BackCornerLeftLoc.getZ()),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,BackCornerLeftLoc.getX()+1,BackCornerLeftLoc.getY()-1,BackCornerLeftLoc.getZ()),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,BackCornerLeftLoc.getX(),BackCornerLeftLoc.getY()-1,BackCornerLeftLoc.getZ()+1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,BackCornerLeftLoc.getX(),BackCornerLeftLoc.getY()-1,BackCornerLeftLoc.getZ()-1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,BackCornerLeftLoc.getX()-1,BackCornerLeftLoc.getY()-1,BackCornerLeftLoc.getZ()+1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,BackCornerLeftLoc.getX()+1,BackCornerLeftLoc.getY()-1,BackCornerLeftLoc.getZ()-1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,BackCornerLeftLoc.getX()-1,BackCornerLeftLoc.getY()-1,BackCornerLeftLoc.getZ()-1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,BackCornerLeftLoc.getX()+1,BackCornerLeftLoc.getY()-1,BackCornerLeftLoc.getZ()+1),Material.IRON_BLOCK,this.by);
+                    }
+                }
             }
             //BackRigth
             BlockList.put(this.BackCornerRigth, this.BackCornerRigth.getBlock().getType());
@@ -84,8 +133,23 @@ public class LandMakeSquare extends Thread{
             if(testCuboidareabcr == null){
                 player.sendBlockChange(BackCornerRigthLoc,Material.SPONGE,this.by);
             }else{
-                player.sendBlockChange(BackCornerRigthLoc,Material.REDSTONE_BLOCK,this.by);
-                IsCollisionBack = true; 
+                if(!SELECTING){
+                    player.sendBlockChange(BackCornerRigthLoc,Material.REDSTONE_BLOCK,this.by);
+                    IsCollisionBack = true; 
+                }else{
+                    player.sendBlockChange(BackCornerRigthLoc,Material.BEACON,this.by);
+                    if(Factoid.getConf().BeaconLigth){
+                        player.sendBlockChange(new Location(world,BackCornerRigthLoc.getX(),BackCornerRigthLoc.getY()-1,BackCornerRigthLoc.getZ()),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,BackCornerRigthLoc.getX()-1,BackCornerRigthLoc.getY()-1,BackCornerRigthLoc.getZ()),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,BackCornerRigthLoc.getX()+1,BackCornerRigthLoc.getY()-1,BackCornerRigthLoc.getZ()),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,BackCornerRigthLoc.getX(),BackCornerRigthLoc.getY()-1,BackCornerRigthLoc.getZ()+1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,BackCornerRigthLoc.getX(),BackCornerRigthLoc.getY()-1,BackCornerRigthLoc.getZ()-1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,BackCornerRigthLoc.getX()-1,BackCornerRigthLoc.getY()-1,BackCornerRigthLoc.getZ()+1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,BackCornerRigthLoc.getX()+1,BackCornerRigthLoc.getY()-1,BackCornerRigthLoc.getZ()-1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,BackCornerRigthLoc.getX()-1,BackCornerRigthLoc.getY()-1,BackCornerRigthLoc.getZ()-1),Material.IRON_BLOCK,this.by);
+                        player.sendBlockChange(new Location(world,BackCornerRigthLoc.getX()+1,BackCornerRigthLoc.getY()-1,BackCornerRigthLoc.getZ()+1),Material.IRON_BLOCK,this.by);
+                    }
+                }
             }
             //Front
             for(Double i = 1.0;i<=DiffFrontX;i++){
@@ -96,7 +160,7 @@ public class LandMakeSquare extends Thread{
                 Land testCuboidarea = Factoid.getLands().getLand(newloc);
                 if(testCuboidarea == null){
                     this.player.sendBlockChange(newloc,Material.SPONGE,this.by);
-                }else{
+                }else if(!SELECTING){
                     this.player.sendBlockChange(newloc,Material.REDSTONE_BLOCK,this.by);
                     IsCollisionFront = true;
                 }
@@ -110,7 +174,7 @@ public class LandMakeSquare extends Thread{
                 Land testCuboidarea = Factoid.getLands().getLand(newloc);
                 if(testCuboidarea == null){
                     this.player.sendBlockChange(newloc,Material.SPONGE,this.by);
-                }else{
+                }else if(!SELECTING){
                     this.player.sendBlockChange(newloc,Material.REDSTONE_BLOCK,this.by);
                     IsCollisionBack = true;
                 }
@@ -124,7 +188,7 @@ public class LandMakeSquare extends Thread{
                 Land testCuboidarea = Factoid.getLands().getLand(newloc);
                 if(testCuboidarea == null){
                     this.player.sendBlockChange(newloc,Material.SPONGE,this.by);
-                }else{
+                }else if(!SELECTING){
                     this.player.sendBlockChange(newloc,Material.REDSTONE_BLOCK,this.by);
                     IsCollisionLeft = true;
                 }
@@ -138,7 +202,7 @@ public class LandMakeSquare extends Thread{
                 Land testCuboidarea = Factoid.getLands().getLand(newloc);
                 if(testCuboidarea == null){
                     this.player.sendBlockChange(newloc,Material.SPONGE,this.by);
-                }else{
+                }else if(!SELECTING){
                     this.player.sendBlockChange(newloc,Material.REDSTONE_BLOCK,this.by);
                     IsCollisionRigth = true;
                 }

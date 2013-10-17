@@ -15,6 +15,9 @@ COMMAND:
       COLLISION: "Your selection have an collision with an another Land."
     CANCEL: "You have cancelled your selection."
     CANTDONE: "You cannot 'Done' a selection which's already a Land."
+    NEWLAND: "You have selected a new Land."
+    SELECTIONEDLAND: "You have selected the land '%'"
+    CANNOTMPODIFY: "You cannot select the land '%' while someone is Modifying it."
   EXPAND:
     JOINMODE: "You are now in Expand Mode."
     QUITMODE: "You are no longer in Expand Mode."
