@@ -11,12 +11,16 @@ import me.tabinol.factoid.utilities.Calculate;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Animals;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Monster;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockIgniteEvent;
+import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
@@ -132,10 +136,38 @@ public class WorldListener implements Listener {
                 && flag.getValueBoolean() == false) {
             event.setCancelled(true);
         }
-
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
     public void onBlockIgnite(BlockIgniteEvent event) {
+        
+        DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
+        LandFlag flag;
+        
+        if((event.getCause() == IgniteCause.SPREAD && 
+                (flag = land.getFlagAndInherit(event.getBlock().getLocation().getWorld().getName(), FlagType.FIRESPREAD)) != null
+                && flag.getValueBoolean() == false)
+                || ((flag = land.getFlagAndInherit(event.getBlock().getLocation().getWorld().getName(), FlagType.FIRE)) != null
+                && flag.getValueBoolean() == false)) {
+            event.setCancelled(true);
+        }
+    }
+    
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
+        
+        DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getEntity().getLocation());
+        LandFlag flag;
+        
+        if ((event.getEntity() instanceof Animals
+                && (flag = land.getFlagAndInherit(
+                event.getEntity().getLocation().getWorld().getName(), FlagType.ANIMAL_SPAWN)) != null
+                && flag.getValueBoolean() == false)
+                || (event.getEntity() instanceof Monster
+                && (flag = land.getFlagAndInherit(
+                event.getEntity().getLocation().getWorld().getName(), FlagType.MOB_SPAWN)) != null
+                && flag.getValueBoolean() == false)) {
+            event.setCancelled(true);
+        }
     }
 }
