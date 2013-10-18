@@ -1,12 +1,17 @@
 package me.tabinol.factoid.listeners;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
+import me.tabinol.factoid.event.PlayerLandChangeEvent;
 import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Arrow;
@@ -14,6 +19,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -26,16 +32,90 @@ import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.plugin.PluginManager;
 
 public class PlayerListener implements Listener {
 
     private Config conf;
+    public static final int DEFAULT_TIME_LAPS = 500; // in milliseconds
+    private int timeCheck;
+    private HashMap<Player, Long> lastUpdate;
+    private HashMap<Player, Land> lastLand;
+    private HashMap<Player, Location> lastLoc;
+    private List<Player> tpCancel;
+    private PluginManager pm;
 
     public PlayerListener() {
 
         super();
         conf = Factoid.getConf();
+        timeCheck = DEFAULT_TIME_LAPS;
+        lastUpdate = new HashMap<>();
+        pm = Factoid.getThisPlugin().getServer().getPluginManager();
+        lastLand = new HashMap<>();
+        lastLoc = new HashMap<>();
+        tpCancel = new ArrayList<>();
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerJoin(PlayerJoinEvent event) {
+
+        Player player = event.getPlayer();
+
+        lastUpdate.put(player, 0L);
+        handleNewLocation(event, player, player.getLocation(), true);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerQuit(PlayerQuitEvent event) {
+
+        Player player = event.getPlayer();
+
+        lastUpdate.remove(player);
+        lastLand.remove(player);
+        lastLoc.remove(player);
+        if (tpCancel.contains(player)) {
+            tpCancel.remove(player);
+        }
+    }
+    
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
+
+        Location loc = event.getTo();
+        Player player = event.getPlayer();
+
+        if (!tpCancel.contains(player)) {
+            handleNewLocation(event, player, loc, false);
+        } else {
+            tpCancel.remove(player);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerMove(PlayerMoveEvent event) {
+
+        Player player = event.getPlayer();
+        if (player == null) {
+            return;
+        }
+        long last = lastUpdate.get(player);
+        long now = System.currentTimeMillis();
+        if (now - last < timeCheck) {
+            return;
+        }
+        lastUpdate.put(player, now);
+        if (event.getFrom().getWorld() == event.getTo().getWorld()) {
+            if (event.getFrom().distance(event.getTo()) == 0) {
+                return;
+            }
+        }
+        handleNewLocation(event, player, event.getTo(), false);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -267,5 +347,38 @@ public class PlayerListener implements Listener {
     private void MessagePermission(Player player) {
 
         player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.MISSINGPERMISSION"));
+    }
+
+    private void handleNewLocation(Event event, Player player, Location loc, boolean newPlayer) {
+
+        int t;
+        Land land;
+        Land landOld;
+        PlayerLandChangeEvent landEvent;
+        Boolean isTp;
+
+        land = Factoid.getLands().getLand(loc);
+
+        if (newPlayer) {
+            lastLand.put(player, land);
+        } else {
+            landOld = lastLand.get(player);
+            if (land != landOld) {
+                isTp = event instanceof PlayerTeleportEvent;
+                landEvent = new PlayerLandChangeEvent(landOld, land, player, lastLoc.get(player), loc, isTp);
+                pm.callEvent(landEvent);
+                if (landEvent.isCancelled()) {
+                    if (isTp) {
+                        ((PlayerTeleportEvent) event).setCancelled(true);
+                        return;
+                    }
+                    player.teleport(lastLoc.get(player));
+                    tpCancel.add(player);
+                    return;
+                }
+                lastLand.put(player, land);
+            }
+        }
+        lastLoc.put(player, loc);
     }
 }

@@ -70,7 +70,6 @@ public class DummyLand {
     public Boolean checkPermissionAndInherit(String worldName, String playerName, PermissionType pt) {
 
         return checkPermissionAndInherit(worldName, playerName, pt, false);
-
     }
 
     protected Boolean checkPermissionAndInherit(String worldName, String playerName, PermissionType pt, boolean onlyInherit) {

@@ -22,8 +22,8 @@ public enum FlagType {
     //FACTION_PVP("FACTION_PVP", FlagValueType.BOOLEAN, false),
     //EXCLUDE_BLOCKS("EXCLUDE_BLOCKS", FlagValueType.STRING_LIST, false),
     //EXCLUDE_ENTITIES("EXCLUDE_ENTITIES", FlagValueType.STRING_LIST, false),
-    //MESSAGE_JOIN("MESSAGE_JOIN", FlagValueType.STRING, true),
-    //MESSAGE_QUIT("MESSAGE_QUIT", FlagValueType.STRING, true),
+    MESSAGE_JOIN("MESSAGE_JOIN", FlagValueType.STRING, true),
+    MESSAGE_QUIT("MESSAGE_QUIT", FlagValueType.STRING, true),
     KEEP_INVENTORY("KEEP_INVENTORY", FlagValueType.BOOLEAN, true); // Pas fait (pas mis en commentaire à cause du point virgule
     
     private final String name;

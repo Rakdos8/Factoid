@@ -67,6 +67,7 @@ COMMAND:
     NOLAND: "There's no Land here."
 ACTION:
   MISSINGPERMISSION: "You can not do this action here!"
+  BANNED: "You are banned from the land %!"
 LOG:
   STORAGE:
     LOAD:

@@ -23,6 +23,7 @@ public class Land extends DummyLand {
     private TreeSet<PlayerContainer> residents = new TreeSet<>();
     private TreeSet<PlayerContainer> banneds = new TreeSet<>();
     private boolean autoSave = true;
+    private String worldName;
 
     public Land(String landName, PlayerContainer owner, CuboidArea area) {
 
@@ -56,6 +57,7 @@ public class Land extends DummyLand {
         name = landName;
         this.owner = owner;
         this.genealogy = genealogy;
+        worldName = area.getWorldName();
         flags = Factoid.getLands().defaultConf.flags.clone();
         copyPerms();
         addArea(area, areaId);
@@ -155,6 +157,11 @@ public class Land extends DummyLand {
         Factoid.getStorage().removeLand(this);
         this.name = newName;
         doSave();
+    }
+    
+    public String getWorldName() {
+        
+        return worldName;
     }
 
     public PlayerContainer getOwner() {
@@ -296,6 +303,11 @@ public class Land extends DummyLand {
             forceSave();
         }
     }
+    
+    public Boolean checkPermissionAndInherit(String playerName, PermissionType pt) {
+
+        return checkPermissionAndInherit(worldName, playerName, pt, false);
+    }
 
     @Override
     protected Boolean checkPermissionAndInherit(String worldName, String playerName, PermissionType pt, boolean onlyInherit) {
@@ -309,6 +321,11 @@ public class Land extends DummyLand {
         }
         
         return Factoid.getLands().getPermissionInWorld(worldName, playerName, pt, true);
+    }
+    
+    public LandFlag getFlagAndInherit(FlagType ft) {
+
+        return getFlagAndInherit(worldName, ft, false);
     }
     
     @Override
