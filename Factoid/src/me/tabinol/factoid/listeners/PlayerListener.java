@@ -22,8 +22,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -47,13 +45,14 @@ public class PlayerListener implements Listener {
         String worldName = event.getClickedBlock().getLocation().getWorld().getName();
         Material ml = event.getClickedBlock().getType();
         Player player = event.getPlayer();
+        Action action = event.getAction();
 
         Factoid.getLog().write("PlayerInteract player name: " + event.getPlayer().getName() + ", Action: " + event.getAction());
 
         // For infoItem
-        if (event.getPlayer().getItemInHand() != null
-                && event.getAction() == Action.LEFT_CLICK_BLOCK
-                && event.getPlayer().getItemInHand().getTypeId() == conf.InfoItem) {
+        if (player.getItemInHand() != null
+                && action == Action.LEFT_CLICK_BLOCK
+                && player.getItemInHand().getTypeId() == conf.InfoItem) {
             if (land instanceof Land) {
 
                 Land trueLand = (Land) land;
@@ -61,29 +60,67 @@ public class PlayerListener implements Listener {
                 player.sendMessage(ChatColor.GRAY + Factoid.getLanguage().getMessage("COMMAND.CURRENT.LAND.OWNER", trueLand.getOwner().getContainerType().name(), trueLand.getOwner().getName()));
                 player.sendMessage(ChatColor.GRAY + Factoid.getLanguage().getMessage("COMMAND.CURRENT.LAND.AREA"));
                 for (CuboidArea area : trueLand.getAreas()) {
-                    event.getPlayer().sendMessage(ChatColor.GRAY + area.toString());
+                    player.sendMessage(ChatColor.GRAY + area.toString());
                 }
             } else {
-                event.getPlayer().sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CURRENT.NOLAND"));
+                player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CURRENT.NOLAND"));
             }
             event.setCancelled(true);
-        } else {
-            if (!checkPermission(worldName, land, player, PermissionType.USE)
-                    || ((ml == Material.WOODEN_DOOR || ml == Material.TRAP_DOOR)
-                    && !checkPermission(worldName, land, player, PermissionType.USE_DOOR))
-                    || ((ml == Material.STONE_BUTTON || ml == Material.WOOD_BUTTON)
-                    && !checkPermission(worldName, land, player, PermissionType.USE_BUTTON))
-                    || (ml == Material.LEVER
-                    && !checkPermission(worldName, land, player, PermissionType.USE_LEVER))
-                    || ((ml == Material.WOOD_PLATE || ml == Material.STONE_PLATE)
-                    && !checkPermission(worldName, land, player, PermissionType.USE_PRESSUREPLATE))
-                    || (ml == Material.TRAPPED_CHEST
-                    && !checkPermission(worldName, land, player, PermissionType.USE_TRAPPEDCHEST))
-                    || (ml == Material.STRING
-                    && !checkPermission(worldName, land, player, PermissionType.USE_STRING))) {
+        } else if (((action == Action.RIGHT_CLICK_BLOCK // BEGIN of USE
+                && (ml == Material.WOODEN_DOOR || ml == Material.TRAP_DOOR
+                || ml == Material.STONE_BUTTON || ml == Material.WOOD_BUTTON
+                || ml == Material.LEVER || ml == Material.TRAPPED_CHEST))
+                || (action == Action.PHYSICAL
+                && (ml == Material.WOOD_PLATE || ml == Material.STONE_PLATE
+                || ml == Material.STRING)))
+                && (!checkPermission(worldName, land, player, PermissionType.USE)) // End of "USE"
+                || (action == Action.RIGHT_CLICK_BLOCK
+                && (ml == Material.WOODEN_DOOR || ml == Material.TRAP_DOOR)
+                && !checkPermission(worldName, land, player, PermissionType.USE_DOOR))
+                || (action == Action.RIGHT_CLICK_BLOCK
+                && (ml == Material.STONE_BUTTON || ml == Material.WOOD_BUTTON)
+                && !checkPermission(worldName, land, player, PermissionType.USE_BUTTON))
+                || (action == Action.RIGHT_CLICK_BLOCK
+                && ml == Material.LEVER
+                && !checkPermission(worldName, land, player, PermissionType.USE_LEVER))
+                || (action == Action.PHYSICAL
+                && (ml == Material.WOOD_PLATE || ml == Material.STONE_PLATE)
+                && !checkPermission(worldName, land, player, PermissionType.USE_PRESSUREPLATE))
+                || (action == Action.RIGHT_CLICK_BLOCK
+                && ml == Material.TRAPPED_CHEST
+                && !checkPermission(worldName, land, player, PermissionType.USE_TRAPPEDCHEST))
+                || (action == Action.PHYSICAL
+                && ml == Material.STRING
+                && !checkPermission(worldName, land, player, PermissionType.USE_STRING))) {
+
+            if (action != Action.PHYSICAL) {
                 MessagePermission(player);
-                event.setCancelled(true);
             }
+            event.setCancelled(true);
+        } else if (action == Action.RIGHT_CLICK_BLOCK
+                && (((ml == Material.CHEST || ml == Material.ENDER_CHEST // Begin of OPEN
+                || ml == Material.WORKBENCH || ml == Material.BREWING_STAND
+                || ml == Material.FURNACE || ml == Material.BEACON
+                || ml == Material.DROPPER || ml == Material.HOPPER)
+                && !checkPermission(worldName, land, player, PermissionType.OPEN)) // End of OPEN
+                || (ml == Material.CHEST
+                && !checkPermission(worldName, land, player, PermissionType.OPEN_CHEST))
+                || (ml == Material.ENDER_CHEST
+                && !checkPermission(worldName, land, player, PermissionType.OPEN_ENDERCHEST))
+                || (ml == Material.WORKBENCH
+                && !checkPermission(worldName, land, player, PermissionType.OPEN_CRAFT))
+                || (ml == Material.BREWING_STAND
+                && !checkPermission(worldName, land, player, PermissionType.OPEN_BREW))
+                || (ml == Material.FURNACE
+                && !checkPermission(worldName, land, player, PermissionType.OPEN_FURNACE))
+                || (ml == Material.BEACON
+                && !checkPermission(worldName, land, player, PermissionType.OPEN_BEACON))
+                || (ml == Material.DROPPER
+                && !checkPermission(worldName, land, player, PermissionType.OPEN_DROPPER))
+                || (ml == Material.HOPPER
+                && !checkPermission(worldName, land, player, PermissionType.OPEN_HOPPER)))) {
+            MessagePermission(player);
+            event.setCancelled(true);
         }
     }
 
@@ -133,37 +170,6 @@ public class PlayerListener implements Listener {
 
         if (!checkPermission(worldName, land, event.getPlayer(), PermissionType.PICKETUP)) {
             MessagePermission(event.getPlayer());
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
-    public void onInventoryOpen(InventoryOpenEvent event) {
-
-        DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getPlayer().getTargetBlock(null, 10).getLocation());
-        String worldName = event.getPlayer().getLocation().getWorld().getName();
-        InventoryType it = event.getInventory().getType();
-        Player player = (Player) event.getPlayer();
-
-        if (((it != InventoryType.CREATIVE && it != InventoryType.PLAYER
-                && !checkPermission(worldName, land, player, PermissionType.OPEN)))
-                || ((it == InventoryType.CHEST
-                && !checkPermission(worldName, land, player, PermissionType.OPEN_CHEST)))
-                || ((it == InventoryType.ENDER_CHEST
-                && !checkPermission(worldName, land, player, PermissionType.OPEN_ENDERCHEST)))
-                || ((it == InventoryType.CRAFTING
-                && !checkPermission(worldName, land, player, PermissionType.OPEN_CRAFT)))
-                || ((it == InventoryType.BREWING
-                && !checkPermission(worldName, land, player, PermissionType.OPEN_BREW)))
-                || ((it == InventoryType.FURNACE
-                && !checkPermission(worldName, land, player, PermissionType.OPEN_FURNACE)))
-                || ((it == InventoryType.BEACON
-                && !checkPermission(worldName, land, player, PermissionType.OPEN_BEACON)))
-                || ((it == InventoryType.DROPPER
-                && !checkPermission(worldName, land, player, PermissionType.OPEN_DROPPER)))
-                || ((it == InventoryType.HOPPER
-                && !checkPermission(worldName, land, player, PermissionType.OPEN_HOPPER)))) {
-            MessagePermission(player);
             event.setCancelled(true);
         }
     }
