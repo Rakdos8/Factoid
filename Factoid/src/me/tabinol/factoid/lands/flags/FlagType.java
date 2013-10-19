@@ -17,9 +17,9 @@ public enum FlagType {
     TNT_DAMAGE("TNT_DAMAGE", FlagValueType.BOOLEAN, false),
     MOB_SPAWN("MOB_SPAWN", FlagValueType.BOOLEAN, false),
     ANIMAL_SPAWN("ANIMAL_SPAWN", FlagValueType.BOOLEAN, false),
-    //ANIMAL_CUT("ANIMAL_CUT", FlagValueType.BOOLEAN, false),
-    //FULL_PVP("FULL_PVP", FlagValueType.BOOLEAN, false),
-    //FACTION_PVP("FACTION_PVP", FlagValueType.BOOLEAN, false),
+    ANIMAL_CUT("ANIMAL_CUT", FlagValueType.BOOLEAN, false),
+    FULL_PVP("FULL_PVP", FlagValueType.BOOLEAN, false),
+    FACTION_PVP("FACTION_PVP", FlagValueType.BOOLEAN, false),
     //EXCLUDE_BLOCKS("EXCLUDE_BLOCKS", FlagValueType.STRING_LIST, false),
     //EXCLUDE_ENTITIES("EXCLUDE_ENTITIES", FlagValueType.STRING_LIST, false),
     MESSAGE_JOIN("MESSAGE_JOIN", FlagValueType.STRING, true),
@@ -46,7 +46,7 @@ public enum FlagType {
     public static FlagType getFromString(String flagName) {
         
         for(FlagType ft : values()) {
-            if(ft.toString().equals(flagName)) {
+            if(ft.toString().equalsIgnoreCase(flagName)) {
                 return ft;
             }
         }

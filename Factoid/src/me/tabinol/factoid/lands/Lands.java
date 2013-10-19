@@ -64,17 +64,19 @@ public class Lands {
 
     public boolean removeLand(String landName) {
 
-        if (landName == null || !landList.containsKey(landName)) {
+        String landLower;
+        
+        if (landName == null || !landList.containsKey(landLower = landName.toLowerCase())) {
             return false;
         }
         Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.REMOVE", landName));
-        return removeLand(landList.get(landName));
+        return removeLand(landList.get(landLower));
 
     }
 
     public Land getLand(String landName) {
 
-        return landList.get(landName);
+        return landList.get(landName.toLowerCase());
     }
 
     public Land getLand(Location loc) {
@@ -131,7 +133,7 @@ public class Lands {
         Boolean result;
         DummyLand dl;
 
-        if ((dl = outsideArea.get(worldName)) != null && (result = dl.getPermission(playerName, pt, onlyInherit)) != null) {
+        if ((dl = outsideArea.get(worldName.toLowerCase())) != null && (result = dl.getPermission(playerName, pt, onlyInherit)) != null) {
             return result;
         }
         if ((dl = outsideArea.get(Lands.GLOBAL)) != null && (result = dl.getPermission(playerName, pt, onlyInherit)) != null) {
@@ -146,7 +148,7 @@ public class Lands {
         LandFlag result;
         DummyLand dl;
 
-        if ((dl = outsideArea.get(worldName)) != null && (result = dl.getFlag(ft, onlyInherit)) != null) {
+        if ((dl = outsideArea.get(worldName.toLowerCase())) != null && (result = dl.getFlag(ft, onlyInherit)) != null) {
             return result;
         }
         if ((dl = outsideArea.get(Lands.GLOBAL)) != null && (result = dl.getFlag(ft, onlyInherit)) != null) {

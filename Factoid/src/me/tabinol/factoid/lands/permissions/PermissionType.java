@@ -67,7 +67,7 @@ public enum PermissionType {
     public static PermissionType getFromString(String permName) {
         
         for(PermissionType pt : values()) {
-            if(pt.toString().equals(permName)) {
+            if(pt.toString().equalsIgnoreCase(permName)) {
                 return pt;
             }
         }

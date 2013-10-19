@@ -35,23 +35,27 @@ public class Factions {
     
     public boolean removeFaction(String factionName) {
         
-        if (factionName == null || !factionList.containsKey(factionName)) {
+        String factionLower;
+
+        if (factionName == null || !factionList.containsKey(factionLower = factionName.toLowerCase())) {
             return false;
         }
         Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.FACTION.REMOVE.FACTION",factionName));
-        return removeFaction(factionList.get(factionName));
+        return removeFaction(factionList.get(factionLower));
         
     }
     
     public Faction getFaction(String factionName) {
         
-        return factionList.get(factionName);
+        return factionList.get(factionName.toLowerCase());
     }
     
     public Faction getPlayerFaction(String playerName) {
         
+        String playerLower = playerName.toLowerCase();
+        
         for(Faction faction : factionList.values()) {
-            if(faction.isPlayerInList(playerName)) {
+            if(faction.isPlayerInList(playerLower)) {
                 return faction;
             }
         }

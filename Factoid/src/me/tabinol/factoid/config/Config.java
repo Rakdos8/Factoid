@@ -13,6 +13,7 @@ import me.tabinol.factoid.lands.permissions.Permission;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
+import me.tabinol.factoid.utilities.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -76,7 +77,7 @@ public class Config {
     private void getConfig() {
 
         debug = config.getBoolean("general.debug");
-        Worlds = config.getStringList("general.worlds");
+        Worlds = StringUtils.toLower(config.getStringList("general.worlds"));
         Lang = config.getString("general.lang");
         UseEconomy = config.getBoolean("general.UseEconomy");
         InfoItem = config.getInt("general.InfoItem");
@@ -141,7 +142,7 @@ public class Config {
                         for (String perm : fc.getConfigurationSection(perms + "." + container + "." + containerName).getKeys(false)) {
                             Factoid.getLog().write("Container: " + container + ":" + containerName + ", " + perm);
                             dl.addPermission(
-                                    PlayerContainer.create(null, PlayerContainerType.getFromString(container), containerName),
+                                    PlayerContainer.create(null, PlayerContainerType.getFromString(container), containerName.toLowerCase()),
                                     new Permission(PermissionType.getFromString(perm),
                                     fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Value"), 
                                     fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".heritable")));

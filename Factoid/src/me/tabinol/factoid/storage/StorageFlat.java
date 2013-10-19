@@ -25,7 +25,6 @@ public class StorageFlat extends Storage implements StorageInt {
     private String factionsDir;
     private String landsDir;
     private boolean inLoad = true; // True if the Database is in Load
-    private FlagValueType FlagTypeValue;
 
     public StorageFlat() {
 

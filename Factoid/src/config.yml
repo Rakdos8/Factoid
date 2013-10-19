@@ -8,7 +8,7 @@ general:                             #----General Config----
   debug: false                       #Set to true to show DebugLog 
   lang: english
   Storage: flat                      # Only flat is supported for now
-  worlds: [world]                    # World where Factoid is enable
+  worlds: [world, world_nether, world_the_end] # World where Factoid is enable
   UseEconomy: false
   InfoItem: 352                      # Item that give Land information
 land:

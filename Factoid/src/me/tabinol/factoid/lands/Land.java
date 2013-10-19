@@ -54,10 +54,10 @@ public class Land extends DummyLand {
 
     private void createLand(String landName, PlayerContainer owner, CuboidArea area, int genealogy, int areaId) {
 
-        name = landName;
+        name = landName.toLowerCase();
         this.owner = owner;
         this.genealogy = genealogy;
-        worldName = area.getWorldName();
+        worldName = area.getWorldName().toLowerCase();
         flags = Factoid.getLands().defaultConf.flags.clone();
         copyPerms();
         addArea(area, areaId);
@@ -155,7 +155,7 @@ public class Land extends DummyLand {
     public void setName(String newName) {
 
         Factoid.getStorage().removeLand(this);
-        this.name = newName;
+        this.name = newName.toLowerCase();
         doSave();
     }
     

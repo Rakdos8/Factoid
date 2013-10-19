@@ -13,7 +13,6 @@ import me.tabinol.factoid.listeners.PlayerListener;
 import me.tabinol.factoid.listeners.WorldListener;
 import me.tabinol.factoid.storage.Storage;
 import me.tabinol.factoid.storage.StorageFlat;
-import org.bukkit.Server;
 
 public class Factoid extends JavaPlugin {
 
@@ -29,13 +28,14 @@ public class Factoid extends JavaPlugin {
     // Access to Factions and Lands (static)
     private static Factions factions;
     private static Lands lands;
-    private static String VERSION = "0.1";
+    private static String version;
 
     @Override
     public void onEnable() {
         
         // Static access to «this» Factoid
         thisPlugin = this;
+        version = this.getDescription().getVersion();
         conf = new Config();
         log = new Log();
         language = new Lang();
@@ -99,7 +99,7 @@ public class Factoid extends JavaPlugin {
     
     public static String getVersion() {
         
-        return VERSION;
+        return version;
     }
     
 }

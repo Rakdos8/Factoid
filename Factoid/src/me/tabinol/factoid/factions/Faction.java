@@ -12,7 +12,7 @@ public class Faction {
 
     public Faction(String name) {
 
-        this.name = name;
+        this.name = name.toLowerCase();
         this.players = new TreeSet<>();
         doSave();
     }

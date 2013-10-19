@@ -10,7 +10,7 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
 
     protected PlayerContainer(String name, PlayerContainerType containerType) {
 
-        this.name = name;
+        this.name = name.toLowerCase();
         this.containerType = containerType;
     }
 

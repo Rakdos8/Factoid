@@ -11,7 +11,7 @@ public class CuboidArea implements Comparable<CuboidArea> {
 
     public CuboidArea(String worldName, int x1, int y1, int z1, int x2, int y2, int z2) {
 
-        this.worldName = worldName;
+        this.worldName = worldName.toLowerCase();
         this.x1 = Calculate.lowerInt(x1, x2);
         this.x2 = Calculate.greaterInt(x1, x2);
         this.y1 = Calculate.lowerInt(y1, y2);
@@ -109,7 +109,7 @@ public class CuboidArea implements Comparable<CuboidArea> {
 
     public void setWorldName(String worldName) {
 
-        this.worldName = worldName;
+        this.worldName = worldName.toLowerCase();
     }
 
     public void setX1(int x1) {
