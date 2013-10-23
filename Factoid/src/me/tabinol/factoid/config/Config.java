@@ -13,7 +13,7 @@ import me.tabinol.factoid.lands.permissions.Permission;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
-import me.tabinol.factoid.utilities.StringUtils;
+import me.tabinol.factoid.utilities.StringChanges;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -77,7 +77,7 @@ public class Config {
     private void getConfig() {
 
         debug = config.getBoolean("general.debug");
-        Worlds = StringUtils.toLower(config.getStringList("general.worlds"));
+        Worlds = StringChanges.toLower(config.getStringList("general.worlds"));
         Lang = config.getString("general.lang");
         UseEconomy = config.getBoolean("general.UseEconomy");
         InfoItem = config.getInt("general.InfoItem");

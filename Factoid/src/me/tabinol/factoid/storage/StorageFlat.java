@@ -12,12 +12,12 @@ import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.flags.FlagType;
-import me.tabinol.factoid.lands.flags.FlagValueType;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.Permission;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
+import me.tabinol.factoid.utilities.StringChanges;
 
 public class StorageFlat extends Storage implements StorageInt {
 
@@ -214,7 +214,7 @@ public class StorageFlat extends Storage implements StorageInt {
         
         //Create flags
         while ((str = cf.getNextString()) != null) {
-            String[] multiStr = str.split(":");
+            String[] multiStr = StringChanges.splitKeepQuote(str, ":");
             FlagType ft = FlagType.getFromString(multiStr[0]);
             land.addFlag(new LandFlag(ft, multiStr[1], Boolean.parseBoolean(multiStr[2])));
         }

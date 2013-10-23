@@ -1,5 +1,8 @@
 package me.tabinol.factoid.lands.flags;
 
+import java.util.ArrayList;
+import me.tabinol.factoid.utilities.StringChanges;
+
 public class LandFlag {
     
     private FlagType flagType;
@@ -21,9 +24,14 @@ public class LandFlag {
         if(flagType.getFlagValueType() == FlagValueType.BOOLEAN) {
             this.valueBoolean = Boolean.parseBoolean(valueString);
         } else if(flagType.getFlagValueType() == FlagValueType.STRING) {
-            this.valueString = valueString;
+            this.valueString = StringChanges.fromQuote(valueString);
         } else if(flagType.getFlagValueType() == FlagValueType.STRING_LIST) {
-            this.valueStringList = valueString.split(";");
+            ArrayList<String> result = new ArrayList<>();
+            String[] strs = StringChanges.splitKeepQuote(valueString, ";");
+            for(String str : strs) {
+                result.add(StringChanges.fromQuote(str));
+            }
+            this.valueStringList = result.toArray(new String[0]);
         }
         this.heritable = heritable;
     }
@@ -72,12 +80,12 @@ public class LandFlag {
             return flagType.toString() + ":" + valueBoolean + ":" + heritable;
         }
         if(flagType.getFlagValueType() == FlagValueType.STRING) {
-            return flagType.toString() + ":" + valueString + ":" + heritable;
+            return flagType.toString() + ":" + StringChanges.toQuote(valueString) + ":" + heritable;
         }
         if(flagType.getFlagValueType() == FlagValueType.STRING_LIST) {
             StringBuilder sb = new StringBuilder();
             for(String st : valueStringList) {
-                sb.append(st).append(";");
+                sb.append(StringChanges.toQuote(st)).append(";");
             }
             return flagType.toString() + ":" + valueString + ":" + heritable;
         }

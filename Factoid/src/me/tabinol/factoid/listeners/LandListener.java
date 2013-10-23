@@ -31,7 +31,7 @@ public class LandListener implements Listener {
         // Message quit
         if (lastLand != null && (flag = lastLand.getFlagAndInherit(FlagType.MESSAGE_QUIT)) != null
                 && (value = flag.getValueString()) != null) {
-            player.sendMessage(value);
+            player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + lastLand.getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
         }
         if (land != null) {
 
@@ -44,7 +44,7 @@ public class LandListener implements Listener {
                 // Message join
                 if ((flag = land.getFlagAndInherit(FlagType.MESSAGE_JOIN)) != null
                         && (value = flag.getValueString()) != null) {
-                    player.sendMessage(value);
+                    player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + land.getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
                 }
             }
         }
