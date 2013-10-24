@@ -9,8 +9,9 @@ public enum PlayerContainerType {
     RESIDENT(3,"Resident"),
     GROUP(4,"Group"),
     FACTION(5,"Faction"),
-    EVERYBODY(6,"Everybody"),
-    NOBODY(7,"Nobody");
+    FACTION_TERRITORY(6, "FactionTerritory"),
+    EVERYBODY(7,"Everybody"),
+    NOBODY(8,"Nobody");
     
     private final int value;
     private final String pcName;

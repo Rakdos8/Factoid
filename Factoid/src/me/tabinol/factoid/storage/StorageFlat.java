@@ -24,7 +24,7 @@ public class StorageFlat extends Storage implements StorageInt {
     public static final String EXT_CONF = ".conf";
     private String factionsDir;
     private String landsDir;
-    private boolean inLoad = true; // True if the Database is in Load
+    private boolean inLoad = true; // True if the Database is in Loaded
 
     public StorageFlat() {
 
@@ -73,9 +73,9 @@ public class StorageFlat extends Storage implements StorageInt {
 
         File[] files = new File(factionsDir).listFiles();
         int loadedfactions = 0;
-        
-        if(files.length == 0) {
-            Factoid.getLog().write("[Factoid] "+Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.FACTION.LOADED",loadedfactions+""));
+
+        if (files.length == 0) {
+            Factoid.getLog().write("[Factoid] " + Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.FACTION.LOADED", loadedfactions + ""));
             return;
         }
 
@@ -90,11 +90,11 @@ public class StorageFlat extends Storage implements StorageInt {
                     }
                 } catch (IOException ex) {
                     Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, null, ex);
-                    Factoid.getLog().write("[Factoid]"+Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.FACTION.ERROR",ex.getMessage()));
+                    Factoid.getLog().write("[Factoid]" + Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.FACTION.ERROR", ex.getMessage()));
                 }
             }
         }
-                Factoid.getLog().write("[Factoid] "+Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.FACTION.LOADED",loadedfactions+""));
+        Factoid.getLog().write("[Factoid] " + Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.FACTION.LOADED", loadedfactions + ""));
     }
 
     private void loadLands() {
@@ -104,12 +104,12 @@ public class StorageFlat extends Storage implements StorageInt {
         int pass = 0;
         boolean empty = false;
 
-        if(files.length == 0) {
-            Factoid.getLog().write("[Factoid] "+Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.LAND.LOADED",loadedlands+""));
+        if (files.length == 0) {
+            Factoid.getLog().write("[Factoid] " + Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.LAND.LOADED", loadedlands + ""));
             return;
         }
-        
-        while(!empty){
+
+        while (!empty) {
             for (File file : files) {
                 empty = true;
                 if (file.isFile() && file.getName().toLowerCase().endsWith(pass + EXT_CONF)) {
@@ -123,13 +123,13 @@ public class StorageFlat extends Storage implements StorageInt {
                         }
                     } catch (IOException ex) {
                         Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, null, ex);
-                        Factoid.getLog().write("[Factoid] "+Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.LAND.ERROR",ex.getMessage()));
+                        Factoid.getLog().write("[Factoid] " + Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.LAND.ERROR", ex.getMessage()));
                     }
                 }
             }
             pass++;
         }
-        Factoid.getLog().write("[Factoid] "+Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.LAND.LOADED",loadedlands+""));
+        Factoid.getLog().write("[Factoid] " + Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.LAND.LOADED", loadedlands + ""));
     }
 
     private void loadFaction(BufferedReader br) {
@@ -141,7 +141,7 @@ public class StorageFlat extends Storage implements StorageInt {
         while ((str = cf.getNextString()) != null) {
             faction.addPlayer(str);
         }
-        
+
         Factoid.getFactions().createFaction(faction);
     }
 
@@ -157,6 +157,8 @@ public class StorageFlat extends Storage implements StorageInt {
         String[] ownerS = cf.getValueString().split(":");
         cf.readParam();
         String parentName = cf.getValueString();
+        cf.readParam();
+        String factionTerritory = cf.getValueString();
 
         // create owner (PlayerContainer)
         pc = PlayerContainer.create(null, PlayerContainerType.getFromString(ownerS[0]), ownerS[1]);
@@ -186,7 +188,12 @@ public class StorageFlat extends Storage implements StorageInt {
             }
         }
         cf.readParam();
-        
+
+        //FactionTerritory
+        if (factionTerritory != null) {
+            land.setFactionTerritory(Factoid.getFactions().getFaction(factionTerritory));
+        }
+
         //Residents
         while ((str = cf.getNextString()) != null) {
             String[] multiStr = str.split(":");
@@ -194,7 +201,7 @@ public class StorageFlat extends Storage implements StorageInt {
             land.addResident(pc);
         }
         cf.readParam();
-        
+
         //Banneds
         while ((str = cf.getNextString()) != null) {
             String[] multiStr = str.split(":");
@@ -202,7 +209,7 @@ public class StorageFlat extends Storage implements StorageInt {
             land.addBanned(pc);
         }
         cf.readParam();
-        
+
         //Create permissions
         while ((str = cf.getNextString()) != null) {
             String[] multiStr = str.split(":");
@@ -211,7 +218,7 @@ public class StorageFlat extends Storage implements StorageInt {
                     Boolean.parseBoolean(multiStr[3]), Boolean.parseBoolean(multiStr[4])));
         }
         cf.readParam();
-        
+
         //Create flags
         while ((str = cf.getNextString()) != null) {
             String[] multiStr = StringChanges.splitKeepQuote(str, ":");
@@ -219,9 +226,9 @@ public class StorageFlat extends Storage implements StorageInt {
             land.addFlag(new LandFlag(ft, multiStr[1], Boolean.parseBoolean(multiStr[2])));
         }
         cf.readParam();
-        
+
         land.setPriority(cf.getValueShort());
-        
+
         Factoid.getLands().createLand(land);
     }
 
@@ -229,55 +236,63 @@ public class StorageFlat extends Storage implements StorageInt {
     public void saveLand(Land land) {
 
         ArrayList<String> strs;
-        
+
         if (!inLoad) {
-            Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.SAVE",land.getName()));
+            Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.SAVE", land.getName()));
             ConfBuilder cb = new ConfBuilder(land.getName());
             cb.writeParam("Owner", land.getOwner().toString());
-            if(land.getParent() == null) {
+
+            //Parent
+            if (land.getParent() == null) {
                 cb.writeParam("Parent", (String) null);
-            } else {   
+            } else {
                 cb.writeParam("Parent", land.getParent().getName());
             }
-            
+
+            //factionTerritory
+            if (land.getFactionTerritory() == null) {
+                cb.writeParam("FactionTerritory", (String) null);
+            } else {
+                cb.writeParam("FactionTerritory", land.getFactionTerritory().getName());
+            }
+
             //CuboidAreas
             strs = new ArrayList<>();
-            for(int index : land.getAreasKey()) {
+            for (int index : land.getAreasKey()) {
                 strs.add(index + ":" + land.getArea(index).toString());
             }
             cb.writeParam("CuboidAreas", strs.toArray(new String[0]));
-            
+
             //Residents
             strs = new ArrayList<>();
-            for(PlayerContainer pc : land.getResidents()) {
+            for (PlayerContainer pc : land.getResidents()) {
                 strs.add(pc.toString());
             }
             cb.writeParam("Residents", strs.toArray(new String[0]));
 
             //Banneds
             strs = new ArrayList<>();
-            for(PlayerContainer pc : land.getBanneds()) {
+            for (PlayerContainer pc : land.getBanneds()) {
                 strs.add(pc.toString());
             }
             cb.writeParam("Banneds", strs.toArray(new String[0]));
 
             //Permissions
             strs = new ArrayList<>();
-            for(PlayerContainer pc : land.getSetPCHavePermission()) {
-                for(Permission perm : land.getPermissionsForPC(pc)) {
+            for (PlayerContainer pc : land.getSetPCHavePermission()) {
+                for (Permission perm : land.getPermissionsForPC(pc)) {
                     strs.add(pc.toString() + ":" + perm.toString());
                 }
             }
             cb.writeParam("Permissions", strs.toArray(new String[0]));
-            
-            
+
             //Falgs
             strs = new ArrayList<>();
-            for(LandFlag flag : land.getFlags()) {
+            for (LandFlag flag : land.getFlags()) {
                 strs.add(flag.toString());
             }
             cb.writeParam("Flags", strs.toArray(new String[0]));
-            
+
             cb.writeParam("Priority", land.getPriority());
             cb.save(getLandFile(land));
         }

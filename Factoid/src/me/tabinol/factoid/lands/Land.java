@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.PermissionType;
@@ -23,6 +24,7 @@ public class Land extends DummyLand {
     private TreeSet<PlayerContainer> residents = new TreeSet<>();
     private TreeSet<PlayerContainer> banneds = new TreeSet<>();
     private boolean autoSave = true;
+    private Faction factionTerritory = null;
     private String worldName;
 
     public Land(String landName, PlayerContainer owner, CuboidArea area) {
@@ -41,6 +43,7 @@ public class Land extends DummyLand {
 
         this.parent = parent;
         parent.addChild(this);
+        this.factionTerritory = parent.factionTerritory;
         createLand(landName, owner, area, parent.getGenealogy() + 1, 1);
     }
     
@@ -49,6 +52,7 @@ public class Land extends DummyLand {
 
         this.parent = parent;
         parent.addChild(this);
+        this.factionTerritory = parent.factionTerritory;
         createLand(landName, owner, area, parent.getGenealogy() + 1, areaId);
     }
 
@@ -168,7 +172,21 @@ public class Land extends DummyLand {
 
         return owner;
     }
+    
+    public Faction getFactionTerritory() {
+        
+        return factionTerritory;
+    }
 
+    public void setFactionTerritory(Faction faction) {
+        
+        this.factionTerritory = faction;
+        for(Land child : children.values()) {
+            child.setFactionTerritory(faction);
+        }
+        doSave();
+    }
+    
     public void setOwner(PlayerContainer owner) {
 
         this.owner = owner;

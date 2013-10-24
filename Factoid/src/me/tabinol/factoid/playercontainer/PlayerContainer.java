@@ -25,6 +25,9 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
         if (pct == PlayerContainerType.RESIDENT) {
             return new PlayerContainerResident(land);
         }
+        if (pct == PlayerContainerType.FACTION_TERRITORY) {
+            return new PlayerContainerFactionTerritory(land);
+        }
         if (pct == PlayerContainerType.OWNER) {
             return new PlayerContainerOwner(land);
         }
