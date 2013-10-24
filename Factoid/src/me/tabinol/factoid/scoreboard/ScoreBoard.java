@@ -15,17 +15,14 @@ public class ScoreBoard extends Thread{
     
     public ScoreBoard(Player player,String LandName){
         this.manager = Factoid.getThisPlugin().getServer().getScoreboardManager();
-        scoreboard = manager.getNewScoreboard();
+        this.scoreboard = manager.getNewScoreboard();
         this.LandName = LandName;
-        MakeScoreboard();
-        this.player = player;
-        player.setScoreboard(scoreboard);
-    }
-    
-    private void MakeScoreboard(){
         scoreboard.registerNewObjective("land", "dummy");
         scoreboard.getObjective("land").setDisplaySlot(DisplaySlot.SIDEBAR);
         scoreboard.getObjective("land").setDisplayName(LandName);
+        this.player = player;
+        scoreboard.getObjective("land").getScore(player).setScore(1);
+        player.setScoreboard(this.scoreboard);
     }
     
     public Scoreboard getScoreboard(){

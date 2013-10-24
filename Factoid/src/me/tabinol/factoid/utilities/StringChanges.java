@@ -82,4 +82,58 @@ public class StringChanges {
         }
         return false;
     }
+    
+    public static int toInteger(String n){
+        try{
+           return Integer.parseInt(n);
+        }catch(Exception e){
+            return 0;
+        }
+    }
+    
+    public static boolean isInt(String n)
+    {
+        try{
+            Integer.parseInt(n);
+        }catch(NumberFormatException e){
+            return false;
+        }
+        return true;
+    }
+    
+    public static double toDouble(String n){
+        try{
+           return Double.parseDouble(n);
+        }catch(Exception e){
+            return 0;
+        }
+    }
+    
+    public static boolean isDouble(String n)
+    {
+        try{
+            Double.parseDouble(n);
+        }catch(NumberFormatException e){
+            return false;
+        }
+        return true;
+    }
+    
+    public static long toLong(String n){
+        try{
+           return Long.parseLong(n);
+        }catch(Exception e){
+            return 0;
+        }
+    }
+    
+    public static boolean isLong(String n)
+    {
+        try{
+            Long.parseLong(n);
+        }catch(NumberFormatException e){
+            return false;
+        }
+        return true;
+    }
 }
