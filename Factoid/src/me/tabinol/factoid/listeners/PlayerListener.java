@@ -23,6 +23,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -211,7 +212,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())) {
@@ -227,7 +228,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())) {
@@ -243,7 +244,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerDropItem(PlayerDropItemEvent event) {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())) {
@@ -257,7 +258,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())) {
@@ -308,6 +309,7 @@ public class PlayerListener implements Listener {
                 String worldName = event.getEntity().getLocation().getWorld().getName();
                 Entity entity = event.getEntity();
                 EntityType et = entity.getType();
+                Tameable tameable;
 
                 // kill en entity (none player)
                 if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(player.getName())))
@@ -320,23 +322,26 @@ public class PlayerListener implements Listener {
                         || (et == EntityType.IRON_GOLEM
                         && !checkPermission(worldName, land, player, PermissionType.VILLAGER_GOLEM_KILL))
                         || (et == EntityType.HORSE
-                        && !checkPermission(worldName, land, player, PermissionType.HORSE_KILL))) {
-                
+                        && !checkPermission(worldName, land, player, PermissionType.HORSE_KILL))
+                        || (entity instanceof Tameable && ((Tameable) entity).isTamed() == true
+                        && ((Tameable) entity).getOwner() != player
+                        && !checkPermission(worldName, land, player, PermissionType.TAMED_KILL))) {
+
                     MessagePermission(player);
                     event.setCancelled(true);
 
                     // For PVP
                 } else if (entity instanceof Player) {
-                    
+
                     LandFlag flag;
                     Faction faction = Factoid.getFactions().getPlayerFaction(player.getName());
-                    Faction factionVictime = Factoid.getFactions().getPlayerFaction(((Player)entity).getName());
-                    
-                    if(faction != null && faction == factionVictime &&
-                            (flag = land.getFlagAndInherit(worldName, FlagType.FACTION_PVP)) != null && flag.getValueBoolean() == false) {
+                    Faction factionVictime = Factoid.getFactions().getPlayerFaction(((Player) entity).getName());
+
+                    if (faction != null && faction == factionVictime
+                            && (flag = land.getFlagAndInherit(worldName, FlagType.FACTION_PVP)) != null && flag.getValueBoolean() == false) {
                         player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.NOFACTIONPVP"));
                         event.setCancelled(true);
-                    } else if((flag = land.getFlagAndInherit(worldName, FlagType.FULL_PVP)) != null && flag.getValueBoolean() == false) {
+                    } else if ((flag = land.getFlagAndInherit(worldName, FlagType.FULL_PVP)) != null && flag.getValueBoolean() == false) {
                         player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.NOPVP"));
                         event.setCancelled(true);
                     }
@@ -407,24 +412,28 @@ public class PlayerListener implements Listener {
         land = Factoid.getLands().getLand(loc);
 
         if (newPlayer) {
-            lastLand.put(player, land);
+            lastLand.put(player, landOld = land);
         } else {
             landOld = lastLand.get(player);
-            if (land != landOld) {
-                isTp = event instanceof PlayerTeleportEvent;
-                landEvent = new PlayerLandChangeEvent(landOld, land, player, lastLoc.get(player), loc, isTp);
-                pm.callEvent(landEvent);
-                if (landEvent.isCancelled()) {
-                    if (isTp) {
-                        ((PlayerTeleportEvent) event).setCancelled(true);
-                        return;
-                    }
-                    player.teleport(lastLoc.get(player));
-                    tpCancel.add(player);
+        }
+        if (land != landOld || newPlayer) {
+            isTp = event instanceof PlayerTeleportEvent;
+            landEvent = new PlayerLandChangeEvent(landOld, land, player, lastLoc.get(player), loc, isTp);
+            pm.callEvent(landEvent);
+            if (landEvent.isCancelled()) {
+                if (isTp) {
+                    ((PlayerTeleportEvent) event).setCancelled(true);
                     return;
                 }
-                lastLand.put(player, land);
+                if (land == landOld || newPlayer) {
+                    player.teleport(player.getWorld().getSpawnLocation());
+                } else {
+                    player.teleport(lastLoc.get(player));
+                }
+                tpCancel.add(player);
+                return;
             }
+            lastLand.put(player, land);
         }
         lastLoc.put(player, loc);
     }

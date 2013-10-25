@@ -30,6 +30,7 @@ public enum PermissionType {
     ANIMAL_KILL("ANIMAL_KILL", true),
     //ANIMAL_FEED("ANIMAL_FEED", true),
     //ANIMAL_ACCOUPLE("ANIMAL_ACCOUPLE", true),
+    TAMED_KILL("TAMED_KILL", true),
     MOB_KILL("MOB_KILL", true),
     //MOB_HEAL("MOB_HEAL", true),
     VILLAGER_KILL("VILLAGER_KILL", true),
@@ -43,7 +44,7 @@ public enum PermissionType {
     //TNT("TNT", true),
     // *** LAND PERM (PAS FAIT)***
     LAND_CREATE("LAND_CREATE", true),
-    LAND_ENTER("LAND_ENTER", true),
+    LAND_ENTER("LAND_ENTER", true), // sauf lui
     LAND_REMOVE("LAND_REMOVE", true),
     LAND_KICK("LAND_KICK", false),
     LAND_BAN("LAND_BAN", false),

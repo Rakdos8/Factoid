@@ -1,7 +1,7 @@
 ##################################################################
 # Author: Kazoo	 & Tabinol                                       #
-# Copyrigth 2013					                                       #
-# Website: http://dev.bukkit.org/profiles/darkkazoo/		         #
+# Copyrigth 2013      	                                         #
+# Website: http://dev.bukkit.org/profiles/darkkazoo/             #
 # Contact: dev.kazoo@gmail.com                	                 #
 ##################################################################
 general:                             #----General Config----
@@ -9,6 +9,11 @@ general:                             #----General Config----
   lang: english
   Storage: flat                      # Only flat is supported for now
   worlds: [world, world_nether, world_the_end] # World where Factoid is enable
+  # The next value is if you want the Factoid exposion protection.
+  # Set it to «False» if you prefere to disable explosions from Essentials
+  # or avoiding plugin conflicts. any other plugin. Flags (???_DAMAGE) will 
+  # be ignored.
+  OverrideExplosions: true
   UseEconomy: false
   InfoItem: 352                      # Item that give Land information
 land:

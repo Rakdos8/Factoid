@@ -5,6 +5,7 @@ import me.tabinol.factoid.event.PlayerLandChangeEvent;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
+import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -38,6 +39,11 @@ public class LandListener implements Listener {
             // is banned?
             if (land.isBanned(new PlayerContainerPlayer(player.getName()))) {
                 player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.BANNED", land.getName()));
+                event.setCancelled(true);
+            
+            // Can enter
+            } else if(land.checkPermissionAndInherit(player.getName(), PermissionType.LAND_ENTER) != PermissionType.LAND_ENTER.baseValue()) {
+                player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.NOENTRY", land.getName()));
                 event.setCancelled(true);
             } else {
 

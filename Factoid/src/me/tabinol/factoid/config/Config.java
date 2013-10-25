@@ -46,6 +46,7 @@ public class Config {
     public int MinPriceSell = 1;
     public int MaxPriceSell = 1;
     public boolean BeaconLigth = false;
+    public boolean OverrideExplosions = true;
 
     public Config() {
 
@@ -90,6 +91,7 @@ public class Config {
         MinAreaSize = config.getInt("land.area.MinAreaSize");
         MaxAreaSize = config.getInt("land.area.MaxAreaSize");
         BeaconLigth = config.getBoolean("land.BeaconLigth");
+        OverrideExplosions = config.getBoolean("general.OverrideExplosions");
 
         if (UseEconomy) {
             PricebyCube = config.getInt("economy.PricebyCube");

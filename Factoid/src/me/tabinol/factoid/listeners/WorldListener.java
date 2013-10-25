@@ -15,6 +15,7 @@ import org.bukkit.entity.Animals;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -23,6 +24,7 @@ import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.inventory.ItemStack;
@@ -37,56 +39,90 @@ public class WorldListener implements Listener {
         conf = Factoid.getConf();
     }
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
-    public void onEntityExplode(EntityExplodeEvent event) {
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onExplosionPrime(ExplosionPrimeEvent event) {
+
+        if (event.getEntity() == null) {
+            return;
+        }
 
         if (conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())) {
+
+            Location loc = event.getEntity().getLocation();
+            DummyLand land = Factoid.getLands().getLandOrOutsideArea(loc);
+            LandFlag flag;
+            EntityType entityType = event.getEntityType();
+
+            // Check for Explosion cancel 
+            if ((entityType == EntityType.CREEPER
+                    && (flag = land.getFlagAndInherit(loc.getWorld().getName(), FlagType.CREEPER_EXPLOSION)) != null
+                    && flag.getValueBoolean() == false)
+                    || (entityType == EntityType.PRIMED_TNT
+                    && (flag = land.getFlagAndInherit(loc.getWorld().getName(), FlagType.TNT_EXPLOSION)) != null
+                    && flag.getValueBoolean() == false)
+                    || ((flag = land.getFlagAndInherit(loc.getWorld().getName(), FlagType.EXPLOSION)) != null
+                    && flag.getValueBoolean() == false)) {
+                event.setCancelled(true);
+                if(entityType == EntityType.CREEPER) {
+                    event.getEntity().remove();
+                }
+            }
+            
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onEntityExplode(EntityExplodeEvent event) {
+
+        if (event.getEntity() == null) {
+            return;
+        }
+
+        if (conf.OverrideExplosions) {
+
             float power;
 
-            if (event.getEntity() != null) {
-
-                // Creeper Explosion
-                if (event.getEntityType() == EntityType.CREEPER) {
-                    if (((Creeper) event.getEntity()).isPowered()) {
-                        power = 6L;
-                    } else {
-                        power = 3L;
-                    }
-                    event.setCancelled(true);
-                    ExplodeBlocks(event.blockList(), FlagType.CREEPER_DAMAGE, event.getLocation(),
-                            event.getYield(), power, false, false);
-
-                    //  Wither
-                } else if (event.getEntityType() == EntityType.WITHER_SKULL) {
-                    event.setCancelled(true);
-                    ExplodeBlocks(event.blockList(), FlagType.WHITER_DAMAGE, event.getLocation(),
-                            event.getYield(), 1L, false, false);
-                } else if (event.getEntityType() == EntityType.WITHER) {
-                    event.setCancelled(true);
-                    ExplodeBlocks(event.blockList(), FlagType.WHITER_DAMAGE, event.getLocation(),
-                            event.getYield(), 7L, false, false);
-
-                    // Ghast
-                } else if (event.getEntityType() == EntityType.FIREBALL) {
-                    event.setCancelled(true);
-                    ExplodeBlocks(event.blockList(), FlagType.GHAST_DAMAGE, event.getLocation(),
-                            event.getYield(), 1L, true, false);
-
-                    // TNT
-                } else if (event.getEntityType() == EntityType.MINECART_TNT
-                        || event.getEntityType() == EntityType.PRIMED_TNT) {
-                    event.setCancelled(true);
-                    ExplodeBlocks(event.blockList(), FlagType.TNT_DAMAGE, event.getLocation(),
-                            event.getYield(), 4L, false, false);
+            // Creeper Explosion
+            if (event.getEntityType() == EntityType.CREEPER) {
+                if (((Creeper) event.getEntity()).isPowered()) {
+                    power = 6L;
+                } else {
+                    power = 3L;
                 }
+                event.setCancelled(true);
+                ExplodeBlocks(event.blockList(), FlagType.CREEPER_DAMAGE, event.getLocation(),
+                        event.getYield(), power, false, false);
+
+                //  Wither
+            } else if (event.getEntityType() == EntityType.WITHER_SKULL) {
+                event.setCancelled(true);
+                ExplodeBlocks(event.blockList(), FlagType.WHITER_DAMAGE, event.getLocation(),
+                        event.getYield(), 1L, false, false);
+            } else if (event.getEntityType() == EntityType.WITHER) {
+                event.setCancelled(true);
+                ExplodeBlocks(event.blockList(), FlagType.WHITER_DAMAGE, event.getLocation(),
+                        event.getYield(), 7L, false, false);
+
+                // Ghast
+            } else if (event.getEntityType() == EntityType.FIREBALL) {
+                event.setCancelled(true);
+                ExplodeBlocks(event.blockList(), FlagType.GHAST_DAMAGE, event.getLocation(),
+                        event.getYield(), 1L, true, false);
+
+                // TNT
+            } else if (event.getEntityType() == EntityType.MINECART_TNT
+                    || event.getEntityType() == EntityType.PRIMED_TNT) {
+                event.setCancelled(true);
+                ExplodeBlocks(event.blockList(), FlagType.TNT_DAMAGE, event.getLocation(),
+                        event.getYield(), 4L, false, false);
             }
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onHangingBreak(HangingBreakEvent event) {
 
-        if (conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())) {
+        if (conf.OverrideExplosions && conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())) {
             // Check for painting
             if (event.getCause() == RemoveCause.EXPLOSION || event.getCause() == RemoveCause.ENTITY) {
                 Factoid.getLog().write("Cancel HangingBreak : " + event.getEntity() + ", Cause: " + event.getCause());
@@ -119,15 +155,20 @@ public class WorldListener implements Listener {
         // Remove and drop exploded blocks
         for (Block block : listToRem) {
             if (block.getType() != Material.AIR) {
-                if (Calculate.getRandomYield(yield)) {
-                    loc.getWorld().dropItem(loc, new ItemStack(block.getType()));
+                if (block.getType() == Material.TNT) {
+                    block.setType(Material.AIR);
+                    loc.getWorld().spawn(block.getLocation().add(.5, .5, .5), TNTPrimed.class);
+                } else {
+                    if (Calculate.getRandomYield(yield)) {
+                        loc.getWorld().dropItem(loc, new ItemStack(block.getType()));
+                    }
+                    block.setType(Material.AIR);
                 }
-                block.setType(Material.AIR);
             }
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
 
         if (conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())) {
@@ -137,14 +178,14 @@ public class WorldListener implements Listener {
             // Enderman removeblock
             if (event.getEntityType() == EntityType.ENDERMAN
                     && (flag = land.getFlagAndInherit(
-                    event.getBlock().getLocation().getWorld().getName(), FlagType.ENDERMAN_DAMAGE)) != null
+                            event.getBlock().getLocation().getWorld().getName(), FlagType.ENDERMAN_DAMAGE)) != null
                     && flag.getValueBoolean() == false) {
                 event.setCancelled(true);
             }
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockIgnite(BlockIgniteEvent event) {
 
         if (conf.Worlds.contains(event.getBlock().getWorld().getName().toLowerCase())) {
@@ -161,7 +202,7 @@ public class WorldListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
 
         if (conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())) {
@@ -170,11 +211,11 @@ public class WorldListener implements Listener {
 
             if ((event.getEntity() instanceof Animals
                     && (flag = land.getFlagAndInherit(
-                    event.getEntity().getLocation().getWorld().getName(), FlagType.ANIMAL_SPAWN)) != null
+                            event.getEntity().getLocation().getWorld().getName(), FlagType.ANIMAL_SPAWN)) != null
                     && flag.getValueBoolean() == false)
                     || (event.getEntity() instanceof Monster
                     && (flag = land.getFlagAndInherit(
-                    event.getEntity().getLocation().getWorld().getName(), FlagType.MOB_SPAWN)) != null
+                            event.getEntity().getLocation().getWorld().getName(), FlagType.MOB_SPAWN)) != null
                     && flag.getValueBoolean() == false)) {
                 event.setCancelled(true);
             }
