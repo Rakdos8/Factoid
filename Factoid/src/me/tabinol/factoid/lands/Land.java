@@ -29,36 +29,35 @@ public class Land extends DummyLand {
 
     public Land(String landName, PlayerContainer owner, CuboidArea area) {
 
-        createLand(landName, owner, area, 0, 1);
+        createLand(landName, owner, area, 0, null, 1);
     }
     
     //for AreaID only
     public Land(String landName, PlayerContainer owner, CuboidArea area, int areaId) {
 
-        createLand(landName, owner, area, 0, areaId);
+        createLand(landName, owner, area, 0, null, areaId);
     }
 
     // next one for a child
     public Land(String landName, PlayerContainer owner, CuboidArea area, Land parent) {
 
-        this.parent = parent;
-        parent.addChild(this);
-        this.factionTerritory = parent.factionTerritory;
-        createLand(landName, owner, area, parent.getGenealogy() + 1, 1);
+        createLand(landName, owner, area, parent.getGenealogy() + 1, parent, 1);
     }
     
     // Only to load with a specific areaid
     public Land(String landName, PlayerContainer owner, CuboidArea area, Land parent, int areaId) {
 
-        this.parent = parent;
-        parent.addChild(this);
-        this.factionTerritory = parent.factionTerritory;
-        createLand(landName, owner, area, parent.getGenealogy() + 1, areaId);
+        createLand(landName, owner, area, parent.getGenealogy() + 1, parent, areaId);
     }
 
-    private void createLand(String landName, PlayerContainer owner, CuboidArea area, int genealogy, int areaId) {
+    private void createLand(String landName, PlayerContainer owner, CuboidArea area, int genealogy, Land parent, int areaId) {
 
         name = landName.toLowerCase();
+        if(parent != null) {
+            this.parent = parent;
+            parent.addChild(this);
+            this.factionTerritory = parent.factionTerritory;
+        }
         this.owner = owner;
         this.genealogy = genealogy;
         worldName = area.getWorldName().toLowerCase();
