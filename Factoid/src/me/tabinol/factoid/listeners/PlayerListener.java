@@ -50,7 +50,7 @@ public class PlayerListener implements Listener {
     public static final int DEFAULT_TIME_LAPS = 500; // in milliseconds
     private int timeCheck;
     private HashMap<Player, Long> lastUpdate;
-    private HashMap<Player, Land> lastLand;
+    private HashMap<Player, DummyLand> lastLand;
     private HashMap<Player, Location> lastLoc;
     private List<Player> tpCancel;
     private PluginManager pm;
@@ -84,9 +84,7 @@ public class PlayerListener implements Listener {
         lastUpdate.remove(player);
         lastLand.remove(player);
         lastLoc.remove(player);
-        if (tpCancel.contains(player)) {
-            tpCancel.remove(player);
-        }
+        tpCancel.remove(player);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -389,11 +387,7 @@ public class PlayerListener implements Listener {
 
     private boolean checkPermission(String worldName, DummyLand land, Player player, PermissionType pt) {
 
-        if (land.checkPermissionAndInherit(worldName, player.getName(), pt) != pt.baseValue()) {
-            return false;
-        }
-
-        return true;
+        return land.checkPermissionAndInherit(worldName, player.getName(), pt) == pt.baseValue();
     }
 
     private void MessagePermission(Player player) {
@@ -404,12 +398,12 @@ public class PlayerListener implements Listener {
     private void handleNewLocation(Event event, Player player, Location loc, boolean newPlayer) {
 
         int t;
-        Land land;
-        Land landOld;
+        DummyLand land;
+        DummyLand landOld;
         PlayerLandChangeEvent landEvent;
         Boolean isTp;
 
-        land = Factoid.getLands().getLand(loc);
+        land = Factoid.getLands().getLandOrOutsideArea(loc);
 
         if (newPlayer) {
             lastLand.put(player, landOld = land);

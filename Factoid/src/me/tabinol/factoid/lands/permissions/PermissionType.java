@@ -42,6 +42,7 @@ public enum PermissionType {
     BUCKET_LAVA("BUCKET_LAVA", true),
     FIRE("FIRE", true),
     //TNT("TNT", true),
+    AUTO_HEAL("AUTO_HEAL", false),
     // *** LAND PERM (PAS FAIT)***
     LAND_CREATE("LAND_CREATE", true),
     LAND_ENTER("LAND_ENTER", true), // sauf lui

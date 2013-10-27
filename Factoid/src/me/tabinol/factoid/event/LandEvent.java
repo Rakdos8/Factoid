@@ -1,15 +1,15 @@
 package me.tabinol.factoid.event;
 
-import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.lands.DummyLand;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class LandEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
-    private Land land;
+    private DummyLand land;
 
-    public LandEvent(Land land) {
+    public LandEvent(DummyLand land) {
 
         this.land = land;
     }
@@ -25,7 +25,7 @@ public class LandEvent extends Event {
         return handlers;
     }
 
-    public Land getLand() {
+    public DummyLand getLand() {
 
         return land;
     }

@@ -226,7 +226,8 @@ public class Lands {
         // Compare priorities of parents (or main)
         for (CuboidArea area : areas) {
 
-            if (actualPrio < (curPrio = area.getLand().getAncestor(area.getLand().getGenealogy()).getPriority())) {
+            if (actualPrio < (curPrio = area.getLand().getAncestor(area.getLand().getGenealogy()).getPriority())
+                    || (actualPrio == curPrio && actualGen <= area.getLand().getGenealogy())) {
                 actualArea = area;
                 actualPrio = curPrio;
                 actualGen = area.getLand().getGenealogy();
