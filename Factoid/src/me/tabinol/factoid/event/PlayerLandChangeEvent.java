@@ -1,6 +1,6 @@
 package me.tabinol.factoid.event;
 
-import me.tabinol.factoid.lands.DummyLand;
+import me.tabinol.factoid.lands.Land;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -13,10 +13,10 @@ public class PlayerLandChangeEvent extends LandEvent implements Cancellable {
     Player player;
     Location fromLoc;
     Location toLoc;
-    DummyLand lastLand;
+    Land lastLand;
     boolean isTp;
 
-    public PlayerLandChangeEvent(final DummyLand lastLand, final DummyLand land, final Player player, 
+    public PlayerLandChangeEvent(final Land lastLand, final Land land, final Player player, 
             final Location fromLoc, final Location toLoc, final boolean isTp) {
 
         super(land);
@@ -55,7 +55,7 @@ public class PlayerLandChangeEvent extends LandEvent implements Cancellable {
         return player;
     }
     
-    public DummyLand getLastLand() {
+    public Land getLastLand() {
         
         return lastLand;
     }

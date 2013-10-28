@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.DummyLand;
-import me.tabinol.factoid.lands.Lands;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.Permission;
@@ -20,6 +19,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Config {
 
+    public final static String GLOBAL = "_Global_";
     private Factoid thisPlugin;
     private FileConfiguration config;
     private FileConfiguration landDefault;
@@ -68,7 +68,7 @@ public class Config {
         thisPlugin.reloadConfig();
         loadCustom();
     }
-    
+
     private void loadCustom() {
 
         landDefault = YamlConfiguration.loadConfiguration(new File(thisPlugin.getDataFolder(), "landdefault.yml"));
@@ -102,35 +102,39 @@ public class Config {
         }
     }
 
+    public DummyLand getGlobalArea() {
+
+        Factoid.getLog().write("Create conf for: _Global_");
+
+        return landCreate(GLOBAL, worldConfig, GLOBAL + ".ContainerPermissions",
+                GLOBAL + ".ContainerFlags");
+    }
+
     public TreeMap<String, DummyLand> getLandOutsideArea() {
 
         TreeMap<String, DummyLand> landList = new TreeMap<>();
         Set<String> keys = worldConfig.getConfigurationSection("").getKeys(false);
 
-        for (String key : keys) {
-            String worldName = key;
-            Factoid.getLog().write("Create conf for World: " + key);
-            landList.put(worldName, landCreate(key, worldConfig, key + ".ContainerPermissions",
-                    key + ".ContainerFlags"));
+        for (String worldName : keys) {
+            if (!worldName.equalsIgnoreCase(GLOBAL)) {
+                Factoid.getLog().write("Create conf for World: " + worldName);
+                landList.put(worldName, landCreate(worldName, worldConfig, worldName + ".ContainerPermissions",
+                        worldName + ".ContainerFlags"));
+            }
         }
 
-        // Create Global if it is not created
-        if(!landList.containsKey(Lands.GLOBAL)) {
-            landList.put(Lands.GLOBAL, new DummyLand());
-        }
-        
         return landList;
     }
 
     public DummyLand getLandDefaultConf() {
 
         Factoid.getLog().write("Create default conf for lands");
-        return landCreate(null, landDefault, "ContainerPermissions", "ContainerFlags");
+        return landCreate(GLOBAL, landDefault, "ContainerPermissions", "ContainerFlags");
     }
 
     private DummyLand landCreate(String worldName, FileConfiguration fc, String perms, String flags) {
 
-        DummyLand dl = new DummyLand();
+        DummyLand dl = new DummyLand(worldName);
         ConfigurationSection csPerm = fc.getConfigurationSection(perms);
         ConfigurationSection csFlags = fc.getConfigurationSection(flags);
 
@@ -146,8 +150,8 @@ public class Config {
                             dl.addPermission(
                                     PlayerContainer.create(null, PlayerContainerType.getFromString(container), containerName.toLowerCase()),
                                     new Permission(PermissionType.getFromString(perm),
-                                    fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Value"), 
-                                    fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".heritable")));
+                                            fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Value"),
+                                            fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".heritable")));
                         }
                     }
                 } else {
@@ -156,8 +160,8 @@ public class Config {
                         dl.addPermission(
                                 PlayerContainer.create(null, PlayerContainerType.getFromString(container), null),
                                 new Permission(PermissionType.getFromString(perm),
-                                fc.getBoolean(perms + "." + container + "." + perm + ".Value"), 
-                                fc.getBoolean(perms + "." + container + "." + perm + ".heritable")));
+                                        fc.getBoolean(perms + "." + container + "." + perm + ".Value"),
+                                        fc.getBoolean(perms + "." + container + "." + perm + ".heritable")));
                     }
                 }
             }

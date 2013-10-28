@@ -15,11 +15,18 @@ public class DummyLand {
 
     protected TreeMap<PlayerContainer, EnumMap<PermissionType, Permission>> permissions; // String for playerName
     protected EnumMap<FlagType, LandFlag> flags;
+    protected String worldName;
 
-    public DummyLand() {
+    public DummyLand(String worldName) {
 
         permissions = new TreeMap<>();
         flags = new EnumMap<>(FlagType.class);
+        this.worldName = worldName;
+    }
+
+    public String getWorldName() {
+
+        return worldName;
     }
 
     public void addPermission(PlayerContainer pc, Permission perm) {
@@ -67,12 +74,12 @@ public class DummyLand {
         return permissions.get(pc).values();
     }
 
-    public Boolean checkPermissionAndInherit(String worldName, String playerName, PermissionType pt) {
+    public Boolean checkPermissionAndInherit(String playerName, PermissionType pt) {
 
-        return checkPermissionAndInherit(worldName, playerName, pt, false);
+        return checkPermissionAndInherit(playerName, pt, false);
     }
 
-    protected Boolean checkPermissionAndInherit(String worldName, String playerName, PermissionType pt, boolean onlyInherit) {
+    protected Boolean checkPermissionAndInherit(String playerName, PermissionType pt, boolean onlyInherit) {
 
         return Factoid.getLands().getPermissionInWorld(worldName, playerName, pt, true);
     }
@@ -113,12 +120,12 @@ public class DummyLand {
         return flags.values();
     }
 
-    public LandFlag getFlagAndInherit(String worldName, FlagType ft) {
+    public LandFlag getFlagAndInherit(FlagType ft) {
 
-        return getFlagAndInherit(worldName, ft, false);
+        return getFlagAndInherit(ft, false);
     }
 
-    protected LandFlag getFlagAndInherit(String worldName, FlagType ft, boolean onlyInherit) {
+    protected LandFlag getFlagAndInherit(FlagType ft, boolean onlyInherit) {
 
         return Factoid.getLands().getFlagInWorld(worldName, ft, true);
     }

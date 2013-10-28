@@ -41,7 +41,7 @@ public class Factoid extends JavaPlugin {
         language = new Lang();
         storage = new StorageFlat();
         factions = new Factions();
-        lands = new Lands(conf.getLandOutsideArea(), conf.getLandDefaultConf());
+        lands = new Lands(conf.getGlobalArea(), conf.getLandOutsideArea(), conf.getLandDefaultConf());
         storage.loadAll();
         worldListener = new WorldListener();
         playerListener = new PlayerListener();

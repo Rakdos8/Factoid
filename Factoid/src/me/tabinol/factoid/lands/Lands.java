@@ -19,22 +19,24 @@ public class Lands {
     public final static int INDEX_Z1 = 1;
     public final static int INDEX_X2 = 2;
     public final static int INDEX_Z2 = 3;
-    public final static String GLOBAL = "_Global_";
     // INDEX first, Tree by worlds (then by Areas)
     private TreeMap<String, TreeSet<AreaIndex>>[] areaList;
     // Tree by name
     private TreeMap<String, Land> landList;
-    // Lands created for outside a Land, String = "Global" or WorldName
+    // GLOBAL configuration
+    private DummyLand globalArea;
+    // Outside a Land (in specific worlds)
     protected TreeMap<String, DummyLand> outsideArea;
     // Default config of a land, String = "Global" or WorldName
     protected DummyLand defaultConf;
 
-    public Lands(TreeMap<String, DummyLand> outsideArea, DummyLand defaultConf) {
+    public Lands(DummyLand globalArea, TreeMap<String, DummyLand> outsideArea, DummyLand defaultConf) {
 
         areaList = new TreeMap[4];
         for (int t = 0; t < areaList.length; t++) {
             areaList[t] = new TreeMap<>();
         }
+        this.globalArea = globalArea;
         this.outsideArea = outsideArea;
         this.defaultConf = defaultConf;
         landList = new TreeMap<>();
@@ -96,11 +98,19 @@ public class Lands {
         if ((land = getLand(loc)) != null) {
             return land;
         }
-        if((land = outsideArea.get(loc.getWorld().getName())) != null) {
-            return land;
+
+        return getOutsideArea(loc);
+    }
+    
+    public DummyLand getOutsideArea(Location loc) {
+        
+        DummyLand dummyLand;
+        
+        if((dummyLand = outsideArea.get(loc.getWorld().getName())) == null) {
+            outsideArea.put(loc.getWorld().getName(), dummyLand = new DummyLand(loc.getWorld().getName()));
         }
         
-        return outsideArea.get(GLOBAL);
+        return dummyLand;
     }
 
     public Collection getLands(Location loc) {
@@ -136,7 +146,7 @@ public class Lands {
         if ((dl = outsideArea.get(worldName.toLowerCase())) != null && (result = dl.getPermission(playerName, pt, onlyInherit)) != null) {
             return result;
         }
-        if ((dl = outsideArea.get(Lands.GLOBAL)) != null && (result = dl.getPermission(playerName, pt, onlyInherit)) != null) {
+        if ((result = globalArea.getPermission(playerName, pt, onlyInherit)) != null) {
             return result;
         }
 
@@ -151,7 +161,7 @@ public class Lands {
         if ((dl = outsideArea.get(worldName.toLowerCase())) != null && (result = dl.getFlag(ft, onlyInherit)) != null) {
             return result;
         }
-        if ((dl = outsideArea.get(Lands.GLOBAL)) != null && (result = dl.getFlag(ft, onlyInherit)) != null) {
+        if ((result = globalArea.getFlag(ft, onlyInherit)) != null) {
             return result;
         }
 

@@ -25,28 +25,31 @@ public class Land extends DummyLand {
     private TreeSet<PlayerContainer> banneds = new TreeSet<>();
     private boolean autoSave = true;
     private Faction factionTerritory = null;
-    private String worldName;
 
     public Land(String landName, PlayerContainer owner, CuboidArea area) {
 
+        super(area.getWorldName().toLowerCase());
         createLand(landName, owner, area, 0, null, 1);
     }
     
     //for AreaID only
     public Land(String landName, PlayerContainer owner, CuboidArea area, int areaId) {
 
+        super(area.getWorldName().toLowerCase());
         createLand(landName, owner, area, 0, null, areaId);
     }
 
     // next one for a child
     public Land(String landName, PlayerContainer owner, CuboidArea area, Land parent) {
 
+        super(area.getWorldName().toLowerCase());
         createLand(landName, owner, area, parent.getGenealogy() + 1, parent, 1);
     }
     
     // Only to load with a specific areaid
     public Land(String landName, PlayerContainer owner, CuboidArea area, Land parent, int areaId) {
 
+        super(area.getWorldName().toLowerCase());
         createLand(landName, owner, area, parent.getGenealogy() + 1, parent, areaId);
     }
 
@@ -60,7 +63,6 @@ public class Land extends DummyLand {
         }
         this.owner = owner;
         this.genealogy = genealogy;
-        worldName = area.getWorldName().toLowerCase();
         flags = Factoid.getLands().defaultConf.flags.clone();
         copyPerms();
         addArea(area, areaId);
@@ -162,11 +164,6 @@ public class Land extends DummyLand {
         doSave();
     }
     
-    public String getWorldName() {
-        
-        return worldName;
-    }
-
     public PlayerContainer getOwner() {
 
         return owner;
@@ -321,39 +318,29 @@ public class Land extends DummyLand {
         }
     }
     
-    public Boolean checkPermissionAndInherit(String playerName, PermissionType pt) {
-
-        return checkPermissionAndInherit(worldName, playerName, pt, false);
-    }
-
     @Override
-    protected Boolean checkPermissionAndInherit(String worldName, String playerName, PermissionType pt, boolean onlyInherit) {
+    protected Boolean checkPermissionAndInherit(String playerName, PermissionType pt, boolean onlyInherit) {
 
         Boolean permValue;
         
         if ((permValue = getPermission(playerName, pt, onlyInherit)) != null) {
             return permValue;
         } else if (parent != null) {
-            return parent.checkPermissionAndInherit(worldName, playerName, pt, true);
+            return parent.checkPermissionAndInherit(playerName, pt, true);
         }
         
         return Factoid.getLands().getPermissionInWorld(worldName, playerName, pt, true);
     }
     
-    public LandFlag getFlagAndInherit(FlagType ft) {
-
-        return getFlagAndInherit(worldName, ft, false);
-    }
-    
     @Override
-    protected LandFlag getFlagAndInherit(String worldName, FlagType ft, boolean onlyInherit) {
+    protected LandFlag getFlagAndInherit(FlagType ft, boolean onlyInherit) {
 
         LandFlag flag;
         
         if ((flag = getFlag(ft, onlyInherit)) != null) {
             return flag;
         } else if (parent != null) {
-            return parent.getFlagAndInherit(worldName, ft, true);
+            return parent.getFlagAndInherit(ft, true);
         } 
 
         return Factoid.getLands().getFlagInWorld(worldName, ft, true);

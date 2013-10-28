@@ -77,45 +77,50 @@ public class LandListener implements Listener {
     public void onPlayerLandChange(PlayerLandChangeEvent event) {
 
         Player player = event.getPlayer();
-        DummyLand lastLand = event.getLastLand();
+        Land lastLand = event.getLastLand();
         String worldName = event.getToLoc().getWorld().getName();
-        DummyLand land = event.getLand();
+        Land land = event.getLand();
+        DummyLand dummyLand;
         LandFlag flag;
         String value;
 
         // Message quit
-        if (lastLand instanceof Land && (flag = ((Land) lastLand).getFlagAndInherit(FlagType.MESSAGE_QUIT)) != null
+        if (lastLand != null && (flag = land.getFlagAndInherit(FlagType.MESSAGE_QUIT)) != null
                 && (value = flag.getValueString()) != null) {
-            player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + ((Land) lastLand).getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
+            player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + land.getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
         }
-        if (land instanceof Land) {
+        if (land != null) {
+            dummyLand = land;
 
             // is banned?
-            if (((Land) land).isBanned(new PlayerContainerPlayer(player.getName()))) {
-                player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.BANNED", ((Land) land).getName()));
+            if (land.isBanned(new PlayerContainerPlayer(player.getName()))) {
+                player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.BANNED", land.getName()));
                 event.setCancelled(true);
+                return;
+            }
 
-                // Can enter
-            } else if (((Land) land).checkPermissionAndInherit(player.getName(), PermissionType.LAND_ENTER) != PermissionType.LAND_ENTER.baseValue()) {
-                player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.NOENTRY", ((Land) land).getName()));
+            // Can enter
+            if (land.checkPermissionAndInherit(player.getName(), PermissionType.LAND_ENTER) != PermissionType.LAND_ENTER.baseValue()) {
+                player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.NOENTRY", land.getName()));
                 event.setCancelled(true);
-            } else {
+                return;
+            }
+            // Message join
+            if ((flag = land.getFlagAndInherit(FlagType.MESSAGE_JOIN)) != null
+                    && (value = flag.getValueString()) != null) {
+                player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + land.getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
+            }
+        } else {
+            dummyLand = Factoid.getLands().getOutsideArea(event.getToLoc());
+        }
 
-                // Message join
-                if ((flag = ((Land) land).getFlagAndInherit(FlagType.MESSAGE_JOIN)) != null
-                        && (value = flag.getValueString()) != null) {
-                    player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + ((Land) land).getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
-                }
+        //Check for Healing
+        if (dummyLand.checkPermissionAndInherit(player.getName(), PermissionType.AUTO_HEAL) != PermissionType.AUTO_HEAL.baseValue()) {
+            if (!playerHeal.contains(player)) {
+                playerHeal.add(player);
             }
-            
-            //Check for Healing
-            if (land.checkPermissionAndInherit(worldName, player.getName(), PermissionType.AUTO_HEAL) != PermissionType.AUTO_HEAL.baseValue()) {
-                if (!playerHeal.contains(player)) {
-                    playerHeal.add(player);
-                }
-            } else {
-                playerHeal.remove(player);
-            }
+        } else {
+            playerHeal.remove(player);
         }
     }
 }

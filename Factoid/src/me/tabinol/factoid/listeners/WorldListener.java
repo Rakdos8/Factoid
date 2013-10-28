@@ -55,12 +55,12 @@ public class WorldListener implements Listener {
 
             // Check for Explosion cancel 
             if ((entityType == EntityType.CREEPER
-                    && (flag = land.getFlagAndInherit(loc.getWorld().getName(), FlagType.CREEPER_EXPLOSION)) != null
+                    && (flag = land.getFlagAndInherit(FlagType.CREEPER_EXPLOSION)) != null
                     && flag.getValueBoolean() == false)
                     || (entityType == EntityType.PRIMED_TNT
-                    && (flag = land.getFlagAndInherit(loc.getWorld().getName(), FlagType.TNT_EXPLOSION)) != null
+                    && (flag = land.getFlagAndInherit(FlagType.TNT_EXPLOSION)) != null
                     && flag.getValueBoolean() == false)
-                    || ((flag = land.getFlagAndInherit(loc.getWorld().getName(), FlagType.EXPLOSION)) != null
+                    || ((flag = land.getFlagAndInherit(FlagType.EXPLOSION)) != null
                     && flag.getValueBoolean() == false)) {
                 event.setCancelled(true);
                 if(entityType == EntityType.CREEPER) {
@@ -142,7 +142,7 @@ public class WorldListener implements Listener {
         // Check blocks to remove
         for (Block block : blocks) {
             if ((flag = Factoid.getLands().getLandOrOutsideArea(
-                    block.getLocation()).getFlagAndInherit(block.getLocation().getWorld().getName(), ft)) == null
+                    block.getLocation()).getFlagAndInherit(ft)) == null
                     || (flag != null && flag.getValueBoolean() == true)) {
                 listToRem.add(block);
             }
@@ -177,8 +177,7 @@ public class WorldListener implements Listener {
 
             // Enderman removeblock
             if (event.getEntityType() == EntityType.ENDERMAN
-                    && (flag = land.getFlagAndInherit(
-                            event.getBlock().getLocation().getWorld().getName(), FlagType.ENDERMAN_DAMAGE)) != null
+                    && (flag = land.getFlagAndInherit(FlagType.ENDERMAN_DAMAGE)) != null
                     && flag.getValueBoolean() == false) {
                 event.setCancelled(true);
             }
@@ -193,9 +192,9 @@ public class WorldListener implements Listener {
             LandFlag flag;
 
             if ((event.getCause() == IgniteCause.SPREAD
-                    && (flag = land.getFlagAndInherit(event.getBlock().getLocation().getWorld().getName(), FlagType.FIRESPREAD)) != null
+                    && (flag = land.getFlagAndInherit(FlagType.FIRESPREAD)) != null
                     && flag.getValueBoolean() == false)
-                    || ((flag = land.getFlagAndInherit(event.getBlock().getLocation().getWorld().getName(), FlagType.FIRE)) != null
+                    || ((flag = land.getFlagAndInherit(FlagType.FIRE)) != null
                     && flag.getValueBoolean() == false)) {
                 event.setCancelled(true);
             }
@@ -210,12 +209,10 @@ public class WorldListener implements Listener {
             LandFlag flag;
 
             if ((event.getEntity() instanceof Animals
-                    && (flag = land.getFlagAndInherit(
-                            event.getEntity().getLocation().getWorld().getName(), FlagType.ANIMAL_SPAWN)) != null
+                    && (flag = land.getFlagAndInherit(FlagType.ANIMAL_SPAWN)) != null
                     && flag.getValueBoolean() == false)
                     || (event.getEntity() instanceof Monster
-                    && (flag = land.getFlagAndInherit(
-                            event.getEntity().getLocation().getWorld().getName(), FlagType.MOB_SPAWN)) != null
+                    && (flag = land.getFlagAndInherit(FlagType.MOB_SPAWN)) != null
                     && flag.getValueBoolean() == false)) {
                 event.setCancelled(true);
             }
