@@ -49,6 +49,11 @@ public class ConfBuilder {
 
         writeln(paramName + ":" + param);
     }
+    
+    public void writeParam(String paramName, double param) {
+        
+        writeln(paramName + ":" + param);
+    }
 
     public void writeParam(String ParamName, String[] params) {
 

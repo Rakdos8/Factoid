@@ -3,6 +3,8 @@ package me.tabinol.factoid.listeners;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.event.PlayerLandChangeEvent;
@@ -50,7 +52,7 @@ public class PlayerListener implements Listener {
     public static final int DEFAULT_TIME_LAPS = 500; // in milliseconds
     private int timeCheck;
     private HashMap<Player, Long> lastUpdate;
-    private HashMap<Player, Land> lastLand;
+    private static HashMap<Player, Land> lastLand;
     private HashMap<Player, Location> lastLoc;
     private List<Player> tpCancel;
     private PluginManager pm;
@@ -65,6 +67,19 @@ public class PlayerListener implements Listener {
         lastLand = new HashMap<>();
         lastLoc = new HashMap<>();
         tpCancel = new ArrayList<>();
+    }
+
+    public static TreeSet<String> getPlayersInLand(Land land) {
+
+        TreeSet<String> listp = new TreeSet<>();
+
+        for (Map.Entry<Player, Land> entry : lastLand.entrySet()) {
+            if (entry.getValue() == land) {
+                listp.add(entry.getKey().getDisplayName());
+            }
+        }
+
+        return listp;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -126,7 +141,6 @@ public class PlayerListener implements Listener {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getClickedBlock().getLocation());
-            String worldName = event.getClickedBlock().getLocation().getWorld().getName();
             Material ml = event.getClickedBlock().getType();
             Player player = event.getPlayer();
             Action action = event.getAction();
@@ -143,9 +157,10 @@ public class PlayerListener implements Listener {
                     player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CURRENT.LAND.NAME", trueLand.getName()));
                     player.sendMessage(ChatColor.GRAY + Factoid.getLanguage().getMessage("COMMAND.CURRENT.LAND.OWNER", trueLand.getOwner().getContainerType().name(), trueLand.getOwner().getName()));
                     player.sendMessage(ChatColor.GRAY + Factoid.getLanguage().getMessage("COMMAND.CURRENT.LAND.AREA"));
-                    for (CuboidArea area : trueLand.getAreas()) {
-                        player.sendMessage(ChatColor.GRAY + area.toString());
+                    for (Map.Entry<Integer, CuboidArea> entry : trueLand.getIdsAndAreas().entrySet()) {
+                        player.sendMessage("ID: " + entry.getKey() + ", " + entry.getValue());
                     }
+
                 } else {
                     player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CURRENT.NOLAND"));
                 }
@@ -215,7 +230,6 @@ public class PlayerListener implements Listener {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
-            String worldName = event.getBlock().getLocation().getWorld().getName();
 
             if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(event.getPlayer().getName())))
                     || (!checkPermission(land, event.getPlayer(), PermissionType.BUILD)
@@ -247,7 +261,6 @@ public class PlayerListener implements Listener {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getPlayer().getLocation());
-            String worldName = event.getPlayer().getLocation().getWorld().getName();
 
             if (!checkPermission(land, event.getPlayer(), PermissionType.DROP)) {
                 MessagePermission(event.getPlayer());
@@ -261,7 +274,6 @@ public class PlayerListener implements Listener {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getPlayer().getLocation());
-            String worldName = event.getPlayer().getLocation().getWorld().getName();
 
             if (!checkPermission(land, event.getPlayer(), PermissionType.PICKETUP)) {
                 MessagePermission(event.getPlayer());
@@ -275,7 +287,6 @@ public class PlayerListener implements Listener {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBed().getLocation());
-            String worldName = event.getBed().getLocation().getWorld().getName();
 
             if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(event.getPlayer().getName())))
                     || (!checkPermission(land, event.getPlayer(), PermissionType.SLEEP))) {
@@ -304,10 +315,8 @@ public class PlayerListener implements Listener {
 
             if (player != null) {
                 DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getEntity().getLocation());
-                String worldName = event.getEntity().getLocation().getWorld().getName();
                 Entity entity = event.getEntity();
                 EntityType et = entity.getType();
-                Tameable tameable;
 
                 // kill en entity (none player)
                 if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(player.getName())))
@@ -353,7 +362,6 @@ public class PlayerListener implements Listener {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlockClicked().getLocation());
-            String worldName = event.getPlayer().getLocation().getWorld().getName();
             Material mt = event.getBucket();
 
             if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(event.getPlayer().getName())))
@@ -374,7 +382,6 @@ public class PlayerListener implements Listener {
             if (event.getPlayer() != null) {
 
                 DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
-                String worldName = event.getBlock().getLocation().getWorld().getName();
 
                 if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(event.getPlayer().getName())))
                         || (!checkPermission(land, event.getPlayer(), PermissionType.FIRE))) {

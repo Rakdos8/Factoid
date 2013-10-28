@@ -227,7 +227,19 @@ public class StorageFlat extends Storage implements StorageInt {
         }
         cf.readParam();
 
+        //Set Priority
         land.setPriority(cf.getValueShort());
+        cf.readParam();
+        
+        //Money
+        land.addMoney(cf.getValueDouble());
+        cf.readParam();
+        
+        //Players Notify
+        while ((str = cf.getNextString()) != null) {
+            land.addPlayerNotify(str);
+        }
+        cf.readParam();
 
         Factoid.getLands().createLand(land);
     }
@@ -255,7 +267,7 @@ public class StorageFlat extends Storage implements StorageInt {
             } else {
                 cb.writeParam("FactionTerritory", land.getFactionTerritory().getName());
             }
-
+            
             //CuboidAreas
             strs = new ArrayList<>();
             for (int index : land.getAreasKey()) {
@@ -286,14 +298,22 @@ public class StorageFlat extends Storage implements StorageInt {
             }
             cb.writeParam("Permissions", strs.toArray(new String[0]));
 
-            //Falgs
+            //Flags
             strs = new ArrayList<>();
             for (LandFlag flag : land.getFlags()) {
                 strs.add(flag.toString());
             }
             cb.writeParam("Flags", strs.toArray(new String[0]));
 
+            // Priority
             cb.writeParam("Priority", land.getPriority());
+            
+            // Money
+            cb.writeParam("Money", land.getMoney());
+
+            // PlayersNotify
+            cb.writeParam("PlayersNotify", land.getPlayersNotify().toArray(new String[0]));
+
             cb.save(getLandFile(land));
         }
     }

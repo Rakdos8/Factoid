@@ -1,6 +1,7 @@
 package me.tabinol.factoid.lands;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -9,6 +10,7 @@ import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.PermissionType;
+import me.tabinol.factoid.listeners.PlayerListener;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 
 public class Land extends DummyLand {
@@ -25,6 +27,8 @@ public class Land extends DummyLand {
     private TreeSet<PlayerContainer> banneds = new TreeSet<>();
     private boolean autoSave = true;
     private Faction factionTerritory = null;
+    private double money = 0L;
+    private TreeSet<String> playerNotify = new TreeSet<>();
 
     public Land(String landName, PlayerContainer owner, CuboidArea area) {
 
@@ -134,6 +138,11 @@ public class Land extends DummyLand {
     public Set<Integer> getAreasKey() {
         
         return areas.keySet();
+    }
+    
+    public Map<Integer, CuboidArea> getIdsAndAreas() {
+        
+        return areas;
     }
     
     public Collection<CuboidArea> getAreas() {
@@ -344,5 +353,45 @@ public class Land extends DummyLand {
         } 
 
         return Factoid.getLands().getFlagInWorld(worldName, ft, true);
+    }
+    
+    public void addMoney(double money) {
+        
+        this.money += money;
+    }
+    
+    public void substractMoney(double money) {
+        
+        this.money -= money;
+    }
+    
+    public double getMoney() {
+        
+        return money;
+    }
+    
+    public void addPlayerNotify(String playerName) {
+        
+        playerNotify.add(playerName.toLowerCase());
+    }
+    
+    public boolean removePlayerNotify(String playerName) {
+        
+        return playerNotify.remove(playerName.toLowerCase());
+    }
+    
+    public boolean isPlayerNotify(String playerName) {
+        
+        return playerNotify.contains(playerName.toLowerCase());
+    }
+    
+    public TreeSet<String> getPlayersNotify() {
+        
+        return playerNotify;
+    }
+    
+    public TreeSet<String> getPlayersInLand() {
+        
+        return PlayerListener.getPlayersInLand(this);
     }
 }

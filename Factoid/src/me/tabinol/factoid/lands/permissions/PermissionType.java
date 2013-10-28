@@ -44,12 +44,16 @@ public enum PermissionType {
     //TNT("TNT", true),
     AUTO_HEAL("AUTO_HEAL", false),
     // *** LAND PERM (PAS FAIT)***
+    RESIDENT_MANAGER("RESIDENT_MANAGER", false),
     LAND_CREATE("LAND_CREATE", true),
     LAND_ENTER("LAND_ENTER", true), // sauf lui
     LAND_REMOVE("LAND_REMOVE", true),
     LAND_KICK("LAND_KICK", false),
     LAND_BAN("LAND_BAN", false),
-    LAND_WHOS("LAND_WHOS", false);
+    LAND_WHOS("LAND_WHOS", false),
+    LAND_NOTIFY("LAND_NOTIFY", false),
+    MONEY_DEPOSIT("MONEY_DEPOSIT", false),
+    MONEY_WITHDRAW("MONEY_WITHDRAW", false);
     
     private final String permissionName;
     private final boolean baseValue;

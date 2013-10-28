@@ -71,6 +71,8 @@ ACTION:
   NOPVP: "The PvP is not actived here!"
   NOFACTIONPVP: "You can not kill a member of your faction!"
   NOENTRY: "You can not enter in the land %!"
+  PLAYERENTER: "% is entering the land %."
+  PLAYEREXIT: "% is exiting the land %."
 LOG:
   STORAGE:
     LOAD:

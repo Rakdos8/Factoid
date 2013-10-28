@@ -93,6 +93,11 @@ public class ConfLoader {
 
         return Short.parseShort(value);
     }
+    
+    public double getValueDouble() {
+        
+        return Double.parseDouble(value);
+    }
 
     public String getNextString() {
 
