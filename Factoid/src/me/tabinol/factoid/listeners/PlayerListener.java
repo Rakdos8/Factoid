@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.event.PlayerLandChangeEvent;
 import me.tabinol.factoid.factions.Faction;
-import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.flags.FlagType;
@@ -151,20 +151,9 @@ public class PlayerListener implements Listener {
             if (player.getItemInHand() != null
                     && action == Action.LEFT_CLICK_BLOCK
                     && player.getItemInHand().getTypeId() == conf.InfoItem) {
-                if (land instanceof Land) {
-
-                    Land trueLand = (Land) land;
-                    player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CURRENT.LAND.NAME", trueLand.getName()));
-                    player.sendMessage(ChatColor.GRAY + Factoid.getLanguage().getMessage("COMMAND.CURRENT.LAND.OWNER", trueLand.getOwner().getContainerType().name(), trueLand.getOwner().getName()));
-                    player.sendMessage(ChatColor.GRAY + Factoid.getLanguage().getMessage("COMMAND.CURRENT.LAND.AREA"));
-                    for (Map.Entry<Integer, CuboidArea> entry : trueLand.getIdsAndAreas().entrySet()) {
-                        player.sendMessage("ID: " + entry.getKey() + ", " + entry.getValue());
-                    }
-
-                } else {
-                    player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CURRENT.NOLAND"));
-                }
+                OnCommand.landInfo(land, player);
                 event.setCancelled(true);
+                
             } else if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(player.getName())))
                     || ((action == Action.RIGHT_CLICK_BLOCK // BEGIN of USE
                     && (ml == Material.WOODEN_DOOR || ml == Material.TRAP_DOOR
