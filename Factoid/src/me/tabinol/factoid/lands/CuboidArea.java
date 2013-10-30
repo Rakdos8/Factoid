@@ -8,6 +8,7 @@ public class CuboidArea implements Comparable<CuboidArea> {
     private String worldName;
     private int x1, y1, z1, x2, y2, z2;
     private Land land = null;
+    private int key = 0;
 
     public CuboidArea(String worldName, int x1, int y1, int z1, int x2, int y2, int z2) {
 
@@ -81,7 +82,7 @@ public class CuboidArea implements Comparable<CuboidArea> {
     @Override
     public String toString() {
         
-        return worldName + ":" + x1 + ":" + y1 + ":" + z1 + ":" + x2 + ":" + y2 + ":" + z2;
+        return worldName + "("+key+"):" + x1 + ":" + y1 + ":" + z1 + ":" + x2 + ":" + y2 + ":" + z2;
     }
 
     public boolean isCollision(CuboidArea area2) {
@@ -141,6 +142,10 @@ public class CuboidArea implements Comparable<CuboidArea> {
 
         this.z2 = z2;
     }
+    
+    public void setKey(int key){
+        this.key = key;
+    }
 
     public Land getLand() {
 
@@ -180,5 +185,9 @@ public class CuboidArea implements Comparable<CuboidArea> {
     public int getZ2() {
 
         return z2;
+    }
+    
+    public int getKey(){
+        return key;
     }
 }

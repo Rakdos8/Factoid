@@ -30,6 +30,7 @@ COMMAND:
       SELECTMODE: "Join the Select Mode before."
   CREATE:
     LAND: "You have created your land."
+    AREA: "You have created your Area in the land '%'"
     QUIT:
       SELECTMODE: "You are no longer in Select Mode."
       FLAGMODE: "Quit the Flags Mode before."
@@ -50,6 +51,22 @@ COMMAND:
       EXPANDMODE: "Quit the Expand Mode before."
     JOIN:
       SELECTMODE: "Join the Select Mode before."
+    MISSINGINFO: "Some information is missing. Check your command again."
+    LAND:
+      INVALID: "the selectioned land is invalid."
+    NULL: "This Flag doesn't exist."
+  PERMISSION:
+    JOINMODE: "You are now in Flags Mode."
+    HINT: "Your modification will be instantany effective."
+    ALREADY: " You are already in Flags Mode."
+    QUIT:
+      EXPANDMODE: "Quit the Expand Mode before."
+    JOIN:
+      SELECTMODE: "Join the Select Mode before."
+    MISSINGINFO: "Some information is missing. Check your command again."
+    LAND:
+      INVALID: "the selectioned land is invalid."
+    NULL: "This Flag doesn't exist."
   REMOVE:
     DONE: 
       LAND: "You have remove the land % (% areas)."
@@ -59,12 +76,19 @@ COMMAND:
       EXPANDMODE: "Quit the Expand Mode before."
     JOIN:
       SELECTMODE: "you are already in the Select Mode."
+    DUPLICATION: "finish your removal before do an another one."
+    NULL: "Choose one of these option: Remove Area , Remove Land."
+    CONFIRM: "To confirm your choice, type /factoid confirm or to cancel type /factoid cancel ."
+    CANCEL: "you have canceled your action."
   CURRENT:
     LAND:
       NAME: "The Land name is: '%' "
       OWNER: "Owner: % ; %"
       AREA: "Area(s):"
     NOLAND: "There's no Land here."
+  ADMINMOD:
+    JOIN: "you are now in AdminMod."
+    QUIT: "you quit AdminMod."
 ACTION:
   MISSINGPERMISSION: "You can not do this action here!"
   BANNED: "You are banned from the land %!"
@@ -105,6 +129,11 @@ LOG:
       DONE:
         LAND: "% have remove the land '%'."
         AREA: "% have remove the area '%' in the land '%'."
+    REMOVE:
+      CANCEL: "you have canceled your action."
+      DONE:
+        LAND: "% have removed land named '%'"
+        AREA: "% have removed area (%) in the land named '%'"
   FACTION:
     ADD:
       PLAYER: "Adding '%' to the Faction '%'."

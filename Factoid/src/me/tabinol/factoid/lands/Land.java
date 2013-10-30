@@ -96,6 +96,7 @@ public class Land extends DummyLand {
     public void addArea(CuboidArea area, int key) {
         
         area.setLand(this);
+        area.setKey(key);
         areas.put(key, area);
         Factoid.getLands().addAreaToList(area);
         doSave();
@@ -113,6 +114,16 @@ public class Land extends DummyLand {
 
         return false;
     }
+    
+    public boolean removeArea(CuboidArea area) {
+        if (areas.remove(area.getKey()) != null) {
+            Factoid.getLands().removeAreaToList(area);
+            doSave();
+            return true;
+        }
+
+        return false;
+    }
 
     public boolean replaceArea(int key, CuboidArea newArea) {
 
@@ -121,6 +132,7 @@ public class Land extends DummyLand {
         if ((area = areas.remove(key)) != null) {
             Factoid.getLands().removeAreaToList(area);
             newArea.setLand(this);
+            newArea.setKey(key);
             areas.put(key, newArea);
             Factoid.getLands().addAreaToList(newArea);
             doSave();
