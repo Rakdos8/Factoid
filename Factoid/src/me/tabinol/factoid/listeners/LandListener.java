@@ -87,7 +87,7 @@ public class LandListener implements Listener {
         if (lastLand != null) {
 
             // Message quit
-            if ((flag = land.getFlagAndInherit(FlagType.MESSAGE_QUIT)) != null
+            if ((flag = lastLand.getFlagAndInherit(FlagType.MESSAGE_QUIT)) != null
                     && (value = flag.getValueString()) != null) {
                 player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + land.getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
             }
@@ -115,10 +115,10 @@ public class LandListener implements Listener {
             if ((flag = land.getFlagAndInherit(FlagType.MESSAGE_JOIN)) != null
                     && (value = flag.getValueString()) != null) {
                 player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + land.getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
-
-                //Notify players for Enter
-                notifyPlayers(lastLand, "ACTION.PLAYERENTER", player);
             }
+
+            //Notify players for Enter
+            notifyPlayers(land, "ACTION.PLAYERENTER", player);
 
         } else {
             dummyLand = Factoid.getLands().getOutsideArea(event.getToLoc());
@@ -137,7 +137,7 @@ public class LandListener implements Listener {
     private void notifyPlayers(Land land, String message, Player playerIn) {
 
         TreeSet<String> playersNotify = land.getPlayersNotify();
-        
+
         for (Player player : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
             if (playersNotify.contains(player.getName().toLowerCase())) {
                 player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage(message, playerIn.getDisplayName(), land.getName()));
