@@ -35,7 +35,7 @@ public class Land extends DummyLand {
         super(area.getWorldName().toLowerCase());
         createLand(landName, owner, area, 0, null, 1);
     }
-    
+
     //for AreaID only
     public Land(String landName, PlayerContainer owner, CuboidArea area, int areaId) {
 
@@ -49,7 +49,7 @@ public class Land extends DummyLand {
         super(area.getWorldName().toLowerCase());
         createLand(landName, owner, area, parent.getGenealogy() + 1, parent, 1);
     }
-    
+
     // Only to load with a specific areaid
     public Land(String landName, PlayerContainer owner, CuboidArea area, Land parent, int areaId) {
 
@@ -60,7 +60,7 @@ public class Land extends DummyLand {
     private void createLand(String landName, PlayerContainer owner, CuboidArea area, int genealogy, Land parent, int areaId) {
 
         name = landName.toLowerCase();
-        if(parent != null) {
+        if (parent != null) {
             this.parent = parent;
             parent.addChild(this);
             this.factionTerritory = parent.factionTerritory;
@@ -71,11 +71,11 @@ public class Land extends DummyLand {
         copyPerms();
         addArea(area, areaId);
     }
-    
+
     private void copyPerms() {
-        
+
         permissions = new TreeMap<>();
-        for(PlayerContainer pc : Factoid.getLands().defaultConf.permissions.keySet()) {
+        for (PlayerContainer pc : Factoid.getLands().defaultConf.permissions.keySet()) {
             permissions.put(PlayerContainer.create(this, pc.getContainerType(), pc.getName()),
                     Factoid.getLands().defaultConf.permissions.get(pc).clone());
         }
@@ -84,19 +84,18 @@ public class Land extends DummyLand {
     public void addArea(CuboidArea area) {
 
         int nextKey;
-        
-        if(areas.isEmpty()) {
+
+        if (areas.isEmpty()) {
             nextKey = 1;
         } else {
             nextKey = areas.lastKey() + 1;
         }
         addArea(area, nextKey);
     }
-    
+
     public void addArea(CuboidArea area, int key) {
-        
+
         area.setLand(this);
-        area.setKey(key);
         areas.put(key, area);
         Factoid.getLands().addAreaToList(area);
         doSave();
@@ -105,7 +104,7 @@ public class Land extends DummyLand {
     public boolean removeArea(int key) {
 
         CuboidArea area;
-        
+
         if ((area = areas.remove(key)) != null) {
             Factoid.getLands().removeAreaToList(area);
             doSave();
@@ -114,12 +113,13 @@ public class Land extends DummyLand {
 
         return false;
     }
-    
+
     public boolean removeArea(CuboidArea area) {
-        if (areas.remove(area.getKey()) != null) {
-            Factoid.getLands().removeAreaToList(area);
-            doSave();
-            return true;
+
+        Integer key = getAreaKey(area);
+
+        if (key != null) {
+            return removeArea(key);
         }
 
         return false;
@@ -128,11 +128,10 @@ public class Land extends DummyLand {
     public boolean replaceArea(int key, CuboidArea newArea) {
 
         CuboidArea area;
-        
+
         if ((area = areas.remove(key)) != null) {
             Factoid.getLands().removeAreaToList(area);
             newArea.setLand(this);
-            newArea.setKey(key);
             areas.put(key, newArea);
             Factoid.getLands().addAreaToList(newArea);
             doSave();
@@ -141,22 +140,33 @@ public class Land extends DummyLand {
 
         return false;
     }
-    
+
     public CuboidArea getArea(int key) {
-        
+
         return areas.get(key);
     }
 
+    public Integer getAreaKey(CuboidArea area) {
+
+        for (Map.Entry<Integer, CuboidArea> entry : areas.entrySet()) {
+            if (entry.getValue() == area) {
+                return entry.getKey();
+            }
+        }
+
+        return null;
+    }
+
     public Set<Integer> getAreasKey() {
-        
+
         return areas.keySet();
     }
-    
+
     public Map<Integer, CuboidArea> getIdsAndAreas() {
-        
+
         return areas;
     }
-    
+
     public Collection<CuboidArea> getAreas() {
 
         return areas.values();
@@ -184,81 +194,81 @@ public class Land extends DummyLand {
         this.name = newName.toLowerCase();
         doSave();
     }
-    
+
     public PlayerContainer getOwner() {
 
         return owner;
     }
-    
+
     public Faction getFactionTerritory() {
-        
+
         return factionTerritory;
     }
 
     public void setFactionTerritory(Faction faction) {
-        
+
         this.factionTerritory = faction;
-        for(Land child : children.values()) {
+        for (Land child : children.values()) {
             child.setFactionTerritory(faction);
         }
         doSave();
     }
-    
+
     public void setOwner(PlayerContainer owner) {
 
         this.owner = owner;
         doSave();
     }
-    
+
     public void addResident(PlayerContainer resident) {
-        
+
         residents.add(resident);
         doSave();
     }
-    
+
     public boolean removeResident(PlayerContainer resident) {
-        
-        if(residents.remove(resident)) {
+
+        if (residents.remove(resident)) {
             doSave();
             return true;
         }
-        
+
         return false;
     }
-    
+
     public final TreeSet<PlayerContainer> getResidents() {
-        
+
         return residents;
     }
-    
+
     public boolean isResident(PlayerContainer resident) {
-        
+
         return residents.contains(resident);
     }
 
     public void addBanned(PlayerContainer banned) {
-        
+
         banneds.add(banned);
         doSave();
     }
-    
+
     public boolean removeBanned(PlayerContainer banned) {
-        
-        if(banneds.remove(banned)) {
+
+        if (banneds.remove(banned)) {
             doSave();
             return true;
         }
-        
+
         return false;
     }
-    
+
     public final TreeSet<PlayerContainer> getBanneds() {
-        
+
         return banneds;
     }
-    
+
     public boolean isBanned(PlayerContainer banned) {
-        
+
         return banneds.contains(banned);
     }
 
@@ -271,9 +281,9 @@ public class Land extends DummyLand {
 
         return priority;
     }
-    
+
     public int getGenealogy() {
-        
+
         return genealogy;
     }
 
@@ -287,15 +297,15 @@ public class Land extends DummyLand {
 
         return parent;
     }
-    
+
     public Land getAncestor(int gen) { // 1 parent, 2 grand-parent, 3 ...
-        
+
         Land ancestor = this;
-        
-        for (int t = 0; t < gen; t ++) {
+
+        for (int t = 0; t < gen; t++) {
             ancestor = ancestor.getParent();
         }
-        
+
         return ancestor;
     }
 
@@ -310,100 +320,100 @@ public class Land extends DummyLand {
         children.remove(landName);
         doSave();
     }
-    
+
     public Land getChild(String landName) {
 
-       return children.get(landName);
+        return children.get(landName);
     }
 
     public Collection getChildren() {
 
         return children.values();
     }
-    
+
     public void setAutoSave(boolean autoSave) {
-        
+
         this.autoSave = autoSave;
     }
-    
+
     public void forceSave() {
-        
+
         Factoid.getStorage().saveLand(this);
     }
-    
+
     @Override
     protected void doSave() {
-        
-        if(autoSave) {
+
+        if (autoSave) {
             forceSave();
         }
     }
-    
+
     @Override
     protected Boolean checkPermissionAndInherit(String playerName, PermissionType pt, boolean onlyInherit) {
 
         Boolean permValue;
-        
+
         if ((permValue = getPermission(playerName, pt, onlyInherit)) != null) {
             return permValue;
         } else if (parent != null) {
             return parent.checkPermissionAndInherit(playerName, pt, true);
         }
-        
+
         return Factoid.getLands().getPermissionInWorld(worldName, playerName, pt, true);
     }
-    
+
     @Override
     protected LandFlag getFlagAndInherit(FlagType ft, boolean onlyInherit) {
 
         LandFlag flag;
-        
+
         if ((flag = getFlag(ft, onlyInherit)) != null) {
             return flag;
         } else if (parent != null) {
             return parent.getFlagAndInherit(ft, true);
-        } 
+        }
 
         return Factoid.getLands().getFlagInWorld(worldName, ft, true);
     }
-    
+
     public void addMoney(double money) {
-        
+
         this.money += money;
     }
-    
+
     public void substractMoney(double money) {
-        
+
         this.money -= money;
     }
-    
+
     public double getMoney() {
-        
+
         return money;
     }
-    
+
     public void addPlayerNotify(String playerName) {
-        
+
         playerNotify.add(playerName.toLowerCase());
     }
-    
+
     public boolean removePlayerNotify(String playerName) {
-        
+
         return playerNotify.remove(playerName.toLowerCase());
     }
-    
+
     public boolean isPlayerNotify(String playerName) {
-        
+
         return playerNotify.contains(playerName.toLowerCase());
     }
-    
+
     public TreeSet<String> getPlayersNotify() {
-        
+
         return playerNotify;
     }
-    
+
     public TreeSet<String> getPlayersInLand() {
-        
+
         return PlayerListener.getPlayersInLand(this);
     }
 }
