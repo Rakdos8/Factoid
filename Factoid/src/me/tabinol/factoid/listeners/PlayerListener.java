@@ -153,63 +153,65 @@ public class PlayerListener implements Listener {
                     && player.getItemInHand().getTypeId() == conf.InfoItem) {
                 OnCommand.landInfo(land, player);
                 event.setCancelled(true);
-                
-            } else if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(player.getName())))
-                    || ((action == Action.RIGHT_CLICK_BLOCK // BEGIN of USE
-                    && (ml == Material.WOODEN_DOOR || ml == Material.TRAP_DOOR
-                    || ml == Material.STONE_BUTTON || ml == Material.WOOD_BUTTON
-                    || ml == Material.LEVER || ml == Material.TRAPPED_CHEST))
-                    || (action == Action.PHYSICAL
-                    && (ml == Material.WOOD_PLATE || ml == Material.STONE_PLATE
-                    || ml == Material.STRING)))
-                    && (!checkPermission(land, player, PermissionType.USE)) // End of "USE"
-                    || (action == Action.RIGHT_CLICK_BLOCK
-                    && (ml == Material.WOODEN_DOOR || ml == Material.TRAP_DOOR)
-                    && !checkPermission(land, player, PermissionType.USE_DOOR))
-                    || (action == Action.RIGHT_CLICK_BLOCK
-                    && (ml == Material.STONE_BUTTON || ml == Material.WOOD_BUTTON)
-                    && !checkPermission(land, player, PermissionType.USE_BUTTON))
-                    || (action == Action.RIGHT_CLICK_BLOCK
-                    && ml == Material.LEVER
-                    && !checkPermission(land, player, PermissionType.USE_LEVER))
-                    || (action == Action.PHYSICAL
-                    && (ml == Material.WOOD_PLATE || ml == Material.STONE_PLATE)
-                    && !checkPermission(land, player, PermissionType.USE_PRESSUREPLATE))
-                    || (action == Action.RIGHT_CLICK_BLOCK
-                    && ml == Material.TRAPPED_CHEST
-                    && !checkPermission(land, player, PermissionType.USE_TRAPPEDCHEST))
-                    || (action == Action.PHYSICAL
-                    && ml == Material.STRING
-                    && !checkPermission(land, player, PermissionType.USE_STRING))) {
 
-                if (action != Action.PHYSICAL) {
+            } else if (!OnCommand.isAdminMod(player.getName())) {
+                if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(player.getName())))
+                        || ((action == Action.RIGHT_CLICK_BLOCK // BEGIN of USE
+                        && (ml == Material.WOODEN_DOOR || ml == Material.TRAP_DOOR
+                        || ml == Material.STONE_BUTTON || ml == Material.WOOD_BUTTON
+                        || ml == Material.LEVER || ml == Material.TRAPPED_CHEST))
+                        || (action == Action.PHYSICAL
+                        && (ml == Material.WOOD_PLATE || ml == Material.STONE_PLATE
+                        || ml == Material.STRING)))
+                        && (!checkPermission(land, player, PermissionType.USE)) // End of "USE"
+                        || (action == Action.RIGHT_CLICK_BLOCK
+                        && (ml == Material.WOODEN_DOOR || ml == Material.TRAP_DOOR)
+                        && !checkPermission(land, player, PermissionType.USE_DOOR))
+                        || (action == Action.RIGHT_CLICK_BLOCK
+                        && (ml == Material.STONE_BUTTON || ml == Material.WOOD_BUTTON)
+                        && !checkPermission(land, player, PermissionType.USE_BUTTON))
+                        || (action == Action.RIGHT_CLICK_BLOCK
+                        && ml == Material.LEVER
+                        && !checkPermission(land, player, PermissionType.USE_LEVER))
+                        || (action == Action.PHYSICAL
+                        && (ml == Material.WOOD_PLATE || ml == Material.STONE_PLATE)
+                        && !checkPermission(land, player, PermissionType.USE_PRESSUREPLATE))
+                        || (action == Action.RIGHT_CLICK_BLOCK
+                        && ml == Material.TRAPPED_CHEST
+                        && !checkPermission(land, player, PermissionType.USE_TRAPPEDCHEST))
+                        || (action == Action.PHYSICAL
+                        && ml == Material.STRING
+                        && !checkPermission(land, player, PermissionType.USE_STRING))) {
+
+                    if (action != Action.PHYSICAL) {
+                        MessagePermission(player);
+                    }
+                    event.setCancelled(true);
+                } else if (action == Action.RIGHT_CLICK_BLOCK
+                        && (((ml == Material.CHEST || ml == Material.ENDER_CHEST // Begin of OPEN
+                        || ml == Material.WORKBENCH || ml == Material.BREWING_STAND
+                        || ml == Material.FURNACE || ml == Material.BEACON
+                        || ml == Material.DROPPER || ml == Material.HOPPER)
+                        && !checkPermission(land, player, PermissionType.OPEN)) // End of OPEN
+                        || (ml == Material.CHEST
+                        && !checkPermission(land, player, PermissionType.OPEN_CHEST))
+                        || (ml == Material.ENDER_CHEST
+                        && !checkPermission(land, player, PermissionType.OPEN_ENDERCHEST))
+                        || (ml == Material.WORKBENCH
+                        && !checkPermission(land, player, PermissionType.OPEN_CRAFT))
+                        || (ml == Material.BREWING_STAND
+                        && !checkPermission(land, player, PermissionType.OPEN_BREW))
+                        || (ml == Material.FURNACE
+                        && !checkPermission(land, player, PermissionType.OPEN_FURNACE))
+                        || (ml == Material.BEACON
+                        && !checkPermission(land, player, PermissionType.OPEN_BEACON))
+                        || (ml == Material.DROPPER
+                        && !checkPermission(land, player, PermissionType.OPEN_DROPPER))
+                        || (ml == Material.HOPPER
+                        && !checkPermission(land, player, PermissionType.OPEN_HOPPER)))) {
                     MessagePermission(player);
+                    event.setCancelled(true);
                 }
-                event.setCancelled(true);
-            } else if (action == Action.RIGHT_CLICK_BLOCK
-                    && (((ml == Material.CHEST || ml == Material.ENDER_CHEST // Begin of OPEN
-                    || ml == Material.WORKBENCH || ml == Material.BREWING_STAND
-                    || ml == Material.FURNACE || ml == Material.BEACON
-                    || ml == Material.DROPPER || ml == Material.HOPPER)
-                    && !checkPermission(land, player, PermissionType.OPEN)) // End of OPEN
-                    || (ml == Material.CHEST
-                    && !checkPermission(land, player, PermissionType.OPEN_CHEST))
-                    || (ml == Material.ENDER_CHEST
-                    && !checkPermission(land, player, PermissionType.OPEN_ENDERCHEST))
-                    || (ml == Material.WORKBENCH
-                    && !checkPermission(land, player, PermissionType.OPEN_CRAFT))
-                    || (ml == Material.BREWING_STAND
-                    && !checkPermission(land, player, PermissionType.OPEN_BREW))
-                    || (ml == Material.FURNACE
-                    && !checkPermission(land, player, PermissionType.OPEN_FURNACE))
-                    || (ml == Material.BEACON
-                    && !checkPermission(land, player, PermissionType.OPEN_BEACON))
-                    || (ml == Material.DROPPER
-                    && !checkPermission(land, player, PermissionType.OPEN_DROPPER))
-                    || (ml == Material.HOPPER
-                    && !checkPermission(land, player, PermissionType.OPEN_HOPPER)))) {
-                MessagePermission(player);
-                event.setCancelled(true);
             }
         }
     }
@@ -217,7 +219,8 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
 
-        if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())) {
+        if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())
+                && !OnCommand.isAdminMod(event.getPlayer().getName())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
 
             if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(event.getPlayer().getName())))
@@ -232,9 +235,9 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
 
-        if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())) {
+        if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())
+                && !OnCommand.isAdminMod(event.getPlayer().getName())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
-            String worldName = event.getBlock().getLocation().getWorld().getName();
 
             if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(event.getPlayer().getName())))
                     || (!checkPermission(land, event.getPlayer(), PermissionType.BUILD)
@@ -248,7 +251,8 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerDropItem(PlayerDropItemEvent event) {
 
-        if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())) {
+        if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())
+                && !OnCommand.isAdminMod(event.getPlayer().getName())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getPlayer().getLocation());
 
             if (!checkPermission(land, event.getPlayer(), PermissionType.DROP)) {
@@ -261,7 +265,8 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
 
-        if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())) {
+        if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())
+                && !OnCommand.isAdminMod(event.getPlayer().getName())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getPlayer().getLocation());
 
             if (!checkPermission(land, event.getPlayer(), PermissionType.PICKETUP)) {
@@ -274,7 +279,8 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerBedEnter(PlayerBedEnterEvent event) {
 
-        if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())) {
+        if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())
+                && !OnCommand.isAdminMod(event.getPlayer().getName())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBed().getLocation());
 
             if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(event.getPlayer().getName())))
@@ -308,7 +314,8 @@ public class PlayerListener implements Listener {
                 EntityType et = entity.getType();
 
                 // kill en entity (none player)
-                if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(player.getName())))
+                if (!OnCommand.isAdminMod(player.getName())
+                        && ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(player.getName())))
                         || (entity instanceof Animals
                         && !checkPermission(land, player, PermissionType.ANIMAL_KILL))
                         || (entity instanceof Monster
@@ -321,7 +328,7 @@ public class PlayerListener implements Listener {
                         && !checkPermission(land, player, PermissionType.HORSE_KILL))
                         || (entity instanceof Tameable && ((Tameable) entity).isTamed() == true
                         && ((Tameable) entity).getOwner() != player
-                        && !checkPermission(land, player, PermissionType.TAMED_KILL))) {
+                        && !checkPermission(land, player, PermissionType.TAMED_KILL)))) {
 
                     MessagePermission(player);
                     event.setCancelled(true);
@@ -349,7 +356,8 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
 
-        if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())) {
+        if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())
+                && !OnCommand.isAdminMod(event.getPlayer().getName())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlockClicked().getLocation());
             Material mt = event.getBucket();
 
@@ -368,7 +376,7 @@ public class PlayerListener implements Listener {
     public void onBlockIgnite(BlockIgniteEvent event) {
 
         if (event.getPlayer() != null && conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())) {
-            if (event.getPlayer() != null) {
+            if (event.getPlayer() != null && !OnCommand.isAdminMod(event.getPlayer().getName())) {
 
                 DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
 

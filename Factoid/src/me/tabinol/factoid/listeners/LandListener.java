@@ -3,6 +3,7 @@ package me.tabinol.factoid.listeners;
 import java.util.ArrayList;
 import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.event.PlayerLandChangeEvent;
 import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.Land;
@@ -93,32 +94,37 @@ public class LandListener implements Listener {
             }
 
             //Notify players for exit
-            notifyPlayers(lastLand, "ACTION.PLAYEREXIT", player);
+            if (!OnCommand.isAdminMod(player.getName())) {
+                notifyPlayers(lastLand, "ACTION.PLAYEREXIT", player);
+            }
         }
         if (land != null) {
             dummyLand = land;
 
-            // is banned?
-            if (land.isBanned(new PlayerContainerPlayer(player.getName()))) {
-                player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.BANNED", land.getName()));
-                event.setCancelled(true);
-                return;
+            if (!OnCommand.isAdminMod(player.getName())) {
+                // is banned?
+                if (land.isBanned(new PlayerContainerPlayer(player.getName()))) {
+                    player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.BANNED", land.getName()));
+                    event.setCancelled(true);
+                    return;
+                }
+
+                // Can enter
+                if (land.checkPermissionAndInherit(player.getName(), PermissionType.LAND_ENTER) != PermissionType.LAND_ENTER.baseValue()) {
+                    player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.NOENTRY", land.getName()));
+                    event.setCancelled(true);
+                    return;
+                }
+
+                //Notify players for Enter
+                notifyPlayers(land, "ACTION.PLAYERENTER", player);
             }
 
-            // Can enter
-            if (land.checkPermissionAndInherit(player.getName(), PermissionType.LAND_ENTER) != PermissionType.LAND_ENTER.baseValue()) {
-                player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.NOENTRY", land.getName()));
-                event.setCancelled(true);
-                return;
-            }
             // Message join
             if ((flag = land.getFlagAndInherit(FlagType.MESSAGE_JOIN)) != null
                     && (value = flag.getValueString()) != null) {
                 player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + land.getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
             }
-
-            //Notify players for Enter
-            notifyPlayers(land, "ACTION.PLAYERENTER", player);
 
         } else {
             dummyLand = Factoid.getLands().getOutsideArea(event.getToLoc());

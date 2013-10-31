@@ -43,7 +43,7 @@ public class OnCommand extends Thread implements CommandExecutor {
     private Map<String, LandExpansion> PlayerExpanding = new HashMap();
     private Map<String, LandSetFlag> PlayerSetFlag = new HashMap();
     private List<String> BannedWord = new ArrayList<String>();
-    private List<String> AdminMod = new ArrayList<String>();
+    private static List<String> AdminMod = new ArrayList<String>();
     private Map<String,String> RemoveList = new HashMap();
 
     public OnCommand() {
@@ -579,5 +579,10 @@ public class OnCommand extends Thread implements CommandExecutor {
             player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CURRENT.NOLAND"));
         }
 
+    }
+    
+    public static boolean isAdminMod(String playerName) {
+        
+        return AdminMod.contains(playerName.toLowerCase());
     }
 }
