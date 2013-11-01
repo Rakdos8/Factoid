@@ -35,6 +35,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -383,6 +384,27 @@ public class PlayerListener implements Listener {
                 if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(event.getPlayer().getName())))
                         || (!checkPermission(land, event.getPlayer(), PermissionType.FIRE))) {
                     MessagePermission(event.getPlayer());
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPotionSplash(PotionSplashEvent event) {
+
+        if (conf.Worlds.contains(event.getPotion().getLocation().getWorld().getName().toLowerCase())) {
+            
+            DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getPotion().getLocation());
+
+            if (event.getEntity() != null && event.getEntity().getShooter() instanceof Player) {
+
+                Player player = (Player) event.getEntity().getShooter();
+
+                if (!checkPermission(land, player, PermissionType.POTION_SPLASH)) {
+                    if (player.isOnline()) {
+                        MessagePermission(player);
+                    }
                     event.setCancelled(true);
                 }
             }

@@ -43,6 +43,7 @@ public enum PermissionType {
     FIRE("FIRE", true),
     //TNT("TNT", true),
     AUTO_HEAL("AUTO_HEAL", false),
+    POTION_SPLASH("POTION_SPLASH", true),
     // *** LAND PERM (PAS FAIT)***
     RESIDENT_MANAGER("RESIDENT_MANAGER", false),
     LAND_CREATE("LAND_CREATE", true),
