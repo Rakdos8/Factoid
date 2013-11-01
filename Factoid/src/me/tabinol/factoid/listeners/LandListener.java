@@ -71,8 +71,9 @@ public class LandListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
 
         Player player = event.getPlayer();
-
-        playerHeal.remove(player);
+        if(playerHeal.contains(player)){
+            playerHeal.remove(player);
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -136,7 +137,9 @@ public class LandListener implements Listener {
                 playerHeal.add(player);
             }
         } else {
-            playerHeal.remove(player);
+            if(playerHeal.contains(player)) {
+                playerHeal.remove(player);
+            }
         }
     }
 

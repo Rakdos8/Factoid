@@ -31,7 +31,12 @@ import me.tabinol.factoid.scoreboard.ScoreBoard;
 import me.tabinol.factoid.utilities.StringChanges;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.PermissionType;
-import me.tabinol.factoid.playercontainer.PlayerContainerType;
+import me.tabinol.factoid.playercontainer.PlayerContainerGroup;
+import me.tabinol.factoid.playercontainer.PlayerContainerFaction;
+import me.tabinol.factoid.playercontainer.PlayerContainerResident;
+import me.tabinol.factoid.playercontainer.PlayerContainerEverybody;
+import me.tabinol.factoid.factions.Faction;
+import me.tabinol.factoid.lands.permissions.Permission;
 
 public class OnCommand extends Thread implements CommandExecutor {
 
@@ -227,43 +232,9 @@ public class OnCommand extends Thread implements CommandExecutor {
                                                     this.PlayerSelecting.remove(player.getName().toLowerCase());
                                                     select.resetSelection();
                                                 }else{
-                                                    LandSelection select = this.PlayerSelecting.get(player.getName().toLowerCase());
-                                                    Map<String, Location> corner = select.getCorner();
-                                                    int x1 = corner.get("FrontCornerLeft").getBlockX();
-                                                    int x2 = corner.get("BackCornerRigth").getBlockX();
-                                                    //int y1 = corner.get("FrontCornerLeft").getBlockY();
-                                                    //int y2 = corner.get("BackCornerRigth").getBlockY();
-                                                    int y1 = Factoid.getConf().MinLandHigh;
-                                                    int y2 = Factoid.getConf().MaxLandHigh;
-                                                    int z1 = corner.get("FrontCornerLeft").getBlockZ();
-                                                    int z2 = corner.get("BackCornerRigth").getBlockZ();
-
-                                                    CuboidArea cuboidarea = new CuboidArea(player.getWorld().getName(), x1, y1, z1, x2, y2, z2);
-                                                    Land land = Factoid.getLands().getLand(player.getLocation());
-                                                    if (!Factoid.getConf().CanMakeCollision) {
-                                                        if (!select.getCollision()) {
-                                                            land.addArea(cuboidarea);
-                                                            player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.AREA",land.getName()));
-                                                            player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
-                                                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.DONE", player.getName(), land.getName(), land.getAreas().toString()));
-                                                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
-
-                                                        } else {
-                                                            player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.COLLISION"));
-                                                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.COLLISION", player.getName()));
-                                                        }
-                                                    } else {
-                                                        land.addArea(cuboidarea);
-                                                        player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.AREA"));
-                                                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.DONE", player.getName(), land.getName(), land.toString()));
-                                                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
-                                                        player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
-                                                    }
-                                                    this.PlayerSelecting.remove(player.getName().toLowerCase());
-                                                    select.resetSelection();
-                                                    /*player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.ALREADYUSE"));
+                                                    player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.ALREADYUSE"));
                                                     log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.ALREADYUSE", player.getName()));
-                                                    player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.HINTUSE"));*/
+                                                    player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.HINTUSE"));
                                                 }
                                             } else {
                                                 Land landtest = LandSelectioned.get(player.getName().toLowerCase());
@@ -314,43 +285,49 @@ public class OnCommand extends Thread implements CommandExecutor {
                                                     this.PlayerSelecting.remove(player.getName().toLowerCase());
                                                     select.resetSelection();
                                                 } else {
-                                                   LandSelection select = this.PlayerSelecting.get(player.getName().toLowerCase());
-                                                    Map<String, Location> corner = select.getCorner();
-                                                    int x1 = corner.get("FrontCornerLeft").getBlockX();
-                                                    int x2 = corner.get("BackCornerRigth").getBlockX();
-                                                    //int y1 = corner.get("FrontCornerLeft").getBlockY();
-                                                    //int y2 = corner.get("BackCornerRigth").getBlockY();
-                                                    int y1 = Factoid.getConf().MinLandHigh;
-                                                    int y2 = Factoid.getConf().MaxLandHigh;
-                                                    int z1 = corner.get("FrontCornerLeft").getBlockZ();
-                                                    int z2 = corner.get("BackCornerRigth").getBlockZ();
+                                                    DummyLand dummyland = Factoid.getLands().getLand(player.getLocation());
+                                                    if(dummyland.checkPermissionAndInherit(player.getName(), PermissionType.LAND_CREATE) != PermissionType.LAND_CREATE.baseValue()){
+                                                        LandSelection select = this.PlayerSelecting.get(player.getName().toLowerCase());
+                                                        Map<String, Location> corner = select.getCorner();
+                                                        int x1 = corner.get("FrontCornerLeft").getBlockX();
+                                                        int x2 = corner.get("BackCornerRigth").getBlockX();
+                                                        //int y1 = corner.get("FrontCornerLeft").getBlockY();
+                                                        //int y2 = corner.get("BackCornerRigth").getBlockY();
+                                                        int y1 = Factoid.getConf().MinLandHigh;
+                                                        int y2 = Factoid.getConf().MaxLandHigh;
+                                                        int z1 = corner.get("FrontCornerLeft").getBlockZ();
+                                                        int z2 = corner.get("BackCornerRigth").getBlockZ();
 
-                                                    CuboidArea cuboidarea = new CuboidArea(player.getWorld().getName(), x1, y1, z1, x2, y2, z2);
-                                                    Land land = Factoid.getLands().getLand(player.getLocation());
-                                                    if (!Factoid.getConf().CanMakeCollision) {
-                                                        if (!select.getCollision()) {
-                                                            land.addArea(cuboidarea);
-                                                            player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.AREA",land.getName()));
-                                                            player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
-                                                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.DONE", player.getName(), land.getName(), land.getAreas().toString()));
-                                                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
+                                                        CuboidArea cuboidarea = new CuboidArea(player.getWorld().getName(), x1, y1, z1, x2, y2, z2);
+                                                        Land land = Factoid.getLands().getLand(player.getLocation());
+                                                        if (!Factoid.getConf().CanMakeCollision) {
+                                                            if (!select.getCollision()) {
+                                                                land.addArea(cuboidarea);
+                                                                player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.AREA",land.getName()));
+                                                                player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
+                                                                log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.DONE", player.getName(), land.getName(), land.getAreas().toString()));
+                                                                log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
 
+                                                            } else {
+                                                                player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.COLLISION"));
+                                                                log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.COLLISION", player.getName()));
+                                                            }
                                                         } else {
-                                                            player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.COLLISION"));
-                                                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.COLLISION", player.getName()));
+                                                            land.addArea(cuboidarea);
+                                                            player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.AREA"));
+                                                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.DONE", player.getName(), land.getName(), land.toString()));
+                                                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
+                                                            player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
                                                         }
-                                                    } else {
-                                                        land.addArea(cuboidarea);
-                                                        player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.AREA"));
-                                                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.DONE", player.getName(), land.getName(), land.toString()));
-                                                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
-                                                        player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
+                                                        this.PlayerSelecting.remove(player.getName().toLowerCase());
+                                                        select.resetSelection();
+                                                        /*player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.ALREADYUSE"));
+                                                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.ALREADYUSE", player.getName()));
+                                                        player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.HINTUSE"));*/
+                                                    }else{
+                                                        player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.NOPERMISSION"));
+                                                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.NOPERMISSION", player.getName()));
                                                     }
-                                                    this.PlayerSelecting.remove(player.getName().toLowerCase());
-                                                    select.resetSelection();
-                                                    /*player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.ALREADYUSE"));
-                                                    log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.ALREADYUSE", player.getName()));
-                                                    player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.HINTUSE"));*/
                                                 }
                                             }
                                         } else {
@@ -376,47 +353,54 @@ public class OnCommand extends Thread implements CommandExecutor {
                         if (!this.PlayerExpanding.containsKey(player.getName().toLowerCase())) {
                             if (this.LandSelectioned.containsKey(player.getName().toLowerCase())) {
                                 if (!this.PlayerSetFlag.containsKey(player.getName().toLowerCase())) {
-                                    if(arg[1] == null){
-                                        player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.JOINMODE"));
-                                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.FLAGS.JOINMODE", player.getName()));
-                                        player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.HINT"));
-                                        CuboidArea area = Factoid.getLands().getCuboidArea(player.getLocation());
-                                        LandSetFlag setting = new LandSetFlag(player, area);
-                                        this.PlayerSetFlag.put(player.getName().toLowerCase(), setting);
-                                    }else if(arg[1].equalsIgnoreCase("set")){
-                                        //factoid flags set lol true
-                                        if(arg.length == 4){
-                                            String type = arg[2];
-                                            String Landname = LandSelectioned.get(player.getName().toLowerCase()).getName();
-                                            Land land = LandSelectioned.get(player.getName().toLowerCase());
-                                            boolean BooleanValue = false;
-                                            String StringValue = null;
-                                            String[] StringArrayValue = null;
-                                            if(Factoid.getLands().getLand(Landname) != null){
-                                                if(FlagType.getFromString(arg[2]) != null){
-                                                    FlagType flag = FlagType.getFromString(arg[2]);
-                                                    if(flag.getFlagValueType() == FlagValueType.BOOLEAN) {
-                                                        BooleanValue = Boolean.parseBoolean(arg[3]);
-                                                    } else if(flag.getFlagValueType() == FlagValueType.STRING) {
-                                                        StringValue = arg[3];
-                                                    } else if(flag.getFlagValueType() == FlagValueType.STRING_LIST) {
-                                                        ArrayList<String> result = new ArrayList<>();
-                                                        String[] strs = StringChanges.splitKeepQuote(arg[3], ";");
-                                                        for(String str : strs) {
-                                                            result.add(StringChanges.fromQuote(str));
+                                    Land land = LandSelectioned.get(player.getName().toLowerCase());
+                                    if(player.getName().equals(land.getOwner().getName())){
+                                        if(arg.length < 2){
+                                            player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.JOINMODE"));
+                                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.FLAGS.JOINMODE", player.getName()));
+                                            player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.HINT"));
+                                            CuboidArea area = Factoid.getLands().getCuboidArea(player.getLocation());
+                                            LandSetFlag setting = new LandSetFlag(player, area);
+                                            this.PlayerSetFlag.put(player.getName().toLowerCase(), setting);
+                                        }else if(arg[1].equalsIgnoreCase("set")){
+                                            //factoid flags set lol true
+                                            if(arg.length == 4){
+                                                String type = arg[2];
+                                                String Landname = LandSelectioned.get(player.getName().toLowerCase()).getName();
+                                                if(Factoid.getLands().getLand(Landname) != null){
+                                                    if(FlagType.getFromString(type) != null){
+                                                        FlagType flag = FlagType.getFromString(type);
+                                                        LandFlag landflag = null;
+                                                        land.removeFlag(flag);
+                                                        if(flag.getFlagValueType() == FlagValueType.BOOLEAN) {
+                                                            boolean BooleanValue = Boolean.parseBoolean(arg[3]);
+                                                            landflag =  new LandFlag(flag,BooleanValue,true);
+                                                        } else if(flag.getFlagValueType() == FlagValueType.STRING) {
+                                                            String StringValue = arg[3];
+                                                            landflag =  new LandFlag(flag,StringValue,true);
+                                                        } else if(flag.getFlagValueType() == FlagValueType.STRING_LIST) {
+                                                            ArrayList<String> result = new ArrayList<>();
+                                                            String[] strs = StringChanges.splitKeepQuote(arg[3], ";");
+                                                            for(String str : strs) {
+                                                                result.add(StringChanges.fromQuote(str));
+                                                            }
+                                                            String[] StringArrayValue = result.toArray(new String[0]);
+                                                            landflag =  new LandFlag(flag,StringArrayValue,true);
                                                         }
-                                                        StringArrayValue = result.toArray(new String[0]);
+                                                        land.addFlag(landflag);
+                                                        land.forceSave();
+                                                    }else{
+                                                        player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.FLAGNULL"));
                                                     }
-                                                    // LandFlag landflag = land.getFlags().contains(flag);
                                                 }else{
-                                                    player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.NULL"));
+                                                    player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.LAND.INVALIDE"));
                                                 }
                                             }else{
-                                                player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.LAND.INVALIDE"));
+                                                player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.MISSINGINFO"));
                                             }
-                                        }else{
-                                            player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.MISSINGINFO"));
                                         }
+                                    }else{
+                                        player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.MISSINGPERMISSION"));
                                     }
                                     
                                 } else {
@@ -432,38 +416,68 @@ public class OnCommand extends Thread implements CommandExecutor {
                         if (!this.PlayerExpanding.containsKey(player.getName().toLowerCase())) {
                             if (this.LandSelectioned.containsKey(player.getName().toLowerCase())) {
                                 if (!this.PlayerSetFlag.containsKey(player.getName().toLowerCase())) {
-                                    if(arg[1] == null){
-                                        player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.JOINMODE"));
-                                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.PERMISSION.JOINMODE", player.getName()));
-                                        player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.HINT"));
-                                        CuboidArea area = Factoid.getLands().getCuboidArea(player.getLocation());
-                                        LandSetFlag setting = new LandSetFlag(player, area);
-                                        this.PlayerSetFlag.put(player.getName().toLowerCase(), setting);
-                                    }else if(arg[1].equalsIgnoreCase("set")){
-                                        //factoid PERMISSION set PlayerContainer join true
-                                        if(arg.length == 5){
-                                            String PlayerContainerName = arg[2];
-                                            String Landname = LandSelectioned.get(player.getName().toLowerCase()).getName();
-                                            Land land = LandSelectioned.get(player.getName().toLowerCase());
-                                            boolean value = false;
-                                            if(Factoid.getLands().getLand(Landname) != null){
-                                                PermissionType permtype = PermissionType.getFromString(arg[3]);
-                                                if(permtype != null){
-                                                  PlayerContainerType pctype =  PlayerContainerType.getFromString(PlayerContainerName);
-
-                                                    if(land.isResident(null)){
-                                                        //PlayerContainer.create(land, PlayerContainerType.OWNER, label)
-                                                        //land.getPermissionsForPC(PlayerName);
+                                    Land land = LandSelectioned.get(player.getName().toLowerCase());
+                                    if(player.getName().equals(land.getOwner().getName())){
+                                        if(arg.length < 2){
+                                            player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.JOINMODE"));
+                                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.PERMISSION.JOINMODE", player.getName()));
+                                            player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.HINT"));
+                                            CuboidArea area = Factoid.getLands().getCuboidArea(player.getLocation());
+                                            LandSetFlag setting = new LandSetFlag(player, area);
+                                            this.PlayerSetFlag.put(player.getName().toLowerCase(), setting);
+                                        }else if(arg[1].equalsIgnoreCase("set")){
+                                            //factoid PERMISSION set PlayerContainerType PlayerContainer join true
+                                            if(arg.length == 6){
+                                                String PlayerContainerNamevalue = arg[3];
+                                                String PlayerContainerTypevalue = arg[2];
+                                                String PermissionValue = arg[5];
+                                                String Landname = LandSelectioned.get(player.getName().toLowerCase()).getName();
+                                                boolean value = false;
+                                                if(Factoid.getLands().getLand(Landname) != null){
+                                                    PermissionType permtype = PermissionType.getFromString(arg[4]);
+                                                    if(permtype != null){
+                                                        PlayerContainer pc = null;
+                                                      if(PlayerContainerTypevalue != null){
+                                                          if(PlayerContainerTypevalue.equalsIgnoreCase("player")){
+                                                             pc = new PlayerContainerPlayer(PlayerContainerNamevalue);
+                                                          }else if(PlayerContainerTypevalue.equalsIgnoreCase("group")){
+                                                             pc = new PlayerContainerGroup(PlayerContainerNamevalue); 
+                                                          }else if(PlayerContainerTypevalue.equalsIgnoreCase("faction")){
+                                                              Faction faction = Factoid.getFactions().getFaction(PlayerContainerNamevalue);
+                                                              pc = new PlayerContainerFaction(faction); 
+                                                          }else if(PlayerContainerTypevalue.equalsIgnoreCase("resident")){
+                                                              pc = new PlayerContainerResident(land); 
+                                                          }else if(PlayerContainerTypevalue.equalsIgnoreCase("everybody")){
+                                                              pc = new PlayerContainerEverybody(); 
+                                                          }
+                                                          
+                                                        //if(land.isResident(pc) || land.getOwner() == pc){
+                                                           land.removePermission(pc,permtype);
+                                                           boolean PermissionValueB = Boolean.parseBoolean(PermissionValue);
+                                                            if(PermissionValueB){
+                                                                Permission permission = new Permission(permtype,PermissionValueB,true);
+                                                                land.addPermission(pc, permission);
+                                                            }else{
+                                                                Permission permission = new Permission(permtype,false,true);
+                                                                land.addPermission(pc, permission);
+                                                            }
+                                                            land.forceSave();
+                                                        //}
+                                                      }else{
+                                                          player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.PLAYERCONTAINERTYPENULL"));
+                                                      }
+                                                    }else{
+                                                        player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.PERMISSIONNULL"));
                                                     }
                                                 }else{
-                                                    player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.NULL"));
+                                                    player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.LAND.INVALIDE"));
                                                 }
                                             }else{
-                                                player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.LAND.INVALIDE"));
+                                                player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.MISSINGINFO"));
                                             }
-                                        }else{
-                                            player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.MISSINGINFO"));
                                         }
+                                    }else{
+                                        player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.MISSINGPERMISSION"));
                                     }
                                     
                                 } else {
@@ -489,7 +503,7 @@ public class OnCommand extends Thread implements CommandExecutor {
 
                                             }
                                         } else {
-                                            player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.REMOVE.NULL"));
+                                            player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.REMOVE.REMOVENULL"));
                                         }
                                     }else{
                                         player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.REMOVE.DUPLICATION"));

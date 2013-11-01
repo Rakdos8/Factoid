@@ -7,7 +7,7 @@
 general:                             #----General Config----
   debug: false                       #Set to true to show DebugLog 
   lang: english
-  Storage: flat                      # Only flat is supported for now
+  Storage: flat                      #Only flat is supported for now
   worlds: [world, world_nether, world_the_end] # World where Factoid is enable
   # The next value is if you want the Factoid exposion protection.
   # Set it to «False» if you prefere to disable explosions from Essentials
@@ -24,7 +24,7 @@ land:
   MaxLandSize: 1
   MinLandHigh: 0
   MaxLandHigh: 255
-  area: 
+  area:
     MinAreaSize: 1
     MaxAreaSize: 1
     MaxAreaPerLand: 1
@@ -32,11 +32,9 @@ land:
     Permissions: [BUILD_PLACE, BUILD_DESTROY]
     Flags: [MESSAGE_JOIN, MESSAGE_QUIT]
   BeaconLigth: false               #Set beacon ligth effect of an selection
-    
 economy:
   PricebyCube: 100
   MinPriceLocation: 1
   MaxPriceLocation: 1
   MinPriceSell: 1
   MaxPriceSell: 1
-   

@@ -12,18 +12,20 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Lang extends Thread {
 
-    private static String lang = null;
+    private String lang = null;
     private File langFile;
-    private static FileConfiguration langconfig;
+    private FileConfiguration langconfig;
     private JavaPlugin plugin;
 
     public Lang() {
+        this.langconfig = new YamlConfiguration();
         this.plugin = Factoid.getThisPlugin();
         this.lang = Factoid.getConf().Lang;
         this.langFile = new File(plugin.getDataFolder() + "/lang/", lang + ".yml");
-        this.langconfig = new YamlConfiguration();
-        Make();
-        loadYamls();
+        if(Factoid.getConf().Lang != null){
+            Make();
+            loadYamls();
+        }
     }
 
     public String getMessage(String path,String... param) {

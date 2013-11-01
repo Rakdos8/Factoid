@@ -43,6 +43,7 @@ COMMAND:
     HINTUSE: "/factoid create [land Name]"
     NEEDNAME: "You have to provide a Land Name."
     SELECTMODE: "You must be in Select Mode before."
+    NOPERMISSION: "You don't have the permission do create a Land."
   FLAGS:
     JOINMODE: "You are now in Flags Mode."
     HINT: "Your modification will be instantany effective."
@@ -54,7 +55,8 @@ COMMAND:
     MISSINGINFO: "Some information is missing. Check your command again."
     LAND:
       INVALID: "the selectioned land is invalid."
-    NULL: "This Flag doesn't exist."
+    FLAGNULL: "This Flag doesn't exist."
+    MISSINGPERMISSION: "You must have the permission to execute this action."
   PERMISSION:
     JOINMODE: "You are now in Flags Mode."
     HINT: "Your modification will be instantany effective."
@@ -66,7 +68,8 @@ COMMAND:
     MISSINGINFO: "Some information is missing. Check your command again."
     LAND:
       INVALID: "the selectioned land is invalid."
-    NULL: "This Flag doesn't exist."
+    PERMISSIONNULL: "This Flag doesn't exist."
+    PLAYERCONTAINERTYPENULL: "This type doesn't exist."
   REMOVE:
     DONE: 
       LAND: "You have remove the land % (% areas)."
@@ -77,7 +80,7 @@ COMMAND:
     JOIN:
       SELECTMODE: "you are already in the Select Mode."
     DUPLICATION: "finish your removal before do an another one."
-    NULL: "Choose one of these option: Remove Area , Remove Land."
+    REMOVENULL: "Choose one of these option: Remove Area , Remove Land."
     CONFIRM: "To confirm your choice, type /factoid confirm or to cancel type /factoid cancel ."
     CANCEL: "you have canceled your action."
   CURRENT:
@@ -123,6 +126,7 @@ LOG:
       COLLISION: "% try to create a land who's have a collision."
       ALREADYUSE: "% try to create a land with a name already taken."
       NEEDNAME: "% try to create a land with no name."
+      NOPERMISSION: "You don't have the permission do create a Land."
     FLAGS:
       JOINMODE: "% have join FlagsMode."
       QUITMODE: "% have quit FlagsMode."
