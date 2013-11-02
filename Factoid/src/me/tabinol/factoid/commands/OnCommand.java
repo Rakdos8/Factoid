@@ -398,6 +398,12 @@ public class OnCommand extends Thread implements CommandExecutor {
                                             }else{
                                                 player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.MISSINGINFO"));
                                             }
+                                        }else{
+                                            player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.LISTSTART"));
+                                            for(FlagType ft :FlagType.values()){
+                                                player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.LISTROW",ft.name()));
+                                            }
+                                            player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.LISTEND"));
                                         }
                                     }else{
                                         player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.MISSINGPERMISSION"));
@@ -475,6 +481,12 @@ public class OnCommand extends Thread implements CommandExecutor {
                                             }else{
                                                 player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.MISSINGINFO"));
                                             }
+                                        }else{
+                                            player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.LISTSTART"));
+                                            for(PermissionType pt :PermissionType.values()){
+                                                player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.LISTROW",pt.name()));
+                                            }
+                                            player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.LISTEND"));
                                         }
                                     }else{
                                         player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.MISSINGPERMISSION"));
@@ -552,6 +564,12 @@ public class OnCommand extends Thread implements CommandExecutor {
                                 player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.REMOVE.CANCEL"));
                                 log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.REMOVE.CANCEL", player.getName()));
                             }
+                        }else if(PlayerSetFlag.containsKey(player.getName().toLowerCase())){
+                            player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CANCEL.FLAGS"));
+                            PlayerSetFlag.remove(player.getName().toLowerCase());
+                        }else if(LandSelectioned.containsKey(player.getName().toLowerCase())){
+                            player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CANCEL.SELECT"));
+                            LandSelectioned.remove(player.getName().toLowerCase());
                         }else{
                             return false;
                         }

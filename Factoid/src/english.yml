@@ -57,6 +57,9 @@ COMMAND:
       INVALID: "the selectioned land is invalid."
     FLAGNULL: "This Flag doesn't exist."
     MISSINGPERMISSION: "You must have the permission to execute this action."
+    LISTSTART: "-------------FLAGS---------------"
+    LISTROW: "Flag: %"
+    LISTEND: "-------------------------------------"
   PERMISSION:
     JOINMODE: "You are now in Flags Mode."
     HINT: "Your modification will be instantany effective."
@@ -70,6 +73,9 @@ COMMAND:
       INVALID: "the selectioned land is invalid."
     PERMISSIONNULL: "This Flag doesn't exist."
     PLAYERCONTAINERTYPENULL: "This type doesn't exist."
+    LISTSTART: "-------------PERMISSIONS---------------"
+    LISTROW: "Permission: %"
+    LISTEND: "-------------------------------------------"
   REMOVE:
     DONE: 
       LAND: "You have remove the land % (% areas)."
@@ -92,6 +98,8 @@ COMMAND:
   ADMINMOD:
     JOIN: "you are now in AdminMod."
     QUIT: "you quit AdminMod."
+  CANCEL:
+    SELECT: "your selection is cancelled."
 ACTION:
   MISSINGPERMISSION: "You can not do this action here!"
   BANNED: "You are banned from the land %!"
