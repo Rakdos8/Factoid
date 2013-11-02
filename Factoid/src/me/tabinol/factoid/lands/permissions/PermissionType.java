@@ -46,9 +46,9 @@ public enum PermissionType {
     POTION_SPLASH("POTION_SPLASH", true),
     // *** LAND PERM (PAS FAIT)***
     RESIDENT_MANAGER("RESIDENT_MANAGER", false),
-    LAND_CREATE("LAND_CREATE", true),
+    LAND_CREATE("LAND_CREATE", false),
     LAND_ENTER("LAND_ENTER", true), // sauf lui
-    LAND_REMOVE("LAND_REMOVE", true),
+    LAND_REMOVE("LAND_REMOVE", false),
     LAND_KICK("LAND_KICK", false),
     LAND_BAN("LAND_BAN", false),
     LAND_WHOS("LAND_WHOS", false),

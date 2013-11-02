@@ -6,6 +6,7 @@ import me.tabinol.factoid.utilities.Lang;
 import me.tabinol.factoid.utilities.Log;
 import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.config.Config;
+import me.tabinol.factoid.config.DependPlugin;
 import me.tabinol.factoid.factions.Factions;
 import me.tabinol.factoid.lands.Lands;
 import me.tabinol.factoid.listeners.LandListener;
@@ -29,6 +30,7 @@ public class Factoid extends JavaPlugin {
     private static Factions factions;
     private static Lands lands;
     private static String version;
+    private static DependPlugin dependPlugin;
 
     @Override
     public void onEnable() {
@@ -38,6 +40,7 @@ public class Factoid extends JavaPlugin {
         version = this.getDescription().getVersion();
         conf = new Config();
         log = new Log();
+        dependPlugin = new DependPlugin();
         language = new Lang();
         storage = new StorageFlat();
         factions = new Factions();
@@ -100,6 +103,11 @@ public class Factoid extends JavaPlugin {
     public static String getVersion() {
         
         return version;
+    }
+    
+    public static DependPlugin getDependPlugin() {
+        
+        return dependPlugin;
     }
     
 }

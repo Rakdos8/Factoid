@@ -222,11 +222,12 @@ public class PlayerListener implements Listener {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())
                 && !OnCommand.isAdminMod(event.getPlayer().getName())) {
+            
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
 
             if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(event.getPlayer().getName())))
-                    || (!checkPermission(land, event.getPlayer(), PermissionType.BUILD)
-                    && !checkPermission(land, event.getPlayer(), PermissionType.BUILD_PLACE))) {
+                    || !checkPermission(land, event.getPlayer(), PermissionType.BUILD)
+                    || !checkPermission(land, event.getPlayer(), PermissionType.BUILD_PLACE)) {
                 MessagePermission(event.getPlayer());
                 event.setCancelled(true);
             }
@@ -238,11 +239,12 @@ public class PlayerListener implements Listener {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())
                 && !OnCommand.isAdminMod(event.getPlayer().getName())) {
+            
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
 
             if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(event.getPlayer().getName())))
-                    || (!checkPermission(land, event.getPlayer(), PermissionType.BUILD)
-                    && !checkPermission(land, event.getPlayer(), PermissionType.BUILD_DESTROY))) {
+                    || !checkPermission(land, event.getPlayer(), PermissionType.BUILD)
+                    || !checkPermission(land, event.getPlayer(), PermissionType.BUILD_DESTROY)) {
                 MessagePermission(event.getPlayer());
                 event.setCancelled(true);
             }

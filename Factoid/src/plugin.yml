@@ -3,6 +3,7 @@ main: me.tabinol.factoid.Factoid
 version: 0.1
 description: Factoid
 author: [Kaz00,Tabinol]
+depend: [Vault]
 commands:
    factoid:
       description: Factoid Command

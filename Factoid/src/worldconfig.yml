@@ -2,17 +2,14 @@ _Global_:                           # _Global_ for all worlds
   ContainerPermissions:
     Group:
       Newbies:
-        BUILD_PLACE:
-          Value: false
-          Heritable: true
-        BUILD_DESTROY:
+        BUILD:
           Value: false
           Heritable: true
     Everybody:
-      BUILD_PLACE:
+      LAND_CREATE:
         Value: true
         Heritable: false
-      BUILD_DESTROY:
+      BUILD:
         Value: true
         Heritable: false
   ContainerFlags:
