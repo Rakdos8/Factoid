@@ -26,7 +26,7 @@ public class DependPlugin {
 
     private Plugin getPlugin(String pluginName) {
 
-        Plugin plugin = Factoid.getThisPlugin().getServer().getPluginManager().getPlugin("WorldEdit");
+        Plugin plugin = Factoid.getThisPlugin().getServer().getPluginManager().getPlugin(pluginName);
 
         if(plugin != null) {
             Factoid.getThisPlugin().getServer().getPluginManager().enablePlugin(plugin);

@@ -1,6 +1,7 @@
 package me.tabinol.factoid;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.entity.Player;
 
 import me.tabinol.factoid.utilities.Lang;
 import me.tabinol.factoid.utilities.Log;
@@ -14,6 +15,7 @@ import me.tabinol.factoid.listeners.PlayerListener;
 import me.tabinol.factoid.listeners.WorldListener;
 import me.tabinol.factoid.storage.Storage;
 import me.tabinol.factoid.storage.StorageFlat;
+import org.bukkit.ChatColor;
 
 public class Factoid extends JavaPlugin {
 

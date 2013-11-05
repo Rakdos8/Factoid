@@ -15,9 +15,15 @@ COMMAND:
       COLLISION: "Your selection have an collision with an another Land."
     CANCEL: "You have cancelled your selection."
     CANTDONE: "You cannot 'Done' a selection which's already a Land."
+    CANTDONEWORLDEDIT: "You cannot 'Done' a WorldEdit selection. You can Create your land."
     NEWLAND: "You have selected a new Land."
     SELECTIONEDLAND: "You have selected the land '%'"
     CANNOTMPODIFY: "You cannot select the land '%' while someone is Modifying it."
+    WORLDEDIT:
+      NOTLOAD: " WorldEdit is not Loaded."
+      SELECTIONNED: " you have selectioned your land with WorldEdit!"
+      NOSELECTIONNED: " No WorldEdit selection or not a cuboid region!"
+      SELECTIONINCOMPLET: " The WorldEdit selection is incomplete!"
   EXPAND:
     JOINMODE: "You are now in Expand Mode."
     QUITMODE: "You are no longer in Expand Mode."
