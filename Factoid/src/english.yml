@@ -104,6 +104,7 @@ COMMAND:
   ADMINMOD:
     JOIN: "you are now in AdminMod."
     QUIT: "you quit AdminMod."
+    NOPERMISSION: "You don't have the permission for AdminMod."
   CANCEL:
     SELECT: "your selection is cancelled."
 ACTION:

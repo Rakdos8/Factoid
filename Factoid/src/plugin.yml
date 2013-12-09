@@ -7,15 +7,20 @@ depend: [Vault]
 commands:
    factoid:
       description: Factoid Command
+      alias: claim
       usage: /factoid help
       permission: factoid.use
       permission-message: you don't have permission for that!
 permissions:
     factoid.*:
         description: ModulMonde Command Permission
-        default: true
+        default: op
         children:
+            factoid.adminmod: true
             factoid.use: true
+    factoid.adminmod:
+        description: Can use Admin Mod
+        default: op
     factoid.use:
-        description: Permet d'utiliser la commande
-        default: true
+        description: Can use factoid command
+        default: op

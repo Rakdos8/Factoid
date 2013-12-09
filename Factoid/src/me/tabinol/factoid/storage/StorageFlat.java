@@ -75,7 +75,7 @@ public class StorageFlat extends Storage implements StorageInt {
         int loadedfactions = 0;
 
         if (files.length == 0) {
-            Factoid.getLog().write("[Factoid] " + Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.FACTION.LOADED", loadedfactions + ""));
+            Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.FACTION.LOADED", loadedfactions + ""));
             return;
         }
 
@@ -90,11 +90,11 @@ public class StorageFlat extends Storage implements StorageInt {
                     }
                 } catch (IOException ex) {
                     Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, null, ex);
-                    Factoid.getLog().write("[Factoid]" + Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.FACTION.ERROR", ex.getMessage()));
+                    Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.FACTION.ERROR", ex.getMessage()));
                 }
             }
         }
-        Factoid.getLog().write("[Factoid] " + Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.FACTION.LOADED", loadedfactions + ""));
+        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.FACTION.LOADED", loadedfactions + ""));
     }
 
     private void loadLands() {
@@ -105,7 +105,7 @@ public class StorageFlat extends Storage implements StorageInt {
         boolean empty = false;
 
         if (files.length == 0) {
-            Factoid.getLog().write("[Factoid] " + Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.LAND.LOADED", loadedlands + ""));
+            Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.LAND.LOADED", loadedlands + ""));
             return;
         }
 
@@ -123,13 +123,13 @@ public class StorageFlat extends Storage implements StorageInt {
                         }
                     } catch (IOException ex) {
                         Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, null, ex);
-                        Factoid.getLog().write("[Factoid] " + Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.LAND.ERROR", ex.getMessage()));
+                        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.LAND.ERROR", ex.getMessage()));
                     }
                 }
             }
             pass++;
         }
-        Factoid.getLog().write("[Factoid] " + Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.LAND.LOADED", loadedlands + ""));
+        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.LAND.LOADED", loadedlands + ""));
     }
 
     private void loadFaction(BufferedReader br) {

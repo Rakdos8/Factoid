@@ -623,12 +623,16 @@ public class OnCommand extends Thread implements CommandExecutor {
                         Land land = Factoid.getLands().getLand(playerloc);
                         landInfo(land, player);
                     } else if (arg[0].equalsIgnoreCase("adminmod")) {
+                        if(player.hasPermission("factoid.adminmod")) {
                         if (AdminMod.contains(player.getName().toLowerCase())) {
                             AdminMod.remove(player.getName().toLowerCase());
                             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ADMINMOD.QUIT"));
                         } else {
                             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ADMINMOD.JOIN"));
                             AdminMod.add(player.getName().toLowerCase());
+                        }
+                        } else {
+                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ADMINMOD.NOPERMISSION"));
                         }
                     }
                     return true;
