@@ -129,7 +129,7 @@ public class OnCommand extends Thread implements CommandExecutor {
                                             Land landtest = Factoid.getLands().getLand(arg[1].toString());
                                             if (landtest != null) {
                                                 PlayerContainer owner = landtest.getOwner();
-                                                if (owner.hasAccess(player.getName())) {
+                                                if (owner.hasAccess(player.getName()) || AdminMod.contains(player.getName().toLowerCase())) {
                                                     if (!LandSelectioned.containsKey(player.getName().toLowerCase())) {
                                                         LandSelectioned.put(player.getName().toLowerCase(), landtest);
                                                         for (CuboidArea area : landtest.getAreas()) {
