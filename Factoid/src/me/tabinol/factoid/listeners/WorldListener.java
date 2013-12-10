@@ -19,6 +19,7 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -96,11 +97,11 @@ public class WorldListener implements Listener {
                 //  Wither
             } else if (event.getEntityType() == EntityType.WITHER_SKULL) {
                 event.setCancelled(true);
-                ExplodeBlocks(event.blockList(), FlagType.WHITER_DAMAGE, event.getLocation(),
+                ExplodeBlocks(event.blockList(), FlagType.WITHER_DAMAGE, event.getLocation(),
                         event.getYield(), 1L, false, false);
             } else if (event.getEntityType() == EntityType.WITHER) {
                 event.setCancelled(true);
-                ExplodeBlocks(event.blockList(), FlagType.WHITER_DAMAGE, event.getLocation(),
+                ExplodeBlocks(event.blockList(), FlagType.WITHER_DAMAGE, event.getLocation(),
                         event.getYield(), 7L, false, false);
 
                 // Ghast
@@ -193,6 +194,22 @@ public class WorldListener implements Listener {
 
             if ((event.getCause() == IgniteCause.SPREAD
                     && (flag = land.getFlagAndInherit(FlagType.FIRESPREAD)) != null
+                    && flag.getValueBoolean() == false)
+                    || ((flag = land.getFlagAndInherit(FlagType.FIRE)) != null
+                    && flag.getValueBoolean() == false)) {
+                event.setCancelled(true);
+            }
+        }
+    }
+    
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onBlockBurn(BlockBurnEvent event) {
+
+        if (conf.Worlds.contains(event.getBlock().getWorld().getName().toLowerCase())) {
+            DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
+            LandFlag flag;
+
+            if (((flag = land.getFlagAndInherit(FlagType.FIRESPREAD)) != null
                     && flag.getValueBoolean() == false)
                     || ((flag = land.getFlagAndInherit(FlagType.FIRE)) != null
                     && flag.getValueBoolean() == false)) {

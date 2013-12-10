@@ -151,7 +151,7 @@ public class Config {
                                     PlayerContainer.create(null, PlayerContainerType.getFromString(container), containerName.toLowerCase()),
                                     new Permission(PermissionType.getFromString(perm),
                                             fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Value"),
-                                            fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".heritable")));
+                                            fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Heritable")));
                         }
                     }
                 } else {
@@ -161,7 +161,7 @@ public class Config {
                                 PlayerContainer.create(null, PlayerContainerType.getFromString(container), null),
                                 new Permission(PermissionType.getFromString(perm),
                                         fc.getBoolean(perms + "." + container + "." + perm + ".Value"),
-                                        fc.getBoolean(perms + "." + container + "." + perm + ".heritable")));
+                                        fc.getBoolean(perms + "." + container + "." + perm + ".Heritable")));
                     }
                 }
             }
@@ -172,7 +172,7 @@ public class Config {
             for (String flag : csFlags.getKeys(false)) {
                 Factoid.getLog().write("Flag: " + flag);
                 dl.addFlag(new LandFlag(FlagType.getFromString(flag),
-                        fc.getString(flags + "." + flag + ".Value"), fc.getBoolean(flags + "." + flag + ".heritable")));
+                        fc.getString(flags + "." + flag + ".Value"), fc.getBoolean(flags + "." + flag + ".Heritable")));
             }
         }
 

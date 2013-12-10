@@ -21,32 +21,34 @@ public class Log extends Thread {
 
     public void write(String text) {
 
-        File filename = new File(Folder, "log_" + Dates.date() + ".log");
-        BufferedWriter bufWriter = null;
-        FileWriter fileWriter = null;
-        
-        if (!filename.exists()) {
-            try {
-                filename.createNewFile();
-            } catch (IOException ex) {
-                Logger.getLogger(Log.class.getName()).log(Level.SEVERE, null, ex);
+        if (debug) {
+            File filename = new File(Folder, "log_" + Dates.date() + ".log");
+            BufferedWriter bufWriter = null;
+            FileWriter fileWriter = null;
+
+            if (!filename.exists()) {
+                try {
+                    filename.createNewFile();
+                } catch (IOException ex) {
+                    Logger.getLogger(Log.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-        }
-        
-        try {
-            fileWriter = new FileWriter(filename, true);
-            bufWriter = new BufferedWriter(fileWriter);
-            bufWriter.newLine();
-            bufWriter.write("[Factoid][v."+Factoid.getVersion()+"]["+Dates.time()+"]" +text);
-            bufWriter.close();
-        } catch (IOException ex) {
-            Logger.getLogger(Log.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+
             try {
+                fileWriter = new FileWriter(filename, true);
+                bufWriter = new BufferedWriter(fileWriter);
+                bufWriter.newLine();
+                bufWriter.write("[Factoid][v." + Factoid.getVersion() + "][" + Dates.time() + "]" + text);
                 bufWriter.close();
-                fileWriter.close();
             } catch (IOException ex) {
                 Logger.getLogger(Log.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    bufWriter.close();
+                    fileWriter.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(Log.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }

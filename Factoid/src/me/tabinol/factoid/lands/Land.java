@@ -67,14 +67,15 @@ public class Land extends DummyLand {
         }
         this.owner = owner;
         this.genealogy = genealogy;
-        flags = Factoid.getLands().defaultConf.flags.clone();
+        if (!Factoid.getLands().defaultConf.flags.isEmpty()) {
+            flags = Factoid.getLands().defaultConf.flags.clone();
+        }
         copyPerms();
         addArea(area, areaId);
     }
 
     private void copyPerms() {
 
-        permissions = new TreeMap<>();
         for (PlayerContainer pc : Factoid.getLands().defaultConf.permissions.keySet()) {
             permissions.put(PlayerContainer.create(this, pc.getContainerType(), pc.getName()),
                     Factoid.getLands().defaultConf.permissions.get(pc).clone());
@@ -349,8 +350,7 @@ public class Land extends DummyLand {
         }
     }
 
-    @Override
-    protected Boolean checkPermissionAndInherit(String playerName, PermissionType pt, boolean onlyInherit) {
+    protected Boolean checkLandPermissionAndInherit(String playerName, PermissionType pt, boolean onlyInherit) {
 
         Boolean permValue;
 
@@ -363,8 +363,7 @@ public class Land extends DummyLand {
         return Factoid.getLands().getPermissionInWorld(worldName, playerName, pt, true);
     }
 
-    @Override
-    protected LandFlag getFlagAndInherit(FlagType ft, boolean onlyInherit) {
+    protected LandFlag getLandFlagAndInherit(FlagType ft, boolean onlyInherit) {
 
         LandFlag flag;
 

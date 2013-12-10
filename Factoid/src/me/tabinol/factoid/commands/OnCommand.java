@@ -100,31 +100,31 @@ public class OnCommand extends Thread implements CommandExecutor {
                                                 player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.NOTLOAD"));
                                                 log.write(Factoid.getLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.NOTLOAD"));
                                             } else {
-                                                    LocalSession session = ((WorldEditPlugin) Factoid.getDependPlugin().getWorldEdit()).getSession(player);
-                                                    try {
-                                                        Region sel;
-                                                        if (session.getSelectionWorld() != null
-                                                                && (sel = session.getSelection(session.getSelectionWorld())) != null && sel instanceof CuboidRegion) {
+                                                LocalSession session = ((WorldEditPlugin) Factoid.getDependPlugin().getWorldEdit()).getSession(player);
+                                                try {
+                                                    Region sel;
+                                                    if (session.getSelectionWorld() != null
+                                                            && (sel = session.getSelection(session.getSelectionWorld())) != null && sel instanceof CuboidRegion) {
 
-                                                            player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.SELECTIONNED"));
-                                                            log.write(Factoid.getLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.SELECTIONNED"));
-                                                            CuboidArea area = new CuboidArea(sel.getWorld().getName(),
-                                                                    sel.getMinimumPoint().getBlockX(), sel.getMinimumPoint().getBlockY(), sel.getMinimumPoint().getBlockZ(),
-                                                                    sel.getMaximumPoint().getBlockX(), sel.getMaximumPoint().getBlockY(), sel.getMaximumPoint().getBlockZ());
-                                                            PlayerSelectingWorldEdit.put(player.getName().toLowerCase(), area);
-                                                        } else {
-                                                            player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.NOSELECTIONNED"));
-                                                            log.write(Factoid.getLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.NOSELECTIONNED"));
-                                                        }
-                                                    } catch (Exception ex) {
-                                                        if (ex instanceof IncompleteRegionException) {
-                                                            player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.SELECTIONINCOMPLET"));
-                                                            log.write(Factoid.getLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.SELECTIONINCOMPLET"));
-                                                        } else {
-                                                            Logger.getLogger(OnCommand.class.getName()).log(Level.SEVERE, null, ex);
-                                                        }
+                                                        player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.SELECTIONNED"));
+                                                        log.write(Factoid.getLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.SELECTIONNED"));
+                                                        CuboidArea area = new CuboidArea(sel.getWorld().getName(),
+                                                                sel.getMinimumPoint().getBlockX(), sel.getMinimumPoint().getBlockY(), sel.getMinimumPoint().getBlockZ(),
+                                                                sel.getMaximumPoint().getBlockX(), sel.getMaximumPoint().getBlockY(), sel.getMaximumPoint().getBlockZ());
+                                                        PlayerSelectingWorldEdit.put(player.getName().toLowerCase(), area);
+                                                    } else {
+                                                        player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.NOSELECTIONNED"));
+                                                        log.write(Factoid.getLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.NOSELECTIONNED"));
+                                                    }
+                                                } catch (Exception ex) {
+                                                    if (ex instanceof IncompleteRegionException) {
+                                                        player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.SELECTIONINCOMPLET"));
+                                                        log.write(Factoid.getLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.SELECTIONINCOMPLET"));
+                                                    } else {
+                                                        Logger.getLogger(OnCommand.class.getName()).log(Level.SEVERE, null, ex);
                                                     }
                                                 }
+                                            }
                                         } else {
                                             Land landtest = Factoid.getLands().getLand(arg[1].toString());
                                             if (landtest != null) {
@@ -157,7 +157,7 @@ public class OnCommand extends Thread implements CommandExecutor {
                                         this.PlayerSelecting.put(player.getName().toLowerCase(), select);
                                     }
                                 } else if (arg.length > 1 && arg[1].equalsIgnoreCase("done")) {
-                                    if(!PlayerSelectingWorldEdit.containsKey(player.getName().toLowerCase())){
+                                    if (!PlayerSelectingWorldEdit.containsKey(player.getName().toLowerCase())) {
                                         if (!LandSelectioned.containsKey(player.getName().toLowerCase())) {
                                             LandSelection select = this.PlayerSelecting.get(player.getName().toLowerCase());
                                             if (!Factoid.getConf().CanMakeCollision) {
@@ -177,7 +177,7 @@ public class OnCommand extends Thread implements CommandExecutor {
                                             player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.CANTDONE"));
                                         }
                                     } else {
-                                            player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.CANTDONEWORLDEDIT"));
+                                        player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.CANTDONEWORLDEDIT"));
                                     }
                                 } else {
                                     player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.ALREADY"));
@@ -600,7 +600,7 @@ public class OnCommand extends Thread implements CommandExecutor {
                                 player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.REMOVE.CANCEL"));
                                 log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.REMOVE.CANCEL", player.getName()));
                             }
-                        } else if(PlayerSelecting.containsKey(player.getName().toLowerCase())) {
+                        } else if (PlayerSelecting.containsKey(player.getName().toLowerCase())) {
                             LandSelection select = this.PlayerSelecting.get(player.getName().toLowerCase());
                             this.PlayerSelecting.remove(player.getName().toLowerCase());
                             select.resetSelection();
@@ -615,22 +615,22 @@ public class OnCommand extends Thread implements CommandExecutor {
                         } else {
                             return false;
                         }
-                        
-                        
+
+
 
                     } else if (arg[0].equalsIgnoreCase("here") || arg[0].equalsIgnoreCase("current")) {
                         Location playerloc = player.getLocation();
                         Land land = Factoid.getLands().getLand(playerloc);
                         landInfo(land, player);
                     } else if (arg[0].equalsIgnoreCase("adminmod")) {
-                        if(player.hasPermission("factoid.adminmod")) {
-                        if (AdminMod.contains(player.getName().toLowerCase())) {
-                            AdminMod.remove(player.getName().toLowerCase());
-                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ADMINMOD.QUIT"));
-                        } else {
-                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ADMINMOD.JOIN"));
-                            AdminMod.add(player.getName().toLowerCase());
-                        }
+                        if (player.hasPermission("factoid.adminmod")) {
+                            if (AdminMod.contains(player.getName().toLowerCase())) {
+                                AdminMod.remove(player.getName().toLowerCase());
+                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ADMINMOD.QUIT"));
+                            } else {
+                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ADMINMOD.JOIN"));
+                                AdminMod.add(player.getName().toLowerCase());
+                            }
                         } else {
                             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ADMINMOD.NOPERMISSION"));
                         }

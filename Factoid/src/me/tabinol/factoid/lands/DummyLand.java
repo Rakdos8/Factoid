@@ -82,6 +82,9 @@ public class DummyLand {
 
     protected Boolean checkPermissionAndInherit(String playerName, PermissionType pt, boolean onlyInherit) {
 
+        if(this instanceof Land) {
+            return ((Land)this).checkLandPermissionAndInherit(playerName, pt, onlyInherit);
+        }
         return Factoid.getLands().getPermissionInWorld(worldName, playerName, pt, onlyInherit);
     }
 
@@ -128,6 +131,9 @@ public class DummyLand {
 
     protected LandFlag getFlagAndInherit(FlagType ft, boolean onlyInherit) {
 
+        if(this instanceof Land) {
+            return ((Land)this).getLandFlagAndInherit(ft, onlyInherit);
+        }
         return Factoid.getLands().getFlagInWorld(worldName, ft, onlyInherit);
     }
 
