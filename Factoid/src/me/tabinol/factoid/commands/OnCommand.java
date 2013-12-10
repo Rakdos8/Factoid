@@ -459,7 +459,7 @@ public class OnCommand extends Thread implements CommandExecutor {
                             if (this.LandSelectioned.containsKey(player.getName().toLowerCase())) {
                                 if (!this.PlayerSetFlag.containsKey(player.getName().toLowerCase())) {
                                     Land land = LandSelectioned.get(player.getName().toLowerCase());
-                                    if (player.getName().equals(land.getOwner().getName())) {
+                                    if (player.getName().equalsIgnoreCase(land.getOwner().getName())) {
                                         if (arg.length < 2) {
                                             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.JOINMODE"));
                                             log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.PERMISSION.JOINMODE", player.getName()));
