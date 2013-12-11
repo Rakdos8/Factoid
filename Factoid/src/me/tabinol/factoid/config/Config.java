@@ -59,14 +59,13 @@ public class Config {
             thisPlugin.saveResource("worldconfig.yml", false);
         }
         config = thisPlugin.getConfig();
-        loadCustom();
-        getConfig();
+        reloadConfig();
     }
 
-    public void reloadConfig() {
+    public final void reloadConfig() {
 
-        thisPlugin.reloadConfig();
         loadCustom();
+        getConfig();
     }
 
     private void loadCustom() {

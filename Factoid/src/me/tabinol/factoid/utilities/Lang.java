@@ -20,6 +20,10 @@ public class Lang extends Thread {
     public Lang() {
         this.langconfig = new YamlConfiguration();
         this.plugin = Factoid.getThisPlugin();
+        reloadConfig();
+    }
+    
+    public final void reloadConfig() {
         this.lang = Factoid.getConf().Lang;
         this.langFile = new File(plugin.getDataFolder() + "/lang/", lang + ".yml");
         if(Factoid.getConf().Lang != null){
@@ -36,7 +40,7 @@ public class Lang extends Thread {
                 if(occurence==param.length){
                       for(int i = 0;i<occurence;i++){
                           message = replace(message,"%",param[i]);
-                          System.out.print(message);
+                          // System.out.print(message);
                       }
                   }else{
                       return "Error! variable missing for Entries.";

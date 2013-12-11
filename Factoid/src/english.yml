@@ -2,6 +2,7 @@ ENABLE: "Factoid is Enabled."
 DISABLE: "Factoid is Disabled."
 CONSOLE: "Hey Console! Wait...what?"
 COMMAND:
+  NOTEXIST: "This command does not exist."
   SELECT:
     JOINMODE: "You are now in Select Mode."
     HINT: "Type % '/factoid select done' % % to confirm your choice."
@@ -106,9 +107,13 @@ COMMAND:
     QUIT: "you quit AdminMod."
     NOPERMISSION: "You don't have the permission for AdminMod."
   CANCEL:
-    SELECT: "your selection is cancelled."
+    SELECT: "Your selection is cancelled."
+  RELOAD:
+    START: "The reload is started."
+    COMPLETE: "The reload is complete."
+    NOPERMISSION: "You don't have the permission for reloading."
 ACTION:
-  MISSINGPERMISSION: "You can not do this action here!"
+  MISSINGPERMISSION: "You can't do this action here!"
   BANNED: "You are banned from the land %!"
   NOPVP: "The PvP is not actived here!"
   NOFACTIONPVP: "You can not kill a member of your faction!"

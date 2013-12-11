@@ -18,9 +18,13 @@ permissions:
         children:
             factoid.adminmod: true
             factoid.use: true
+            factoid.reload: true
     factoid.adminmod:
         description: Can use Admin Mod
         default: op
     factoid.use:
         description: Can use factoid command
+        default: op
+    factoid.reload:
+        description: Can reload the plugin
         default: op

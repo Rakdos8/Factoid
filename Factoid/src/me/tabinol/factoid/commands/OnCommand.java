@@ -632,8 +632,18 @@ public class OnCommand extends Thread implements CommandExecutor {
                                 AdminMod.add(player.getName().toLowerCase());
                             }
                         } else {
-                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ADMINMOD.NOPERMISSION"));
+                            player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ADMINMOD.NOPERMISSION"));
                         }
+                    } else if (arg[0].equalsIgnoreCase("reload")) {
+                        if (player.hasPermission("factoid.reload")) {
+                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RELOAD.START"));
+                            Factoid.getThisPlugin().reload();
+                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RELOAD.COMPLETE"));
+                        } else {
+                            player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RELOAD.NOPERMISSION"));
+                        }
+                    } else {
+                        player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.NOTEXIST"));
                     }
                     return true;
                 }

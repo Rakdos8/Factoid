@@ -36,6 +36,8 @@ import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -222,7 +224,7 @@ public class PlayerListener implements Listener {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())
                 && !OnCommand.isAdminMod(event.getPlayer().getName())) {
-            
+
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
 
             if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(event.getPlayer().getName())))
@@ -235,17 +237,55 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onHangingPlaceEvent(HangingPlaceEvent event) {
+
+        if (conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())
+                && !OnCommand.isAdminMod(event.getPlayer().getName())) {
+
+            DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getEntity().getLocation());
+            Player player = event.getPlayer();
+
+            if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(player.getName())))
+                    || !checkPermission(land, player, PermissionType.BUILD)
+                    || !checkPermission(land, player, PermissionType.BUILD_DESTROY)) {
+                MessagePermission(player);
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())
                 && !OnCommand.isAdminMod(event.getPlayer().getName())) {
-            
+
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
 
             if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(event.getPlayer().getName())))
                     || !checkPermission(land, event.getPlayer(), PermissionType.BUILD)
                     || !checkPermission(land, event.getPlayer(), PermissionType.BUILD_DESTROY)) {
                 MessagePermission(event.getPlayer());
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onHangingBreakByEntityEvent(HangingBreakByEntityEvent event) {
+
+        Player player;
+
+        if (conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())
+                && event.getRemover() instanceof Player
+                && !OnCommand.isAdminMod((player = (Player) event.getRemover()).getName())) {
+
+            DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getEntity().getLocation());
+
+            if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(player.getName())))
+                    || !checkPermission(land, player, PermissionType.BUILD)
+                    || !checkPermission(land, player, PermissionType.BUILD_DESTROY)) {
+                MessagePermission(player);
                 event.setCancelled(true);
             }
         }
@@ -396,7 +436,7 @@ public class PlayerListener implements Listener {
     public void onPotionSplash(PotionSplashEvent event) {
 
         if (conf.Worlds.contains(event.getPotion().getLocation().getWorld().getName().toLowerCase())) {
-            
+
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getPotion().getLocation());
 
             if (event.getEntity() != null && event.getEntity().getShooter() instanceof Player) {

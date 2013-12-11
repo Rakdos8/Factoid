@@ -125,7 +125,7 @@ public class WorldListener implements Listener {
 
         if (conf.OverrideExplosions && conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())) {
             // Check for painting
-            if (event.getCause() == RemoveCause.EXPLOSION || event.getCause() == RemoveCause.ENTITY) {
+            if (event.getCause() == RemoveCause.EXPLOSION) {
                 Factoid.getLog().write("Cancel HangingBreak : " + event.getEntity() + ", Cause: " + event.getCause());
                 event.setCancelled(true);
             }
@@ -192,7 +192,7 @@ public class WorldListener implements Listener {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
             LandFlag flag;
 
-            if ((event.getCause() == IgniteCause.SPREAD
+            if (((event.getCause() == IgniteCause.SPREAD || event.getCause() == IgniteCause.LAVA)
                     && (flag = land.getFlagAndInherit(FlagType.FIRESPREAD)) != null
                     && flag.getValueBoolean() == false)
                     || ((flag = land.getFlagAndInherit(FlagType.FIRE)) != null

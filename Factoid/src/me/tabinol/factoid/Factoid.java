@@ -15,7 +15,6 @@ import me.tabinol.factoid.listeners.PlayerListener;
 import me.tabinol.factoid.listeners.WorldListener;
 import me.tabinol.factoid.storage.Storage;
 import me.tabinol.factoid.storage.StorageFlat;
-import org.bukkit.ChatColor;
 
 public class Factoid extends JavaPlugin {
 
@@ -57,6 +56,17 @@ public class Factoid extends JavaPlugin {
         getServer().getPluginManager().registerEvents(landListener, this);
         getCommand("factoid").setExecutor(CommandListener);
         log.write(Factoid.getLanguage().getMessage("ENABLE"));
+    }
+    
+    public void reload() {
+        
+        reloadConfig();
+        conf.reloadConfig();
+        log.setDebug(conf.debug);
+        language.reloadConfig();
+        factions = new Factions();
+        lands = new Lands(conf.getGlobalArea(), conf.getLandOutsideArea(), conf.getLandDefaultConf());
+        storage.loadAll();
     }
     
     @Override
