@@ -390,8 +390,8 @@ public class OnCommand extends Thread implements CommandExecutor {
                             if (this.LandSelectioned.containsKey(player.getName().toLowerCase())) {
                                 if (!this.PlayerSetFlag.containsKey(player.getName().toLowerCase())) {
                                     Land land = LandSelectioned.get(player.getName().toLowerCase());
-                                    if (player.getName().equals(land.getOwner().getName())) {
-                                        if (arg.length < 2) {
+                                    if (player.getName().equalsIgnoreCase(land.getOwner().getName()) || AdminMod.contains(player.getName().toLowerCase())) {
+                                        if (arg.length < 2 && false) {
                                             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.JOINMODE"));
                                             log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.FLAGS.JOINMODE", player.getName()));
                                             player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.HINT"));
@@ -459,8 +459,8 @@ public class OnCommand extends Thread implements CommandExecutor {
                             if (this.LandSelectioned.containsKey(player.getName().toLowerCase())) {
                                 if (!this.PlayerSetFlag.containsKey(player.getName().toLowerCase())) {
                                     Land land = LandSelectioned.get(player.getName().toLowerCase());
-                                    if (player.getName().equalsIgnoreCase(land.getOwner().getName())) {
-                                        if (arg.length < 2) {
+                                    if (player.getName().equalsIgnoreCase(land.getOwner().getName()) || AdminMod.contains(player.getName().toLowerCase())) {
+                                        if (arg.length < 2 && false) {
                                             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.JOINMODE"));
                                             log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.PERMISSION.JOINMODE", player.getName()));
                                             player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.HINT"));
