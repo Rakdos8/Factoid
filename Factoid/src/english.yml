@@ -66,7 +66,8 @@ COMMAND:
     MISSINGPERMISSION: "You must have the permission to execute this action."
     ISDONE: "you have set '%' to '%'."
     LISTSTART: "-------------FLAGS---------------"
-    LISTROW: "Flag: %"
+    LISTROW: "%: %"
+    LISTROWNULL: "No Flags."
     LISTEND: "-------------------------------------"
   PERMISSION:
     JOINMODE: "You are now in Flags Mode."
@@ -81,10 +82,73 @@ COMMAND:
       INVALID: "the selectioned land is invalid."
     PERMISSIONNULL: "This Flag doesn't exist."
     PLAYERCONTAINERTYPENULL: "This type doesn't exist."
-    ISDONE: "you have set the permission '%' to '%' for '%'."
+    ISDONE: "you have set the permission '%' to '%' for '%'"
     LISTSTART: "-------------PERMISSIONS---------------"
-    LISTROW: "Permission: %"
+    LISTROW: "Resident: %  Permission: %"
+    LISTROWNULL: "No Permissions."
     LISTEND: "-------------------------------------------"
+  RESIDENT:
+    QUIT:
+      EXPANDMODE: "Quit the Expand Mode before."
+    JOIN:
+      SELECTMODE: "Join the Select Mode before."
+    MISSINGINFO: "Some information is missing. Check your command again."
+    LAND:
+      INVALID: "the selectioned land is invalid."
+    PLAYERCONTAINERTYPENULL: "This type doesn't exist."
+    PLAYERCONTAINERRESIDENT: "You cannot set a Resident as a resident."
+    PLAYERCONTAINEREVERYBODY: "You cannot set a EveryBody as a resident."
+    ISDONE: "you have set '%' as resident of '%'."
+    ISDONEREMOVE: "you have set '%' as not a resident of '%'."
+    LISTSTART: "----------------RESIDENT-----------------"
+    LISTROW: "Resident: %"
+    LISTROWNULL: "No Redisent."
+    LISTEND: "-------------------------------------------"
+    FLAGS:
+    JOINMODE: "You are now in Flags Mode."
+    HINT: "Your modification will be instantany effective."
+    ALREADY: " You are already in Flags Mode."
+    QUIT:
+      EXPANDMODE: "Quit the Expand Mode before."
+    JOIN:
+      SELECTMODE: "Join the Select Mode before."
+    MISSINGINFO: "Some information is missing. Check your command again."
+    LAND:
+      INVALID: "the selectioned land is invalid."
+    FLAGNULL: "This Flag doesn't exist."
+    MISSINGPERMISSION: "You must have the permission to execute this action."
+    ISDONE: "you have set '%' to '%'."
+  BANNED:
+    QUIT:
+      EXPANDMODE: "Quit the Expand Mode before."
+    JOIN:
+      SELECTMODE: "Join the Select Mode before."
+    MISSINGINFO: "Some information is missing. Check your command again."
+    LAND:
+      INVALID: "the selectioned land is invalid."
+    PLAYERCONTAINERTYPENULL: "This type doesn't exist."
+    PLAYERCONTAINERRESIDENT: "You cannot ban All Resident."
+    PLAYERCONTAINEREVERYBODY: "You cannot ban Everyone."
+    ISDONE: "you have ban '%' in '%'."
+    ISDONEREMOVE: "you have unban '%' in '%'."
+    LISTSTART: "----------------Banned-----------------"
+    LISTROW: "Banned: %"
+    LISTROWNULL: "No Banned."
+    LISTEND: "-------------------------------------------"
+    FLAGS:
+    JOINMODE: "You are now in Flags Mode."
+    HINT: "Your modification will be instantany effective."
+    ALREADY: " You are already in Flags Mode."
+    QUIT:
+      EXPANDMODE: "Quit the Expand Mode before."
+    JOIN:
+      SELECTMODE: "Join the Select Mode before."
+    MISSINGINFO: "Some information is missing. Check your command again."
+    LAND:
+      INVALID: "the selectioned land is invalid."
+    FLAGNULL: "This Flag doesn't exist."
+    MISSINGPERMISSION: "You must have the permission to execute this action."
+    ISDONE: "you have set '%' to '%'."
   REMOVE:
     DONE: 
       LAND: "You have remove the land % (% areas)."
