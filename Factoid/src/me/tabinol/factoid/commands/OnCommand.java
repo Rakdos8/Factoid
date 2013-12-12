@@ -136,9 +136,9 @@ public class OnCommand extends Thread implements CommandExecutor {
                                                             LandMakeSquare landmake = new LandMakeSquare(player, null, area.getX1(), area.getX2(), area.getY1(), area.getY2(), area.getZ1(), area.getZ2());
                                                             landmake.makeSquare();
                                                         }
-                                                        new ScoreBoard(player, landtest.getName());
+                                                        //new ScoreBoard(player, landtest.getName());
 
-                                                        player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.MISSINGPERMISSION", landtest.getName()));
+                                                        player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.SELECTIONEDLAND", landtest.getName()));
                                                     } else {
                                                         player.sendMessage(ChatColor.RED + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.CANNOTMPODIFY", landtest.getName()));
                                                     }
@@ -425,6 +425,9 @@ public class OnCommand extends Thread implements CommandExecutor {
                                                         }
                                                         land.addFlag(landflag);
                                                         land.forceSave();
+                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.ISDONE"));
+                                                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.FLAGS.ISDONE", type,arg[3]));
+                                                            
                                                     } else {
                                                         player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.FLAGNULL"));
                                                     }
@@ -504,6 +507,8 @@ public class OnCommand extends Thread implements CommandExecutor {
                                                                 land.addPermission(pc, permission);
                                                             }
                                                             land.forceSave();
+                                                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.ISDONE"));
+                                                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.PERMISSION.ISDONE", PlayerContainerTypevalue,PermissionValue,PlayerContainerNamevalue));
                                                             //}
                                                         } else {
                                                             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.PLAYERCONTAINERTYPENULL"));
