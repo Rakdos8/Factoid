@@ -24,7 +24,6 @@ public class StorageFlat extends Storage implements StorageInt {
     public static final String EXT_CONF = ".conf";
     private String factionsDir;
     private String landsDir;
-    private boolean inLoad = true; // True if the Database is in Loaded
 
     public StorageFlat() {
 
@@ -64,6 +63,7 @@ public class StorageFlat extends Storage implements StorageInt {
     @Override
     public void loadAll() {
 
+        inLoad = true;
         loadFactions();
         loadLands();
         inLoad = false;
@@ -154,7 +154,7 @@ public class StorageFlat extends Storage implements StorageInt {
         boolean isLandCreated = false;
         PlayerContainer pc;
         cf.readParam();
-        String[] ownerS = cf.getValueString().split(":");
+        String[] ownerS = StringChanges.splitAddVoid(cf.getValueString(), ":");
         cf.readParam();
         String parentName = cf.getValueString();
         cf.readParam();
@@ -196,7 +196,7 @@ public class StorageFlat extends Storage implements StorageInt {
 
         //Residents
         while ((str = cf.getNextString()) != null) {
-            String[] multiStr = str.split(":");
+            String[] multiStr = StringChanges.splitAddVoid(str, ":");
             pc = PlayerContainer.create(land, PlayerContainerType.getFromString(multiStr[0]), multiStr[1]);
             land.addResident(pc);
         }
@@ -204,7 +204,7 @@ public class StorageFlat extends Storage implements StorageInt {
 
         //Banneds
         while ((str = cf.getNextString()) != null) {
-            String[] multiStr = str.split(":");
+            String[] multiStr = StringChanges.splitAddVoid(str, ":");
             pc = PlayerContainer.create(land, PlayerContainerType.getFromString(multiStr[0]), multiStr[1]);
             land.addBanned(pc);
         }

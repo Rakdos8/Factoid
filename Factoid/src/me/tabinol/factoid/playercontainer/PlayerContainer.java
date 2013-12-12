@@ -61,7 +61,7 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
         if (containerType.getValue() > t.containerType.getValue()) {
             return 1;
         }
-        return name.compareToIgnoreCase(name);
+        return name.compareToIgnoreCase(t.name);
     }
 
     @Override

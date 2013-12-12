@@ -83,6 +83,18 @@ public class StringChanges {
         return false;
     }
     
+    public static String[] splitAddVoid(String string, String split) {
+        
+        String[] tlist = string.split(split);
+        String[] result = new String[tlist.length + 1];
+        for(int t = 0; t < tlist.length; t ++) {
+            result[t] = tlist[t];
+        }
+        result[tlist.length] = "";
+        
+        return result;
+    }
+    
     public static int toInteger(String n){
         try{
            return Integer.parseInt(n);

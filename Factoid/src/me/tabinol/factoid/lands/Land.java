@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.logging.Level;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.flags.FlagType;
@@ -12,6 +13,7 @@ import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.listeners.PlayerListener;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
+import me.tabinol.factoid.storage.Storage;
 
 public class Land extends DummyLand {
 
@@ -67,10 +69,12 @@ public class Land extends DummyLand {
         }
         this.owner = owner;
         this.genealogy = genealogy;
-        if (!Factoid.getLands().defaultConf.flags.isEmpty()) {
-            flags = Factoid.getLands().defaultConf.flags.clone();
+        if (!Storage.isInLoad()) {
+            if (!Factoid.getLands().defaultConf.flags.isEmpty()) {
+                flags = Factoid.getLands().defaultConf.flags.clone();
+            }
+            copyPerms();
         }
-        copyPerms();
         addArea(area, areaId);
     }
 

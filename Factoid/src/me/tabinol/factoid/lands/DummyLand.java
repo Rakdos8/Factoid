@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.logging.Level;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
@@ -94,6 +95,7 @@ public class DummyLand {
             if (permissionEntry.getKey().hasAccess(playerName)) {
                 Permission perm = permissionEntry.getValue().get(pt);
                 if (perm != null) {
+                    Factoid.getLog().write("Container: " + permissionEntry.getKey().toString() + ", PermissionType: " + perm.getPermType() + ", Value: " + perm.getValue() + ", Heritable: " + perm.isHeritable());
                     if ((onlyInherit && perm.isHeritable()) || !onlyInherit) {
                         return perm.getValue();
                     }
@@ -141,6 +143,8 @@ public class DummyLand {
 
         LandFlag flag = flags.get(ft);
         if (flag != null) {
+                    Factoid.getLog().write("Flag: " + flag.toString());
+
             if ((onlyInherit && flag.isHeritable()) || !onlyInherit) {
                 return flag;
             }

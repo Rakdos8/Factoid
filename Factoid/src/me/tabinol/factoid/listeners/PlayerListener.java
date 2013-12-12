@@ -159,14 +159,14 @@ public class PlayerListener implements Listener {
 
             } else if (!OnCommand.isAdminMod(player.getName())) {
                 if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(player.getName())))
-                        || ((action == Action.RIGHT_CLICK_BLOCK // BEGIN of USE
+                        || (((action == Action.RIGHT_CLICK_BLOCK // BEGIN of USE
                         && (ml == Material.WOODEN_DOOR || ml == Material.TRAP_DOOR
                         || ml == Material.STONE_BUTTON || ml == Material.WOOD_BUTTON
                         || ml == Material.LEVER || ml == Material.TRAPPED_CHEST))
                         || (action == Action.PHYSICAL
                         && (ml == Material.WOOD_PLATE || ml == Material.STONE_PLATE
                         || ml == Material.STRING)))
-                        && (!checkPermission(land, player, PermissionType.USE)) // End of "USE"
+                        && !checkPermission(land, player, PermissionType.USE)) // End of "USE"
                         || (action == Action.RIGHT_CLICK_BLOCK
                         && (ml == Material.WOODEN_DOOR || ml == Material.TRAP_DOOR)
                         && !checkPermission(land, player, PermissionType.USE_DOOR))
