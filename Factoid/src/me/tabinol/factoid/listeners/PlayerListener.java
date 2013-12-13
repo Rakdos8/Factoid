@@ -23,6 +23,7 @@ import org.bukkit.entity.Animals;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
@@ -41,6 +42,7 @@ import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -247,7 +249,25 @@ public class PlayerListener implements Listener {
 
             if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(player.getName())))
                     || !checkPermission(land, player, PermissionType.BUILD)
-                    || !checkPermission(land, player, PermissionType.BUILD_DESTROY)) {
+                    || !checkPermission(land, player, PermissionType.BUILD_PLACE)) {
+                MessagePermission(player);
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event) {
+        if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())
+                && !OnCommand.isAdminMod(event.getPlayer().getName())
+                && event.getRightClicked() instanceof ItemFrame) {
+
+            Player player = (Player) event.getPlayer();
+            DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getRightClicked().getLocation());
+
+            if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(player.getName())))
+                    || !checkPermission(land, player, PermissionType.BUILD)
+                    || !checkPermission(land, player, PermissionType.BUILD_PLACE)) {
                 MessagePermission(player);
                 event.setCancelled(true);
             }
@@ -280,6 +300,25 @@ public class PlayerListener implements Listener {
                 && event.getRemover() instanceof Player
                 && !OnCommand.isAdminMod((player = (Player) event.getRemover()).getName())) {
 
+            DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getEntity().getLocation());
+
+            if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(player.getName())))
+                    || !checkPermission(land, player, PermissionType.BUILD)
+                    || !checkPermission(land, player, PermissionType.BUILD_DESTROY)) {
+                MessagePermission(player);
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
+        if (conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())
+                && event.getDamager() instanceof Player
+                && !OnCommand.isAdminMod(((Player) event.getDamager()).getName())
+                && event.getEntity() instanceof ItemFrame) {
+
+            Player player = (Player) event.getDamager();
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getEntity().getLocation());
 
             if ((land instanceof Land && ((Land) land).isBanned(new PlayerContainerPlayer(player.getName())))
