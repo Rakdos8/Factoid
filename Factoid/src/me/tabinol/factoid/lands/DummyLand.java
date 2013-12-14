@@ -5,7 +5,6 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.logging.Level;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
@@ -154,6 +153,9 @@ public class DummyLand {
     }
 
     protected void doSave() {
-        // Empty, No save in DummyLand
+        
+        if(this instanceof Land) {
+            ((Land)this).doSave();
+        }
     }
 }

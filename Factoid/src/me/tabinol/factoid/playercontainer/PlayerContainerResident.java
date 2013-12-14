@@ -28,13 +28,7 @@ public class PlayerContainerResident extends PlayerContainer implements PlayerCo
     @Override
     public boolean hasAccess(String playerName) {
         
-        for(PlayerContainer pc : land.getResidents()) {
-            if(pc.hasAccess(playerName)) {
-                return true;
-            }
-        }
-        
-        return false;
+        return land.isResident(playerName);
     }
     
     public Land getLand() {

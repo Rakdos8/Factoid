@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.logging.Level;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.flags.FlagType;
@@ -246,9 +245,14 @@ public class Land extends DummyLand {
         return residents;
     }
 
-    public boolean isResident(PlayerContainer resident) {
+    public boolean isResident(String playerName) {
 
-        return residents.contains(resident);
+        for(PlayerContainer resident : residents) {
+            if(resident.hasAccess(playerName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void addBanned(PlayerContainer banned) {
@@ -272,9 +276,14 @@ public class Land extends DummyLand {
         return banneds;
     }
 
-    public boolean isBanned(PlayerContainer banned) {
+    public boolean isBanned(String playerName) {
 
-        return banneds.contains(banned);
+        for(PlayerContainer banned : banneds) {
+            if(banned.hasAccess(playerName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // Note : a child get the parent priority

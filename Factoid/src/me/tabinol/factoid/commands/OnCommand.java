@@ -34,16 +34,14 @@ import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.lands.flags.LandSetFlag;
 import me.tabinol.factoid.lands.selection.LandMakeSquare;
-import me.tabinol.factoid.scoreboard.ScoreBoard;
 import me.tabinol.factoid.utilities.StringChanges;
 import me.tabinol.factoid.lands.flags.LandFlag;
-import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainerGroup;
 import me.tabinol.factoid.playercontainer.PlayerContainerFaction;
-import me.tabinol.factoid.playercontainer.PlayerContainerResident;
-import me.tabinol.factoid.playercontainer.PlayerContainerEverybody;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.permissions.Permission;
+import me.tabinol.factoid.lands.permissions.PermissionType;
+import me.tabinol.factoid.playercontainer.PlayerContainerType;
 
 public class OnCommand extends Thread implements CommandExecutor {
 
@@ -426,14 +424,14 @@ public class OnCommand extends Thread implements CommandExecutor {
                                                             }
                                                             String[] StringArrayValue = result.toArray(new String[0]);
                                                             landflag = new LandFlag(flag, StringArrayValue, true);
-                                                        }else{
-                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.PLAYERCONTAINERTYPENULL"));
+                                                        } else {
+                                                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.PLAYERCONTAINERTYPENULL"));
                                                         }
-                                                        if(landflag != null){
+                                                        if (landflag != null) {
                                                             land.addFlag(landflag);
-                                                            land.forceSave();
-                                                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.ISDONE", type,arg[3]));
-                                                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.FLAGS.ISDONE", type,arg[3]));
+                                                            // land.forceSave();
+                                                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.ISDONE", type, arg[3]));
+                                                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.FLAGS.ISDONE", type, arg[3]));
                                                         }
                                                     } else {
                                                         player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.FLAGNULL"));
@@ -444,17 +442,17 @@ public class OnCommand extends Thread implements CommandExecutor {
                                             } else {
                                                 player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.MISSINGINFO"));
                                             }
-                                        } else if(arg[1].equalsIgnoreCase("list")){
-                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.LISTSTART"));
-                                                if(!land.getFlags().isEmpty()){
-                                                    for(LandFlag flag : land.getFlags()){
-                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.LISTROW",flag.getFlagType().name(),flag.getValueString()));
-                                                    }
-                                                }else{
-                                                    player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.LISTROWNULL"));
+                                        } else if (arg[1].equalsIgnoreCase("list")) {
+                                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.LISTSTART"));
+                                            if (!land.getFlags().isEmpty()) {
+                                                for (LandFlag flag : land.getFlags()) {
+                                                    player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.LISTROW", flag.getFlagType().name(), flag.getValueString()));
                                                 }
-                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.LISTEND"));
+                                            } else {
+                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.LISTROWNULL"));
                                             }
+                                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.LISTEND"));
+                                        }
                                     } else {
                                         player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.MISSINGPERMISSION"));
                                     }
@@ -483,46 +481,66 @@ public class OnCommand extends Thread implements CommandExecutor {
                                             this.PlayerSetFlag.put(player.getName().toLowerCase(), setting);
                                         } else if (arg[1].equalsIgnoreCase("set")) {
                                             //factoid PERMISSION set PlayerContainerType PlayerContainer join true
-                                            if (arg.length == 6) {
-                                                String PlayerContainerNamevalue = arg[3];
-                                                String PlayerContainerTypevalue = arg[2];
-                                                String PermissionValue = arg[5];
+                                            if (arg.length >= 5) {
                                                 String Landname = LandSelectioned.get(player.getName().toLowerCase()).getName();
-                                                boolean value = false;
                                                 if (Factoid.getLands().getLand(Landname) != null) {
-                                                    PermissionType permtype = PermissionType.getFromString(arg[4]);
+                                                    String PlayerContainerTypevalue = arg[2];
+                                                    PermissionType permtype;
+                                                    PlayerContainerType containertype = PlayerContainerType.getFromString(PlayerContainerTypevalue);
+                                                    String PlayerContainerNamevalue;
+                                                    String PermissionValue;
+                                                    String PermissionHeritable = null;
+                                                    if (containertype != null && containertype.hasParameter()) {
+                                                        PlayerContainerNamevalue = arg[3];
+                                                        permtype = PermissionType.getFromString(arg[4]);
+                                                        PermissionValue = arg[5];
+                                                        if(arg.length > 6) {
+                                                            PermissionHeritable = arg[6];
+                                                        }
+                                                    } else {
+                                                        PlayerContainerNamevalue = "";
+                                                        permtype = PermissionType.getFromString(arg[3]);
+                                                        PermissionValue = arg[4];
+                                                        if(arg.length > 5) {
+                                                            PermissionHeritable = arg[5];
+                                                        }
+                                                    }
                                                     if (permtype != null) {
-                                                        PlayerContainer pc = null;
-                                                        if (PlayerContainerTypevalue != null) {
-                                                            if (PlayerContainerTypevalue.equalsIgnoreCase("player")) {
-                                                                pc = new PlayerContainerPlayer(PlayerContainerNamevalue);
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("group")) {
-                                                                pc = new PlayerContainerGroup(PlayerContainerNamevalue);
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("faction")) {
-                                                                Faction faction = Factoid.getFactions().getFaction(PlayerContainerNamevalue);
-                                                                pc = new PlayerContainerFaction(faction);
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("resident")) {
-                                                                pc = new PlayerContainerResident(land);
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("everybody")) {
-                                                                pc = new PlayerContainerEverybody();
-                                                            }else{
-                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.PLAYERCONTAINERTYPENULL"));
-                                                            }
+                                                        PlayerContainer pc;
+                                                        if (containertype != null) {
+                                                            pc = PlayerContainer.create(land, containertype, PlayerContainerNamevalue);
+                                                            // if (PlayerContainerTypevalue.equalsIgnoreCase("player")) {
+                                                            //    pc = new PlayerContainerPlayer(PlayerContainerNamevalue);
+                                                            // } else if (PlayerContainerTypevalue.equalsIgnoreCase("group")) {
+                                                            //    pc = new PlayerContainerGroup(PlayerContainerNamevalue);
+                                                            // } else if (PlayerContainerTypevalue.equalsIgnoreCase("faction")) {
+                                                            //    Faction faction = Factoid.getFactions().getFaction(PlayerContainerNamevalue);
+                                                            //    pc = new PlayerContainerFaction(faction);
+                                                            // } else if (PlayerContainerTypevalue.equalsIgnoreCase("resident")) {
+                                                            //    pc = new PlayerContainerResident(land);
+                                                            // } else if (PlayerContainerTypevalue.equalsIgnoreCase("everybody")) {
+                                                            //     pc = new PlayerContainerEverybody();
+                                                            // }else{
+                                                            //    player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.PLAYERCONTAINERTYPENULL"));
+                                                            // }
 
-                                                            if(pc != null){
-                                                                land.removePermission(pc, permtype);
+                                                            if (pc != null) {
+                                                                // land.removePermission(pc, permtype); - Inutile, ça l'écrase de toute manière
                                                                 boolean PermissionValueB = Boolean.parseBoolean(PermissionValue);
-                                                                if (PermissionValueB) {
-                                                                    Permission permission = new Permission(permtype, PermissionValueB, true);
+                                                                boolean PermissionHeritableB;
+                                                                    if(PermissionHeritable == null) {
+                                                                        PermissionHeritableB = true;
+                                                                    } else {
+                                                                        PermissionHeritableB = Boolean.parseBoolean(PermissionHeritable);
+                                                                    }
+                                                                    Permission permission = new Permission(permtype, PermissionValueB, PermissionHeritableB);
                                                                     land.addPermission(pc, permission);
-                                                             } else {
-                                                                 Permission permission = new Permission(permtype, false, true);
-                                                                 land.addPermission(pc, permission);
-                                                             }
-                                                                land.forceSave();
-                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.ISDONE", PlayerContainerTypevalue,PermissionValue,PlayerContainerNamevalue));
-                                                                log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.PERMISSION.ISDONE", PlayerContainerTypevalue,PermissionValue,PlayerContainerNamevalue));
-                                                           }
+                                                                // Pas besoin de faire un forcesave, sauf si tu désactive le save automatique sur le land.
+                                                                // Il y avait un bug à l'époque ou tu as programmé ça. Il est réglé.
+                                                                // land.forceSave();
+                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.ISDONE", PlayerContainerTypevalue, PermissionValue, PlayerContainerNamevalue));
+                                                                log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.PERMISSION.ISDONE", PlayerContainerTypevalue, PermissionValue, PlayerContainerNamevalue));
+                                                            }
                                                         } else {
                                                             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.PLAYERCONTAINERTYPENULL"));
                                                         }
@@ -535,25 +553,25 @@ public class OnCommand extends Thread implements CommandExecutor {
                                             } else {
                                                 player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.MISSINGINFO"));
                                             }
-                                        }else if(arg[1].equalsIgnoreCase("list")){
-                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.LISTSTART"));
-                                                if(!land.getResidents().isEmpty()){
-                                                    for(PlayerContainer pc : land.getSetPCHavePermission()){
-                                                        String dummypermlist = null;
-                                                        for(Permission perm : land.getPermissionsForPC(pc)){
-                                                            if(dummypermlist != null){
-                                                                dummypermlist = dummypermlist+" ["+perm.getPermType().name()+":"+perm.getValue()+"]";
-                                                            }else{
-                                                                dummypermlist = "["+perm.getPermType().name()+":"+perm.getValue()+"]";
-                                                            }
+                                        } else if (arg[1].equalsIgnoreCase("list")) {
+                                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.LISTSTART"));
+                                            if (!land.getResidents().isEmpty()) {
+                                                for (PlayerContainer pc : land.getSetPCHavePermission()) {
+                                                    String dummypermlist = null;
+                                                    for (Permission perm : land.getPermissionsForPC(pc)) {
+                                                        if (dummypermlist != null) {
+                                                            dummypermlist = dummypermlist + " [" + perm.getPermType().name() + ":" + perm.getValue() + "]";
+                                                        } else {
+                                                            dummypermlist = "[" + perm.getPermType().name() + ":" + perm.getValue() + "]";
                                                         }
-                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.LISTROW",pc.getName(),dummypermlist));
                                                     }
-                                                }else{
-                                                    player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.LISTROWNULL"));
+                                                    player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.LISTROW", pc.getName(), dummypermlist));
                                                 }
-                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.LISTEND"));
+                                            } else {
+                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.LISTROWNULL"));
                                             }
+                                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.LISTEND"));
+                                        }
                                     } else {
                                         player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.MISSINGPERMISSION"));
                                     }
@@ -567,89 +585,90 @@ public class OnCommand extends Thread implements CommandExecutor {
                         } else {
                             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.QUIT.EXPANDMODE"));
                         }
-                    }else if (arg[0].equalsIgnoreCase("resident")) {
+                    } else if (arg[0].equalsIgnoreCase("resident")) {
                         if (!this.PlayerExpanding.containsKey(player.getName().toLowerCase())) {
                             if (this.LandSelectioned.containsKey(player.getName().toLowerCase())) {
                                 if (!this.PlayerSetFlag.containsKey(player.getName().toLowerCase())) {
                                     Land land = LandSelectioned.get(player.getName().toLowerCase());
-                                    if (player.getName().equalsIgnoreCase(land.getOwner().getName()) || AdminMod.contains(player.getName().toLowerCase())) {
-                                    
-                                        if(arg.length > 3){
+                                    if (land.checkPermissionAndInherit(player.getName(), PermissionType.RESIDENT_MANAGER) || AdminMod.contains(player.getName().toLowerCase())) {
+
+                                        if (arg.length > 2 || (arg.length == 2 && arg[1].equalsIgnoreCase("list"))) {
                                             //factoid resident add [PlayerContainerType] [Name]
-                                            if(arg[1].equalsIgnoreCase("add")){
-                                                String PlayerContainerNamevalue = arg[3];
+                                            if (arg[1].equalsIgnoreCase("add")) {
+                                                String PlayerContainerNamevalue;
+                                                if(arg.length > 3) {
+                                                    PlayerContainerNamevalue = arg[3];
+                                                } else {
+                                                    PlayerContainerNamevalue = "";
+                                                }
                                                 String PlayerContainerTypevalue = arg[2];
                                                 PlayerContainer pc = null;
-                                                        if (PlayerContainerTypevalue != null) {
-                                                            if (PlayerContainerTypevalue.equalsIgnoreCase("player")) {
-                                                                pc = new PlayerContainerPlayer(PlayerContainerNamevalue);
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("group")) {
-                                                                pc = new PlayerContainerGroup(PlayerContainerNamevalue);
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("faction")) {
-                                                                Faction faction = Factoid.getFactions().getFaction(PlayerContainerNamevalue);
-                                                                pc = new PlayerContainerFaction(faction);
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("resident")) {
-                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.PLAYERCONTAINERRESIDENT"));
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("everybody")) {
-                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.PLAYERCONTAINEREVERYBODY"));
-                                                            }else{
-                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.PLAYERCONTAINERTYPENULL"));
-                                                            }
-                                                            
-                                                            if(pc != null){
-                                                                land.addResident(pc);
-                                                                land.forceSave();
-                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.ISDONE", PlayerContainerNamevalue, land.getName()));
-                                                                log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.RESIDENT.ISDONE", PlayerContainerNamevalue, land.getName()));
-                                                            }
-                                                            
-                                                            
-                                                        } else {
-                                                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.PLAYERCONTAINERTYPENULL"));
-                                                        }
-                                            }else if(arg[1].equalsIgnoreCase("remove")){
-                                                String PlayerContainerNamevalue = arg[3];
-                                                String PlayerContainerTypevalue = arg[2];
-                                                PlayerContainer pc = null;
-                                                        if (PlayerContainerTypevalue != null) {
-                                                            if (PlayerContainerTypevalue.equalsIgnoreCase("player")) {
-                                                                pc = new PlayerContainerPlayer(PlayerContainerNamevalue);
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("group")) {
-                                                                pc = new PlayerContainerGroup(PlayerContainerNamevalue);
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("faction")) {
-                                                                Faction faction = Factoid.getFactions().getFaction(PlayerContainerNamevalue);
-                                                                pc = new PlayerContainerFaction(faction);
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("resident")) {
-                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.PLAYERCONTAINERRESIDENT"));
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("everybody")) {
-                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.PLAYERCONTAINEREVERYBODY"));
-                                                            }else{
-                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.PLAYERCONTAINERTYPENULL"));
-                                                            }
-                                                            
-                                                            if(pc != null){
-                                                                land.removeResident(pc);
-                                                                land.forceSave();
-                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.ISDONEREMOVE", PlayerContainerNamevalue, land.getName()));
-                                                                log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.RESIDENT.ISDONEREMOVE", PlayerContainerNamevalue, land.getName()));
-                                                            }
-                                                            
-                                                            
-                                                        } else {
-                                                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.PLAYERCONTAINERTYPENULL"));
-                                                        }
-                                            }else if(arg[1].equalsIgnoreCase("list")){
-                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.LISTSTART"));
-                                                if(!land.getResidents().isEmpty()){
-                                                    for(PlayerContainer pc : land.getResidents()){
-                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.LISTROW",pc.getName()));
+                                                if (PlayerContainerTypevalue != null) {
+                                                    PlayerContainerType containertype = PlayerContainerType.getFromString(PlayerContainerTypevalue);
+                                                    if(containertype == null) {
+                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.PLAYERCONTAINERTYPENULL"));
+                                                    } else if(containertype == PlayerContainerType.RESIDENT) {
+                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.PLAYERCONTAINERRESIDENT"));
+                                                    } else if(containertype == PlayerContainerType.EVERYBODY) {
+                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.PLAYERCONTAINEREVERYBODY"));
+                                                    } else {
+                                                        pc = PlayerContainer.create(land, containertype, PlayerContainerNamevalue);
                                                     }
-                                                }else{
+
+                                                    if (pc != null) {
+                                                        land.addResident(pc);
+                                                        // land.forceSave();
+                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.ISDONE", PlayerContainerNamevalue, land.getName()));
+                                                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.RESIDENT.ISDONE", PlayerContainerNamevalue, land.getName()));
+                                                    }
+
+
+                                                } else {
+                                                    player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.PLAYERCONTAINERTYPENULL"));
+                                                }
+                                            } else if (arg[1].equalsIgnoreCase("remove")) {
+                                                String PlayerContainerNamevalue = arg[3];
+                                                String PlayerContainerTypevalue = arg[2];
+                                                PlayerContainer pc = null;
+                                                if (PlayerContainerTypevalue != null) {
+                                                    if (PlayerContainerTypevalue.equalsIgnoreCase("player")) {
+                                                        pc = new PlayerContainerPlayer(PlayerContainerNamevalue);
+                                                    } else if (PlayerContainerTypevalue.equalsIgnoreCase("group")) {
+                                                        pc = new PlayerContainerGroup(PlayerContainerNamevalue);
+                                                    } else if (PlayerContainerTypevalue.equalsIgnoreCase("faction")) {
+                                                        Faction faction = Factoid.getFactions().getFaction(PlayerContainerNamevalue);
+                                                        pc = new PlayerContainerFaction(faction);
+                                                    } else if (PlayerContainerTypevalue.equalsIgnoreCase("resident")) {
+                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.PLAYERCONTAINERRESIDENT"));
+                                                    } else if (PlayerContainerTypevalue.equalsIgnoreCase("everybody")) {
+                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.PLAYERCONTAINEREVERYBODY"));
+                                                    } else {
+                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.PLAYERCONTAINERTYPENULL"));
+                                                    }
+
+                                                    if (pc != null) {
+                                                        land.removeResident(pc);
+                                                        land.forceSave();
+                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.ISDONEREMOVE", PlayerContainerNamevalue, land.getName()));
+                                                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.RESIDENT.ISDONEREMOVE", PlayerContainerNamevalue, land.getName()));
+                                                    }
+
+
+                                                } else {
+                                                    player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.PLAYERCONTAINERTYPENULL"));
+                                                }
+                                            } else if (arg[1].equalsIgnoreCase("list")) {
+                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.LISTSTART"));
+                                                if (!land.getResidents().isEmpty()) {
+                                                    for (PlayerContainer pc : land.getResidents()) {
+                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.LISTROW", pc.getName()));
+                                                    }
+                                                } else {
                                                     player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.LISTROWNULL"));
                                                 }
                                                 player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.LISTEND"));
                                             }
-                                        }else {
+                                        } else {
                                             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.MISSINGINFO"));
                                         }
                                     } else {
@@ -665,90 +684,90 @@ public class OnCommand extends Thread implements CommandExecutor {
                         } else {
                             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.QUIT.EXPANDMODE"));
                         }
-                    }else if (arg[0].equalsIgnoreCase("banned")) {
+                    } else if (arg[0].equalsIgnoreCase("banned")) {
                         if (!this.PlayerExpanding.containsKey(player.getName().toLowerCase())) {
                             if (this.LandSelectioned.containsKey(player.getName().toLowerCase())) {
                                 if (!this.PlayerSetFlag.containsKey(player.getName().toLowerCase())) {
                                     Land land = LandSelectioned.get(player.getName().toLowerCase());
                                     if (player.getName().equalsIgnoreCase(land.getOwner().getName()) || AdminMod.contains(player.getName().toLowerCase())) {
-                                        
-                                        if(arg.length > 3){
+
+                                        if (arg.length > 3) {
                                             //factoid banned add [PlayerContainerType] [Name]
-                                            if(arg[1].equalsIgnoreCase("add")){
+                                            if (arg[1].equalsIgnoreCase("add")) {
                                                 String PlayerContainerNamevalue = arg[3];
                                                 String PlayerContainerTypevalue = arg[2];
                                                 PlayerContainer pc = null;
-                                                        if (PlayerContainerTypevalue != null) {
-                                                            if (PlayerContainerTypevalue.equalsIgnoreCase("player")) {
-                                                                pc = new PlayerContainerPlayer(PlayerContainerNamevalue);
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("group")) {
-                                                                pc = new PlayerContainerGroup(PlayerContainerNamevalue);
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("faction")) {
-                                                                Faction faction = Factoid.getFactions().getFaction(PlayerContainerNamevalue);
-                                                                pc = new PlayerContainerFaction(faction);
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("resident")) {
-                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.PLAYERCONTAINERRESIDENT"));
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("everybody")) {
-                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.PLAYERCONTAINEREVERYBODY"));
-                                                            }else{
-                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.PLAYERCONTAINERTYPENULL"));
-                                                            }
-                                                            
-                                                            if(pc != null){
-                                                                land.addBanned(pc);
-                                                                land.forceSave();
-                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.ISDONE", PlayerContainerNamevalue, land.getName()));
-                                                                log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.BANNED.ISDONE", PlayerContainerNamevalue, land.getName()));
-                                                            }
-                                                            
-                                                            
-                                                        } else {
-                                                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.PLAYERCONTAINERTYPENULL"));
-                                                        }
-                                            //factoid banned remove [PlayerContainerType] [Name]
-                                            }else if(arg[1].equalsIgnoreCase("remove")){
-                                                String PlayerContainerNamevalue = arg[3];
-                                                String PlayerContainerTypevalue = arg[2];
-                                                PlayerContainer pc = null;
-                                                        if (PlayerContainerTypevalue != null) {
-                                                            if (PlayerContainerTypevalue.equalsIgnoreCase("player")) {
-                                                                pc = new PlayerContainerPlayer(PlayerContainerNamevalue);
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("group")) {
-                                                                pc = new PlayerContainerGroup(PlayerContainerNamevalue);
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("faction")) {
-                                                                Faction faction = Factoid.getFactions().getFaction(PlayerContainerNamevalue);
-                                                                pc = new PlayerContainerFaction(faction);
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("resident")) {
-                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.PLAYERCONTAINERRESIDENT"));
-                                                            } else if (PlayerContainerTypevalue.equalsIgnoreCase("everybody")) {
-                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.PLAYERCONTAINEREVERYBODY"));
-                                                            }else{
-                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.PLAYERCONTAINERTYPENULL"));
-                                                            }
-                                                            
-                                                            if(pc != null){
-                                                                land.removeBanned(pc);
-                                                                land.forceSave();
-                                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.ISDONEREMOVE", PlayerContainerNamevalue, land.getName()));
-                                                                log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.BANNED.ISDONEREMOVE", PlayerContainerNamevalue, land.getName()));
-                                                            }
-                                                            
-                                                            
-                                                        } else {
-                                                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.PLAYERCONTAINERTYPENULL"));
-                                                        }
-                                            }else if(arg[1].equalsIgnoreCase("list")){
-                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.LISTSTART"));
-                                                if(!land.getBanneds().isEmpty()){
-                                                    for(PlayerContainer pc : land.getBanneds()){
-                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.LISTROW",pc.getName()));
+                                                if (PlayerContainerTypevalue != null) {
+                                                    if (PlayerContainerTypevalue.equalsIgnoreCase("player")) {
+                                                        pc = new PlayerContainerPlayer(PlayerContainerNamevalue);
+                                                    } else if (PlayerContainerTypevalue.equalsIgnoreCase("group")) {
+                                                        pc = new PlayerContainerGroup(PlayerContainerNamevalue);
+                                                    } else if (PlayerContainerTypevalue.equalsIgnoreCase("faction")) {
+                                                        Faction faction = Factoid.getFactions().getFaction(PlayerContainerNamevalue);
+                                                        pc = new PlayerContainerFaction(faction);
+                                                    } else if (PlayerContainerTypevalue.equalsIgnoreCase("resident")) {
+                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.PLAYERCONTAINERRESIDENT"));
+                                                    } else if (PlayerContainerTypevalue.equalsIgnoreCase("everybody")) {
+                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.PLAYERCONTAINEREVERYBODY"));
+                                                    } else {
+                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.PLAYERCONTAINERTYPENULL"));
                                                     }
-                                                }else{
+
+                                                    if (pc != null) {
+                                                        land.addBanned(pc);
+                                                        land.forceSave();
+                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.ISDONE", PlayerContainerNamevalue, land.getName()));
+                                                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.BANNED.ISDONE", PlayerContainerNamevalue, land.getName()));
+                                                    }
+
+
+                                                } else {
+                                                    player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.PLAYERCONTAINERTYPENULL"));
+                                                }
+                                                //factoid banned remove [PlayerContainerType] [Name]
+                                            } else if (arg[1].equalsIgnoreCase("remove")) {
+                                                String PlayerContainerNamevalue = arg[3];
+                                                String PlayerContainerTypevalue = arg[2];
+                                                PlayerContainer pc = null;
+                                                if (PlayerContainerTypevalue != null) {
+                                                    if (PlayerContainerTypevalue.equalsIgnoreCase("player")) {
+                                                        pc = new PlayerContainerPlayer(PlayerContainerNamevalue);
+                                                    } else if (PlayerContainerTypevalue.equalsIgnoreCase("group")) {
+                                                        pc = new PlayerContainerGroup(PlayerContainerNamevalue);
+                                                    } else if (PlayerContainerTypevalue.equalsIgnoreCase("faction")) {
+                                                        Faction faction = Factoid.getFactions().getFaction(PlayerContainerNamevalue);
+                                                        pc = new PlayerContainerFaction(faction);
+                                                    } else if (PlayerContainerTypevalue.equalsIgnoreCase("resident")) {
+                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.PLAYERCONTAINERRESIDENT"));
+                                                    } else if (PlayerContainerTypevalue.equalsIgnoreCase("everybody")) {
+                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.PLAYERCONTAINEREVERYBODY"));
+                                                    } else {
+                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.PLAYERCONTAINERTYPENULL"));
+                                                    }
+
+                                                    if (pc != null) {
+                                                        land.removeBanned(pc);
+                                                        land.forceSave();
+                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.ISDONEREMOVE", PlayerContainerNamevalue, land.getName()));
+                                                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.BANNED.ISDONEREMOVE", PlayerContainerNamevalue, land.getName()));
+                                                    }
+
+
+                                                } else {
+                                                    player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.PLAYERCONTAINERTYPENULL"));
+                                                }
+                                            } else if (arg[1].equalsIgnoreCase("list")) {
+                                                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.LISTSTART"));
+                                                if (!land.getBanneds().isEmpty()) {
+                                                    for (PlayerContainer pc : land.getBanneds()) {
+                                                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.LISTROW", pc.getName()));
+                                                    }
+                                                } else {
                                                     player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.LISTROWNULL"));
                                                 }
                                                 player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.LISTEND"));
                                             }
-                                        }else {
+                                        } else {
                                             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.MISSINGINFO"));
                                         }
                                     } else {
@@ -764,7 +783,7 @@ public class OnCommand extends Thread implements CommandExecutor {
                         } else {
                             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.QUIT.EXPANDMODE"));
                         }
-                    }else if (arg[0].equalsIgnoreCase("remove")) {
+                    } else if (arg[0].equalsIgnoreCase("remove")) {
                         if (!this.PlayerExpanding.containsKey(player.getName().toLowerCase())) {
                             if (this.LandSelectioned.containsKey(player.getName().toLowerCase())) {
                                 if (!this.PlayerSetFlag.containsKey(player.getName().toLowerCase())) {
@@ -839,7 +858,7 @@ public class OnCommand extends Thread implements CommandExecutor {
                         } else if (LandSelectioned.containsKey(player.getName().toLowerCase())) {
                             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CANCEL.SELECT"));
                             LandSelectioned.remove(player.getName().toLowerCase());
-                            if(LandSelectionedUI.containsKey(player.getName().toLowerCase())){
+                            if (LandSelectionedUI.containsKey(player.getName().toLowerCase())) {
                                 LandSelectionedUI.remove(player.getName().toLowerCase());
                             }
                         } else {

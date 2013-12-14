@@ -24,5 +24,4 @@ public class PlayerContainerNobody extends PlayerContainer implements PlayerCont
         
         return false;
     }
-    
 }
