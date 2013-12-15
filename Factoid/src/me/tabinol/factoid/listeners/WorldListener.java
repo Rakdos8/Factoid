@@ -177,9 +177,12 @@ public class WorldListener implements Listener {
             LandFlag flag;
 
             // Enderman removeblock
-            if (event.getEntityType() == EntityType.ENDERMAN
+            if ((event.getEntityType() == EntityType.ENDERMAN
                     && (flag = land.getFlagAndInherit(FlagType.ENDERMAN_DAMAGE)) != null
-                    && flag.getValueBoolean() == false) {
+                    && flag.getValueBoolean() == false)
+                    || (event.getEntityType() == EntityType.WITHER
+                    && (flag = land.getFlagAndInherit(FlagType.WITHER_DAMAGE)) != null
+                    && flag.getValueBoolean() == false)) {
                 event.setCancelled(true);
             }
         }
