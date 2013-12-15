@@ -423,10 +423,10 @@ public class PlayerListener implements Listener {
 
                     if (faction != null && faction == factionVictime
                             && (flag = land.getFlagAndInherit(FlagType.FACTION_PVP)) != null && flag.getValueBoolean() == false) {
-                        player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.NOFACTIONPVP"));
+                        // player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.NOFACTIONPVP"));
                         event.setCancelled(true);
                     } else if ((flag = land.getFlagAndInherit(FlagType.FULL_PVP)) != null && flag.getValueBoolean() == false) {
-                        player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.NOPVP"));
+                        // player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.NOPVP"));
                         event.setCancelled(true);
                     }
                 }
