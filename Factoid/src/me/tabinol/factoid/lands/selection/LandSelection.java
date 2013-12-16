@@ -2,6 +2,7 @@ package me.tabinol.factoid.lands.selection;
 
 import java.util.Map;
 import java.util.HashMap;
+import me.tabinol.factoid.Factoid;
 import org.bukkit.Material;
 import org.bukkit.event.Listener;
 import org.bukkit.Server;
@@ -24,8 +25,8 @@ public class LandSelection extends Thread implements Listener{
     private Location LandPos;
     private boolean IsCollision;
     
-    public LandSelection(Player player,Server server,JavaPlugin plugin){
-        server.getPluginManager().registerEvents(this, plugin);
+    public LandSelection(Player player,Server server){
+        server.getPluginManager().registerEvents(this, Factoid.getThisPlugin());
         this.player = player;
         this.world = player.getWorld();
         LandMakeSquare landmake = new LandMakeSquare(player,player.getLocation(),0,0,0,0,0,0);
