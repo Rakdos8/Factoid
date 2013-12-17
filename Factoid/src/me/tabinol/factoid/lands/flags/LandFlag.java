@@ -63,6 +63,25 @@ public class LandFlag {
         return valueString;
     }
     
+    public final String getThisValueToString() {
+
+        if(flagType.getFlagValueType() == FlagValueType.BOOLEAN) {
+            return valueBoolean + "";
+        }
+        if(flagType.getFlagValueType() == FlagValueType.STRING) {
+            return valueString;
+        }
+        if(flagType.getFlagValueType() == FlagValueType.STRING_LIST) {
+            StringBuilder sb = new StringBuilder();
+            for(String st : valueStringList) {
+                sb.append(StringChanges.toQuote(st)).append(";");
+            }
+            return sb.toString();
+        }
+        
+        return null;
+    }
+    
     public final String[] getValueStringList() {
         
         return valueStringList;
@@ -87,7 +106,7 @@ public class LandFlag {
             for(String st : valueStringList) {
                 sb.append(StringChanges.toQuote(st)).append(";");
             }
-            return flagType.toString() + ":" + valueString + ":" + heritable;
+            return flagType.toString() + ":" + sb.toString() + ":" + heritable;
         }
         
         return null;

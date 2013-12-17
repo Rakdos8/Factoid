@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.commands.FactoidCommandException;
 import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.lands.Land;
@@ -20,9 +21,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Select extends Thread{
+/* Note pour Kaz00 : J'ai fait la classe "FactoidCommandException" qui permet de "trower"
+ * les erreurs sans aller plus loin et le joueur ressoit le message en rouge.
+ * Donc, au lieu de mettre un if(CeciEstCorrect), et d'avoir à aller 500 lignes plus bas
+ * pour savoir ce qui se passe quand c'est pas correct, et d'avoir des if indentés jusque chez ton voisin d'à coté,
+ * tu fait simplement un if inversé, ton programme n'ira pas plus loin:
+ * if(!CeciEstCorrect) {
+ *   throw new FactoidCommandException("PATH.DU.MESSAGE.ERREUR");
+ * }
+ */
+
+public class Select extends Thread {
     
-    public Select(Player player,String[] arg){
+    public Select(Player player,String[] arg) throws FactoidCommandException {
         if (!OnCommand.getPlayerSetFlagUI().containsKey(player.getName().toLowerCase())) {
             if (!OnCommand.getPlayerExpanding().containsKey(player.getName().toLowerCase())) {
                 if (!OnCommand.getPlayerSelectingLand().containsKey(player.getName().toLowerCase()) && !OnCommand.getPlayerSelectingWorldEdit().containsKey(player.getName().toLowerCase())) {

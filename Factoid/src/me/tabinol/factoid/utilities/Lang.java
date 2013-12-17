@@ -22,50 +22,54 @@ public class Lang extends Thread {
         this.plugin = Factoid.getThisPlugin();
         reloadConfig();
     }
-    
+
     public final void reloadConfig() {
         this.lang = Factoid.getConf().Lang;
         this.langFile = new File(plugin.getDataFolder() + "/lang/", lang + ".yml");
-        if(Factoid.getConf().Lang != null){
+        if (Factoid.getConf().Lang != null) {
             Make();
             loadYamls();
         }
     }
 
-    public String getMessage(String path,String... param) {
-       if(param.length >= 1){
-          String message = langconfig.getString(path);
-          if(message != null){
-                int occurence = getOccurence(message,'%');
-                if(occurence==param.length){
-                      for(int i = 0;i<occurence;i++){
-                          message = replace(message,"%",param[i]);
-                          // System.out.print(message);
-                      }
-                  }else{
-                      return "Error! variable missing for Entries.";
-                  }
-            return message;
-          }
-       }
-        return langconfig.getString(path);
+    public String getMessage(String path, String... param) {
+
+        String message = langconfig.getString(path);
+
+        if(message == null) {
+            return "MESSAGE NOT FOUND FOR PATH: " + path;
+        }
+        if (param.length >= 1) {
+            int occurence = getOccurence(message, '%');
+            if (occurence == param.length) {
+                for (int i = 0; i < occurence; i++) {
+                    message = replace(message, "%", param[i]);
+                    // System.out.print(message);
+                }
+            } else {
+                return "Error! variable missing for Entries.";
+            }
+        }
+        
+        return message;
     }
-    
-    public String replace(String s_original, String s_cherche, String s_nouveau)  
-    {  
-      if ((s_original == null) || (s_original.equals("")))  
-         return "";  
-      if ((s_nouveau == null) || (s_nouveau.equals("")) || (s_cherche == null) || (s_cherche.equals("")))  
-         return new String(s_original);  
 
-      StringBuffer s_final;  
-      int index = s_original.indexOf(s_cherche);  
+    public String replace(String s_original, String s_cherche, String s_nouveau) {
+        if ((s_original == null) || (s_original.equals(""))) {
+            return "";
+        }
+        if ((s_nouveau == null) || (s_nouveau.equals("")) || (s_cherche == null) || (s_cherche.equals(""))) {
+            return new String(s_original);
+        }
 
-      s_final = new StringBuffer(s_original.substring(0,index));  
-      s_final.append(s_nouveau);  
-      s_final.append(s_original.substring(index+s_cherche.length()));  
+        StringBuffer s_final;
+        int index = s_original.indexOf(s_cherche);
 
-      return s_final.toString();  
+        s_final = new StringBuffer(s_original.substring(0, index));
+        s_final.append(s_nouveau);
+        s_final.append(s_original.substring(index + s_cherche.length()));
+
+        return s_final.toString();
     }
 
     private void loadYamls() {
@@ -80,7 +84,7 @@ public class Lang extends Thread {
         try {
             if (!langFile.exists()) {
                 langFile.getParentFile().mkdirs();
-                copy(plugin.getResource(lang+".yml"), langFile);
+                copy(plugin.getResource(lang + ".yml"), langFile);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,13 +105,13 @@ public class Lang extends Thread {
             e.printStackTrace();
         }
     }
-    
-    private int getOccurence(String s,char r){
+
+    private int getOccurence(String s, char r) {
         int counter = 0;
-        for( int i=0; i<s.length(); i++ ) {
-            if( s.charAt(i) == r ) {
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == r) {
                 counter++;
-            } 
+            }
         }
         return counter;
     }

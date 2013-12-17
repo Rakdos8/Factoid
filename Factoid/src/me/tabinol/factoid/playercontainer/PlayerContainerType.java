@@ -41,10 +41,10 @@ public enum PlayerContainerType {
         return pcName;
     }
     
-    public static PlayerContainerType getFromString(String permName) {
+    public static PlayerContainerType getFromString(String pcName) {
         
         for(PlayerContainerType pct : values()) {
-            if(pct.toString().equalsIgnoreCase(permName)) {
+            if(pct.toString().equalsIgnoreCase(pcName)) {
                 return pct;
             }
         }
