@@ -10,6 +10,7 @@ import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.event.PlayerLandChangeEvent;
 import me.tabinol.factoid.factions.Faction;
+import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.flags.FlagType;
@@ -144,7 +145,7 @@ public class PlayerListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())) {
-            DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getClickedBlock().getLocation());
+            DummyLand land;
             Material ml = event.getClickedBlock().getType();
             Player player = event.getPlayer();
             Action action = event.getAction();
@@ -155,10 +156,11 @@ public class PlayerListener implements Listener {
             if (player.getItemInHand() != null
                     && action == Action.LEFT_CLICK_BLOCK
                     && player.getItemInHand().getTypeId() == conf.InfoItem) {
-                OnCommand.landInfo(land, player);
+                OnCommand.landInfo(Factoid.getLands().getCuboidArea(event.getClickedBlock().getLocation()), player);
                 event.setCancelled(true);
 
-            } else if (!OnCommand.isAdminMod(player.getName())) {
+            } else if (!OnCommand.isAdminMod(player)) {
+            land = Factoid.getLands().getLandOrOutsideArea(event.getClickedBlock().getLocation());
                 if ((land instanceof Land && ((Land) land).isBanned(player.getName()))
                         || (((action == Action.RIGHT_CLICK_BLOCK // BEGIN of USE
                         && (ml == Material.WOODEN_DOOR || ml == Material.TRAP_DOOR
@@ -224,7 +226,7 @@ public class PlayerListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())
-                && !OnCommand.isAdminMod(event.getPlayer().getName())) {
+                && !OnCommand.isAdminMod(event.getPlayer())) {
 
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
 
@@ -241,7 +243,7 @@ public class PlayerListener implements Listener {
     public void onHangingPlaceEvent(HangingPlaceEvent event) {
 
         if (conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())
-                && !OnCommand.isAdminMod(event.getPlayer().getName())) {
+                && !OnCommand.isAdminMod(event.getPlayer())) {
 
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getEntity().getLocation());
             Player player = event.getPlayer();
@@ -258,7 +260,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event) {
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())
-                && !OnCommand.isAdminMod(event.getPlayer().getName())
+                && !OnCommand.isAdminMod(event.getPlayer())
                 && event.getRightClicked() instanceof ItemFrame) {
 
             Player player = (Player) event.getPlayer();
@@ -277,7 +279,7 @@ public class PlayerListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())
-                && !OnCommand.isAdminMod(event.getPlayer().getName())) {
+                && !OnCommand.isAdminMod(event.getPlayer())) {
 
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
 
@@ -297,7 +299,7 @@ public class PlayerListener implements Listener {
 
         if (conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())
                 && event.getRemover() instanceof Player
-                && !OnCommand.isAdminMod((player = (Player) event.getRemover()).getName())) {
+                && !OnCommand.isAdminMod(player = (Player) event.getRemover())) {
 
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getEntity().getLocation());
 
@@ -314,7 +316,7 @@ public class PlayerListener implements Listener {
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
         if (conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())
                 && event.getDamager() instanceof Player
-                && !OnCommand.isAdminMod(((Player) event.getDamager()).getName())
+                && !OnCommand.isAdminMod((Player) event.getDamager())
                 && event.getEntity() instanceof ItemFrame) {
 
             Player player = (Player) event.getDamager();
@@ -333,7 +335,7 @@ public class PlayerListener implements Listener {
     public void onPlayerDropItem(PlayerDropItemEvent event) {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())
-                && !OnCommand.isAdminMod(event.getPlayer().getName())) {
+                && !OnCommand.isAdminMod(event.getPlayer())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getPlayer().getLocation());
 
             if (!checkPermission(land, event.getPlayer(), PermissionType.DROP)) {
@@ -347,7 +349,7 @@ public class PlayerListener implements Listener {
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())
-                && !OnCommand.isAdminMod(event.getPlayer().getName())) {
+                && !OnCommand.isAdminMod(event.getPlayer())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getPlayer().getLocation());
 
             if (!checkPermission(land, event.getPlayer(), PermissionType.PICKETUP)) {
@@ -361,7 +363,7 @@ public class PlayerListener implements Listener {
     public void onPlayerBedEnter(PlayerBedEnterEvent event) {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())
-                && !OnCommand.isAdminMod(event.getPlayer().getName())) {
+                && !OnCommand.isAdminMod(event.getPlayer())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBed().getLocation());
 
             if ((land instanceof Land && ((Land) land).isBanned(event.getPlayer().getName()))
@@ -395,7 +397,7 @@ public class PlayerListener implements Listener {
                 EntityType et = entity.getType();
 
                 // kill en entity (none player)
-                if (!OnCommand.isAdminMod(player.getName())
+                if (!OnCommand.isAdminMod(player)
                         && ((land instanceof Land && ((Land) land).isBanned(player.getName()))
                         || (entity instanceof Animals
                         && !checkPermission(land, player, PermissionType.ANIMAL_KILL))
@@ -438,7 +440,7 @@ public class PlayerListener implements Listener {
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
 
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())
-                && !OnCommand.isAdminMod(event.getPlayer().getName())) {
+                && !OnCommand.isAdminMod(event.getPlayer())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlockClicked().getLocation());
             Material mt = event.getBucket();
 
@@ -457,7 +459,7 @@ public class PlayerListener implements Listener {
     public void onBlockIgnite(BlockIgniteEvent event) {
 
         if (event.getPlayer() != null && conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())) {
-            if (event.getPlayer() != null && !OnCommand.isAdminMod(event.getPlayer().getName())) {
+            if (event.getPlayer() != null && !OnCommand.isAdminMod(event.getPlayer())) {
 
                 DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
 

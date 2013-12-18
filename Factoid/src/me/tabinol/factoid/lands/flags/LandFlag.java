@@ -2,6 +2,7 @@ package me.tabinol.factoid.lands.flags;
 
 import java.util.ArrayList;
 import me.tabinol.factoid.utilities.StringChanges;
+import org.bukkit.ChatColor;
 
 public class LandFlag {
     
@@ -63,10 +64,14 @@ public class LandFlag {
         return valueString;
     }
     
-    public final String getThisValueToString() {
+    public final String getValuePrint() {
 
         if(flagType.getFlagValueType() == FlagValueType.BOOLEAN) {
-            return valueBoolean + "";
+            if(valueBoolean) {
+                return "" + ChatColor.GREEN + valueBoolean;
+            } else {
+                return "" + ChatColor.RED + valueBoolean;
+            }
         }
         if(flagType.getFlagValueType() == FlagValueType.STRING) {
             return valueString;

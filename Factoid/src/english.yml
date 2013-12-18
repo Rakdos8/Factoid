@@ -3,6 +3,11 @@ DISABLE: "Factoid is Disabled."
 CONSOLE: "Hey Console! Wait...what?"
 COMMAND:
   NOTEXIST: "This command does not exist."
+  PAGE:
+    ONEPAGE: "-Page (1/1)-"
+    MULTIPAGE: "-Page (%/%)- type: /factoid page <number>"
+    INVALID: "The page number is invalid!"
+    PAGENULL: "No page selected"
   SELECT:
     JOINMODE: "You are now in Select Mode."
     HINT: "Type % '/factoid select done' % % to confirm your choice."
@@ -65,10 +70,8 @@ COMMAND:
     FLAGNULL: "This Flag doesn't exist."
     MISSINGPERMISSION: "You must have the permission to execute this action."
     ISDONE: "you have set '%' to '%'."
-    LISTSTART: "-------------FLAGS---------------"
-    LISTROW: "%: %"
+    LISTSTART: "-FLAGS-"
     LISTROWNULL: "No Flags."
-    LISTEND: "-------------------------------------"
   PERMISSION:
     JOINMODE: "You are now in Flags Mode."
     HINT: "Your modification will be instantany effective."
@@ -83,10 +86,8 @@ COMMAND:
     PERMISSIONNULL: "This Flag doesn't exist."
     PLAYERCONTAINERTYPENULL: "This type doesn't exist."
     ISDONE: "you have set the permission '%' to '%' for '%'"
-    LISTSTART: "-------------PERMISSIONS---------------"
-    LISTROW: "Resident: %  Permission: %"
+    LISTSTART: "-PERMISSIONS-"
     LISTROWNULL: "No Permissions."
-    LISTEND: "-------------------------------------------"
   RESIDENT:
     QUIT:
       EXPANDMODE: "Quit the Expand Mode before."
@@ -100,10 +101,8 @@ COMMAND:
     PLAYERCONTAINEREVERYBODY: "You cannot set a EveryBody as a resident."
     ISDONE: "you have set '%' as resident of '%'."
     ISDONEREMOVE: "you have set '%' as not a resident of '%'."
-    LISTSTART: "----------------RESIDENT-----------------"
-    LISTROW: "Resident: %"
+    LISTSTART: "-RESIDENTS-"
     LISTROWNULL: "No Redisent."
-    LISTEND: "-------------------------------------------"
     FLAGS:
     JOINMODE: "You are now in Flags Mode."
     HINT: "Your modification will be instantany effective."
@@ -131,10 +130,8 @@ COMMAND:
     PLAYERCONTAINEREVERYBODY: "You cannot ban Everyone."
     ISDONE: "you have ban '%' in '%'."
     ISDONEREMOVE: "you have unban '%' in '%'."
-    LISTSTART: "----------------Banned-----------------"
-    LISTROW: "Banned: %"
+    LISTSTART: "-Banned-"
     LISTROWNULL: "No Banned."
-    LISTEND: "-------------------------------------------"
     FLAGS:
     JOINMODE: "You are now in Flags Mode."
     HINT: "Your modification will be instantany effective."
@@ -164,8 +161,11 @@ COMMAND:
     CANCEL: "you have canceled your action."
   CURRENT:
     LAND:
+      LISTSTART: "-Land info-"
       NAME: "The Land name is: '%' "
-      OWNER: "Owner: % ; %"
+      OWNER: "Owner: %"
+      ACTIVEAREA: "You are on area: %"
+      MAINPERMISSION: "Your main permissions are: %"
       AREA: "Area(s):"
     NOLAND: "There's no Land here."
   ADMINMOD:

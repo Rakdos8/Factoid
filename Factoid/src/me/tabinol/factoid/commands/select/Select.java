@@ -19,7 +19,6 @@ import me.tabinol.factoid.lands.selection.LandSelection;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /* Note pour Kaz00 : J'ai fait la classe "FactoidCommandException" qui permet de "trower"
  * les erreurs sans aller plus loin et le joueur ressoit le message en rouge.
@@ -73,7 +72,7 @@ public class Select extends Thread {
                             Land landtest = Factoid.getLands().getLand(arg[1].toString());
                             if (landtest != null) {
                                 PlayerContainer owner = landtest.getOwner();
-                                if (owner.hasAccess(player.getName()) || OnCommand.isAdminMod(player.getName().toLowerCase())) {
+                                if (owner.hasAccess(player.getName()) || OnCommand.isAdminMod(player)) {
                                     if (!OnCommand.getLandSelectioned().containsKey(player.getName().toLowerCase())) {
                                         OnCommand.getLandSelectioned().put(player.getName().toLowerCase(), landtest);
                                         List<LandMakeSquare> listdummy = new ArrayList<LandMakeSquare>();

@@ -81,4 +81,10 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
 
         return containerType.toString() + ":" + name;
     }
+    
+    @Override
+    public String getPrint() {
+        
+        return containerType.toString();
+    }
 }

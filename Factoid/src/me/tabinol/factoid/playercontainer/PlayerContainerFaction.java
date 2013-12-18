@@ -1,6 +1,7 @@
 package me.tabinol.factoid.playercontainer;
 
 import me.tabinol.factoid.factions.Faction;
+import org.bukkit.ChatColor;
 
 public class PlayerContainerFaction extends PlayerContainer implements PlayerContainerInterface {
     
@@ -35,4 +36,11 @@ public class PlayerContainerFaction extends PlayerContainer implements PlayerCon
         
         return faction.isPlayerInList(playerName);
     }
+    
+    @Override
+    public String getPrint() {
+        
+        return ChatColor.GOLD + "F:" + ChatColor.WHITE + name;
+    }
+
 }

@@ -94,14 +94,14 @@ public class LandListener implements Listener {
             }
 
             //Notify players for exit
-            if (!OnCommand.isAdminMod(player.getName())) {
+            if (!OnCommand.isAdminMod(player)) {
                 notifyPlayers(lastLand, "ACTION.PLAYEREXIT", player);
             }
         }
         if (land != null) {
             dummyLand = land;
 
-            if (!OnCommand.isAdminMod(player.getName())) {
+            if (!OnCommand.isAdminMod(player)) {
                 // is banned?
                 if (land.isBanned(player.getName())) {
                     player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.BANNED", land.getName()));

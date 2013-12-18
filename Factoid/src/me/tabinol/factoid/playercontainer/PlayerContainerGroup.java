@@ -1,6 +1,7 @@
 package me.tabinol.factoid.playercontainer;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class PlayerContainerGroup extends PlayerContainer implements PlayerContainerInterface {
@@ -33,5 +34,11 @@ public class PlayerContainerGroup extends PlayerContainer implements PlayerConta
         } else {
             return false;
         }
+    }
+    
+    @Override
+    public String getPrint() {
+        
+        return ChatColor.BLUE + "G:" + ChatColor.WHITE + name;
     }
 }
