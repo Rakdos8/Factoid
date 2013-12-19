@@ -2,6 +2,7 @@ package me.tabinol.factoid.commands;
 
 // Work with command arguments
 import java.util.ArrayList;
+import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.FlagValueType;
@@ -63,7 +64,6 @@ public class ArgList {
 
     public String getNextToEnd() {
 
-        iterator++;
         StringBuilder result = new StringBuilder();
         String cur;
 
@@ -77,7 +77,7 @@ public class ArgList {
         return result.toString();
     }
 
-    public FlagType getFlagTypeFromArg() throws FactoidCommandException {
+    public FlagType getFlagTypeFromArg(boolean isAdminmod, boolean isOwner) throws FactoidCommandException {
 
         String curArg = getNext();
 
@@ -91,12 +91,16 @@ public class ArgList {
             throw new FactoidCommandException("COMMAND.FLAGS.FLAGNULL");
         }
 
+        if(!isAdminmod && !(isOwner && Factoid.getConf().ownerConfigFlag.contains(flagType))) {
+            throw new FactoidCommandException("COMMAND.FLAGS.MISSINGPERMISSION");
+        }
+
         return flagType;
     }
 
-    public LandFlag getFlagFromArg() throws FactoidCommandException {
+    public LandFlag getFlagFromArg(boolean isAdminmob, boolean isOwner) throws FactoidCommandException {
 
-        FlagType flagType = getFlagTypeFromArg();
+        FlagType flagType = getFlagTypeFromArg(isAdminmob, isOwner);
 
         if (isLast()) {
             throw new FactoidCommandException("COMMAND.FLAGS.MISSINGINFO");
@@ -153,7 +157,7 @@ public class ArgList {
         return pc;
     }
     
-    public PermissionType getPermissionTypeFromArg() throws FactoidCommandException {
+    public PermissionType getPermissionTypeFromArg(boolean isAdminmod, boolean isOwner) throws FactoidCommandException {
         
         String curArg = getNext();
         
@@ -167,12 +171,16 @@ public class ArgList {
             throw new FactoidCommandException("COMMAND.PERMISSIONTYPE.INVALID");
         }
         
+        if(!isAdminmod && !(isOwner && Factoid.getConf().ownerConfigPerm.contains(pt))) {
+            throw new FactoidCommandException("COMMAND.PERMISSION.MISSINGPERMISSION");
+        }
+        
         return pt;
     }
     
-    public Permission getPermissionFromArg() throws FactoidCommandException {
+    public Permission getPermissionFromArg(boolean isAdminmod, boolean isOwner) throws FactoidCommandException {
 
-        PermissionType pt = getPermissionTypeFromArg();
+        PermissionType pt = getPermissionTypeFromArg(isAdminmod, isOwner);
         String curArg = getNext();
         
         if(curArg == null) {

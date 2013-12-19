@@ -1,6 +1,7 @@
 package me.tabinol.factoid.config;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
@@ -47,6 +48,8 @@ public class Config {
     public int MaxPriceSell = 1;
     public boolean BeaconLigth = false;
     public boolean OverrideExplosions = true;
+    public Set<FlagType> ownerConfigFlag; // Flags a owner can set
+    public Set<PermissionType> ownerConfigPerm; // Permissions a owner can set
 
     public Config() {
 
@@ -98,6 +101,15 @@ public class Config {
             MaxPriceSell = config.getInt("economy.MaxPriceSell");
             MinPriceLocation = config.getInt("economy.MinPriceLocation");
             MaxPriceLocation = config.getInt("economy.MaxPriceLocation");
+        }
+        
+        ownerConfigFlag = new HashSet<>();
+        for(String value : config.getStringList("land.OwnerCanSet.Flags")) {
+            ownerConfigFlag.add(FlagType.getFromString(value));
+        }
+        ownerConfigPerm = new HashSet<>();
+        for(String value : config.getStringList("land.OwnerCanSet.Permissions")) {
+            ownerConfigPerm.add(PermissionType.getFromString(value));
         }
     }
 

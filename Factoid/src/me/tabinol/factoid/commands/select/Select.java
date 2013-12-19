@@ -29,10 +29,9 @@ import org.bukkit.ChatColor;
  *   throw new FactoidCommandException("PATH.DU.MESSAGE.ERREUR");
  * }
  */
-
 public class Select extends Thread {
-    
-    public Select(Player player,String[] arg) throws FactoidCommandException {
+
+    public Select(Player player, String[] arg) throws FactoidCommandException {
         if (!OnCommand.getPlayerSetFlagUI().containsKey(player.getName().toLowerCase())) {
             if (!OnCommand.getPlayerExpanding().containsKey(player.getName().toLowerCase())) {
                 if (!OnCommand.getPlayerSelectingLand().containsKey(player.getName().toLowerCase()) && !OnCommand.getPlayerSelectingWorldEdit().containsKey(player.getName().toLowerCase())) {
@@ -69,7 +68,13 @@ public class Select extends Thread {
                                 }
                             }
                         } else {
-                            Land landtest = Factoid.getLands().getLand(arg[1].toString());
+                            Land landtest;
+                            if (arg[1].equalsIgnoreCase("here")) {
+                                // add select Here to select the the cuboid
+                                landtest = Factoid.getLands().getLand(player.getLocation());
+                            } else {
+                                landtest = Factoid.getLands().getLand(arg[1].toString());
+                            }
                             if (landtest != null) {
                                 PlayerContainer owner = landtest.getOwner();
                                 if (owner.hasAccess(player.getName()) || OnCommand.isAdminMod(player)) {
@@ -135,5 +140,4 @@ public class Select extends Thread {
             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.QUIT.FLAGSMODE"));
         }
     }
-    
 }

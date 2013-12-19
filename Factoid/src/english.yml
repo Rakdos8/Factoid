@@ -3,6 +3,12 @@ DISABLE: "Factoid is Disabled."
 CONSOLE: "Hey Console! Wait...what?"
 COMMAND:
   NOTEXIST: "This command does not exist."
+  GENERAL:
+    ALREADY: " You are already in Flags Mode."
+    QUIT:
+      FLAGMODE: "Quit the Flags Mode before."
+    JOIN:
+      SELECTMODE: "Join the Select Mode before."
   PAGE:
     ONEPAGE: "-Page (1/1)-"
     MULTIPAGE: "-Page (%/%)- type: /factoid page <number>"
@@ -36,10 +42,6 @@ COMMAND:
     ALREADY: "You are already in Expand Mode."
     HINT: "Type % '/factoid expand done' % % to confirm your choice."
     COMPLETE: "You have Expanded your land."
-    QUIT:
-      FLAGMODE: "Quit the Flags Mode before."
-    JOIN:
-      SELECTMODE: "Join the Select Mode before."
   CREATE:
     LAND: "You have created your land."
     AREA: "You have created your Area in the land '%'"
@@ -59,40 +61,26 @@ COMMAND:
   FLAGS:
     JOINMODE: "You are now in Flags Mode."
     HINT: "Your modification will be instantany effective."
-    ALREADY: " You are already in Flags Mode."
-    QUIT:
-      EXPANDMODE: "Quit the Expand Mode before."
-    JOIN:
-      SELECTMODE: "Join the Select Mode before."
     MISSINGINFO: "Some information is missing. Check your command again."
     LAND:
       INVALID: "the selectioned land is invalid."
     FLAGNULL: "This Flag doesn't exist."
     MISSINGPERMISSION: "You must have the permission to execute this action."
     ISDONE: "you have set '%' to '%'."
-    LISTSTART: "-FLAGS-"
+    LISTSTART: "-Flags of '%'-"
     LISTROWNULL: "No Flags."
   PERMISSION:
     JOINMODE: "You are now in Flags Mode."
     HINT: "Your modification will be instantany effective."
-    ALREADY: " You are already in Flags Mode."
-    QUIT:
-      EXPANDMODE: "Quit the Expand Mode before."
-    JOIN:
-      SELECTMODE: "Join the Select Mode before."
     MISSINGINFO: "Some information is missing. Check your command again."
     LAND:
       INVALID: "the selectioned land is invalid."
-    PERMISSIONNULL: "This Flag doesn't exist."
+    PERMISSIONNULL: "This permission doesn't exist."
     PLAYERCONTAINERTYPENULL: "This type doesn't exist."
     ISDONE: "you have set the permission '%' to '%' for '%'"
-    LISTSTART: "-PERMISSIONS-"
+    LISTSTART: "-Permissions of '%'-"
     LISTROWNULL: "No Permissions."
   RESIDENT:
-    QUIT:
-      EXPANDMODE: "Quit the Expand Mode before."
-    JOIN:
-      SELECTMODE: "Join the Select Mode before."
     MISSINGINFO: "Some information is missing. Check your command again."
     LAND:
       INVALID: "the selectioned land is invalid."
@@ -101,12 +89,11 @@ COMMAND:
     PLAYERCONTAINEREVERYBODY: "You cannot set a EveryBody as a resident."
     ISDONE: "you have set '%' as resident of '%'."
     ISDONEREMOVE: "you have set '%' as not a resident of '%'."
-    LISTSTART: "-RESIDENTS-"
+    LISTSTART: "-Residents of '%'-"
     LISTROWNULL: "No Redisent."
     FLAGS:
     JOINMODE: "You are now in Flags Mode."
     HINT: "Your modification will be instantany effective."
-    ALREADY: " You are already in Flags Mode."
     QUIT:
       EXPANDMODE: "Quit the Expand Mode before."
     JOIN:
@@ -118,10 +105,6 @@ COMMAND:
     MISSINGPERMISSION: "You must have the permission to execute this action."
     ISDONE: "you have set '%' to '%'."
   BANNED:
-    QUIT:
-      EXPANDMODE: "Quit the Expand Mode before."
-    JOIN:
-      SELECTMODE: "Join the Select Mode before."
     MISSINGINFO: "Some information is missing. Check your command again."
     LAND:
       INVALID: "the selectioned land is invalid."
@@ -130,16 +113,11 @@ COMMAND:
     PLAYERCONTAINEREVERYBODY: "You cannot ban Everyone."
     ISDONE: "you have ban '%' in '%'."
     ISDONEREMOVE: "you have unban '%' in '%'."
-    LISTSTART: "-Banned-"
+    LISTSTART: "-Banned of '%'-"
     LISTROWNULL: "No Banned."
     FLAGS:
     JOINMODE: "You are now in Flags Mode."
     HINT: "Your modification will be instantany effective."
-    ALREADY: " You are already in Flags Mode."
-    QUIT:
-      EXPANDMODE: "Quit the Expand Mode before."
-    JOIN:
-      SELECTMODE: "Join the Select Mode before."
     MISSINGINFO: "Some information is missing. Check your command again."
     LAND:
       INVALID: "the selectioned land is invalid."
@@ -161,8 +139,8 @@ COMMAND:
     CANCEL: "you have canceled your action."
   CURRENT:
     LAND:
-      LISTSTART: "-Land info-"
-      NAME: "The Land name is: '%' "
+      LISTSTART: "-Land info for '%'-"
+      NAME: "The Land selected is: '%' "
       OWNER: "Owner: %"
       ACTIVEAREA: "You are on area: %"
       MAINPERMISSION: "Your main permissions are: %"

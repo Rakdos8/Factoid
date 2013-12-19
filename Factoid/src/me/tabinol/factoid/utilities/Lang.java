@@ -53,6 +53,11 @@ public class Lang extends Thread {
         
         return message;
     }
+    
+    public boolean isMessageExist(String path) {
+        
+        return langconfig.getString(path) != null;
+    }
 
     public String replace(String s_original, String s_cherche, String s_nouveau) {
         if ((s_original == null) || (s_original.equals(""))) {

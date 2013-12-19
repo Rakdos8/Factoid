@@ -29,7 +29,7 @@ land:
     MaxAreaSize: 1
     MaxAreaPerLand: 1
   OwnerCanSet:                     # What the owner can set on his land?
-    Permissions: [BUILD_PLACE, BUILD_DESTROY]
+    Permissions: [BUILD, OPEN, USE]
     Flags: [MESSAGE_JOIN, MESSAGE_QUIT]
   BeaconLigth: false               #Set beacon ligth effect of an selection
 economy:

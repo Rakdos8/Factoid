@@ -70,9 +70,21 @@ public class LandListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
 
         Player player = event.getPlayer();
+        String playerNameLower = player.getName().toLowerCase();
+        
         if(playerHeal.contains(player)){
             playerHeal.remove(player);
         }
+        
+    OnCommand.getPlayerSelectingWorldEdit().remove(playerNameLower);
+    OnCommand.getLandSelectioned().remove(playerNameLower);
+    OnCommand.getLandSelectionedUI().remove(playerNameLower);
+    OnCommand.getPlayerExpanding().remove(playerNameLower);
+    OnCommand.getPlayerSetFlagUI().remove(playerNameLower);
+    OnCommand.getAdminMod().remove(playerNameLower);
+    OnCommand.getRemoveList().remove(playerNameLower);
+    OnCommand.getChatPageList().remove(player);
+    OnCommand.getLandSelectConfig().remove(playerNameLower);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

@@ -203,6 +203,11 @@ public class Land extends DummyLand {
 
         return owner;
     }
+    
+    public boolean isOwner(String playerName) {
+        
+        return owner.hasAccess(playerName);
+    }
 
     public Faction getFactionTerritory() {
 
