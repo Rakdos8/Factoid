@@ -24,8 +24,8 @@ COMMAND:
     MISSINGPERMISSION: "You must have the permission to execute this action."
     NOLAND: "This land doesn't Exist."
     LAND:
-      NOCOLLISION: "Your selection 
-      COLLISION: "Your selection have an collision with an another Land."
+      NOCOLLISION: "Your selection has no collision."
+      COLLISION: "Your selection has a collision with an another Land."
     CANCEL: "You have cancelled your selection."
     CANTDONE: "You cannot 'Done' a selection which's already a Land."
     CANTDONEWORLDEDIT: "You cannot 'Done' a WorldEdit selection. You can Create your land."
