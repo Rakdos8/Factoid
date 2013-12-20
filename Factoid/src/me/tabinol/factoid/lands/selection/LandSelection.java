@@ -24,18 +24,18 @@ public class LandSelection extends Thread implements Listener {
     private Location LandPos;
     private boolean IsCollision;
 
-    public LandSelection(Player player, Server server) {
+    public LandSelection(Player player) {
 
-        LandSelection(player, server, player.getLocation(), 0, 0, 0, 0, 0, 0);
+        LandSelection(player, player.getLocation(), 0, 0, 0, 0, 0, 0);
     }
 
-    public LandSelection(Player player, Server server, Location loc, int x1, int x2, int y1, int y2, int z1, int z2) {
+    public LandSelection(Player player, Location loc, int x1, int x2, int y1, int y2, int z1, int z2) {
 
-        LandSelection(player, server, loc, x1, x2, y1, y2, z1, z2);
+        LandSelection(player, loc, x1, x2, y1, y2, z1, z2);
     }
 
-    private void LandSelection(Player player, Server server, Location loc, int x1, int x2, int y1, int y2, int z1, int z2) {
-        server.getPluginManager().registerEvents(this, Factoid.getThisPlugin());
+    private void LandSelection(Player player, Location loc, int x1, int x2, int y1, int y2, int z1, int z2) {
+        Factoid.getThisPlugin().getServer().getPluginManager().registerEvents(this, Factoid.getThisPlugin());
         this.player = player;
         this.world = player.getWorld();
         LandMakeSquare landmake = new LandMakeSquare(player, loc, x1, x2, y1, y2, z1, z2);

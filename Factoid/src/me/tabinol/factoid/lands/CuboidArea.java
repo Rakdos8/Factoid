@@ -83,6 +83,11 @@ public class CuboidArea implements Comparable<CuboidArea> {
         
         return worldName + ":" + x1 + ":" + y1 + ":" + z1 + ":" + x2 + ":" + y2 + ":" + z2;
     }
+    
+    public String getPrint() {
+        
+        return "(" + x1 + ", " + y1 + ", " + z1 + ")-(" + x2 + ", " + y2 + ", " + z2 +")";
+    }
 
     public Integer getKey() {
         

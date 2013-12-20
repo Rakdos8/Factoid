@@ -76,7 +76,7 @@ public class LandListener implements Listener {
             playerHeal.remove(player);
         }
         
-    OnCommand.getPlayerSelectingWorldEdit().remove(playerNameLower);
+    // OnCommand.getPlayerSelectingWorldEdit().remove(playerNameLower);
     OnCommand.getLandSelectioned().remove(playerNameLower);
     OnCommand.getLandSelectionedUI().remove(playerNameLower);
     OnCommand.getPlayerExpanding().remove(playerNameLower);

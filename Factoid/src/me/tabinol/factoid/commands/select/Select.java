@@ -34,7 +34,7 @@ public class Select extends Thread {
     public Select(Player player, String[] arg) throws FactoidCommandException {
         if (!OnCommand.getPlayerSetFlagUI().containsKey(player.getName().toLowerCase())) {
             if (!OnCommand.getPlayerExpanding().containsKey(player.getName().toLowerCase())) {
-                if (!OnCommand.getPlayerSelectingLand().containsKey(player.getName().toLowerCase()) && !OnCommand.getPlayerSelectingWorldEdit().containsKey(player.getName().toLowerCase())) {
+                if (!OnCommand.getPlayerSelectingLand().containsKey(player.getName().toLowerCase()) /* && !OnCommand.getPlayerSelectingWorldEdit().containsKey(player.getName().toLowerCase()) */) {
                     Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.COMMAND.SELECT.JOIN", player.getName()));
                     if (arg.length == 2) {
                         if (arg[1].equalsIgnoreCase("worldedit")) {
@@ -50,10 +50,16 @@ public class Select extends Thread {
 
                                         player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.SELECTIONNED"));
                                         Factoid.getLog().write(Factoid.getLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.SELECTIONNED"));
-                                        CuboidArea area = new CuboidArea(sel.getWorld().getName(),
-                                                sel.getMinimumPoint().getBlockX(), sel.getMinimumPoint().getBlockY(), sel.getMinimumPoint().getBlockZ(),
-                                                sel.getMaximumPoint().getBlockX(), sel.getMaximumPoint().getBlockY(), sel.getMaximumPoint().getBlockZ());
-                                        OnCommand.getPlayerSelectingWorldEdit().put(player.getName().toLowerCase(), area);
+                                        //CuboidArea area = new CuboidArea(sel.getWorld().getName(),
+                                        //        sel.getMinimumPoint().getBlockX(), sel.getMinimumPoint().getBlockY(), sel.getMinimumPoint().getBlockZ(),
+                                        //        sel.getMaximumPoint().getBlockX(), sel.getMaximumPoint().getBlockY(), sel.getMaximumPoint().getBlockZ());
+                                        // OnCommand.getPlayerSelectingWorldEdit().put(player.getName().toLowerCase(), area);
+                                        LandSelection select = new LandSelection(player, player.getLocation(),
+                                                sel.getMinimumPoint().getBlockX(), sel.getMaximumPoint().getBlockX(), sel.getMinimumPoint().getBlockY(),
+                                                sel.getMaximumPoint().getBlockY(), sel.getMinimumPoint().getBlockZ(), sel.getMaximumPoint().getBlockZ());
+                                        OnCommand.getPlayerSelectingLand().put(player.getName().toLowerCase(), select);
+                                        select.setSelected();
+
                                     } else {
                                         player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.NOSELECTIONNED"));
                                         Factoid.getLog().write(Factoid.getLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.NOSELECTIONNED"));
@@ -104,26 +110,28 @@ public class Select extends Thread {
                     } else {
                         player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.JOINMODE"));
                         player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.HINT", ChatColor.ITALIC.toString(), ChatColor.RESET.toString(), ChatColor.DARK_GRAY.toString()));
-                        LandSelection select = new LandSelection(player, player.getServer());
+                        LandSelection select = new LandSelection(player);
                         OnCommand.getPlayerSelectingLand().put(player.getName().toLowerCase(), select);
                     }
                 } else if (arg.length > 1 && arg[1].equalsIgnoreCase("done")) {
-                    if (!OnCommand.getPlayerSelectingWorldEdit().containsKey(player.getName().toLowerCase())) {
+                    if (true /* !OnCommand.getPlayerSelectingWorldEdit().containsKey(player.getName().toLowerCase()) */) {
                         if (!OnCommand.getLandSelectioned().containsKey(player.getName().toLowerCase())) {
                             LandSelection select = OnCommand.getPlayerSelectingLand().get(player.getName().toLowerCase());
-                            if (!Factoid.getConf().CanMakeCollision) {
-                                if (!select.getCollision()) {
-                                    select.setSelected();
-                                    player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + "You have selected a new Land.");
-                                    Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.COMMAND.SELECT.SELECTWITHCOLISSION", player.getName()));
-                                } else {
-                                    player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.LAND.COLLISION"));
-                                }
-                            } else {
-                                select.setSelected();
-                                Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.COMMAND.SELECT.SELECTWITHCOLISSION", player.getName()));
-                                player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.NEWLAND"));
-                            }
+                            // if (!Factoid.getConf().CanMakeCollision) {
+                            //    if (!select.getCollision()) {
+                            //        select.setSelected();
+                            //        player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + "You have selected a new Land.");
+                            //        // Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.COMMAND.SELECT.SELECTWITHCOLISSION", player.getName()));
+                            //    } else {
+                            //        player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.LAND.COLLISION"));
+                            //    }
+
+                            //} else {
+                            //    select.setSelected();
+                            //    Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.COMMAND.SELECT.SELECTWITHCOLISSION", player.getName()));
+                            //    player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.NEWLAND"));
+                            doSelectDone(player, select);
+                            //}
                         } else {
                             player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.CANTDONE"));
                         }
@@ -138,6 +146,20 @@ public class Select extends Thread {
             }
         } else {
             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.QUIT.FLAGSMODE"));
+        }
+    }
+
+    private void doSelectDone(Player player, LandSelection select) throws FactoidCommandException {
+
+        if (!select.getCollision()) {
+
+            player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY
+                    + Factoid.getLanguage().getMessage("COMMAND.SELECT.LAND.NOCOLLISION"));
+            select.setSelected();
+        } else {
+            player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.RED
+                    + Factoid.getLanguage().getMessage("COMMAND.SELECT.LAND.COLLISION"));
+            // select.setSelected();
         }
     }
 }

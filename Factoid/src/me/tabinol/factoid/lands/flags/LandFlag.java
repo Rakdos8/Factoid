@@ -79,7 +79,10 @@ public class LandFlag {
         if(flagType.getFlagValueType() == FlagValueType.STRING_LIST) {
             StringBuilder sb = new StringBuilder();
             for(String st : valueStringList) {
-                sb.append(StringChanges.toQuote(st)).append(";");
+                if(sb.length() != 0) {
+                    sb.append("; ");
+                }
+                sb.append(StringChanges.toQuote(st));
             }
             return sb.toString();
         }

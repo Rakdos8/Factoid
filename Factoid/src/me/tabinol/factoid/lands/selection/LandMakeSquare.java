@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import me.tabinol.factoid.utilities.Calculate;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.*;
+import org.bukkit.block.BlockFace;
 
 public class LandMakeSquare extends Thread{
     private Player player;
@@ -29,16 +30,16 @@ public class LandMakeSquare extends Thread{
         this.player = player;
         this.world = player.getWorld();
         if(loc != null){
-            FrontCornerLeft = new Location(this.world,Calculate.AdditionDouble(loc.getX(),-6.0),this.world.getHighestBlockYAt(Calculate.AdditionInt(loc.getBlockX(),-6),Calculate.AdditionInt(loc.getBlockZ(),6))-1,Calculate.AdditionDouble(loc.getZ(),6.0));
-            BackCornerLeft = new Location(this.world,Calculate.AdditionDouble(loc.getX(),-6.0),this.world.getHighestBlockYAt(Calculate.AdditionInt(loc.getBlockX(),-6),Calculate.AdditionInt(loc.getBlockZ(),-6))-1,Calculate.AdditionDouble(loc.getZ(),-6.0));
-            FrontCornerRigth = new Location(this.world,Calculate.AdditionDouble(loc.getX(),6.0),this.world.getHighestBlockYAt(Calculate.AdditionInt(loc.getBlockX(),6),Calculate.AdditionInt(loc.getBlockZ(),6))-1,Calculate.AdditionDouble(loc.getZ(),6.0));
-            BackCornerRigth = new Location(this.world,Calculate.AdditionDouble(loc.getX(),6.0),this.world.getHighestBlockYAt(Calculate.AdditionInt(loc.getBlockX(),6),Calculate.AdditionInt(loc.getBlockZ(),-6))-1,Calculate.AdditionDouble(loc.getZ(),-6.0));
+            FrontCornerLeft = new Location(this.world,Calculate.AdditionDouble(loc.getX(),-6.0),this.getYNearPlayer(Calculate.AdditionInt(loc.getBlockX(),-6),Calculate.AdditionInt(loc.getBlockZ(),6))-1,Calculate.AdditionDouble(loc.getZ(),6.0));
+            BackCornerLeft = new Location(this.world,Calculate.AdditionDouble(loc.getX(),-6.0),this.getYNearPlayer(Calculate.AdditionInt(loc.getBlockX(),-6),Calculate.AdditionInt(loc.getBlockZ(),-6))-1,Calculate.AdditionDouble(loc.getZ(),-6.0));
+            FrontCornerRigth = new Location(this.world,Calculate.AdditionDouble(loc.getX(),6.0),this.getYNearPlayer(Calculate.AdditionInt(loc.getBlockX(),6),Calculate.AdditionInt(loc.getBlockZ(),6))-1,Calculate.AdditionDouble(loc.getZ(),6.0));
+            BackCornerRigth = new Location(this.world,Calculate.AdditionDouble(loc.getX(),6.0),this.getYNearPlayer(Calculate.AdditionInt(loc.getBlockX(),6),Calculate.AdditionInt(loc.getBlockZ(),-6))-1,Calculate.AdditionDouble(loc.getZ(),-6.0));
         }else{
             System.out.print("ENTER");
-            FrontCornerLeft = new Location(this.world,x1,this.world.getHighestBlockYAt(x1,z1)-1,z1);
-            BackCornerLeft = new Location(this.world,x1,this.world.getHighestBlockYAt(x2,z2)-1,z2);
-            FrontCornerRigth = new Location(this.world,x2,this.world.getHighestBlockYAt(x1,z1)-1,z1);
-            BackCornerRigth = new Location(this.world,x2,this.world.getHighestBlockYAt(x2,z2)-1,z2);
+            FrontCornerLeft = new Location(this.world,x1,this.getYNearPlayer(x1,z1)-1,z1);
+            BackCornerLeft = new Location(this.world,x1,this.getYNearPlayer(x2,z2)-1,z2);
+            FrontCornerRigth = new Location(this.world,x2,this.getYNearPlayer(x1,z1)-1,z1);
+            BackCornerRigth = new Location(this.world,x2,this.getYNearPlayer(x2,z2)-1,z2);
             SELECTING = true;
         }
     }
@@ -52,7 +53,7 @@ public class LandMakeSquare extends Thread{
             //Corner
             //FrontLeft
             BlockList.put(FrontCornerLeft, FrontCornerLeft.getBlock().getType());
-            Location FronCornerLeftLoc = new Location(this.world,this.FrontCornerLeft.getX(),this.world.getHighestBlockYAt(this.FrontCornerLeft.getBlockX(),this.FrontCornerLeft.getBlockZ())-1,this.FrontCornerLeft.getZ());
+            Location FronCornerLeftLoc = new Location(this.world,this.FrontCornerLeft.getX(),this.getYNearPlayer(this.FrontCornerLeft.getBlockX(),this.FrontCornerLeft.getBlockZ())-1,this.FrontCornerLeft.getZ());
             Land testCuboidareafcl = Factoid.getLands().getLand(FronCornerLeftLoc);
             if(testCuboidareafcl == null){
                 player.sendBlockChange(FronCornerLeftLoc,Material.SPONGE,this.by);
@@ -78,7 +79,7 @@ public class LandMakeSquare extends Thread{
             }
             //FrontRigth
             BlockList.put(FrontCornerRigth, FrontCornerRigth.getBlock().getType());
-            Location FrontCornerRigthLoc = new Location(this.world,this.FrontCornerRigth.getX(),this.world.getHighestBlockYAt(this.FrontCornerRigth.getBlockX(),this.FrontCornerRigth.getBlockZ())-1,this.FrontCornerRigth.getZ());
+            Location FrontCornerRigthLoc = new Location(this.world,this.FrontCornerRigth.getX(),this.getYNearPlayer(this.FrontCornerRigth.getBlockX(),this.FrontCornerRigth.getBlockZ())-1,this.FrontCornerRigth.getZ());
             Land testCuboidareafcr = Factoid.getLands().getLand(FrontCornerRigthLoc);
             if(testCuboidareafcr == null){
                 player.sendBlockChange(FrontCornerRigthLoc,Material.SPONGE,this.by);
@@ -103,7 +104,7 @@ public class LandMakeSquare extends Thread{
             }
             //BackLeft
             BlockList.put(this.BackCornerLeft, this.BackCornerLeft.getBlock().getType());
-            Location BackCornerLeftLoc = new Location(world,BackCornerLeft.getX(),this.world.getHighestBlockYAt(this.BackCornerLeft.getBlockX(),this.BackCornerLeft.getBlockZ())-1,this.BackCornerLeft.getZ());
+            Location BackCornerLeftLoc = new Location(world,BackCornerLeft.getX(),this.getYNearPlayer(this.BackCornerLeft.getBlockX(),this.BackCornerLeft.getBlockZ())-1,this.BackCornerLeft.getZ());
             Land testCuboidareabcl = Factoid.getLands().getLand(BackCornerLeftLoc);
             if(testCuboidareabcl == null){
                 player.sendBlockChange(BackCornerLeftLoc,Material.SPONGE,this.by);
@@ -128,7 +129,7 @@ public class LandMakeSquare extends Thread{
             }
             //BackRigth
             BlockList.put(this.BackCornerRigth, this.BackCornerRigth.getBlock().getType());
-            Location BackCornerRigthLoc = new Location(this.world,this.BackCornerRigth.getX(),this.world.getHighestBlockYAt(this.BackCornerRigth.getBlockX(),this.BackCornerRigth.getBlockZ())-1,this.BackCornerRigth.getZ());
+            Location BackCornerRigthLoc = new Location(this.world,this.BackCornerRigth.getX(),this.getYNearPlayer(this.BackCornerRigth.getBlockX(),this.BackCornerRigth.getBlockZ())-1,this.BackCornerRigth.getZ());
             Land testCuboidareabcr = Factoid.getLands().getLand(BackCornerRigthLoc);
             if(testCuboidareabcr == null){
                 player.sendBlockChange(BackCornerRigthLoc,Material.SPONGE,this.by);
@@ -155,7 +156,7 @@ public class LandMakeSquare extends Thread{
             for(Double i = 1.0;i<=DiffFrontX;i++){
                 int ii = (int)Math.floor(i + 0.5d);
                 //player.sendMessage(ChatColor.GRAY+"[Factoid] BlockChange:"+getConvert(FrontCornerLeft.getX(),i)+","+FrontCornerLeft.getY()+","+FrontCornerLeft.getZ());
-                Location newloc = new Location(this.world,Calculate.AdditionDouble(this.FrontCornerLeft.getX(),i),this.world.getHighestBlockYAt(Calculate.AdditionInt(this.FrontCornerLeft.getBlockX(),ii),this.FrontCornerLeft.getBlockZ())-1,this.FrontCornerLeft.getZ());
+                Location newloc = new Location(this.world,Calculate.AdditionDouble(this.FrontCornerLeft.getX(),i),this.getYNearPlayer(Calculate.AdditionInt(this.FrontCornerLeft.getBlockX(),ii),this.FrontCornerLeft.getBlockZ())-1,this.FrontCornerLeft.getZ());
                 BlockList.put(newloc, newloc.getBlock().getType());
                 Land testCuboidarea = Factoid.getLands().getLand(newloc);
                 if(testCuboidarea == null){
@@ -169,7 +170,7 @@ public class LandMakeSquare extends Thread{
             for(Double i = 1.0;i<=DiffBackX;i++){
                 int ii = (int)Math.floor(i + 0.5d);
                 //player.sendMessage(ChatColor.GRAY+"[Factoid] BlockChange:"+getConvert(FrontCornerLeft.getX(),i)+","+FrontCornerLeft.getY()+","+FrontCornerLeft.getZ());
-                Location newloc = new Location(this.world,Calculate.AdditionDouble(this.BackCornerLeft.getX(),i),this.world.getHighestBlockYAt(Calculate.AdditionInt(this.BackCornerLeft.getBlockX(),ii),this.BackCornerLeft.getBlockZ())-1,this.BackCornerLeft.getZ());
+                Location newloc = new Location(this.world,Calculate.AdditionDouble(this.BackCornerLeft.getX(),i),this.getYNearPlayer(Calculate.AdditionInt(this.BackCornerLeft.getBlockX(),ii),this.BackCornerLeft.getBlockZ())-1,this.BackCornerLeft.getZ());
                 BlockList.put(newloc, newloc.getBlock().getType());
                 Land testCuboidarea = Factoid.getLands().getLand(newloc);
                 if(testCuboidarea == null){
@@ -183,7 +184,7 @@ public class LandMakeSquare extends Thread{
             for(Double i = 1.0;i<=DiffLeftZ;i++){
                 int ii = (int)Math.floor(i + 0.5d);
                 //player.sendMessage(ChatColor.GRAY+"[Factoid] BlockChange:"+getConvert(FrontCornerLeft.getX(),i)+","+FrontCornerLeft.getY()+","+FrontCornerLeft.getZ());
-                Location newloc = new Location(this.world,this.FrontCornerLeft.getX(),this.world.getHighestBlockYAt(this.FrontCornerLeft.getBlockX(),Calculate.AdditionInt(this.FrontCornerLeft.getBlockZ(),-ii))-1,Calculate.AdditionDouble(this.FrontCornerLeft.getZ(),-i));
+                Location newloc = new Location(this.world,this.FrontCornerLeft.getX(),this.getYNearPlayer(this.FrontCornerLeft.getBlockX(),Calculate.AdditionInt(this.FrontCornerLeft.getBlockZ(),-ii))-1,Calculate.AdditionDouble(this.FrontCornerLeft.getZ(),-i));
                 BlockList.put(newloc, newloc.getBlock().getType());
                 Land testCuboidarea = Factoid.getLands().getLand(newloc);
                 if(testCuboidarea == null){
@@ -197,7 +198,7 @@ public class LandMakeSquare extends Thread{
             for(Double i = 1.0;i<=DiffRigthZ;i++){
                 int ii = (int)Math.floor(i + 0.5d);
                 //player.sendMessage(ChatColor.GRAY+"[Factoid] BlockChange:"+getConvert(FrontCornerLeft.getX(),i)+","+FrontCornerLeft.getY()+","+FrontCornerLeft.getZ());
-                Location newloc = new Location(this.world,this.FrontCornerRigth.getX(),this.world.getHighestBlockYAt(this.FrontCornerRigth.getBlockX(),Calculate.AdditionInt(this.FrontCornerRigth.getBlockZ(),-ii))-1,Calculate.AdditionDouble(this.FrontCornerRigth.getZ(),-i));
+                Location newloc = new Location(this.world,this.FrontCornerRigth.getX(),this.getYNearPlayer(this.FrontCornerRigth.getBlockX(),Calculate.AdditionInt(this.FrontCornerRigth.getBlockZ(),-ii))-1,Calculate.AdditionDouble(this.FrontCornerRigth.getZ(),-i));
                 BlockList.put(newloc, newloc.getBlock().getType());
                 Land testCuboidarea = Factoid.getLands().getLand(newloc);
                 if(testCuboidarea == null){
@@ -226,6 +227,17 @@ public class LandMakeSquare extends Thread{
         }
         
         return false;
+    }
+    
+    // Get the nearest block from player before air
+    private int getYNearPlayer(int x, int z) {
+        
+        Location loc = new Location(world, x, player.getLocation().getY() - 1, z);
+        while(loc.getBlock().getType() != Material.AIR && loc.getBlockY() != world.getMaxHeight()) {
+            loc.add(0, 1, 0);
+        }
+        
+        return loc.getBlockY();
     }
     
 }
