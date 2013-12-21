@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.commands.create.Create;
 
 import me.tabinol.factoid.utilities.Log;
 import me.tabinol.factoid.lands.selection.LandSelection;
@@ -103,7 +104,7 @@ public class OnCommand extends Thread implements CommandExecutor {
                 Player player = (Player) sender;
 
                 if (curArg.equalsIgnoreCase("select")) {
-                    new Select(player, arg);
+                    new Select(player, argList);
                     return true;
                 }
 
@@ -113,7 +114,7 @@ public class OnCommand extends Thread implements CommandExecutor {
                 }
 
                 if (curArg.equalsIgnoreCase("create")) {
-                    doCommandCreate(player, argList);
+                    new Create(player, argList);
                     return true;
                 }
 
@@ -219,181 +220,6 @@ public class OnCommand extends Thread implements CommandExecutor {
             PlayerExpanding.remove(player.getName().toLowerCase());
         } else {
             throw new FactoidCommandException("COMMAND.EXPAND.ALREADY");
-        }
-    }
-
-    private void doCommandCreate(Player player, ArgList argList) throws FactoidCommandException {
-
-        if (PlayerSetFlagUI.containsKey(player.getName().toLowerCase())) {
-            throw new FactoidCommandException("COMMAND.CREATE.QUIT.FLAGMODE");
-        }
-        if (!PlayerSelectingLand.containsKey(player.getName().toLowerCase()) 
-                /* && !PlayerSelectingWorldEdit.containsKey(player.getName().toLowerCase()) */) {
-            throw new FactoidCommandException("COMMAND.CREATE.SELECTMODE");
-        }
-        if (argList.length() >= 2) {
-            throw new FactoidCommandException("COMMAND.CREATE.NEEDNAME");
-        }
-        String curArg = argList.getNext();
-        if (BannedWord.contains(curArg.toLowerCase())) {
-
-            throw new FactoidCommandException("COMMAND.CREATE.HINTUSE");
-        }
-        if (!LandSelectioned.containsKey(player.getName().toLowerCase())) {
-            Land landtest = Factoid.getLands().getLand(curArg);
-            if (landtest == null) {
-                CuboidArea area;
-                LandSelection select;
-                if (false /*(area = PlayerSelectingWorldEdit.get(player.getName().toLowerCase())) != null*/) {
-                    // take selection from WorldEdit
-                    select = new LandSelection(player, 
-                            null, area.getX1(), area.getX2(), area.getY1(), area.getY2(), area.getZ1(), area.getZ2());
-                } else {
-                    select = PlayerSelectingLand.get(player.getName().toLowerCase());
-                    Map<String, Location> corner = select.getCorner();
-                    int x1 = corner.get("FrontCornerLeft").getBlockX();
-                    int x2 = corner.get("BackCornerRigth").getBlockX();
-                    //int y1 = corner.get("FrontCornerLeft").getBlockY();
-                    //int y2 = corner.get("BackCornerRigth").getBlockY();
-                    int y1 = Factoid.getConf().MinLandHigh;
-                    int y2 = Factoid.getConf().MaxLandHigh;
-                    int z1 = corner.get("FrontCornerLeft").getBlockZ();
-                    int z2 = corner.get("BackCornerRigth").getBlockZ();
-
-                    area = new CuboidArea(player.getWorld().getName(), x1, y1, z1, x2, y2, z2);
-                }
-                Land land = new Land(curArg, new PlayerContainerPlayer(player.getName()), area);
-                if (!Factoid.getConf().CanMakeCollision) {
-                    if (!select.getCollision()) {
-                        if (Factoid.getLands().createLand(land)) {
-                            player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.LAND"));
-                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
-                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.DONE", player.getName(), land.getName(), land.getAreas().toString()));
-                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
-                        } else {
-                            player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.ERROR"));
-                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.ERROR", player.getName()));
-                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
-                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
-                        }
-                    } else {
-                        player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.COLLISION"));
-                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.COLLISION", player.getName()));
-                    }
-                } else {
-                    if (Factoid.getLands().createLand(land)) {
-                        player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.DONE"));
-                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.DONE", player.getName(), land.getName(), land.toString()));
-                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
-                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
-                    } else {
-                        player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.ERROR"));
-                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.ERROR", player.getName()));
-                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
-                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
-                    }
-                }
-                PlayerSelectingLand.remove(player.getName().toLowerCase());
-                // PlayerSelectingWorldEdit.remove(player.getName().toLowerCase());
-                select.resetSelection();
-            } else {
-                player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.ALREADYUSE"));
-                log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.ALREADYUSE", player.getName()));
-                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.HINTUSE"));
-            }
-        } else {
-            Land landtest = LandSelectioned.get(player.getName().toLowerCase());
-            if (landtest == null) {
-                LandSelection select = PlayerSelectingLand.get(player.getName().toLowerCase());
-                Map<String, Location> corner = select.getCorner();
-                int x1 = corner.get("FrontCornerLeft").getBlockX();
-                int x2 = corner.get("BackCornerRigth").getBlockX();
-                //int y1 = corner.get("FrontCornerLeft").getBlockY();
-                //int y2 = corner.get("BackCornerRigth").getBlockY();
-                int y1 = Factoid.getConf().MinLandHigh;
-                int y2 = Factoid.getConf().MaxLandHigh;
-                int z1 = corner.get("FrontCornerLeft").getBlockZ();
-                int z2 = corner.get("BackCornerRigth").getBlockZ();
-
-                CuboidArea cuboidarea = new CuboidArea(player.getWorld().getName(), x1, y1, z1, x2, y2, z2);
-                Land land = new Land(curArg, new PlayerContainerPlayer(player.getName()), cuboidarea);
-                if (!Factoid.getConf().CanMakeCollision) {
-                    if (!select.getCollision()) {
-                        if (Factoid.getLands().createLand(land)) {
-                            player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.LAND"));
-                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
-                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.DONE", player.getName(), land.getName(), land.getAreas().toString()));
-                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
-                        } else {
-                            player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.ERROR"));
-                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.ERROR", player.getName()));
-                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
-                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
-                        }
-                    } else {
-                        player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.COLLISION"));
-                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.COLLISION", player.getName()));
-                    }
-                } else {
-                    if (Factoid.getLands().createLand(land)) {
-                        player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.DONE"));
-                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.DONE", player.getName(), land.getName(), land.toString()));
-                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
-                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
-                    } else {
-                        player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.ERROR"));
-                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.ERROR", player.getName()));
-                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
-                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
-                    }
-                }
-                PlayerSelectingLand.remove(player.getName().toLowerCase());
-                select.resetSelection();
-            } else {
-                DummyLand dummyland = Factoid.getLands().getLand(player.getLocation());
-                if (dummyland.checkPermissionAndInherit(player.getName(), PermissionType.LAND_CREATE) != PermissionType.LAND_CREATE.baseValue()) {
-                    LandSelection select = PlayerSelectingLand.get(player.getName().toLowerCase());
-                    Map<String, Location> corner = select.getCorner();
-                    int x1 = corner.get("FrontCornerLeft").getBlockX();
-                    int x2 = corner.get("BackCornerRigth").getBlockX();
-                    //int y1 = corner.get("FrontCornerLeft").getBlockY();
-                    //int y2 = corner.get("BackCornerRigth").getBlockY();
-                    int y1 = Factoid.getConf().MinLandHigh;
-                    int y2 = Factoid.getConf().MaxLandHigh;
-                    int z1 = corner.get("FrontCornerLeft").getBlockZ();
-                    int z2 = corner.get("BackCornerRigth").getBlockZ();
-
-                    CuboidArea cuboidarea = new CuboidArea(player.getWorld().getName(), x1, y1, z1, x2, y2, z2);
-                    Land land = Factoid.getLands().getLand(player.getLocation());
-                    if (!Factoid.getConf().CanMakeCollision) {
-                        if (!select.getCollision()) {
-                            land.addArea(cuboidarea);
-                            player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.AREA", land.getName()));
-                            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
-                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.DONE", player.getName(), land.getName(), land.getAreas().toString()));
-                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
-
-                        } else {
-                            player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.COLLISION"));
-                            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.COLLISION", player.getName()));
-                        }
-                    } else {
-                        land.addArea(cuboidarea);
-                        player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.AREA"));
-                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.DONE", player.getName(), land.getName(), land.toString()));
-                        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
-                        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
-                    }
-                    PlayerSelectingLand.remove(player.getName().toLowerCase());
-                    select.resetSelection();
-                    /*player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.ALREADYUSE"));
-                     log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.ALREADYUSE", player.getName()));
-                     player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.HINTUSE"));*/
-                } else {
-                    player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.NOPERMISSION", player.getName()));
-                    log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.NOPERMISSION", player.getName()));
-                }
-            }
         }
     }
 
@@ -779,6 +605,11 @@ public class OnCommand extends Thread implements CommandExecutor {
         return false;
     }
 
+    public static List<String> getBannedWord() {
+        
+        return BannedWord;
+    }
+    
     public static Map<String, LandSelection> getPlayerSelectingLand() {
         return PlayerSelectingLand;
     }
