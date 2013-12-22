@@ -45,7 +45,9 @@ COMMAND:
     COMPLETE: "You have Expanded your land."
   CREATE:
     LAND: "You have created your land."
-    AREA: "You have created your Area in the land '%'"
+    AREA:
+      LANDNOTSELECT: "The land is not selected"
+      ISDONE: "You have created your Area in the land '%'"
     QUIT:
       SELECTMODE: "You are no longer in Select Mode."
       FLAGMODE: "Quit the Flags Mode before."
@@ -59,6 +61,7 @@ COMMAND:
     NEEDNAME: "You have to provide a Land Name."
     SELECTMODE: "You must be in Select Mode before."
     NOPERMISSION: "You don't have the permission do create a Land."
+    PARENTNOTEXIST: "The parent cuboid doesn't exist."
   FLAGS:
     JOINMODE: "You are now in Flags Mode."
     HINT: "Your modification will be instantany effective."
@@ -105,6 +108,9 @@ COMMAND:
     FLAGNULL: "This Flag doesn't exist."
     MISSINGPERMISSION: "You must have the permission to execute this action."
     ISDONE: "you have set '%' to '%'."
+  OWNER:
+    MISSINGPERMISSION: "You must have the permission to execute this action."
+    ISDONE: "the owner is now '%' for the land '%'."
   BANNED:
     MISSINGINFO: "Some information is missing. Check your command again."
     LAND:
@@ -126,9 +132,12 @@ COMMAND:
     MISSINGPERMISSION: "You must have the permission to execute this action."
     ISDONE: "you have set '%' to '%'."
   REMOVE:
+    AREA:
+      EMPTY: "You must specify an area number."
+      INVALID: "The area number is invalid."
     DONE: 
-      LAND: "You have remove the land % (% areas)."
-      AREA: "You have remove the area of the land % ."
+      LAND: "You have removed the land % (% areas)."
+      AREA: "You have removed the area of the land % ."
     QUIT:
       FLAGSMODE: "Quit the Flags Mode before."
       EXPANDMODE: "Quit the Expand Mode before."
@@ -142,10 +151,11 @@ COMMAND:
     LAND:
       LISTSTART: "-Land info for '%'-"
       NAME: "The Land selected is: '%' "
+      PARENT: "The parent is: '%' "
       OWNER: "Owner: %"
       ACTIVEAREA: "You are on area: %"
       MAINPERMISSION: "Your main permissions are: %"
-      AREA: "Area(s):"
+      AREA: "-Area(s)- for '%'"
     NOLAND: "There's no Land here."
   ADMINMOD:
     JOIN: "you are now in AdminMod."

@@ -38,7 +38,7 @@ public class Select extends Thread {
 
         this.player = player;
         String curArg;
-        
+
         if (OnCommand.getPlayerSetFlagUI().containsKey(player.getName().toLowerCase())) {
             throw new FactoidCommandException("COMMAND.SELECT.QUIT.FLAGSMODE");
         }
@@ -129,7 +129,7 @@ public class Select extends Thread {
         } else {
             player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.RED
                     + Factoid.getLanguage().getMessage("COMMAND.SELECT.LAND.COLLISION"));
-            // select.setSelected();
+            select.setSelected();
         }
     }
 

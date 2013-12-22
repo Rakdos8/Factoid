@@ -177,10 +177,10 @@ public class StorageFlat extends Storage implements StorageInt {
                     Integer.parseInt(multiStr[7]));
             if (!isLandCreated) {
                 if (parentName != null) {
-                    land = new Land(landName, pc, area, Factoid.getLands().getLand(parentName),
+                    land = Factoid.getLands().createLand(landName, pc, area, Factoid.getLands().getLand(parentName),
                             Integer.parseInt(multiStr[0]));
                 } else {
-                    land = new Land(landName, pc, area, Integer.parseInt(multiStr[0]));
+                    land = Factoid.getLands().createLand(landName, pc, area, null, Integer.parseInt(multiStr[0]));
                 }
                 isLandCreated = true;
             } else {
@@ -240,8 +240,6 @@ public class StorageFlat extends Storage implements StorageInt {
             land.addPlayerNotify(str);
         }
         cf.readParam();
-
-        Factoid.getLands().createLand(land);
     }
 
     @Override

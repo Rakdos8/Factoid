@@ -31,35 +31,10 @@ public class Land extends DummyLand {
     private double money = 0L;
     private TreeSet<String> playerNotify = new TreeSet<>();
 
-    public Land(String landName, PlayerContainer owner, CuboidArea area) {
+    // Please use createLand in Lands class to create a Land
+    public Land(String landName, PlayerContainer owner, CuboidArea area, int genealogy, Land parent, int areaId) {
 
         super(area.getWorldName().toLowerCase());
-        createLand(landName, owner, area, 0, null, 1);
-    }
-
-    //for AreaID only
-    public Land(String landName, PlayerContainer owner, CuboidArea area, int areaId) {
-
-        super(area.getWorldName().toLowerCase());
-        createLand(landName, owner, area, 0, null, areaId);
-    }
-
-    // next one for a child
-    public Land(String landName, PlayerContainer owner, CuboidArea area, Land parent) {
-
-        super(area.getWorldName().toLowerCase());
-        createLand(landName, owner, area, parent.getGenealogy() + 1, parent, 1);
-    }
-
-    // Only to load with a specific areaid
-    public Land(String landName, PlayerContainer owner, CuboidArea area, Land parent, int areaId) {
-
-        super(area.getWorldName().toLowerCase());
-        createLand(landName, owner, area, parent.getGenealogy() + 1, parent, areaId);
-    }
-
-    private void createLand(String landName, PlayerContainer owner, CuboidArea area, int genealogy, Land parent, int areaId) {
-
         name = landName.toLowerCase();
         if (parent != null) {
             this.parent = parent;

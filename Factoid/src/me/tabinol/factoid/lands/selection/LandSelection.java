@@ -3,6 +3,7 @@ package me.tabinol.factoid.lands.selection;
 import java.util.Map;
 import java.util.HashMap;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.lands.CuboidArea;
 import org.bukkit.Material;
 import org.bukkit.event.Listener;
 import org.bukkit.Server;
@@ -23,10 +24,13 @@ public class LandSelection extends Thread implements Listener {
     private Map<String, Location> CornerList = new HashMap<>();
     private Location LandPos;
     private boolean IsCollision;
+    private int trueY1;
+    private int trueY2;
 
     public LandSelection(Player player) {
 
-        LandSelection(player, player.getLocation(), 0, 0, 0, 0, 0, 0);
+        LandSelection(player, player.getLocation(), 0, 0, 
+                Factoid.getConf().MinLandHigh, Factoid.getConf().MaxLandHigh, 0, 0);
     }
 
     public LandSelection(Player player, Location loc, int x1, int x2, int y1, int y2, int z1, int z2) {
@@ -35,6 +39,8 @@ public class LandSelection extends Thread implements Listener {
     }
 
     private void LandSelection(Player player, Location loc, int x1, int x2, int y1, int y2, int z1, int z2) {
+        this.trueY1 = y1;
+        this.trueY2 = y2;
         Factoid.getThisPlugin().getServer().getPluginManager().registerEvents(this, Factoid.getThisPlugin());
         this.player = player;
         this.world = player.getWorld();
@@ -88,6 +94,18 @@ public class LandSelection extends Thread implements Listener {
 
     public Map<String, Location> getCorner() {
         return this.CornerList;
+    }
+
+    public CuboidArea toCuboidArea() {
+
+        int x1 = CornerList.get("FrontCornerLeft").getBlockX();
+        int x2 = CornerList.get("BackCornerRigth").getBlockX();
+        int y1 = trueY1;
+        int y2 = trueY2;
+        int z1 = CornerList.get("FrontCornerLeft").getBlockZ();
+        int z2 = CornerList.get("BackCornerRigth").getBlockZ();
+        
+        return new CuboidArea(player.getWorld().getName(), x1, y1, z1, x2, y2, z2);
     }
 
     public void resetSelection() {

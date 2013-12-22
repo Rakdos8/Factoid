@@ -42,14 +42,37 @@ public class Lands {
         landList = new TreeMap<>();
     }
 
-    public boolean createLand(Land land) {
+    // For Land with no parent
+    public Land createLand(String landName, PlayerContainer owner, CuboidArea area) {
+        
+        return createLand(landName, owner, area, null, 1);
+    }
+    
+    // For Land with parent
+    public Land createLand(String landName, PlayerContainer owner, CuboidArea area, Land parent) {
+        
+        return createLand(landName, owner, area, parent, 1);
+    }
+    
+    // Only for Land load at start
+    public Land createLand(String landName, PlayerContainer owner, CuboidArea area, Land parent, int areaId) {
 
-        if (landList.containsKey(land.getName())) {
-            return false;
+        String landNameLower = landName.toLowerCase();
+        int genealogy = 0;
+        Land land;
+        
+        if(parent != null) {
+            genealogy = parent.getGenealogy() + 1;
         }
+        
+        if (landList.containsKey(landNameLower)) {
+            return null;
+        }
+        land = new Land(landNameLower, owner, area, genealogy, parent, areaId);
         addLandToList(land);
-        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.CREATE", land.getName()));
-        return true;
+        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.CREATE", landNameLower));
+        
+        return land;
     }
 
     public boolean removeLand(Land land) {

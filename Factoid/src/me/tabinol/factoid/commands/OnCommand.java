@@ -15,15 +15,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.create.Create;
+import me.tabinol.factoid.commands.create.Create.CreateType;
 
 import me.tabinol.factoid.utilities.Log;
 import me.tabinol.factoid.lands.selection.LandSelection;
 import me.tabinol.factoid.lands.expansion.LandExpansion;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.CuboidArea;
-import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.flags.FlagType;
-import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.lands.flags.LandSetFlag;
 import me.tabinol.factoid.lands.selection.LandMakeSquare;
 import me.tabinol.factoid.lands.flags.LandFlag;
@@ -37,7 +36,7 @@ public class OnCommand extends Thread implements CommandExecutor {
 
     private Log log;
     private JavaPlugin plugin;
-    public static final String NEWLINE=System.getProperty("line.separator");
+    public static final String NEWLINE = System.getProperty("line.separator");
     private static Map<String, LandSelection> PlayerSelectingLand = new HashMap();
     // private static Map<String, CuboidArea> PlayerSelectingWorldEdit = new HashMap();
     private static Map<String, Land> LandSelectioned = new HashMap();
@@ -114,7 +113,17 @@ public class OnCommand extends Thread implements CommandExecutor {
                 }
 
                 if (curArg.equalsIgnoreCase("create")) {
-                    new Create(player, argList);
+                    new Create(CreateType.LAND, player, argList);
+                    return true;
+                }
+
+                if (curArg.equalsIgnoreCase("area")) {
+                    doCommandArea(player, argList);
+                    return true;
+                }
+
+                if (curArg.equalsIgnoreCase("owner")) {
+                    doCommandOwner(player, argList);
                     return true;
                 }
 
@@ -244,6 +253,65 @@ public class OnCommand extends Thread implements CommandExecutor {
         }
 
         return land;
+    }
+
+    private void doCommandArea(Player player, ArgList argList) throws FactoidCommandException {
+
+        Land land = getLandSelected(player);
+        String curArg = argList.getNext();
+
+        if (curArg.equalsIgnoreCase("add")) {
+
+            new Create(CreateType.AREA, player, argList);
+
+        } else if (curArg.equalsIgnoreCase("remove")) {
+
+            curArg = argList.getNext();
+            int areaNb;
+            if (curArg == null) {
+                throw new FactoidCommandException("COMMAND.REMOVE.AREA.EMPTY");
+            }
+            try {
+                areaNb = Integer.parseInt(curArg);
+            } catch (NumberFormatException ex) {
+                throw new FactoidCommandException("COMMAND.REMOVE.AREA.INVALID");
+            }
+
+            // Remove area
+            if (land.removeArea(areaNb) == false) {
+                throw new FactoidCommandException("COMMAND.REMOVE.AREA.INVALID");
+            }
+            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.REMOVE.DONE.AREA", land.getName()));
+            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.REMOVE.DONE.AREA", land.getName()));
+            
+        } else if (curArg.equalsIgnoreCase("list")) {
+
+            StringBuilder stList = new StringBuilder();
+            for (Map.Entry<Integer, CuboidArea> entry : land.getIdsAndAreas().entrySet()) {
+                stList.append("ID: " + entry.getKey() + ", " + entry.getValue().getPrint() + NEWLINE);
+            }
+            try {
+                createPage("COMMAND.CURRENT.LAND.AREA", stList.toString(), player, land.getName());
+            } catch (FactoidCommandException ex) {
+                Logger.getLogger(OnCommand.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            throw new FactoidCommandException("COMMAND.REMOVE.AREA.INVALID");
+        }
+    }
+
+    private void doCommandOwner(Player player, ArgList argList) throws FactoidCommandException {
+
+        Land land = getLandSelected(player);
+
+        if (!player.getName().equalsIgnoreCase(land.getOwner().getName()) && !isAdminMod(player)) {
+            throw new FactoidCommandException("COMMAND.OWNER.MISSINGPERMISSION");
+        }
+
+        PlayerContainer pc = argList.getPlayerContainerFromArg(land);
+        land.addResident(pc);
+        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.OWNER.ISDONE", pc.getPrint(), land.getName()));
+        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.OWNER.ISDONE", pc.getPrint(), land.getName()));
     }
 
     private void doCommandFlag(Player player, ArgList argList) throws FactoidCommandException {
@@ -555,6 +623,9 @@ public class OnCommand extends Thread implements CommandExecutor {
             landSelectConfig.put(player.getName().toLowerCase(), land);
             StringBuilder stList = new StringBuilder();
             stList.append(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CURRENT.LAND.NAME", ChatColor.GREEN + land.getName() + ChatColor.YELLOW) + NEWLINE);
+            if (land.getParent() != null) {
+                stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.CURRENT.LAND.PARENT", land.getParent().getName()) + NEWLINE);
+            }
             stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.CURRENT.LAND.OWNER", land.getOwner().getPrint()) + NEWLINE);
             stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.CURRENT.LAND.MAINPERMISSION",
                     getPermissionInColForPl(land, player, PermissionType.BUILD) + " "
@@ -562,10 +633,6 @@ public class OnCommand extends Thread implements CommandExecutor {
                     + getPermissionInColForPl(land, player, PermissionType.OPEN)) + NEWLINE);
             stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.CURRENT.LAND.ACTIVEAREA",
                     "ID: " + area.getKey() + ", " + area.getPrint()) + NEWLINE);
-            stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.CURRENT.LAND.AREA") + NEWLINE);
-            for (Map.Entry<Integer, CuboidArea> entry : land.getIdsAndAreas().entrySet()) {
-                stList.append("ID: " + entry.getKey() + ", " + entry.getValue().getPrint() + NEWLINE);
-            }
             try {
                 createPage("COMMAND.CURRENT.LAND.LISTSTART", stList.toString(), player, land.getName());
             } catch (FactoidCommandException ex) {
@@ -606,10 +673,10 @@ public class OnCommand extends Thread implements CommandExecutor {
     }
 
     public static List<String> getBannedWord() {
-        
+
         return BannedWord;
     }
-    
+
     public static Map<String, LandSelection> getPlayerSelectingLand() {
         return PlayerSelectingLand;
     }
@@ -617,7 +684,6 @@ public class OnCommand extends Thread implements CommandExecutor {
     // public static Map<String, CuboidArea> getPlayerSelectingWorldEdit() {
     //    return PlayerSelectingWorldEdit;
     // }
-
     public static Map<String, Land> getLandSelectioned() {
         return LandSelectioned;
     }
