@@ -10,7 +10,6 @@ import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.event.PlayerLandChangeEvent;
 import me.tabinol.factoid.factions.Faction;
-import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.flags.FlagType;
@@ -160,7 +159,7 @@ public class PlayerListener implements Listener {
                 event.setCancelled(true);
 
             } else if (!OnCommand.isAdminMod(player)) {
-            land = Factoid.getLands().getLandOrOutsideArea(event.getClickedBlock().getLocation());
+                land = Factoid.getLands().getLandOrOutsideArea(event.getClickedBlock().getLocation());
                 if ((land instanceof Land && ((Land) land).isBanned(player.getName()))
                         || (((action == Action.RIGHT_CLICK_BLOCK // BEGIN of USE
                         && (ml == Material.WOODEN_DOOR || ml == Material.TRAP_DOOR
@@ -240,7 +239,7 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onHangingPlaceEvent(HangingPlaceEvent event) {
+    public void onHangingPlace(HangingPlaceEvent event) {
 
         if (conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())
                 && !OnCommand.isAdminMod(event.getPlayer())) {
@@ -258,7 +257,7 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event) {
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         if (conf.Worlds.contains(event.getPlayer().getWorld().getName().toLowerCase())
                 && !OnCommand.isAdminMod(event.getPlayer())
                 && event.getRightClicked() instanceof ItemFrame) {
@@ -293,7 +292,7 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onHangingBreakByEntityEvent(HangingBreakByEntityEvent event) {
+    public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
 
         Player player;
 
@@ -301,25 +300,6 @@ public class PlayerListener implements Listener {
                 && event.getRemover() instanceof Player
                 && !OnCommand.isAdminMod(player = (Player) event.getRemover())) {
 
-            DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getEntity().getLocation());
-
-            if ((land instanceof Land && ((Land) land).isBanned(player.getName()))
-                    || !checkPermission(land, player, PermissionType.BUILD)
-                    || !checkPermission(land, player, PermissionType.BUILD_DESTROY)) {
-                MessagePermission(player);
-                event.setCancelled(true);
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
-        if (conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())
-                && event.getDamager() instanceof Player
-                && !OnCommand.isAdminMod((Player) event.getDamager())
-                && event.getEntity() instanceof ItemFrame) {
-
-            Player player = (Player) event.getDamager();
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getEntity().getLocation());
 
             if ((land instanceof Land && ((Land) land).isBanned(player.getName()))
@@ -378,58 +358,75 @@ public class PlayerListener implements Listener {
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 
         if (conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())) {
-            Player player = null;
-            Arrow damagerArrow;
+            
+            // Check if a player break a ItemFrame
+            if (event.getDamager() instanceof Player
+                    && !OnCommand.isAdminMod((Player) event.getDamager())
+                    && event.getEntity() instanceof ItemFrame) {
 
-            // Check if the damager is a player
-            if (event.getDamager() instanceof Player) {
-                player = (Player) event.getDamager();
-            } else if (event.getDamager().getType() == EntityType.ARROW) {
-                damagerArrow = (Arrow) event.getDamager();
-                if (damagerArrow.getShooter() instanceof Player) {
-                    player = (Player) damagerArrow.getShooter();
-                }
-            }
-
-            if (player != null) {
+                Player player = (Player) event.getDamager();
                 DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getEntity().getLocation());
-                Entity entity = event.getEntity();
-                EntityType et = entity.getType();
 
-                // kill en entity (none player)
-                if (!OnCommand.isAdminMod(player)
-                        && ((land instanceof Land && ((Land) land).isBanned(player.getName()))
-                        || (entity instanceof Animals
-                        && !checkPermission(land, player, PermissionType.ANIMAL_KILL))
-                        || (entity instanceof Monster
-                        && !checkPermission(land, player, PermissionType.MOB_KILL))
-                        || (et == EntityType.VILLAGER
-                        && !checkPermission(land, player, PermissionType.VILLAGER_KILL))
-                        || (et == EntityType.IRON_GOLEM
-                        && !checkPermission(land, player, PermissionType.VILLAGER_GOLEM_KILL))
-                        || (et == EntityType.HORSE
-                        && !checkPermission(land, player, PermissionType.HORSE_KILL))
-                        || (entity instanceof Tameable && ((Tameable) entity).isTamed() == true
-                        && ((Tameable) entity).getOwner() != player
-                        && !checkPermission(land, player, PermissionType.TAMED_KILL)))) {
-
+                if ((land instanceof Land && ((Land) land).isBanned(player.getName()))
+                        || !checkPermission(land, player, PermissionType.BUILD)
+                        || !checkPermission(land, player, PermissionType.BUILD_DESTROY)) {
                     MessagePermission(player);
                     event.setCancelled(true);
+                }
+            } else {
+                Player player = null;
+                Arrow damagerArrow;
 
-                    // For PVP
-                } else if (entity instanceof Player) {
+                // Check if the damager is a player
+                if (event.getDamager() instanceof Player) {
+                    player = (Player) event.getDamager();
+                } else if (event.getDamager().getType() == EntityType.ARROW) {
+                    damagerArrow = (Arrow) event.getDamager();
+                    if (damagerArrow.getShooter() instanceof Player) {
+                        player = (Player) damagerArrow.getShooter();
+                    }
+                }
 
-                    LandFlag flag;
-                    Faction faction = Factoid.getFactions().getPlayerFaction(player.getName());
-                    Faction factionVictime = Factoid.getFactions().getPlayerFaction(((Player) entity).getName());
+                if (player != null) {
+                    DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getEntity().getLocation());
+                    Entity entity = event.getEntity();
+                    EntityType et = entity.getType();
 
-                    if (faction != null && faction == factionVictime
-                            && (flag = land.getFlagAndInherit(FlagType.FACTION_PVP)) != null && flag.getValueBoolean() == false) {
-                        // player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.NOFACTIONPVP"));
+                    // kill en entity (none player)
+                    if (!OnCommand.isAdminMod(player)
+                            && ((land instanceof Land && ((Land) land).isBanned(player.getName()))
+                            || (entity instanceof Animals
+                            && !checkPermission(land, player, PermissionType.ANIMAL_KILL))
+                            || (entity instanceof Monster
+                            && !checkPermission(land, player, PermissionType.MOB_KILL))
+                            || (et == EntityType.VILLAGER
+                            && !checkPermission(land, player, PermissionType.VILLAGER_KILL))
+                            || (et == EntityType.IRON_GOLEM
+                            && !checkPermission(land, player, PermissionType.VILLAGER_GOLEM_KILL))
+                            || (et == EntityType.HORSE
+                            && !checkPermission(land, player, PermissionType.HORSE_KILL))
+                            || (entity instanceof Tameable && ((Tameable) entity).isTamed() == true
+                            && ((Tameable) entity).getOwner() != player
+                            && !checkPermission(land, player, PermissionType.TAMED_KILL)))) {
+
+                        MessagePermission(player);
                         event.setCancelled(true);
-                    } else if ((flag = land.getFlagAndInherit(FlagType.FULL_PVP)) != null && flag.getValueBoolean() == false) {
-                        // player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.NOPVP"));
-                        event.setCancelled(true);
+
+                        // For PVP
+                    } else if (entity instanceof Player) {
+
+                        LandFlag flag;
+                        Faction faction = Factoid.getFactions().getPlayerFaction(player.getName());
+                        Faction factionVictime = Factoid.getFactions().getPlayerFaction(((Player) entity).getName());
+
+                        if (faction != null && faction == factionVictime
+                                && (flag = land.getFlagAndInherit(FlagType.FACTION_PVP)) != null && flag.getValueBoolean() == false) {
+                            // player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.NOFACTIONPVP"));
+                            event.setCancelled(true);
+                        } else if ((flag = land.getFlagAndInherit(FlagType.FULL_PVP)) != null && flag.getValueBoolean() == false) {
+                            // player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.NOPVP"));
+                            event.setCancelled(true);
+                        }
                     }
                 }
             }

@@ -6,6 +6,7 @@ import me.tabinol.factoid.commands.FactoidCommandException;
 import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.lands.selection.LandSelection;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.utilities.Log;
 import org.bukkit.ChatColor;
@@ -40,8 +41,11 @@ public class Create {
         }
 
         // TEMPORAIRE seulement AdminMod pour le moment
-        if (OnCommand.isAdminMod(player)) {
-            area = OnCommand.getPlayerSelectingLand().get(playerNameLower).toCuboidArea();
+        if (!OnCommand.isAdminMod(player)) {
+            throw new FactoidCommandException("COMMAND.CREATE.NOPERMISSION");
+        }
+            LandSelection select = OnCommand.getPlayerSelectingLand().get(playerNameLower);
+            area = select.toCuboidArea();
 
             if (createType == CreateType.LAND) {
                 doLand();
@@ -51,10 +55,10 @@ public class Create {
 
             // Quit select mod
             OnCommand.getPlayerSelectingLand().remove(player.getName().toLowerCase());
+            select.resetSelection();
             log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
 
-        }
         /* 
          if (!OnCommand.getLandSelectioned().containsKey(player.getName().toLowerCase())) {
          Land landtest = Factoid.getLands().getLand(curArg);

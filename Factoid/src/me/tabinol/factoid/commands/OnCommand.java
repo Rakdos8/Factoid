@@ -309,7 +309,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         }
 
         PlayerContainer pc = argList.getPlayerContainerFromArg(land);
-        land.addResident(pc);
+        land.setOwner(pc);
         player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.OWNER.ISDONE", pc.getPrint(), land.getName()));
         log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.OWNER.ISDONE", pc.getPrint(), land.getName()));
     }

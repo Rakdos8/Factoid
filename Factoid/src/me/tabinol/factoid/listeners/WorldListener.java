@@ -14,6 +14,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
@@ -24,6 +25,8 @@ import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
@@ -64,11 +67,11 @@ public class WorldListener implements Listener {
                     || ((flag = land.getFlagAndInherit(FlagType.EXPLOSION)) != null
                     && flag.getValueBoolean() == false)) {
                 event.setCancelled(true);
-                if(entityType == EntityType.CREEPER) {
+                if (entityType == EntityType.CREEPER) {
                     event.getEntity().remove();
                 }
             }
-            
+
         }
     }
 
@@ -204,7 +207,7 @@ public class WorldListener implements Listener {
             }
         }
     }
-    
+
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBurn(BlockBurnEvent event) {
 
@@ -236,6 +239,18 @@ public class WorldListener implements Listener {
                     && flag.getValueBoolean() == false)) {
                 event.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onEntityDamage(EntityDamageEvent event) {
+
+        if (conf.OverrideExplosions && conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())
+                && event.getEntity() instanceof ItemFrame
+                && (event.getCause() == DamageCause.BLOCK_EXPLOSION || event.getCause() == DamageCause.ENTITY_EXPLOSION)) {
+            // Check for ItemFrame
+            Factoid.getLog().write("Cancel HangingBreak : " + event.getEntity() + ", Cause: " + event.getCause());
+            event.setCancelled(true);
         }
     }
 }
