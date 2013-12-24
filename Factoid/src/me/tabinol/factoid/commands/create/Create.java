@@ -44,20 +44,21 @@ public class Create {
         if (!OnCommand.isAdminMod(player)) {
             throw new FactoidCommandException("COMMAND.CREATE.NOPERMISSION");
         }
-            LandSelection select = OnCommand.getPlayerSelectingLand().get(playerNameLower);
-            area = select.toCuboidArea();
+        LandSelection select = OnCommand.getPlayerSelectingLand().get(playerNameLower);
+        area = select.toCuboidArea();
 
-            if (createType == CreateType.LAND) {
-                doLand();
-            } else if (createType == CreateType.AREA) {
-                doArea();
-            }
+        if (createType == CreateType.LAND) {
+            doLand();
+        } else if (createType == CreateType.AREA) {
+            doArea();
+        }
 
-            // Quit select mod
-            OnCommand.getPlayerSelectingLand().remove(player.getName().toLowerCase());
-            select.resetSelection();
-            log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
-            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
+        // Quit select mod
+        OnCommand.getPlayerSelectingLand().remove(player.getName().toLowerCase());
+        select.resetSelection();
+
+        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
+        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
 
         /* 
          if (!OnCommand.getLandSelectioned().containsKey(player.getName().toLowerCase())) {
@@ -218,6 +219,9 @@ public class Create {
             throw new FactoidCommandException("COMMAND.CREATE.ERROR");
         }
 
+        // Put the land in select for config
+        OnCommand.getLandSelectConfig().put(player.getName().toLowerCase(), land);
+
         player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.DONE"));
         log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.DONE", player.getName(), land.getName(), land.toString()));
     }
@@ -229,7 +233,7 @@ public class Create {
         if (land == null) {
             throw new FactoidCommandException("COMMAND.CREATE.AREA.LANDNOTSELECT");
         }
-        
+
         // Add area
         land.addArea(area);
 

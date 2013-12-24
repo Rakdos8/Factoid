@@ -84,6 +84,7 @@ COMMAND:
     ISDONE: "you have set the permission '%' to '%' for '%'"
     LISTSTART: "-Permissions of '%'-"
     LISTROWNULL: "No Permissions."
+    NOENTERNOTINSPAWN: "You can't disable the LAND_ENTER permission where the world spawn is."
   RESIDENT:
     MISSINGINFO: "Some information is missing. Check your command again."
     LAND:
@@ -130,6 +131,7 @@ COMMAND:
       INVALID: "the selectioned land is invalid."
     FLAGNULL: "This Flag doesn't exist."
     MISSINGPERMISSION: "You must have the permission to execute this action."
+    NOTINSPAWN: "You can't ban where the world spawn is."
     ISDONE: "you have set '%' to '%'."
   REMOVE:
     AREA:

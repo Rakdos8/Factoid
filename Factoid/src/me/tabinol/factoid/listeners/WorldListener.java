@@ -14,8 +14,10 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Flying;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Monster;
+import org.bukkit.entity.Slime;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -234,7 +236,9 @@ public class WorldListener implements Listener {
             if ((event.getEntity() instanceof Animals
                     && (flag = land.getFlagAndInherit(FlagType.ANIMAL_SPAWN)) != null
                     && flag.getValueBoolean() == false)
-                    || (event.getEntity() instanceof Monster
+                    || ((event.getEntity() instanceof Monster
+                    || event.getEntity() instanceof Slime
+                    || event.getEntity() instanceof Flying)
                     && (flag = land.getFlagAndInherit(FlagType.MOB_SPAWN)) != null
                     && flag.getValueBoolean() == false)) {
                 event.setCancelled(true);

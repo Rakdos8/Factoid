@@ -1,7 +1,9 @@
 package me.tabinol.factoid.lands;
 
+import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.utilities.Calculate;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 public class CuboidArea implements Comparable<CuboidArea> {
 
@@ -77,27 +79,27 @@ public class CuboidArea implements Comparable<CuboidArea> {
         }
         return 0;
     }
-    
+
     @Override
     public String toString() {
-        
+
         return worldName + ":" + x1 + ":" + y1 + ":" + z1 + ":" + x2 + ":" + y2 + ":" + z2;
     }
-    
+
     public String getPrint() {
-        
-        return "(" + x1 + ", " + y1 + ", " + z1 + ")-(" + x2 + ", " + y2 + ", " + z2 +")";
+
+        return "(" + x1 + ", " + y1 + ", " + z1 + ")-(" + x2 + ", " + y2 + ", " + z2 + ")";
     }
 
     public Integer getKey() {
-        
-        if(land != null) {
+
+        if (land != null) {
             return land.getAreaKey(this);
         }
-        
+
         return null;
     }
-    
+
     public boolean isCollision(CuboidArea area2) {
 
         return ((Calculate.isInInterval(x1, area2.x1, area2.x2)
@@ -155,7 +157,7 @@ public class CuboidArea implements Comparable<CuboidArea> {
 
         this.z2 = z2;
     }
-    
+
     public Land getLand() {
 
         return land;
@@ -164,6 +166,11 @@ public class CuboidArea implements Comparable<CuboidArea> {
     public String getWorldName() {
 
         return worldName;
+    }
+
+    public World getWord() {
+
+        return Factoid.getThisPlugin().getServer().getWorld(worldName);
     }
 
     public int getX1() {

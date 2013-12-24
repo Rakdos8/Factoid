@@ -29,8 +29,10 @@ import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 
 import me.tabinol.factoid.commands.select.Select;
+import me.tabinol.factoid.event.PlayerContainerLandBanEvent;
 import me.tabinol.factoid.lands.permissions.Permission;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
+import me.tabinol.factoid.playercontainer.PlayerContainerType;
 
 public class OnCommand extends Thread implements CommandExecutor {
 
@@ -283,7 +285,7 @@ public class OnCommand extends Thread implements CommandExecutor {
             }
             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.REMOVE.DONE.AREA", land.getName()));
             log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.REMOVE.DONE.AREA", land.getName()));
-            
+
         } else if (curArg.equalsIgnoreCase("list")) {
 
             StringBuilder stList = new StringBuilder();
@@ -308,7 +310,9 @@ public class OnCommand extends Thread implements CommandExecutor {
             throw new FactoidCommandException("COMMAND.OWNER.MISSINGPERMISSION");
         }
 
-        PlayerContainer pc = argList.getPlayerContainerFromArg(land);
+        PlayerContainer pc = argList.getPlayerContainerFromArg(land,
+                new PlayerContainerType[]{PlayerContainerType.EVERYBODY,
+            PlayerContainerType.OWNER, PlayerContainerType.VISITOR});
         land.setOwner(pc);
         player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.OWNER.ISDONE", pc.getPrint(), land.getName()));
         log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.OWNER.ISDONE", pc.getPrint(), land.getName()));
@@ -365,13 +369,19 @@ public class OnCommand extends Thread implements CommandExecutor {
         // Temporary desactivated
         if (argList.length() < 2 && false) {
         } else if (curArg.equalsIgnoreCase("set")) {
-            PlayerContainer pc = argList.getPlayerContainerFromArg(land);
+            PlayerContainer pc = argList.getPlayerContainerFromArg(land, null);
             Permission perm = argList.getPermissionFromArg(isAdminMod(player), land.isOwner(player.getName()));
+            if(perm.getPermType() == PermissionType.LAND_ENTER
+                    && perm.getValue() != perm.getPermType().baseValue() 
+                    && land.isLocationInside(land.getWord().getSpawnLocation())) {
+                throw new FactoidCommandException("COMMAND.PERMISSION.NOENTERNOTINSPAWN");
+            }
             land.addPermission(pc, perm);
             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.ISDONE", perm.getPermType().toString(), perm.getValue() + ""));
             log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.PERMISSION.ISDONE", perm.getPermType().toString(), perm.getValue() + ""));
+            
         } else if (curArg.equalsIgnoreCase("unset")) {
-            PlayerContainer pc = argList.getPlayerContainerFromArg(land);
+            PlayerContainer pc = argList.getPlayerContainerFromArg(land, null);
             PermissionType pt = argList.getPermissionTypeFromArg(isAdminMod(player), land.isOwner(player.getName()));
             if (!land.removePermission(pc, pt)) {
                 throw new FactoidCommandException("COMMAND.PERMISSION.REMOVENOTEXIST"); // ****** AJOUTER dans lang (et les 3 suivants) ********
@@ -408,12 +418,16 @@ public class OnCommand extends Thread implements CommandExecutor {
         // Temporary desactivated
         if (argList.length() < 2 && false) {
         } else if (curArg.equalsIgnoreCase("add")) {
-            PlayerContainer pc = argList.getPlayerContainerFromArg(land);
+            PlayerContainer pc = argList.getPlayerContainerFromArg(land,
+                    new PlayerContainerType[]{PlayerContainerType.EVERYBODY,
+                PlayerContainerType.OWNER, PlayerContainerType.VISITOR,
+                PlayerContainerType.RESIDENT});
+
             land.addResident(pc);
             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.ISDONE", pc.getContainerType().toString(), pc.getName()));
             log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.RESIDENT.ISDONE", pc.getContainerType().toString(), pc.getName()));
         } else if (curArg.equalsIgnoreCase("remove")) {
-            PlayerContainer pc = argList.getPlayerContainerFromArg(land);
+            PlayerContainer pc = argList.getPlayerContainerFromArg(land, null);
             if (!land.removeResident(pc)) {
                 throw new FactoidCommandException("COMMAND.RESIDENT.REMOVENOTEXIST"); // ****** AJOUTER dans lang (et les 3 suivants) ********
             }
@@ -449,18 +463,26 @@ public class OnCommand extends Thread implements CommandExecutor {
         // Temporary desactivated
         if (argList.length() < 2 && false) {
         } else if (curArg.equalsIgnoreCase("add")) {
-            PlayerContainer pc = argList.getPlayerContainerFromArg(land);
+            PlayerContainer pc = argList.getPlayerContainerFromArg(land,
+                    new PlayerContainerType[]{PlayerContainerType.EVERYBODY,
+                PlayerContainerType.OWNER, PlayerContainerType.VISITOR,
+                PlayerContainerType.RESIDENT});
+            if(land.isLocationInside(land.getWord().getSpawnLocation())) {
+                throw new FactoidCommandException("COMMAND.BANNED.NOTINSPAWN");
+            }
             land.addBanned(pc);
             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.ISDONE", pc.getContainerType().toString(), pc.getName()));
             log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.BANNED.ISDONE", pc.getContainerType().toString(), pc.getName()));
-        } else if (curArg.equalsIgnoreCase("remove")) {
-            PlayerContainer pc = argList.getPlayerContainerFromArg(land);
+        } else if (curArg.equalsIgnoreCase(
+                "remove")) {
+            PlayerContainer pc = argList.getPlayerContainerFromArg(land, null);
             if (!land.removeBanned(pc)) {
                 throw new FactoidCommandException("COMMAND.BANNED.REMOVENOTEXIST"); // ****** AJOUTER dans lang (et les 3 suivants) ********
             }
             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.REMOVEISDONE", pc.getContainerType().toString(), pc.getName()));
             log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.BANNED.REMOVEISDONE", pc.getContainerType().toString(), pc.getName()));
-        } else if (curArg.equalsIgnoreCase("list")) {
+        } else if (curArg.equalsIgnoreCase(
+                "list")) {
             StringBuilder stList = new StringBuilder();
             if (!land.getBanneds().isEmpty()) {
                 for (PlayerContainer pc : land.getBanneds()) {
@@ -635,8 +657,11 @@ public class OnCommand extends Thread implements CommandExecutor {
                     "ID: " + area.getKey() + ", " + area.getPrint()) + NEWLINE);
             try {
                 createPage("COMMAND.CURRENT.LAND.LISTSTART", stList.toString(), player, land.getName());
+
+
             } catch (FactoidCommandException ex) {
-                Logger.getLogger(OnCommand.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(OnCommand.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CURRENT.NOLAND"));

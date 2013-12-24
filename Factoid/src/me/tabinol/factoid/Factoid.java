@@ -18,6 +18,10 @@ import me.tabinol.factoid.storage.StorageFlat;
 
 public class Factoid extends JavaPlugin {
 
+    public static Object getThisServer() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     private OnCommand CommandListener;
     private PlayerListener playerListener;
     private WorldListener worldListener;

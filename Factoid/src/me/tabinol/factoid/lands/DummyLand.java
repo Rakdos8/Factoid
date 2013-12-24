@@ -6,11 +6,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.event.PlayerContainerAddNoEnterEvent;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.Permission;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
+import org.bukkit.World;
 
 public class DummyLand {
 
@@ -29,6 +31,11 @@ public class DummyLand {
 
         return worldName;
     }
+    
+    public World getWord() {
+        
+        return Factoid.getThisPlugin().getServer().getWorld(worldName);
+    }
 
     public void addPermission(PlayerContainer pc, Permission perm) {
 
@@ -42,6 +49,14 @@ public class DummyLand {
         }
         permPlayer.put(perm.getPermType(), perm);
         doSave();
+
+        // Start Event
+        if (this instanceof Land && perm.getPermType() == PermissionType.LAND_ENTER
+                && perm.getValue() != PermissionType.LAND_ENTER.baseValue()) {
+            Factoid.getThisPlugin().getServer().getPluginManager().callEvent(
+                    new PlayerContainerAddNoEnterEvent((Land) this, pc));
+        }
+
     }
 
     public boolean removePermission(PlayerContainer pc, PermissionType permType) {
@@ -82,15 +97,15 @@ public class DummyLand {
 
     protected Boolean checkPermissionAndInherit(String playerName, PermissionType pt, boolean onlyInherit) {
 
-        if(this instanceof Land) {
-            return ((Land)this).checkLandPermissionAndInherit(playerName, pt, onlyInherit);
+        if (this instanceof Land) {
+            return ((Land) this).checkLandPermissionAndInherit(playerName, pt, onlyInherit);
         }
         return Factoid.getLands().getPermissionInWorld(worldName, playerName, pt, onlyInherit);
     }
 
     protected Boolean getPermission(String playerName, PermissionType pt, boolean onlyInherit) {
 
-        for (Map.Entry <PlayerContainer, EnumMap<PermissionType, Permission>> permissionEntry : permissions.entrySet()) {
+        for (Map.Entry<PlayerContainer, EnumMap<PermissionType, Permission>> permissionEntry : permissions.entrySet()) {
             if (permissionEntry.getKey().hasAccess(playerName)) {
                 Permission perm = permissionEntry.getValue().get(pt);
                 if (perm != null) {
@@ -132,8 +147,8 @@ public class DummyLand {
 
     protected LandFlag getFlagAndInherit(FlagType ft, boolean onlyInherit) {
 
-        if(this instanceof Land) {
-            return ((Land)this).getLandFlagAndInherit(ft, onlyInherit);
+        if (this instanceof Land) {
+            return ((Land) this).getLandFlagAndInherit(ft, onlyInherit);
         }
         return Factoid.getLands().getFlagInWorld(worldName, ft, onlyInherit);
     }
@@ -142,7 +157,7 @@ public class DummyLand {
 
         LandFlag flag = flags.get(ft);
         if (flag != null) {
-                    Factoid.getLog().write("Flag: " + flag.toString());
+            Factoid.getLog().write("Flag: " + flag.toString());
 
             if ((onlyInherit && flag.isHeritable()) || !onlyInherit) {
                 return flag;
@@ -153,9 +168,9 @@ public class DummyLand {
     }
 
     protected void doSave() {
-        
-        if(this instanceof Land) {
-            ((Land)this).doSave();
+
+        if (this instanceof Land) {
+            ((Land) this).doSave();
         }
     }
 }

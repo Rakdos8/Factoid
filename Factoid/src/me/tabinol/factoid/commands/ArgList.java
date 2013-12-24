@@ -91,7 +91,7 @@ public class ArgList {
             throw new FactoidCommandException("COMMAND.FLAGS.FLAGNULL");
         }
 
-        if(!isAdminmod && !(isOwner && Factoid.getConf().ownerConfigFlag.contains(flagType))) {
+        if (!isAdminmod && !(isOwner && Factoid.getConf().ownerConfigFlag.contains(flagType))) {
             throw new FactoidCommandException("COMMAND.FLAGS.MISSINGPERMISSION");
         }
 
@@ -129,7 +129,8 @@ public class ArgList {
         return landFlag;
     }
 
-    public PlayerContainer getPlayerContainerFromArg(Land land) throws FactoidCommandException {
+    public PlayerContainer getPlayerContainerFromArg(Land land,
+            PlayerContainerType[] bannedPCTList) throws FactoidCommandException {
 
         String curArg = getNext();
         PlayerContainer pc;
@@ -144,6 +145,14 @@ public class ArgList {
             throw new FactoidCommandException("COMMAND.CONTAINERTYPE.INVALID");
         }
 
+        if (bannedPCTList != null) {
+            for (PlayerContainerType bPCT : bannedPCTList) {
+                if (pcType == bPCT) {
+                    throw new FactoidCommandException("COMMAND.CONTAINERTYPE.INVALID");
+                }
+            }
+        }
+
         if (pcType.hasParameter()) {
             curArg = getNext();
             if (curArg == null) {
@@ -153,40 +162,40 @@ public class ArgList {
         } else {
             pc = PlayerContainer.create(land, pcType, "");
         }
-        
+
         return pc;
     }
-    
+
     public PermissionType getPermissionTypeFromArg(boolean isAdminmod, boolean isOwner) throws FactoidCommandException {
-        
+
         String curArg = getNext();
-        
-        if(curArg == null) {
+
+        if (curArg == null) {
             throw new FactoidCommandException("COMMAND.PERMISSIONTYPE.NULL");
         }
-        
+
         PermissionType pt = PermissionType.getFromString(curArg);
-        
+
         if (pt == null) {
             throw new FactoidCommandException("COMMAND.PERMISSIONTYPE.INVALID");
         }
-        
-        if(!isAdminmod && !(isOwner && Factoid.getConf().ownerConfigPerm.contains(pt))) {
+
+        if (!isAdminmod && !(isOwner && Factoid.getConf().ownerConfigPerm.contains(pt))) {
             throw new FactoidCommandException("COMMAND.PERMISSION.MISSINGPERMISSION");
         }
-        
+
         return pt;
     }
-    
+
     public Permission getPermissionFromArg(boolean isAdminmod, boolean isOwner) throws FactoidCommandException {
 
         PermissionType pt = getPermissionTypeFromArg(isAdminmod, isOwner);
         String curArg = getNext();
-        
-        if(curArg == null) {
+
+        if (curArg == null) {
             throw new FactoidCommandException("COMMAND.PERMISSIONVALUE.NULL");
         }
-        
+
         return new Permission(pt, Boolean.parseBoolean(curArg), true);
     }
 }

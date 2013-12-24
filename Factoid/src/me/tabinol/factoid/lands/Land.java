@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.event.PlayerContainerLandBanEvent;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
@@ -13,6 +14,7 @@ import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.listeners.PlayerListener;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.storage.Storage;
+import org.bukkit.Location;
 
 public class Land extends DummyLand {
 
@@ -162,6 +164,17 @@ public class Land extends DummyLand {
         return false;
     }
 
+    public boolean isLocationInside(Location loc) {
+
+        for (CuboidArea area1 : areas.values()) {
+            if (area1.isLocationInside(loc)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public String getName() {
 
         return name;
@@ -178,9 +191,9 @@ public class Land extends DummyLand {
 
         return owner;
     }
-    
+
     public boolean isOwner(String playerName) {
-        
+
         return owner.hasAccess(playerName);
     }
 
@@ -227,8 +240,8 @@ public class Land extends DummyLand {
 
     public boolean isResident(String playerName) {
 
-        for(PlayerContainer resident : residents) {
-            if(resident.hasAccess(playerName)) {
+        for (PlayerContainer resident : residents) {
+            if (resident.hasAccess(playerName)) {
                 return true;
             }
         }
@@ -239,6 +252,10 @@ public class Land extends DummyLand {
 
         banneds.add(banned);
         doSave();
+
+        // Start Event
+        Factoid.getThisPlugin().getServer().getPluginManager().callEvent(
+                new PlayerContainerLandBanEvent(this, banned));
     }
 
     public boolean removeBanned(PlayerContainer banned) {
@@ -258,8 +275,8 @@ public class Land extends DummyLand {
 
     public boolean isBanned(String playerName) {
 
-        for(PlayerContainer banned : banneds) {
-            if(banned.hasAccess(playerName)) {
+        for (PlayerContainer banned : banneds) {
+            if (banned.hasAccess(playerName)) {
                 return true;
             }
         }
