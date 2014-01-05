@@ -152,7 +152,7 @@ public class Select extends Thread {
             //        sel.getMinimumPoint().getBlockX(), sel.getMinimumPoint().getBlockY(), sel.getMinimumPoint().getBlockZ(),
             //        sel.getMaximumPoint().getBlockX(), sel.getMaximumPoint().getBlockY(), sel.getMaximumPoint().getBlockZ());
             // OnCommand.getPlayerSelectingWorldEdit().put(player.getName().toLowerCase(), area);
-            LandSelection select = new LandSelection(player, player.getLocation(),
+            LandSelection select = new LandSelection(player, null,
                     sel.getMinimumPoint().getBlockX(), sel.getMaximumPoint().getBlockX(), sel.getMinimumPoint().getBlockY(),
                     sel.getMaximumPoint().getBlockY(), sel.getMinimumPoint().getBlockZ(), sel.getMaximumPoint().getBlockZ());
             OnCommand.getPlayerSelectingLand().put(player.getName().toLowerCase(), select);
