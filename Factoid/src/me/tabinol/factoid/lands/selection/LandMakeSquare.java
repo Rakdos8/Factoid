@@ -26,7 +26,7 @@ public class LandMakeSquare extends Thread {
     private boolean IsCollisionRigth = false;
     private boolean SELECTING = false;
 
-    public LandMakeSquare(Player player, Location loc, int x1, int x2, int y1, int y2, int z1, int z2) {
+    public LandMakeSquare(Player player, Location loc, int x1, int x2, int y1, int y2, int z1, int z2, boolean isSelecting) {
         this.player = player;
         this.world = player.getWorld();
         if (loc != null) {
@@ -35,11 +35,12 @@ public class LandMakeSquare extends Thread {
             FrontCornerRigth = new Location(this.world, Calculate.AdditionDouble(loc.getX(), 6.0), this.getYNearPlayer(Calculate.AdditionInt(loc.getBlockX(), 6), Calculate.AdditionInt(loc.getBlockZ(), 6)) - 1, Calculate.AdditionDouble(loc.getZ(), 6.0));
             BackCornerRigth = new Location(this.world, Calculate.AdditionDouble(loc.getX(), 6.0), this.getYNearPlayer(Calculate.AdditionInt(loc.getBlockX(), 6), Calculate.AdditionInt(loc.getBlockZ(), -6)) - 1, Calculate.AdditionDouble(loc.getZ(), -6.0));
         } else {
-            System.out.print("ENTER");
             FrontCornerLeft = new Location(this.world, x1, this.getYNearPlayer(x1, z1) - 1, z1);
             BackCornerLeft = new Location(this.world, x1, this.getYNearPlayer(x2, z2) - 1, z2);
             FrontCornerRigth = new Location(this.world, x2, this.getYNearPlayer(x1, z1) - 1, z1);
             BackCornerRigth = new Location(this.world, x2, this.getYNearPlayer(x2, z2) - 1, z2);
+        } 
+        if(isSelecting) {
             SELECTING = true;
         }
     }

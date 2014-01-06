@@ -30,21 +30,27 @@ public class LandSelection extends Thread implements Listener {
     public LandSelection(Player player) {
 
         LandSelection(player, player.getLocation(), 0, 0, 
-                Factoid.getConf().MinLandHigh, Factoid.getConf().MaxLandHigh, 0, 0);
+                Factoid.getConf().MinLandHigh, Factoid.getConf().MaxLandHigh, 0, 0, false);
     }
 
-    public LandSelection(Player player, Location loc, int x1, int x2, int y1, int y2, int z1, int z2) {
+    // public LandSelection(Player player, Location loc, int x1, int x2, int y1, int y2, int z1, int z2) {
 
-        LandSelection(player, loc, x1, x2, y1, y2, z1, z2);
+    //    LandSelection(player, loc, x1, x2, y1, y2, z1, z2, loc == null);
+    // }
+
+    // For WorldEdit
+    public LandSelection(Player player, int x1, int x2, int y1, int y2, int z1, int z2) {
+
+        LandSelection(player, null, x1, x2, y1, y2, z1, z2, false);
     }
-
-    private void LandSelection(Player player, Location loc, int x1, int x2, int y1, int y2, int z1, int z2) {
+    private void LandSelection(Player player, Location loc, 
+            int x1, int x2, int y1, int y2, int z1, int z2, boolean isSelection) {
         this.trueY1 = y1;
         this.trueY2 = y2;
         Factoid.getThisPlugin().getServer().getPluginManager().registerEvents(this, Factoid.getThisPlugin());
         this.player = player;
         this.world = player.getWorld();
-        LandMakeSquare landmake = new LandMakeSquare(player, loc, x1, x2, y1, y2, z1, z2);
+        LandMakeSquare landmake = new LandMakeSquare(player, loc, x1, x2, y1, y2, z1, z2, isSelection);
         this.BlockList = landmake.makeSquare();
         this.CornerList = landmake.getCorner();
         this.LandPos = player.getLocation();
@@ -60,7 +66,7 @@ public class LandSelection extends Thread implements Listener {
                         boolean done = new LandResetSelection(this.BlockList, this.CornerList, this.player).Reset();
                         if (done) {
                             this.BlockList.clear();
-                            LandMakeSquare landmake = new LandMakeSquare(this.player, event.getTo(), 0, 0, 0, 0, 0, 0);
+                            LandMakeSquare landmake = new LandMakeSquare(this.player, event.getTo(), 0, 0, 0, 0, 0, 0, false);
                             this.BlockList = landmake.makeSquare();
                             this.CornerList = landmake.getCorner();
                             this.LandPos = event.getTo();

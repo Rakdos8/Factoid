@@ -7,8 +7,6 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ArgList;
 import me.tabinol.factoid.commands.FactoidCommandException;
@@ -71,7 +69,8 @@ public class Select extends Thread {
                         OnCommand.getLandSelectioned().put(player.getName().toLowerCase(), landtest);
                         List<LandMakeSquare> listdummy = new ArrayList<LandMakeSquare>();
                         for (CuboidArea area : landtest.getAreas()) {
-                            LandMakeSquare landmake = new LandMakeSquare(player, null, area.getX1(), area.getX2(), area.getY1(), area.getY2(), area.getZ1(), area.getZ2());
+                            LandMakeSquare landmake = new LandMakeSquare(player, null, 
+                                    area.getX1(), area.getX2(), area.getY1(), area.getY2(), area.getZ1(), area.getZ2(), true);
                             landmake.makeSquare();
                             listdummy.add(landmake);
                         }
@@ -152,9 +151,9 @@ public class Select extends Thread {
             //        sel.getMinimumPoint().getBlockX(), sel.getMinimumPoint().getBlockY(), sel.getMinimumPoint().getBlockZ(),
             //        sel.getMaximumPoint().getBlockX(), sel.getMaximumPoint().getBlockY(), sel.getMaximumPoint().getBlockZ());
             // OnCommand.getPlayerSelectingWorldEdit().put(player.getName().toLowerCase(), area);
-            LandSelection select = new LandSelection(player, null,
+            LandSelection select = new LandSelection(player,
                     sel.getMinimumPoint().getBlockX(), sel.getMaximumPoint().getBlockX(), sel.getMinimumPoint().getBlockY(),
-                    sel.getMaximumPoint().getBlockY(), sel.getMinimumPoint().getBlockZ(), sel.getMaximumPoint().getBlockZ());
+                    sel.getMaximumPoint().getBlockY(), sel.getMaximumPoint().getBlockZ(), sel.getMinimumPoint().getBlockZ());
             OnCommand.getPlayerSelectingLand().put(player.getName().toLowerCase(), select);
             select.setSelected();
 

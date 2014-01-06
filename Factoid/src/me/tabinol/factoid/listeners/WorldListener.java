@@ -99,32 +99,34 @@ public class WorldListener implements Listener {
                 }
                 event.setCancelled(true);
                 ExplodeBlocks(event.blockList(), FlagType.CREEPER_DAMAGE, event.getLocation(),
-                        event.getYield(), power, false, false, null);
+                        event.getYield(), power, false, true);
 
                 //  Wither
             } else if (event.getEntityType() == EntityType.WITHER_SKULL) {
                 event.setCancelled(true);
                 ExplodeBlocks(event.blockList(), FlagType.WITHER_DAMAGE, event.getLocation(),
-                        event.getYield(), 1L, false, false, event.getEntity().getUniqueId());
+                        event.getYield(), 1L, false, true);
             } else if (event.getEntityType() == EntityType.WITHER) {
                 event.setCancelled(true);
                 ExplodeBlocks(event.blockList(), FlagType.WITHER_DAMAGE, event.getLocation(),
-                        event.getYield(), 7L, false, false, event.getEntity().getUniqueId());
+                        event.getYield(), 7L, false, true);
 
                 // Ghast
             } else if (event.getEntityType() == EntityType.FIREBALL) {
                 event.setCancelled(true);
                 ExplodeBlocks(event.blockList(), FlagType.GHAST_DAMAGE, event.getLocation(),
-                        event.getYield(), 1L, true, false, event.getEntity().getUniqueId());
+                        event.getYield(), 1L, true, true);
 
                 // TNT
             } else if (event.getEntityType() == EntityType.MINECART_TNT
                     || event.getEntityType() == EntityType.PRIMED_TNT) {
                 event.setCancelled(true);
                 ExplodeBlocks(event.blockList(), FlagType.TNT_DAMAGE, event.getLocation(),
-                        event.getYield(), 4L, false, false, event.getEntity().getUniqueId());
+                        event.getYield(), 4L, false, true);
             } else if (event.getEntityType() == EntityType.ENDER_DRAGON) {
                 event.setCancelled(true);
+                ExplodeBlocks(event.blockList(), FlagType.ENDERDRAGON_DAMAGE, event.getLocation(),
+                        event.getYield(), 4L, false, false);
             }
         }
     }
@@ -142,7 +144,7 @@ public class WorldListener implements Listener {
     }
 
     private void ExplodeBlocks(List<Block> blocks, FlagType ft, Location loc,
-            float yield, float power, boolean setFire, boolean breakBlocks, UUID uuid) {
+            float yield, float power, boolean setFire, boolean doExplosion) {
 
         LandFlag flag;
         ArrayList<Block> listToRem = new ArrayList<>();
@@ -159,8 +161,10 @@ public class WorldListener implements Listener {
         }
 
         // Do the explosion
-        loc.getWorld().createExplosion(loc.getX(), loc.getY(), loc.getZ(),
-                power, setFire, breakBlocks);
+        if (doExplosion) {
+            loc.getWorld().createExplosion(loc.getX(), loc.getY(), loc.getZ(),
+                    power, setFire, false);
+        }
 
         // Remove and drop exploded blocks
         for (Block block : listToRem) {
