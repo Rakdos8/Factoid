@@ -358,7 +358,7 @@ public class PlayerListener implements Listener {
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 
         if (conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())) {
-            
+
             // Check if a player break a ItemFrame
             if (event.getDamager() instanceof Player
                     && !OnCommand.isAdminMod((Player) event.getDamager())
@@ -527,7 +527,10 @@ public class PlayerListener implements Listener {
                 if (land == landOld || newPlayer) {
                     player.teleport(player.getWorld().getSpawnLocation());
                 } else {
-                    player.teleport(lastLoc.get(player));
+                    Location retLoc = lastLoc.get(player);
+                    player.teleport(new Location(retLoc.getWorld(),
+                            retLoc.getX(), retLoc.getBlockY(), retLoc.getZ(),
+                            loc.getYaw(), loc.getPitch()));
                 }
                 tpCancel.add(player);
                 return;

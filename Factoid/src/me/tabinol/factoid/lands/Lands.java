@@ -7,11 +7,13 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.event.LandDeleteEvent;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import org.bukkit.Location;
+import org.bukkit.plugin.PluginManager;
 
 public class Lands {
 
@@ -29,10 +31,12 @@ public class Lands {
     protected TreeMap<String, DummyLand> outsideArea;
     // Default config of a land, String = "Global" or WorldName
     protected DummyLand defaultConf;
+    private PluginManager pm;
 
     public Lands(DummyLand globalArea, TreeMap<String, DummyLand> outsideArea, DummyLand defaultConf) {
 
         areaList = new TreeMap[4];
+        pm = Factoid.getThisPlugin().getServer().getPluginManager();
         for (int t = 0; t < areaList.length; t++) {
             areaList[t] = new TreeMap<>();
         }
@@ -77,9 +81,18 @@ public class Lands {
 
     public boolean removeLand(Land land) {
 
+        LandDeleteEvent landEvent = new LandDeleteEvent(land);
+
         if (!landList.containsKey(land.getName())) {
             return false;
         }
+        
+        // Call Land Event and check if it is cancelled
+        pm.callEvent(landEvent);
+        if(landEvent.isCancelled()) {
+            return false;
+        }
+        
         removeLandToList(land);
         land.getParent().removeChild(land.getName());
         Factoid.getStorage().removeLand(land);
@@ -94,7 +107,6 @@ public class Lands {
         if (landName == null || !landList.containsKey(landLower = landName.toLowerCase())) {
             return false;
         }
-        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.REMOVE", landName));
         return removeLand(landList.get(landLower));
 
     }

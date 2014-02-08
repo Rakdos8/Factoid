@@ -90,7 +90,7 @@ public class LandListener implements Listener {
         OnCommand.getLandSelectConfig().remove(playerNameLower);
     }
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerLandChange(PlayerLandChangeEvent event) {
 
         Player player = event.getPlayer();
