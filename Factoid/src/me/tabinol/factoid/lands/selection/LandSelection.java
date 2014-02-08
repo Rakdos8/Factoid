@@ -28,9 +28,8 @@ public class LandSelection extends Thread implements Listener {
     private int trueY2;
 
     public LandSelection(Player player) {
-
         LandSelection(player, player.getLocation(), 0, 0, 
-                Factoid.getConf().MinLandHigh, Factoid.getConf().MaxLandHigh, 0, 0, false);
+        Factoid.getConf().MinLandHigh, Factoid.getConf().MaxLandHigh, 0, 0, false);
     }
 
     // public LandSelection(Player player, Location loc, int x1, int x2, int y1, int y2, int z1, int z2) {

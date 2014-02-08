@@ -82,7 +82,7 @@ public class LandListener implements Listener {
         // OnCommand.getPlayerSelectingWorldEdit().remove(playerNameLower);
         OnCommand.getLandSelectioned().remove(playerNameLower);
         OnCommand.getLandSelectionedUI().remove(playerNameLower);
-        OnCommand.getPlayerExpanding().remove(playerNameLower);
+        OnCommand.getPlayerExpandingLand().remove(playerNameLower);
         OnCommand.getPlayerSetFlagUI().remove(playerNameLower);
         OnCommand.getAdminMod().remove(playerNameLower);
         OnCommand.getRemoveList().remove(playerNameLower);
@@ -92,7 +92,6 @@ public class LandListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerLandChange(PlayerLandChangeEvent event) {
-
         Player player = event.getPlayer();
         Land lastLand = event.getLastLand();
         Land land = event.getLand();
@@ -112,6 +111,11 @@ public class LandListener implements Listener {
             if (!OnCommand.isAdminMod(player)) {
                 notifyPlayers(lastLand, "ACTION.PLAYEREXIT", player);
             }
+            
+            /*for(String playername : lastLand.getPlayersInLand()){
+                Factoid.getScoreboard().sendScoreboard(lastLand.getPlayersInLand(), Factoid.getThisPlugin().getServer().getPlayer(playername), lastLand.getName());
+            }
+            Factoid.getScoreboard().sendScoreboard(lastLand.getPlayersInLand(), player, lastLand.getName());*/
         }
         if (land != null) {
             dummyLand = land;
@@ -146,9 +150,15 @@ public class LandListener implements Listener {
                     && (value = flag.getValueString()) != null) {
                 player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + land.getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
             }
+            
+            /*for(String playername:land.getPlayersInLand()){
+                Factoid.getScoreboard().sendScoreboard(land.getPlayersInLand(), Factoid.getThisPlugin().getServer().getPlayer(playername), land.getName());
+            }
+            Factoid.getScoreboard().sendScoreboard(land.getPlayersInLand(), player, land.getName());*/
 
         } else {
             dummyLand = Factoid.getLands().getOutsideArea(event.getToLoc());
+            Factoid.getScoreboard().resetScoreboard(player);
         }
 
         //Check for Healing

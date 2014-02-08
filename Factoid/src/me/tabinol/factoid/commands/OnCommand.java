@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.commands.create.Create;
-import me.tabinol.factoid.commands.create.Create.CreateType;
+import me.tabinol.factoid.commands.create.CommandCreate;
+import me.tabinol.factoid.commands.create.CommandCreate.CreateType;
 
 import me.tabinol.factoid.utilities.Log;
 import me.tabinol.factoid.lands.selection.LandSelection;
@@ -28,7 +28,7 @@ import me.tabinol.factoid.lands.selection.LandMakeSquare;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 
-import me.tabinol.factoid.commands.select.Select;
+import me.tabinol.factoid.commands.select.CommandSelect;
 import me.tabinol.factoid.event.PlayerContainerLandBanEvent;
 import me.tabinol.factoid.lands.permissions.Permission;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
@@ -43,7 +43,7 @@ public class OnCommand extends Thread implements CommandExecutor {
     // private static Map<String, CuboidArea> PlayerSelectingWorldEdit = new HashMap();
     private static Map<String, Land> LandSelectioned = new HashMap();
     private static Map<String, List<LandMakeSquare>> LandSelectionedUI = new HashMap();
-    private static Map<String, LandExpansion> PlayerExpanding = new HashMap();
+    private static Map<String, LandExpansion> PlayerExpandingLand = new HashMap();
     private static Map<String, LandSetFlag> PlayerSetFlagUI = new HashMap();
     private static List<String> BannedWord = new ArrayList<>();
     private static List<String> AdminMod = new ArrayList<>();
@@ -105,7 +105,7 @@ public class OnCommand extends Thread implements CommandExecutor {
                 Player player = (Player) sender;
 
                 if (curArg.equalsIgnoreCase("select")) {
-                    new Select(player, argList);
+                    new CommandSelect(player, argList);
                     return true;
                 }
 
@@ -115,7 +115,7 @@ public class OnCommand extends Thread implements CommandExecutor {
                 }
 
                 if (curArg.equalsIgnoreCase("create")) {
-                    new Create(CreateType.LAND, player, argList);
+                    new CommandCreate(CreateType.LAND, player, argList);
                     return true;
                 }
 
@@ -216,19 +216,19 @@ public class OnCommand extends Thread implements CommandExecutor {
         }
         String curArg = argList.getNext();
 
-        if (!PlayerExpanding.containsKey(player.getName().toLowerCase())) {
+        if (!PlayerExpandingLand.containsKey(player.getName().toLowerCase())) {
             player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.EXPAND.JOINMODE"));
             player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.EXPAND.HINT", ChatColor.ITALIC.toString(), ChatColor.RESET.toString(), ChatColor.DARK_GRAY.toString()));
             log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.EXPAND.JOINMODE", player.getName()));
             LandExpansion expand = new LandExpansion(player, player.getServer(), plugin);
-            PlayerExpanding.put(player.getName().toLowerCase(), expand);
+            PlayerExpandingLand.put(player.getName().toLowerCase(), expand);
         } else if (curArg != null && curArg.equalsIgnoreCase("done")) {
             player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.EXPAND.COMPLETE"));
             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.EXPAND.QUITMODE"));
             log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.EXPAND.QUITMODE", player.getName()));
-            LandExpansion expand = PlayerExpanding.get(player.getName().toLowerCase());
-            expand.setSelected();
-            PlayerExpanding.remove(player.getName().toLowerCase());
+            LandExpansion expand = PlayerExpandingLand.get(player.getName().toLowerCase());
+            expand.setDone();
+            PlayerExpandingLand.remove(player.getName().toLowerCase());
         } else {
             throw new FactoidCommandException("COMMAND.EXPAND.ALREADY");
         }
@@ -239,7 +239,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         Land land;
         String playerNameLower = player.getName().toLowerCase();
 
-        if (PlayerExpanding.containsKey(playerNameLower)) {
+        if (PlayerExpandingLand.containsKey(playerNameLower)) {
             throw new FactoidCommandException("COMMAND.GENERAL.QUIT.EXPANDMODE");
 
         }
@@ -264,7 +264,7 @@ public class OnCommand extends Thread implements CommandExecutor {
 
         if (curArg.equalsIgnoreCase("add")) {
 
-            new Create(CreateType.AREA, player, argList);
+            new CommandCreate(CreateType.AREA, player, argList);
 
         } else if (curArg.equalsIgnoreCase("remove")) {
 
@@ -501,7 +501,7 @@ public class OnCommand extends Thread implements CommandExecutor {
 
     private void doCommandRemove(Player player, ArgList argList) throws FactoidCommandException {
 
-        if (!PlayerExpanding.containsKey(player.getName().toLowerCase())) {
+        if (!PlayerExpandingLand.containsKey(player.getName().toLowerCase())) {
             throw new FactoidCommandException("COMMAND.REMOVE.QUIT.EXPANDMODE");
         }
         if (LandSelectioned.containsKey(player.getName().toLowerCase())) {
@@ -717,8 +717,8 @@ public class OnCommand extends Thread implements CommandExecutor {
         return LandSelectionedUI;
     }
 
-    public static Map<String, LandExpansion> getPlayerExpanding() {
-        return PlayerExpanding;
+    public static Map<String, LandExpansion> getPlayerExpandingLand() {
+        return PlayerExpandingLand;
     }
 
     public static Map<String, LandSetFlag> getPlayerSetFlagUI() {

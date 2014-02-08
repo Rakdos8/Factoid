@@ -15,6 +15,7 @@ general:                             #----General Config----
   # be ignored.
   OverrideExplosions: true
   UseEconomy: false
+  UseWorldEdit: false
   InfoItem: 352                      # Item that give Land information
 land:
   PriorityOld: false

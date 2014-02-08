@@ -15,6 +15,7 @@ import me.tabinol.factoid.listeners.PlayerListener;
 import me.tabinol.factoid.listeners.WorldListener;
 import me.tabinol.factoid.storage.Storage;
 import me.tabinol.factoid.storage.StorageFlat;
+import me.tabinol.factoid.scoreboard.ScoreBoard;
 
 public class Factoid extends JavaPlugin {
 
@@ -36,6 +37,7 @@ public class Factoid extends JavaPlugin {
     private static Lands lands;
     private static String version;
     private static DependPlugin dependPlugin;
+    private static ScoreBoard Scoreboard;
 
     @Override
     public void onEnable() {
@@ -55,6 +57,7 @@ public class Factoid extends JavaPlugin {
         playerListener = new PlayerListener();
         landListener = new LandListener();
         CommandListener = new OnCommand();
+        Scoreboard = new ScoreBoard();
         getServer().getPluginManager().registerEvents(worldListener, this);
         getServer().getPluginManager().registerEvents(playerListener, this);
         getServer().getPluginManager().registerEvents(landListener, this);
@@ -94,6 +97,11 @@ public class Factoid extends JavaPlugin {
     public static Lang getLanguage() {
         
         return language;
+    }
+    
+    public static ScoreBoard getScoreboard() {
+        
+        return Scoreboard;
     }
     
     public static Log getLog() {

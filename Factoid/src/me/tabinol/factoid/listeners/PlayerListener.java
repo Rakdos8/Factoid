@@ -93,6 +93,12 @@ public class PlayerListener implements Listener {
 
         lastUpdate.put(player, 0L);
         handleNewLocation(event, player, player.getLocation(), true);
+        Land landScoreboard = Factoid.getLands().getLand(player.getLocation());
+        if(landScoreboard != null){
+            for(String playername : landScoreboard.getPlayersInLand()){
+                Factoid.getScoreboard().sendScoreboard(landScoreboard.getPlayersInLand(), Factoid.getThisPlugin().getServer().getPlayer(playername), landScoreboard.getName());
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -515,7 +521,7 @@ public class PlayerListener implements Listener {
         } else {
             landOld = lastLand.get(player);
         }
-        if (land != landOld || newPlayer) {
+        if (newPlayer || land != landOld) {
             isTp = event instanceof PlayerTeleportEvent;
             landEvent = new PlayerLandChangeEvent(landOld, land, player, lastLoc.get(player), loc, isTp);
             pm.callEvent(landEvent);

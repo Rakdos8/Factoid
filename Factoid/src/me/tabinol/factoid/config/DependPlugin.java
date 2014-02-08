@@ -11,14 +11,16 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 public class DependPlugin {
 
-    private final Plugin worldEdit;
+    private Plugin worldEdit = null;
     public static Permission permission = null;
     public static Economy economy = null;
     public static Chat chat = null;
     
     public DependPlugin() {
-
-        worldEdit = getPlugin("WorldEdit");
+        
+        if(Factoid.getConf().UseWorldEdit){
+            worldEdit = getPlugin("WorldEdit");
+        }
         setupPermissions();
         setupChat();
         setupEconomy();

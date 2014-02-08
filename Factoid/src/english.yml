@@ -1,6 +1,8 @@
 ENABLE: "Factoid is Enabled."
 DISABLE: "Factoid is Disabled."
 CONSOLE: "Hey Console! Wait...what?"
+SCOREBOARD:
+  LANDINFO: "Players List"
 COMMAND:
   NOTEXIST: "This command does not exist."
   GENERAL:
@@ -15,6 +17,7 @@ COMMAND:
     INVALID: "The page number is invalid!"
     PAGENULL: "No page selected"
   SELECT:
+    WORLDEDIT: "WorldEdit is disable."
     JOINMODE: "You are now in Select Mode."
     HINT: "Type % '/factoid select done' % % to confirm your choice."
     ALREADY: "You are already in Select Mode."
@@ -57,11 +60,11 @@ COMMAND:
     COLLISION: "Your selection have an collision with an another Land."
     DONE: "You have created your land."
     ALREADYUSE: "This Land name is already used."
-    HINTUSE: "/factoid create [land Name]"
+    HINTUSE: "/factoid create [Type] [Land Name]"
     NEEDNAME: "You have to provide a Land Name."
     SELECTMODE: "You must be in Select Mode before."
     NOPERMISSION: "You don't have the permission do create a Land."
-    PARENTNOTEXIST: "The parent cuboid doesn't exist."
+    PARENTNOTEXIST: "The parent land doesn't exist."
   FLAGS:
     JOINMODE: "You are now in Flags Mode."
     HINT: "Your modification will be instantany effective."

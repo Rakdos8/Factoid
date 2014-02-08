@@ -12,7 +12,7 @@ import me.tabinol.factoid.utilities.Log;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class Create {
+public class CommandCreate {
 
     private Player player;
     private CreateType createType;
@@ -26,7 +26,7 @@ public class Create {
     }
     Log log = Factoid.getLog();
 
-    public Create(CreateType createType, Player player, ArgList argList) throws FactoidCommandException {
+    public CommandCreate(CreateType createType, Player player, ArgList argList) throws FactoidCommandException {
 
         this.player = player;
         this.createType = createType;
@@ -36,9 +36,7 @@ public class Create {
         if (OnCommand.getPlayerSetFlagUI().containsKey(playerNameLower)) {
             throw new FactoidCommandException("COMMAND.CREATE.QUIT.FLAGMODE");
         }
-        if (!OnCommand.getPlayerSelectingLand().containsKey(playerNameLower) /* && !PlayerSelectingWorldEdit.containsKey(player.getName().toLowerCase()) */) {
-            throw new FactoidCommandException("COMMAND.CREATE.SELECTMODE");
-        }
+        
 
         // TEMPORAIRE seulement AdminMod pour le moment
         if (!OnCommand.isAdminMod(player)) {
@@ -48,8 +46,14 @@ public class Create {
         area = select.toCuboidArea();
 
         if (createType == CreateType.LAND) {
+            if (!OnCommand.getPlayerSelectingLand().containsKey(playerNameLower) /* && !PlayerSelectingWorldEdit.containsKey(player.getName().toLowerCase()) */) {
+                throw new FactoidCommandException("COMMAND.CREATE.SELECTMODE");
+            }
             doLand();
         } else if (createType == CreateType.AREA) {
+            if (!OnCommand.getPlayerExpandingLand().containsKey(playerNameLower) /* && !PlayerSelectingWorldEdit.containsKey(player.getName().toLowerCase()) */) {
+                throw new FactoidCommandException("COMMAND.AREA.SELECTMODE");
+            }
             doArea();
         }
 
