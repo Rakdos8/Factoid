@@ -4,6 +4,7 @@ version: 0.1
 description: Factoid
 author: [Kaz00,Tabinol]
 depend: [Vault]
+softdepend: [WorldEdit]
 commands:
    factoid:
       description: Factoid Command
@@ -17,10 +18,14 @@ permissions:
         default: op
         children:
             factoid.adminmod: true
+            factoid.adminmod.auto: true
             factoid.use: true
             factoid.reload: true
     factoid.adminmod:
         description: Can use Admin Mod
+        default: op
+    factoid.adminmod.auto:
+        description: Auto Admin Mod on connect
         default: op
     factoid.use:
         description: Can use factoid command

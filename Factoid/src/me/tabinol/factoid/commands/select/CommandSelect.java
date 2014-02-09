@@ -62,7 +62,7 @@ public class CommandSelect extends Thread {
                         throw new FactoidCommandException("COMMAND.SELECT.NOLAND");
                     }
                     PlayerContainer owner = landtest.getOwner();
-                    if (!owner.hasAccess(player.getName()) && !OnCommand.isAdminMod(player)) {
+                    if (!owner.hasAccess(player.getName()) && !Factoid.getPlayerConf().isAdminMod(player)) {
                         throw new FactoidCommandException("COMMAND.SELECT.MISSINGPERMISSION");
                     }
                     if (!OnCommand.getLandSelectioned().containsKey(player.getName().toLowerCase())) {

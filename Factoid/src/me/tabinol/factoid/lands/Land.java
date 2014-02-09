@@ -1,6 +1,7 @@
 package me.tabinol.factoid.lands;
 
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -13,6 +14,7 @@ import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.listeners.PlayerListener;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
+import me.tabinol.factoid.playercontainer.PlayerContainerNobody;
 import me.tabinol.factoid.storage.Storage;
 import org.bukkit.Location;
 
@@ -52,6 +54,16 @@ public class Land extends DummyLand {
             copyPerms();
         }
         addArea(area, areaId);
+    }
+
+    public void setDefault() {
+        owner = new PlayerContainerNobody();
+        residents = new TreeSet<>();
+        playerNotify = new TreeSet<>();
+        permissions = new TreeMap<>();
+        flags = Factoid.getLands().defaultConf.flags.clone();
+        copyPerms();
+        doSave();
     }
 
     private void copyPerms() {

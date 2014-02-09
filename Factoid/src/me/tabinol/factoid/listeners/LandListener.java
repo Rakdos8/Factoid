@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.OnCommand;
+import me.tabinol.factoid.config.PlayerConfig;
 import me.tabinol.factoid.event.PlayerContainerAddNoEnterEvent;
 import me.tabinol.factoid.event.PlayerContainerLandBanEvent;
 import me.tabinol.factoid.event.PlayerLandChangeEvent;
@@ -23,8 +24,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class LandListener implements Listener {
 
-    private ArrayList<Player> playerHeal;
-    private LandHeal landHeal;
+    private final ArrayList<Player> playerHeal;
+    private final LandHeal landHeal;
+    private final PlayerConfig playerConf;
 
     private class LandHeal extends BukkitRunnable {
 
@@ -63,6 +65,7 @@ public class LandListener implements Listener {
     public LandListener() {
 
         super();
+        playerConf = Factoid.getPlayerConf();
         playerHeal = new ArrayList<>();
         landHeal = new LandHeal();
         landHeal.runTaskTimer(Factoid.getThisPlugin(), 20, 20);
@@ -84,7 +87,6 @@ public class LandListener implements Listener {
         OnCommand.getLandSelectionedUI().remove(playerNameLower);
         OnCommand.getPlayerExpandingLand().remove(playerNameLower);
         OnCommand.getPlayerSetFlagUI().remove(playerNameLower);
-        OnCommand.getAdminMod().remove(playerNameLower);
         OnCommand.getRemoveList().remove(playerNameLower);
         OnCommand.getChatPageList().remove(player);
         OnCommand.getLandSelectConfig().remove(playerNameLower);
@@ -108,7 +110,7 @@ public class LandListener implements Listener {
             }
 
             //Notify players for exit
-            if (!OnCommand.isAdminMod(player)) {
+            if (!playerConf.isAdminMod(player)) {
                 notifyPlayers(lastLand, "ACTION.PLAYEREXIT", player);
             }
             
@@ -120,7 +122,7 @@ public class LandListener implements Listener {
         if (land != null) {
             dummyLand = land;
 
-            if (!OnCommand.isAdminMod(player)) {
+            if (!playerConf.isAdminMod(player)) {
                 // is banned or can enter
                 if ((land.isBanned(player.getName())
                         || land.checkPermissionAndInherit(player.getName(), PermissionType.LAND_ENTER) != PermissionType.LAND_ENTER.baseValue())
@@ -190,7 +192,7 @@ public class LandListener implements Listener {
         for (Player players : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
             if (pc.hasAccess(players.getName())
                     && !land.isOwner(players.getName())
-                    && !OnCommand.isAdminMod(players)) {
+                    && !playerConf.isAdminMod(players)) {
                 tpSpawn(players, land, message);
             }
         }

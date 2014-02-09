@@ -39,7 +39,7 @@ public class CommandCreate {
         
 
         // TEMPORAIRE seulement AdminMod pour le moment
-        if (!OnCommand.isAdminMod(player)) {
+        if (!Factoid.getPlayerConf().isAdminMod(player)) {
             throw new FactoidCommandException("COMMAND.CREATE.NOPERMISSION");
         }
         LandSelection select = OnCommand.getPlayerSelectingLand().get(playerNameLower);

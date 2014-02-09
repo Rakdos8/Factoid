@@ -29,7 +29,7 @@ import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 
 import me.tabinol.factoid.commands.select.CommandSelect;
-import me.tabinol.factoid.event.PlayerContainerLandBanEvent;
+import me.tabinol.factoid.config.PlayerConfig;
 import me.tabinol.factoid.lands.permissions.Permission;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
@@ -46,7 +46,6 @@ public class OnCommand extends Thread implements CommandExecutor {
     private static Map<String, LandExpansion> PlayerExpandingLand = new HashMap();
     private static Map<String, LandSetFlag> PlayerSetFlagUI = new HashMap();
     private static List<String> BannedWord = new ArrayList<>();
-    private static List<String> AdminMod = new ArrayList<>();
     private static Map<String, String> RemoveList = new HashMap();
     private static Map<Player, ChatPage> chatPageList = new HashMap();
     private static Map<String, Land> landSelectConfig = new HashMap(); //Select for flags/permisson/ban/etc. Not for resize
@@ -71,6 +70,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         BannedWord.add("set");
         BannedWord.add("unset");
         BannedWord.add("list");
+        BannedWord.add("default");
         log = Factoid.getLog();
         plugin = Factoid.getThisPlugin();
     }
@@ -176,6 +176,10 @@ public class OnCommand extends Thread implements CommandExecutor {
 
                 if (curArg.equalsIgnoreCase("page")) {
                     doCommandPage(player, argList);
+                    return true;
+                }
+                if (curArg.equalsIgnoreCase("default")) {
+                    doCommandDefault(player);
                     return true;
                 }
 
@@ -306,7 +310,7 @@ public class OnCommand extends Thread implements CommandExecutor {
 
         Land land = getLandSelected(player);
 
-        if (!player.getName().equalsIgnoreCase(land.getOwner().getName()) && !isAdminMod(player)) {
+        if (!player.getName().equalsIgnoreCase(land.getOwner().getName()) && !Factoid.getPlayerConf().isAdminMod(player)) {
             throw new FactoidCommandException("COMMAND.OWNER.MISSINGPERMISSION");
         }
 
@@ -316,6 +320,19 @@ public class OnCommand extends Thread implements CommandExecutor {
         land.setOwner(pc);
         player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.OWNER.ISDONE", pc.getPrint(), land.getName()));
         log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.OWNER.ISDONE", pc.getPrint(), land.getName()));
+    }
+
+    private void doCommandDefault(Player player) throws FactoidCommandException {
+
+        Land land = getLandSelected(player);
+
+        if (!Factoid.getPlayerConf().isAdminMod(player)) {
+            throw new FactoidCommandException("COMMAND.SETDEFAULT.MISSINGPERMISSION");
+        }
+
+        land.setDefault();
+        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SETDEFAULT.ISDONE", land.getName()));
+        log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.SETDEFAULT.ISDONE", land.getName()));
     }
 
     private void doCommandFlag(Player player, ArgList argList) throws FactoidCommandException {
@@ -333,12 +350,12 @@ public class OnCommand extends Thread implements CommandExecutor {
             PlayerSetFlagUI.put(player.getName().toLowerCase(), setting);
         } else if (curArg.equalsIgnoreCase("set")) {
             //factoid flags set lol true
-            LandFlag landFlag = argList.getFlagFromArg(isAdminMod(player), land.isOwner(player.getName()));
+            LandFlag landFlag = argList.getFlagFromArg(Factoid.getPlayerConf().isAdminMod(player), land.isOwner(player.getName()));
             land.addFlag(landFlag);
             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.ISDONE", landFlag.getFlagType().toString(), landFlag.getValueString()));
             log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.FLAGS.ISDONE", landFlag.getFlagType().toString(), landFlag.getValueString()));
         } else if (curArg.equalsIgnoreCase("unset")) {
-            FlagType flagType = argList.getFlagTypeFromArg(isAdminMod(player), land.isOwner(player.getName()));
+            FlagType flagType = argList.getFlagTypeFromArg(Factoid.getPlayerConf().isAdminMod(player), land.isOwner(player.getName()));
             if (!land.removeFlag(flagType)) {
                 throw new FactoidCommandException("COMMAND.FLAGS.REMOVENOTEXIST"); // ****** AJOUTER dans lang (et les 3 suivants) ********
             }
@@ -370,7 +387,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         if (argList.length() < 2 && false) {
         } else if (curArg.equalsIgnoreCase("set")) {
             PlayerContainer pc = argList.getPlayerContainerFromArg(land, null);
-            Permission perm = argList.getPermissionFromArg(isAdminMod(player), land.isOwner(player.getName()));
+            Permission perm = argList.getPermissionFromArg(Factoid.getPlayerConf().isAdminMod(player), land.isOwner(player.getName()));
             if(perm.getPermType() == PermissionType.LAND_ENTER
                     && perm.getValue() != perm.getPermType().baseValue() 
                     && land.isLocationInside(land.getWord().getSpawnLocation())) {
@@ -382,7 +399,7 @@ public class OnCommand extends Thread implements CommandExecutor {
             
         } else if (curArg.equalsIgnoreCase("unset")) {
             PlayerContainer pc = argList.getPlayerContainerFromArg(land, null);
-            PermissionType pt = argList.getPermissionTypeFromArg(isAdminMod(player), land.isOwner(player.getName()));
+            PermissionType pt = argList.getPermissionTypeFromArg(Factoid.getPlayerConf().isAdminMod(player), land.isOwner(player.getName()));
             if (!land.removePermission(pc, pt)) {
                 throw new FactoidCommandException("COMMAND.PERMISSION.REMOVENOTEXIST"); // ****** AJOUTER dans lang (et les 3 suivants) ********
             }
@@ -410,7 +427,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         Land land = getLandSelected(player);
         String curArg = argList.getNext();
 
-        if (!player.getName().equalsIgnoreCase(land.getOwner().getName()) && !isAdminMod(player)
+        if (!player.getName().equalsIgnoreCase(land.getOwner().getName()) && !Factoid.getPlayerConf().isAdminMod(player)
                 && !land.checkPermissionAndInherit(player.getName(), PermissionType.RESIDENT_MANAGER)) {
             throw new FactoidCommandException("COMMAND.RESIDENT.MISSINGPERMISSION");
         }
@@ -455,7 +472,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         Land land = getLandSelected(player);
         String curArg = argList.getNext();
 
-        if (!player.getName().equalsIgnoreCase(land.getOwner().getName()) && !isAdminMod(player)
+        if (!player.getName().equalsIgnoreCase(land.getOwner().getName()) && !Factoid.getPlayerConf().isAdminMod(player)
                 && !land.checkPermissionAndInherit(player.getName(), PermissionType.LAND_BAN)) {
             throw new FactoidCommandException("COMMAND.BANNED.MISSINGPERMISSION");
         }
@@ -586,13 +603,15 @@ public class OnCommand extends Thread implements CommandExecutor {
 
     private void doCommandAdminmod(Player player) throws FactoidCommandException {
 
+        PlayerConfig pc = Factoid.getPlayerConf();
+        
         checkBukkitPermission(player, "factoid.adminmod", "COMMAND.ADMINMOD.NOPERMISSION");
-        if (isAdminMod(player)) {
-            AdminMod.remove(player.getName().toLowerCase());
+        if (pc.isAdminMod(player)) {
+            pc.removeAdminMod(player);
             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ADMINMOD.QUIT"));
         } else {
             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ADMINMOD.JOIN"));
-            AdminMod.add(player.getName().toLowerCase());
+            pc.addAdminMod(player);
         }
     }
 
@@ -680,23 +699,6 @@ public class OnCommand extends Thread implements CommandExecutor {
         }
     }
 
-    public static boolean isAdminMod(Player player) {
-
-        String playerNameLow = player.getName().toLowerCase();
-
-        if (AdminMod.contains(playerNameLow)) {
-            // Check if the player losts his permission
-            if (!player.hasPermission("factoid.adminmod")) {
-                AdminMod.remove(playerNameLow);
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public static List<String> getBannedWord() {
 
         return BannedWord;
@@ -723,10 +725,6 @@ public class OnCommand extends Thread implements CommandExecutor {
 
     public static Map<String, LandSetFlag> getPlayerSetFlagUI() {
         return PlayerSetFlagUI;
-    }
-
-    public static List<String> getAdminMod() {
-        return AdminMod;
     }
 
     public static Map<String, String> getRemoveList() {

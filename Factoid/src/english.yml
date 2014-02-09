@@ -115,6 +115,9 @@ COMMAND:
   OWNER:
     MISSINGPERMISSION: "You must have the permission to execute this action."
     ISDONE: "the owner is now '%' for the land '%'."
+  SETDEFAULT:
+    MISSINGPERMISSION: "You must have the permission to execute this action."
+    ISDONE: "The land '%' has now the default configuration."
   BANNED:
     MISSINGINFO: "Some information is missing. Check your command again."
     LAND:
@@ -218,6 +221,9 @@ LOG:
       DONE:
         LAND: "% have removed land named '%'"
         AREA: "% have removed area (%) in the land named '%'"
+    SETDEFAULT:
+      ISDONE: "% have set the land '%' to the default configuration."
+  
   FACTION:
     ADD:
       PLAYER: "Adding '%' to the Faction '%'."

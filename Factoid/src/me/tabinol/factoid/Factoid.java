@@ -8,6 +8,7 @@ import me.tabinol.factoid.utilities.Log;
 import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.config.DependPlugin;
+import me.tabinol.factoid.config.PlayerConfig;
 import me.tabinol.factoid.factions.Factions;
 import me.tabinol.factoid.lands.Lands;
 import me.tabinol.factoid.listeners.LandListener;
@@ -31,6 +32,7 @@ public class Factoid extends JavaPlugin {
     private static Log log;
     private static Factoid thisPlugin;
     private static Config conf;
+    private static PlayerConfig playerConf;
     private static Lang language;
     // Access to Factions and Lands (static)
     private static Factions factions;
@@ -46,6 +48,7 @@ public class Factoid extends JavaPlugin {
         thisPlugin = this;
         version = this.getDescription().getVersion();
         conf = new Config();
+        playerConf = new PlayerConfig();
         log = new Log();
         dependPlugin = new DependPlugin();
         language = new Lang();
@@ -92,6 +95,11 @@ public class Factoid extends JavaPlugin {
     public static Config getConf() {
         
         return conf;
+    }
+    
+    public static PlayerConfig getPlayerConf() {
+        
+        return playerConf;
     }
     
     public static Lang getLanguage() {
