@@ -88,8 +88,8 @@ public class StorageFlat extends Storage implements StorageInt {
                         br.close();
                         loadedfactions++;
                     }
-                } catch (IOException ex) {
-                    Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "On loading " + file.getName(), ex);
                     Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.FACTION.ERROR", ex.getMessage()));
                 }
             }
@@ -121,8 +121,8 @@ public class StorageFlat extends Storage implements StorageInt {
                             br.close();
                             loadedlands++;
                         }
-                    } catch (IOException ex) {
-                        Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (Exception ex) {
+                        Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "On loading " + file.getName(), ex);
                         Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.LAND.ERROR", ex.getMessage()));
                     }
                 }
