@@ -110,8 +110,8 @@ public class StorageFlat extends Storage implements StorageInt {
         }
 
         while (!empty) {
+            empty = true;
             for (File file : files) {
-                empty = true;
                 if (file.isFile() && file.getName().toLowerCase().endsWith(pass + EXT_CONF)) {
                     empty = false;
                     try {
