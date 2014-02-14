@@ -17,7 +17,6 @@ COMMAND:
     INVALID: "The page number is invalid!"
     PAGENULL: "No page selected"
   SELECT:
-    WORLDEDIT: "WorldEdit is disable."
     JOINMODE: "You are now in Select Mode."
     HINT: "Type % '/factoid select done' % % to confirm your choice."
     ALREADY: "You are already in Select Mode."
@@ -152,8 +151,9 @@ COMMAND:
     JOIN:
       SELECTMODE: "you are already in the Select Mode."
     DUPLICATION: "finish your removal before do an another one."
-    REMOVENULL: "Choose one of these option: Remove Area , Remove Land."
+    # REMOVENULL: "Choose one of these option: Remove Area , Remove Land."
     CONFIRM: "To confirm your choice, type /factoid confirm or to cancel type /factoid cancel ."
+    MISSINGPERMISSION: "You must have the permission to execute this action."
     CANCEL: "you have canceled your action."
   CURRENT:
     LAND:
@@ -218,9 +218,9 @@ LOG:
         AREA: "% have remove the area '%' in the land '%'."
     REMOVE:
       CANCEL: "you have canceled your action."
-      DONE:
-        LAND: "% have removed land named '%'"
-        AREA: "% have removed area (%) in the land named '%'"
+      # DONE:
+      #   LAND: "% have removed land named '%'"
+      #   AREA: "% have removed area (%) in the land named '%'"
     SETDEFAULT:
       ISDONE: "% have set the land '%' to the default configuration."
   

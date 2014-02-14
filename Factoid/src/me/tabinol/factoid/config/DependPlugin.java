@@ -15,12 +15,10 @@ public class DependPlugin {
     public static Permission permission = null;
     public static Economy economy = null;
     public static Chat chat = null;
-    
+
     public DependPlugin() {
-        
-        if(Factoid.getConf().UseWorldEdit){
-            worldEdit = getPlugin("WorldEdit");
-        }
+
+        worldEdit = getPlugin("WorldEdit");
         setupPermissions();
         setupChat();
         setupEconomy();
@@ -30,7 +28,7 @@ public class DependPlugin {
 
         Plugin plugin = Factoid.getThisPlugin().getServer().getPluginManager().getPlugin(pluginName);
 
-        if(plugin != null) {
+        if (plugin != null) {
             Factoid.getThisPlugin().getServer().getPluginManager().enablePlugin(plugin);
             Factoid.getLog().write(pluginName + " detected!");
             Factoid.getThisPlugin().getLogger().log(Level.INFO, pluginName + " detected!");
@@ -38,17 +36,16 @@ public class DependPlugin {
             Factoid.getLog().write(pluginName + " NOT detected!");
             Factoid.getThisPlugin().getLogger().log(Level.INFO, pluginName + " NOT Detected!");
         }
-        
+
         return plugin;
     }
-    
+
     public Plugin getWorldEdit() {
-        
+
         return worldEdit;
     }
-    
-    private boolean setupPermissions()
-    {
+
+    private boolean setupPermissions() {
         RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
         if (permissionProvider != null) {
             permission = permissionProvider.getProvider();
@@ -56,8 +53,7 @@ public class DependPlugin {
         return (permission != null);
     }
 
-    private boolean setupChat()
-    {
+    private boolean setupChat() {
         RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
         if (chatProvider != null) {
             chat = chatProvider.getProvider();
@@ -66,8 +62,7 @@ public class DependPlugin {
         return (chat != null);
     }
 
-    private boolean setupEconomy()
-    {
+    private boolean setupEconomy() {
         RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
         if (economyProvider != null) {
             economy = economyProvider.getProvider();
@@ -75,6 +70,5 @@ public class DependPlugin {
 
         return (economy != null);
     }
-
 
 }

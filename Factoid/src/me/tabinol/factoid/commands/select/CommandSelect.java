@@ -8,11 +8,13 @@ import me.tabinol.factoid.commands.FactoidCommandException;
 import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.lands.selection.LandMakeSquare;
 import me.tabinol.factoid.lands.selection.LandSelection;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 
 /* Note pour Kaz00 : J'ai fait la classe "FactoidCommandException" qui permet de "trower"
  * les erreurs sans aller plus loin et le joueur ressoit le message en rouge.
@@ -27,34 +29,40 @@ public class CommandSelect extends Thread {
 
     private Player player;
 
-    public CommandSelect(Player player, ArgList argList) throws FactoidCommandException {
+    // Location is only of the selection is with an item
+    public CommandSelect(Player player, ArgList argList, Location location) throws FactoidCommandException {
 
         this.player = player;
         String curArg;
 
-        if (OnCommand.getPlayerSetFlagUI().containsKey(player.getName().toLowerCase())) {
+        if (OnCommand.getPlayerSetFlagUI().containsKey(player)) {
             throw new FactoidCommandException("COMMAND.SELECT.QUIT.FLAGSMODE");
         }
-        if (OnCommand.getPlayerExpandingLand().containsKey(player.getName().toLowerCase())) {
+        if (OnCommand.getPlayerExpandingLand().containsKey(player)) {
             throw new FactoidCommandException("COMMAND.SELECT.QUIT.EXPENDMODE");
         }
-        
-        if (!OnCommand.getPlayerSelectingLand().containsKey(player.getName().toLowerCase()) /* && !OnCommand.getPlayerSelectingWorldEdit().containsKey(player.getName().toLowerCase()) */) {
+
+        if (!OnCommand.getPlayerSelectingLand().containsKey(player) /* && !OnCommand.getPlayerSelectingWorldEdit().containsKey(player.getName().toLowerCase()) */) {
 
             Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.COMMAND.SELECT.JOIN", player.getName()));
             if (!argList.isLast()) {
                 curArg = argList.getNext();
                 if (curArg.equalsIgnoreCase("worldedit")) {
-                    if(Factoid.getConf().UseWorldEdit){
-                        new WorldEditSelect(player);
-                    }else{
-                        player.sendMessage(Factoid.getLanguage().getMessage("LOG.COMMAND.SELECT.WORLDEDIT"));
+                    if (Factoid.getDependPlugin().getWorldEdit() == null) {
+                        throw new FactoidCommandException("COMMAND.SELECT.WORLDEDIT.NOTLOAD");
                     }
+                    new WorldEditSelect(player);
                 } else {
                     Land landtest;
                     if (curArg.equalsIgnoreCase("here")) {
                         // add select Here to select the the cuboid
-                        landtest = Factoid.getLands().getLand(player.getLocation());
+                        if (location != null) {
+                            // With an item
+                            landtest = Factoid.getLands().getLand(location);
+                        } else {
+                            // Player location
+                            landtest = Factoid.getLands().getLand(player.getLocation());
+                        }
                     } else {
                         landtest = Factoid.getLands().getLand(curArg.toString());
                     }
@@ -62,19 +70,20 @@ public class CommandSelect extends Thread {
                         throw new FactoidCommandException("COMMAND.SELECT.NOLAND");
                     }
                     PlayerContainer owner = landtest.getOwner();
-                    if (!owner.hasAccess(player.getName()) && !Factoid.getPlayerConf().isAdminMod(player)) {
+                    if (!owner.hasAccess(player.getName()) && !Factoid.getPlayerConf().isAdminMod(player)
+                            && !landtest.checkPermissionAndInherit(player.getName(), PermissionType.RESIDENT_MANAGER)) {
                         throw new FactoidCommandException("COMMAND.SELECT.MISSINGPERMISSION");
                     }
-                    if (!OnCommand.getLandSelectioned().containsKey(player.getName().toLowerCase())) {
-                        OnCommand.getLandSelectioned().put(player.getName().toLowerCase(), landtest);
+                    if (!OnCommand.getLandSelectioned().containsKey(player)) {
+                        OnCommand.getLandSelectioned().put(player, landtest);
                         List<LandMakeSquare> listdummy = new ArrayList<LandMakeSquare>();
                         for (CuboidArea area : landtest.getAreas()) {
-                            LandMakeSquare landmake = new LandMakeSquare(player, null, 
+                            LandMakeSquare landmake = new LandMakeSquare(player, null,
                                     area.getX1(), area.getX2(), area.getY1(), area.getY2(), area.getZ1(), area.getZ2(), true);
                             landmake.makeSquare();
                             listdummy.add(landmake);
                         }
-                        OnCommand.getLandSelectionedUI().put(player.getName().toLowerCase(), listdummy);
+                        OnCommand.getLandSelectionedUI().put(player, listdummy);
 
                         player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.SELECTIONEDLAND", landtest.getName()));
                     } else {
@@ -85,11 +94,11 @@ public class CommandSelect extends Thread {
                 player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.JOINMODE"));
                 player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.HINT", ChatColor.ITALIC.toString(), ChatColor.RESET.toString(), ChatColor.DARK_GRAY.toString()));
                 LandSelection select = new LandSelection(player);
-                OnCommand.getPlayerSelectingLand().put(player.getName().toLowerCase(), select);
+                OnCommand.getPlayerSelectingLand().put(player, select);
             }
         } else if ((curArg = argList.getNext()) != null && curArg.equalsIgnoreCase("done")) {
             if (true /* !OnCommand.getPlayerSelectingWorldEdit().containsKey(player.getName().toLowerCase()) */) {
-                if (OnCommand.getLandSelectioned().containsKey(player.getName().toLowerCase())) {
+                if (OnCommand.getLandSelectioned().containsKey(player)) {
                     throw new FactoidCommandException("COMMAND.SELECT.CANTDONE");
                 }
                 // if (!Factoid.getConf().CanMakeCollision) {
@@ -117,7 +126,7 @@ public class CommandSelect extends Thread {
 
     private void doSelectDone() throws FactoidCommandException {
 
-        LandSelection select = OnCommand.getPlayerSelectingLand().get(player.getName().toLowerCase());
+        LandSelection select = OnCommand.getPlayerSelectingLand().get(player);
 
         if (!select.getCollision()) {
 

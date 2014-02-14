@@ -31,9 +31,9 @@ public class Config {
     public String Lang = "english";
     public boolean UseEconomy = false;
     public int InfoItem = 352;
+    public int SelectItem = 367;
     public boolean PriorityOld = false;
     public boolean CanMakeCollision = false;
-    public boolean UseWorldEdit = false;
     public int MaxLand = 1;
     public int MinLandSize = 1;
     public int MaxLandSize = 1;
@@ -85,9 +85,9 @@ public class Config {
         Lang = config.getString("general.lang");
         UseEconomy = config.getBoolean("general.UseEconomy");
         InfoItem = config.getInt("general.InfoItem");
+        SelectItem = config.getInt("general.SelectItem");
         PriorityOld = config.getBoolean("land.PriorityOld");
         CanMakeCollision = config.getBoolean("land.CanMakeCollision");
-        UseWorldEdit = config.getBoolean("UseWorldEdit");
         MaxLand = config.getInt("land.MaxLand");
         MinLandSize = config.getInt("land.MinLandSize");
         MaxLandSize = config.getInt("land.MaxLandSize");

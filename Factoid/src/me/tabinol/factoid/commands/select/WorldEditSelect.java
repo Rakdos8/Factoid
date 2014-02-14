@@ -44,7 +44,7 @@ public class WorldEditSelect {
             LandSelection select = new LandSelection(player,
                     sel.getMinimumPoint().getBlockX(), sel.getMaximumPoint().getBlockX(), sel.getMinimumPoint().getBlockY(),
                     sel.getMaximumPoint().getBlockY(), sel.getMaximumPoint().getBlockZ(), sel.getMinimumPoint().getBlockZ());
-            OnCommand.getPlayerSelectingLand().put(player.getName().toLowerCase(), select);
+            OnCommand.getPlayerSelectingLand().put(player, select);
             select.setSelected();
 
         } catch (IncompleteRegionException ex) {

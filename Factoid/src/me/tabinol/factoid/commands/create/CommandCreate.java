@@ -31,9 +31,8 @@ public class CommandCreate {
         this.player = player;
         this.createType = createType;
         this.argList = argList;
-        String playerNameLower = player.getName().toLowerCase();
 
-        if (OnCommand.getPlayerSetFlagUI().containsKey(playerNameLower)) {
+        if (OnCommand.getPlayerSetFlagUI().containsKey(player)) {
             throw new FactoidCommandException("COMMAND.CREATE.QUIT.FLAGMODE");
         }
         
@@ -42,23 +41,23 @@ public class CommandCreate {
         if (!Factoid.getPlayerConf().isAdminMod(player)) {
             throw new FactoidCommandException("COMMAND.CREATE.NOPERMISSION");
         }
-        LandSelection select = OnCommand.getPlayerSelectingLand().get(playerNameLower);
+        LandSelection select = OnCommand.getPlayerSelectingLand().get(player);
         area = select.toCuboidArea();
 
         if (createType == CreateType.LAND) {
-            if (!OnCommand.getPlayerSelectingLand().containsKey(playerNameLower) /* && !PlayerSelectingWorldEdit.containsKey(player.getName().toLowerCase()) */) {
+            if (!OnCommand.getPlayerSelectingLand().containsKey(player) /* && !PlayerSelectingWorldEdit.containsKey(player.getName().toLowerCase()) */) {
                 throw new FactoidCommandException("COMMAND.CREATE.SELECTMODE");
             }
             doLand();
         } else if (createType == CreateType.AREA) {
-            if (!OnCommand.getPlayerExpandingLand().containsKey(playerNameLower) /* && !PlayerSelectingWorldEdit.containsKey(player.getName().toLowerCase()) */) {
+            if (!OnCommand.getPlayerSelectingLand().containsKey(player) /* && !PlayerSelectingWorldEdit.containsKey(player.getName().toLowerCase()) */) {
                 throw new FactoidCommandException("COMMAND.AREA.SELECTMODE");
             }
             doArea();
         }
 
         // Quit select mod
-        OnCommand.getPlayerSelectingLand().remove(player.getName().toLowerCase());
+        OnCommand.getPlayerSelectingLand().remove(player);
         select.resetSelection();
 
         log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.QUITMODE", player.getName()));
@@ -223,16 +222,13 @@ public class CommandCreate {
             throw new FactoidCommandException("COMMAND.CREATE.ERROR");
         }
 
-        // Put the land in select for config
-        OnCommand.getLandSelectConfig().put(player.getName().toLowerCase(), land);
-
         player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.DONE"));
         log.write(Factoid.getLanguage().getMessage("LOG.COMMAND.CREATE.DONE", player.getName(), land.getName(), land.toString()));
     }
 
     private void doArea() throws FactoidCommandException {
 
-        Land land = OnCommand.getLandSelectConfig().get(player.getName().toLowerCase());
+        Land land = OnCommand.getLandSelectioned().get(player);
 
         if (land == null) {
             throw new FactoidCommandException("COMMAND.CREATE.AREA.LANDNOTSELECT");
