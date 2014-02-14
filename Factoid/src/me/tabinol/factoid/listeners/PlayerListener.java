@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ArgList;
-import me.tabinol.factoid.commands.FactoidCommandException;
+import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.commands.select.CommandSelect;
 import me.tabinol.factoid.config.Config;
@@ -181,9 +181,8 @@ public class PlayerListener implements Listener {
                     && action == Action.LEFT_CLICK_BLOCK
                     && player.getItemInHand().getTypeId() == conf.SelectItem) {
                 try {
-                    new CommandSelect(player, new ArgList(new String[]{"here"}), event.getClickedBlock().getLocation());
+                    new CommandSelect(player, new ArgList(new String[]{"here"}, player), event.getClickedBlock().getLocation());
                 } catch (FactoidCommandException ex) {
-                    OnCommand.doCommandException(player, ex);
                 }
                 event.setCancelled(true);
 
@@ -196,7 +195,6 @@ public class PlayerListener implements Listener {
                 try {
                     OnCommand.doCommandCancel(player);
                 } catch (FactoidCommandException ex) {
-                    OnCommand.doCommandException(player, ex);
                 }
                 event.setCancelled(true);
 

@@ -2,7 +2,7 @@ package me.tabinol.factoid.commands.create;
 
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ArgList;
-import me.tabinol.factoid.commands.FactoidCommandException;
+import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.lands.Land;
@@ -33,25 +33,25 @@ public class CommandCreate {
         this.argList = argList;
 
         if (OnCommand.getPlayerSetFlagUI().containsKey(player)) {
-            throw new FactoidCommandException("COMMAND.CREATE.QUIT.FLAGMODE");
+            throw new FactoidCommandException("CommandCreate", player, "COMMAND.CREATE.QUIT.FLAGMODE");
         }
         
 
         // TEMPORAIRE seulement AdminMod pour le moment
         if (!Factoid.getPlayerConf().isAdminMod(player)) {
-            throw new FactoidCommandException("COMMAND.CREATE.NOPERMISSION");
+            throw new FactoidCommandException("CommandCreate", player, "COMMAND.CREATE.NOPERMISSION");
         }
         LandSelection select = OnCommand.getPlayerSelectingLand().get(player);
         area = select.toCuboidArea();
 
         if (createType == CreateType.LAND) {
             if (!OnCommand.getPlayerSelectingLand().containsKey(player) /* && !PlayerSelectingWorldEdit.containsKey(player.getName().toLowerCase()) */) {
-                throw new FactoidCommandException("COMMAND.CREATE.SELECTMODE");
+                throw new FactoidCommandException("CommandCreate", player, "COMMAND.CREATE.SELECTMODE");
             }
             doLand();
         } else if (createType == CreateType.AREA) {
             if (!OnCommand.getPlayerSelectingLand().containsKey(player) /* && !PlayerSelectingWorldEdit.containsKey(player.getName().toLowerCase()) */) {
-                throw new FactoidCommandException("COMMAND.AREA.SELECTMODE");
+                throw new FactoidCommandException("CommandCreate", player, "COMMAND.AREA.SELECTMODE");
             }
             doArea();
         }
@@ -196,11 +196,11 @@ public class CommandCreate {
     private void doLand() throws FactoidCommandException {
 
         if (argList.isLast()) {
-            throw new FactoidCommandException("COMMAND.CREATE.NEEDNAME");
+            throw new FactoidCommandException("CommandCreate", player, "COMMAND.CREATE.NEEDNAME");
         }
         String curArg = argList.getNext();
         if (OnCommand.getBannedWord().contains(curArg.toLowerCase())) {
-            throw new FactoidCommandException("COMMAND.CREATE.HINTUSE");
+            throw new FactoidCommandException("CommandCreate", player, "COMMAND.CREATE.HINTUSE");
         }
 
         Land parent = null;
@@ -211,7 +211,7 @@ public class CommandCreate {
             parent = Factoid.getLands().getLand(argList.getNext());
 
             if (parent == null) {
-                throw new FactoidCommandException("COMMAND.CREATE.PARENTNOTEXIST");
+                throw new FactoidCommandException("CommandCreate", player, "COMMAND.CREATE.PARENTNOTEXIST");
             }
         }
 
@@ -219,7 +219,7 @@ public class CommandCreate {
         Land land = Factoid.getLands().createLand(curArg, new PlayerContainerPlayer(player.getName()), area, parent);
 
         if (land == null) {
-            throw new FactoidCommandException("COMMAND.CREATE.ERROR");
+            throw new FactoidCommandException("CommandCreate", player, "COMMAND.CREATE.ERROR");
         }
 
         player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.DONE"));
@@ -231,7 +231,7 @@ public class CommandCreate {
         Land land = OnCommand.getLandSelectioned().get(player);
 
         if (land == null) {
-            throw new FactoidCommandException("COMMAND.CREATE.AREA.LANDNOTSELECT");
+            throw new FactoidCommandException("CommandCreate", player, "COMMAND.CREATE.AREA.LANDNOTSELECT");
         }
 
         // Add area

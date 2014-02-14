@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ArgList;
-import me.tabinol.factoid.commands.FactoidCommandException;
+import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.lands.CuboidArea;
 import me.tabinol.factoid.lands.Land;
@@ -36,10 +36,10 @@ public class CommandSelect extends Thread {
         String curArg;
 
         if (OnCommand.getPlayerSetFlagUI().containsKey(player)) {
-            throw new FactoidCommandException("COMMAND.SELECT.QUIT.FLAGSMODE");
+            throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.QUIT.FLAGSMODE");
         }
         if (OnCommand.getPlayerExpandingLand().containsKey(player)) {
-            throw new FactoidCommandException("COMMAND.SELECT.QUIT.EXPENDMODE");
+            throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.QUIT.EXPENDMODE");
         }
 
         if (!OnCommand.getPlayerSelectingLand().containsKey(player) /* && !OnCommand.getPlayerSelectingWorldEdit().containsKey(player.getName().toLowerCase()) */) {
@@ -49,7 +49,7 @@ public class CommandSelect extends Thread {
                 curArg = argList.getNext();
                 if (curArg.equalsIgnoreCase("worldedit")) {
                     if (Factoid.getDependPlugin().getWorldEdit() == null) {
-                        throw new FactoidCommandException("COMMAND.SELECT.WORLDEDIT.NOTLOAD");
+                        throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.WORLDEDIT.NOTLOAD");
                     }
                     new WorldEditSelect(player);
                 } else {
@@ -67,12 +67,12 @@ public class CommandSelect extends Thread {
                         landtest = Factoid.getLands().getLand(curArg.toString());
                     }
                     if (landtest == null) {
-                        throw new FactoidCommandException("COMMAND.SELECT.NOLAND");
+                        throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.NOLAND");
                     }
                     PlayerContainer owner = landtest.getOwner();
                     if (!owner.hasAccess(player.getName()) && !Factoid.getPlayerConf().isAdminMod(player)
                             && !landtest.checkPermissionAndInherit(player.getName(), PermissionType.RESIDENT_MANAGER)) {
-                        throw new FactoidCommandException("COMMAND.SELECT.MISSINGPERMISSION");
+                        throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.MISSINGPERMISSION");
                     }
                     if (!OnCommand.getLandSelectioned().containsKey(player)) {
                         OnCommand.getLandSelectioned().put(player, landtest);
@@ -99,7 +99,7 @@ public class CommandSelect extends Thread {
         } else if ((curArg = argList.getNext()) != null && curArg.equalsIgnoreCase("done")) {
             if (true /* !OnCommand.getPlayerSelectingWorldEdit().containsKey(player.getName().toLowerCase()) */) {
                 if (OnCommand.getLandSelectioned().containsKey(player)) {
-                    throw new FactoidCommandException("COMMAND.SELECT.CANTDONE");
+                    throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.CANTDONE");
                 }
                 // if (!Factoid.getConf().CanMakeCollision) {
                 //    if (!select.getCollision()) {
@@ -120,7 +120,7 @@ public class CommandSelect extends Thread {
                 player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.CANTDONEWORLDEDIT"));
             }
         } else {
-            throw new FactoidCommandException("COMMAND.SELECT.ALREADY");
+            throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.ALREADY");
         }
     }
 

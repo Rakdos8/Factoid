@@ -1,7 +1,7 @@
 package me.tabinol.factoid.commands.select;
 
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.commands.FactoidCommandException;
+import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.lands.selection.LandSelection;
 import org.bukkit.entity.Player;
@@ -25,14 +25,14 @@ public class WorldEditSelect {
     private void MakeSelect() throws FactoidCommandException{
         
         if (Factoid.getDependPlugin().getWorldEdit() == null) {
-            throw new FactoidCommandException("COMMAND.SELECT.WORLDEDIT.NOTLOAD");
+            throw new FactoidCommandException("CommandSelectWorldEdit", player, "COMMAND.SELECT.WORLDEDIT.NOTLOAD");
         }
         LocalSession session = ((WorldEditPlugin) Factoid.getDependPlugin().getWorldEdit()).getSession(player);
         try {
             Region sel;
             if (session.getSelectionWorld() == null
                     || !((sel = session.getSelection(session.getSelectionWorld())) != null && sel instanceof CuboidRegion)) {
-                throw new FactoidCommandException("COMMAND.SELECT.WORLDEDIT.NOSELECTIONNED");
+                throw new FactoidCommandException("CommandSelectWorldEdit", player, "COMMAND.SELECT.WORLDEDIT.NOSELECTIONNED");
             }
 
             player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.SELECTIONNED"));
@@ -48,7 +48,7 @@ public class WorldEditSelect {
             select.setSelected();
 
         } catch (IncompleteRegionException ex) {
-            throw new FactoidCommandException("COMMAND.SELECT.WORLDEDIT.SELECTIONINCOMPLET");
+            throw new FactoidCommandException("CommandSelectWorldEdit", player, "COMMAND.SELECT.WORLDEDIT.SELECTIONINCOMPLET");
         }
     }
 }

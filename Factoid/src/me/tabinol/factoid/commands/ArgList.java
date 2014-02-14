@@ -1,6 +1,7 @@
 package me.tabinol.factoid.commands;
 
 // Work with command arguments
+import me.tabinol.factoid.exceptions.FactoidCommandException;
 import java.util.ArrayList;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.Land;
@@ -12,15 +13,18 @@ import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
 import me.tabinol.factoid.utilities.StringChanges;
+import org.bukkit.command.CommandSender;
 
 public class ArgList {
 
-    private String[] arg;
+    private final String[] arg;
     private int iterator;
+    private final CommandSender player;
 
-    public ArgList(String[] arg) {
+    public ArgList(String[] arg, CommandSender player) {
 
         this.arg = arg;
+        this.player = player;
         iterator = -1;
     }
 
@@ -82,17 +86,17 @@ public class ArgList {
         String curArg = getNext();
 
         if (curArg == null) {
-            throw new FactoidCommandException("COMMAND.FLAGS.FLAGNULL");
+            throw new FactoidCommandException("Flag error", player, "COMMAND.FLAGS.FLAGNULL");
         }
 
         FlagType flagType = FlagType.getFromString(curArg);
 
         if (flagType == null) {
-            throw new FactoidCommandException("COMMAND.FLAGS.FLAGNULL");
+            throw new FactoidCommandException("Flag error", player, "COMMAND.FLAGS.FLAGNULL");
         }
 
         if (!isAdminmod && !(isOwner && Factoid.getConf().ownerConfigFlag.contains(flagType))) {
-            throw new FactoidCommandException("COMMAND.FLAGS.MISSINGPERMISSION");
+            throw new FactoidCommandException("Flag error", player, "COMMAND.FLAGS.MISSINGPERMISSION");
         }
 
         return flagType;
@@ -103,7 +107,7 @@ public class ArgList {
         FlagType flagType = getFlagTypeFromArg(isAdminmob, isOwner);
 
         if (isLast()) {
-            throw new FactoidCommandException("COMMAND.FLAGS.MISSINGINFO");
+            throw new FactoidCommandException("Flag error", player, "COMMAND.FLAGS.MISSINGINFO");
         }
 
         LandFlag landFlag;
@@ -136,19 +140,19 @@ public class ArgList {
         PlayerContainer pc;
 
         if (curArg == null) {
-            throw new FactoidCommandException("COMMAND.CONTAINERTYPE.NULL");
+            throw new FactoidCommandException("PlayerContainer Error", player, "COMMAND.CONTAINERTYPE.NULL");
         }
 
         PlayerContainerType pcType = PlayerContainerType.getFromString(curArg);
 
         if (pcType == null) {
-            throw new FactoidCommandException("COMMAND.CONTAINERTYPE.INVALID");
+            throw new FactoidCommandException("PlayerContainer Error", player, "COMMAND.CONTAINERTYPE.INVALID");
         }
 
         if (bannedPCTList != null) {
             for (PlayerContainerType bPCT : bannedPCTList) {
                 if (pcType == bPCT) {
-                    throw new FactoidCommandException("COMMAND.CONTAINERTYPE.INVALID");
+                    throw new FactoidCommandException("PlayerContainer Error", player, "COMMAND.CONTAINERTYPE.INVALID");
                 }
             }
         }
@@ -156,7 +160,7 @@ public class ArgList {
         if (pcType.hasParameter()) {
             curArg = getNext();
             if (curArg == null) {
-                throw new FactoidCommandException("COMMAND.CONTAINER.NULL");
+                throw new FactoidCommandException("PlayerContainer Error", player, "COMMAND.CONTAINER.NULL");
             }
             pc = PlayerContainer.create(land, pcType, curArg);
         } else {
@@ -171,17 +175,17 @@ public class ArgList {
         String curArg = getNext();
 
         if (curArg == null) {
-            throw new FactoidCommandException("COMMAND.PERMISSIONTYPE.NULL");
+            throw new FactoidCommandException("Permission Error", player, "COMMAND.PERMISSIONTYPE.NULL");
         }
 
         PermissionType pt = PermissionType.getFromString(curArg);
 
         if (pt == null) {
-            throw new FactoidCommandException("COMMAND.PERMISSIONTYPE.INVALID");
+            throw new FactoidCommandException("Permission Error", player, "COMMAND.PERMISSIONTYPE.INVALID");
         }
 
         if (!isAdminmod && !(isOwner && Factoid.getConf().ownerConfigPerm.contains(pt))) {
-            throw new FactoidCommandException("COMMAND.PERMISSION.MISSINGPERMISSION");
+            throw new FactoidCommandException("Permission Error", player, "COMMAND.PERMISSION.MISSINGPERMISSION");
         }
 
         return pt;
@@ -193,7 +197,7 @@ public class ArgList {
         String curArg = getNext();
 
         if (curArg == null) {
-            throw new FactoidCommandException("COMMAND.PERMISSIONVALUE.NULL");
+            throw new FactoidCommandException("Permission Error", player, "COMMAND.PERMISSIONVALUE.NULL");
         }
 
         return new Permission(pt, Boolean.parseBoolean(curArg), true);

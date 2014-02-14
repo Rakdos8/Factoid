@@ -1,5 +1,6 @@
 package me.tabinol.factoid.commands;
 
+import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.Factoid;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -32,7 +33,7 @@ public class ChatPage {
         totalPages = page.getTotalPages();
 
         if (pageNumber > totalPages) {
-            throw new FactoidCommandException("COMMAND.PAGE.INVALID");
+            throw new FactoidCommandException("Page error", player, "COMMAND.PAGE.INVALID");
         }
         player.sendMessage(ChatColor.GRAY + Factoid.getLanguage().getMessage(header, 
                 ChatColor.GREEN + param + ChatColor.GRAY));
