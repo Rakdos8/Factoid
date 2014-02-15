@@ -11,8 +11,7 @@ general:                             #----General Config----
   worlds: [world, world_nether, world_the_end] # World where Factoid is enable
   # The next value is if you want the Factoid exposion protection.
   # Set it to «False» if you prefere to disable explosions from Essentials
-  # or avoiding plugin conflicts. any other plugin. Flags (???_DAMAGE) will 
-  # be ignored.
+  # or avoiding plugin conflicts. Flags (???_DAMAGE) will be ignored.
   OverrideExplosions: true
   UseEconomy: false
   InfoItem: 352                      # Item that give Land information

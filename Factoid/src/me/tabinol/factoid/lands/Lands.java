@@ -74,7 +74,7 @@ public class Lands {
         }
         land = new Land(landNameLower, owner, area, genealogy, parent, areaId);
         addLandToList(land);
-        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.CREATE", landNameLower));
+        Factoid.getLog().write("add land: " + landNameLower);
         
         return land;
     }
@@ -96,7 +96,7 @@ public class Lands {
         removeLandToList(land);
         land.getParent().removeChild(land.getName());
         Factoid.getStorage().removeLand(land);
-        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.REMOVE", land.getName()));
+        Factoid.getLog().write("remove land: " + land);
         return true;
     }
 

@@ -75,7 +75,7 @@ public class StorageFlat extends Storage implements StorageInt {
         int loadedfactions = 0;
 
         if (files.length == 0) {
-            Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.FACTION.LOADED", loadedfactions + ""));
+            Factoid.getLog().write(loadedfactions + " faction(s) loaded.");
             return;
         }
 
@@ -89,12 +89,12 @@ public class StorageFlat extends Storage implements StorageInt {
                         loadedfactions++;
                     }
                 } catch (Exception ex) {
-                    Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "On loading " + file.getName(), ex);
-                    Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.FACTION.ERROR", ex.getMessage()));
+                    Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "On loading faction: " + file.getName(), ex);
+                    Factoid.getLog().write("See console: Error on loading: " + file.getName());
                 }
             }
         }
-        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.FACTION.LOADED", loadedfactions + ""));
+        Factoid.getLog().write(loadedfactions + " faction(s) loaded.");
     }
 
     private void loadLands() {
@@ -105,7 +105,7 @@ public class StorageFlat extends Storage implements StorageInt {
         boolean empty = false;
 
         if (files.length == 0) {
-            Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.LAND.LOADED", loadedlands + ""));
+            Factoid.getLog().write(loadedlands + " land(s) loaded.");
             return;
         }
 
@@ -122,14 +122,14 @@ public class StorageFlat extends Storage implements StorageInt {
                             loadedlands++;
                         }
                     } catch (Exception ex) {
-                        Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "On loading " + file.getName(), ex);
-                        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.LAND.ERROR", ex.getMessage()));
+                        Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "On loading land: " + file.getName(), ex);
+                        Factoid.getLog().write("See console: Error on loading: " + file.getName());
                     }
                 }
             }
             pass++;
         }
-        Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.STORAGE.LOAD.LAND.LOADED", loadedlands + ""));
+        Factoid.getLog().write(loadedlands + " land(s) loaded.");
     }
 
     private void loadFaction(BufferedReader br) {
@@ -248,7 +248,7 @@ public class StorageFlat extends Storage implements StorageInt {
         ArrayList<String> strs;
 
         if (!inLoad) {
-            Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.LAND.SAVE", land.getName()));
+            Factoid.getLog().write("Saving land: " + land.getName());
             ConfBuilder cb = new ConfBuilder(land.getName());
             cb.writeParam("Owner", land.getOwner().toString());
 
@@ -326,6 +326,7 @@ public class StorageFlat extends Storage implements StorageInt {
     public void saveFaction(Faction faction) {
 
         if (!inLoad) {
+            Factoid.getLog().write("Saving faction: " + faction.getName());
             ConfBuilder cb = new ConfBuilder(faction.getName());
             cb.writeParam("Players", (String[]) faction.getPlayers().toArray());
             cb.save(getFactionFile(faction));

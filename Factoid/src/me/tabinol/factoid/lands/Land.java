@@ -21,6 +21,8 @@ import org.bukkit.Location;
 public class Land extends DummyLand {
 
     public static final short DEFAULT_PRIORITY = 10;
+    public static final short MINIM_PRIORITY = 0;
+    public static final short MAXIM_PRIORITY = 100;
     private String name;
     private TreeMap<Integer, CuboidArea> areas = new TreeMap<>();
     private TreeMap<String, Land> children = new TreeMap<>();

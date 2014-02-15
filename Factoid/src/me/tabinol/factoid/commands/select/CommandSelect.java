@@ -44,7 +44,7 @@ public class CommandSelect extends Thread {
 
         if (!OnCommand.getPlayerSelectingLand().containsKey(player) /* && !OnCommand.getPlayerSelectingWorldEdit().containsKey(player.getName().toLowerCase()) */) {
 
-            Factoid.getLog().write(Factoid.getLanguage().getMessage("LOG.COMMAND.SELECT.JOIN", player.getName()));
+            Factoid.getLog().write(player.getName() + " join select mode");
             if (!argList.isLast()) {
                 curArg = argList.getNext();
                 if (curArg.equalsIgnoreCase("worldedit")) {

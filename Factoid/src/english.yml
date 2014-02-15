@@ -75,6 +75,8 @@ COMMAND:
     ISDONE: "you have set '%' to '%'."
     LISTSTART: "-Flags of '%'-"
     LISTROWNULL: "No Flags."
+    REMOVENOTEXIST: "Not in flag list."
+    REMOVEISDONE: "you have removed '%' from flag list."
   PERMISSION:
     JOINMODE: "You are now in Flags Mode."
     HINT: "Your modification will be instantany effective."
@@ -87,6 +89,8 @@ COMMAND:
     LISTSTART: "-Permissions of '%'-"
     LISTROWNULL: "No Permissions."
     NOENTERNOTINSPAWN: "You can't disable the LAND_ENTER permission where the world spawn is."
+    REMOVENOTEXIST: "Not in permission list."
+    REMOVEISDONE: "you have removed '%' from permission list."
   RESIDENT:
     MISSINGINFO: "Some information is missing. Check your command again."
     LAND:
@@ -94,8 +98,6 @@ COMMAND:
     PLAYERCONTAINERTYPENULL: "This type doesn't exist."
     PLAYERCONTAINERRESIDENT: "You cannot set a Resident as a resident."
     PLAYERCONTAINEREVERYBODY: "You cannot set a EveryBody as a resident."
-    ISDONE: "you have set '%' as resident of '%'."
-    ISDONEREMOVE: "you have set '%' as not a resident of '%'."
     LISTSTART: "-Residents of '%'-"
     LISTROWNULL: "No Redisent."
     FLAGS:
@@ -105,12 +107,10 @@ COMMAND:
       EXPANDMODE: "Quit the Expand Mode before."
     JOIN:
       SELECTMODE: "Join the Select Mode before."
-    MISSINGINFO: "Some information is missing. Check your command again."
-    LAND:
-      INVALID: "the selectioned land is invalid."
-    FLAGNULL: "This Flag doesn't exist."
     MISSINGPERMISSION: "You must have the permission to execute this action."
-    ISDONE: "you have set '%' to '%'."
+    ISDONE: "'%' is now a resident of '%'."
+    REMOVENOTEXIST: "Not in resident list."
+    REMOVEISDONE: "you have removed '%' from resident list of '%'."
   OWNER:
     MISSINGPERMISSION: "You must have the permission to execute this action."
     ISDONE: "the owner is now '%' for the land '%'."
@@ -138,6 +138,8 @@ COMMAND:
     MISSINGPERMISSION: "You must have the permission to execute this action."
     NOTINSPAWN: "You can't ban where the world spawn is."
     ISDONE: "you have set '%' to '%'."
+    REMOVENOTEXIST: "Not in banned list."
+    REMOVEISDONE: "you have removed '%' from ban list in '%'."
   REMOVE:
     AREA:
       EMPTY: "You must specify an area number."
@@ -155,11 +157,17 @@ COMMAND:
     CONFIRM: "To confirm your choice, type /factoid confirm or to cancel type /factoid cancel ."
     MISSINGPERMISSION: "You must have the permission to execute this action."
     CANCEL: "you have canceled your action."
+  PRIORITY:
+    MISSINGPERMISSION: "You must have the permission to change the priority."
+    NOTCHILD: "You can't change a priority on a child land."
+    INVALID: "The priority must be a number from % to %."
+    DONE: "You have set the priority of '%' to %."
   CURRENT:
     LAND:
       LISTSTART: "-Land info for '%'-"
-      NAME: "The Land selected is: '%' "
-      PARENT: "The parent is: '%' "
+      NAME: "The Land selected is: % "
+      PRIORITY: "Priority: %, "
+      PARENT: "Parent: % "
       OWNER: "Owner: %"
       ACTIVEAREA: "You are on area: %"
       MAINPERMISSION: "Your main permissions are: %"
@@ -183,56 +191,3 @@ ACTION:
   NOENTRY: "You can not enter in the land %!"
   PLAYERENTER: "% is entering the land %."
   PLAYEREXIT: "% is exiting the land %."
-LOG:
-  STORAGE:
-    LOAD:
-      FACTION:
-        ERROR: "[Error] '%'"
-        LOADED: "Loaded '%' Factions"
-      LAND:
-        ERROR: "[Error] '%'"
-        LOADED: "Loaded '%' Lands"
-  COMMAND:
-    SELECT:
-      JOINMODE: "% have join SelectMode."
-      QUITMODE: "% have quit SelectMode."
-      MISSINGPERMISSION: "% try to select land of another player."
-      SELECTWITHCOLISSION: "% have selected a land with an Collision."
-      CANCEL: "% have canceled is Selection."
-    EXPAND:
-      JOINMODE: "% have join ExpandMode."
-      QUITMODE: "% have quit ExpandMode."
-    CREATE:
-      DONE: "% have create a land named '%' at position '%'"
-      QUITMODE: "% have quit SelectMode."
-      ERROR: "[ERROR] '%'"
-      COLLISION: "% try to create a land who's have a collision."
-      ALREADYUSE: "% try to create a land with a name already taken."
-      NEEDNAME: "% try to create a land with no name."
-      NOPERMISSION: "You don't have the permission do create a Land."
-    FLAGS:
-      JOINMODE: "% have join FlagsMode."
-      QUITMODE: "% have quit FlagsMode."
-      DONE:
-        LAND: "% have remove the land '%'."
-        AREA: "% have remove the area '%' in the land '%'."
-    REMOVE:
-      CANCEL: "you have canceled your action."
-      # DONE:
-      #   LAND: "% have removed land named '%'"
-      #   AREA: "% have removed area (%) in the land named '%'"
-    SETDEFAULT:
-      ISDONE: "% have set the land '%' to the default configuration."
-  
-  FACTION:
-    ADD:
-      PLAYER: "Adding '%' to the Faction '%'."
-      FACTION: "Creating new Faction named '%'."
-    REMOVE:
-      PLAYER: "Remove '%' to the Faction '%'."
-      FACTION: ""
-    SAVE: "Saving Faction '%'."
-  LAND:
-    CREATE: "Creating Land name '%'."
-    REMOVE: "Removing Land '%'"
-    SAVE: "Saving Land '%'."
