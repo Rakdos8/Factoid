@@ -2,9 +2,9 @@ package me.tabinol.factoid.listeners;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ArgList;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
@@ -79,13 +79,13 @@ public class PlayerListener implements Listener {
         tpCancel = new ArrayList<>();
     }
 
-    public static TreeSet<String> getPlayersInLand(Land land) {
+    public static HashSet<Player> getPlayersInLand(Land land) {
 
-        TreeSet<String> listp = new TreeSet<>();
+        HashSet<Player> listp = new HashSet<>();
 
         for (Map.Entry<Player, Land> entry : lastLand.entrySet()) {
             if (entry.getValue() == land) {
-                listp.add(entry.getKey().getDisplayName());
+                listp.add(entry.getKey());
             }
         }
 
@@ -99,12 +99,19 @@ public class PlayerListener implements Listener {
 
         lastUpdate.put(player, 0L);
         handleNewLocation(event, player, player.getLocation(), true);
+        
+        // Note pour kaz00 : L'endroit correct pour mettre ceci serait
+        // dans public void onPlayerLandChange(PlayerLandChangeEvent event) (LandListener.java)
+        // J'ai réglé un bug de joueur «null» et je l'ai désactiver pour ne pas
+        // le voit tout de suite en prod. Tu le l'activera si tu veux travailler
+        // dessus.
+        /*
         Land landScoreboard = Factoid.getLands().getLand(player.getLocation());
         if (landScoreboard != null) {
-            for (String playername : landScoreboard.getPlayersInLand()) {
-                Factoid.getScoreboard().sendScoreboard(landScoreboard.getPlayersInLand(), Factoid.getThisPlugin().getServer().getPlayer(playername), landScoreboard.getName());
+            for (Player playerInLand : landScoreboard.getPlayersInLand()) {
+                Factoid.getScoreboard().sendScoreboard(landScoreboard.getPlayersInLand(), playerInLand, landScoreboard.getName());
             }
-        }
+        } */
 
         // Check if AdminMod is auto
         if (player.hasPermission("factoid.adminmod.auto")) {

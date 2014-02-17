@@ -77,7 +77,17 @@ COMMAND:
     LISTROWNULL: "No Flags."
     REMOVENOTEXIST: "Not in flag list."
     REMOVEISDONE: "you have removed '%' from flag list."
+  CONTAINERTYPE:
+    TYPENULL: "Please enter un Player Container Type or a player name."
+    INVALID: "This type doesn't exist."
+    NOTPERMITTED: "This Player Container is not permitted here."
+  CONTAINER:
+    CONTAINERNULL: "This Player Container needs a name."
+  PERMISSIONTYPE:
+    TYPENULL: "Please enter a Permission Type."
+    INVALID: "This Permission Type is invalid."
   PERMISSION:
+    MISSINGPERMISSION: "You don't have the permission to change this permission."
     JOINMODE: "You are now in Flags Mode."
     HINT: "Your modification will be instantany effective."
     MISSINGINFO: "Some information is missing. Check your command again."
@@ -91,6 +101,8 @@ COMMAND:
     NOENTERNOTINSPAWN: "You can't disable the LAND_ENTER permission where the world spawn is."
     REMOVENOTEXIST: "Not in permission list."
     REMOVEISDONE: "you have removed '%' from permission list."
+  PERMISSIONVALUE:
+    VALUENULL: "You must enter a value for this permision."
   RESIDENT:
     MISSINGINFO: "Some information is missing. Check your command again."
     LAND:

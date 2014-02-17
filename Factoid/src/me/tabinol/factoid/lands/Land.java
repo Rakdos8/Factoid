@@ -2,6 +2,7 @@ package me.tabinol.factoid.lands;
 
 import java.util.Collection;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -17,6 +18,7 @@ import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerNobody;
 import me.tabinol.factoid.storage.Storage;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class Land extends DummyLand {
 
@@ -435,7 +437,7 @@ public class Land extends DummyLand {
         return playerNotify;
     }
 
-    public TreeSet<String> getPlayersInLand() {
+    public HashSet<Player> getPlayersInLand() {
 
         return PlayerListener.getPlayersInLand(this);
     }

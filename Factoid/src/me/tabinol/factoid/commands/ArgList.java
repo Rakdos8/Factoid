@@ -137,32 +137,41 @@ public class ArgList {
             PlayerContainerType[] bannedPCTList) throws FactoidCommandException {
 
         String curArg = getNext();
+        String param = null;
         PlayerContainer pc;
 
         if (curArg == null) {
-            throw new FactoidCommandException("PlayerContainer Error", player, "COMMAND.CONTAINERTYPE.NULL");
+            throw new FactoidCommandException("PlayerContainer Error", player, "COMMAND.CONTAINERTYPE.TYPENULL");
         }
 
         PlayerContainerType pcType = PlayerContainerType.getFromString(curArg);
 
         if (pcType == null) {
-            throw new FactoidCommandException("PlayerContainer Error", player, "COMMAND.CONTAINERTYPE.INVALID");
+            if (isLast()) {
+                // Type player if it is the player directly
+                pcType = PlayerContainerType.PLAYER;
+                param = curArg;
+            } else {
+                throw new FactoidCommandException("PlayerContainer Error", player, "COMMAND.CONTAINERTYPE.INVALID");
+            }
         }
 
         if (bannedPCTList != null) {
             for (PlayerContainerType bPCT : bannedPCTList) {
                 if (pcType == bPCT) {
-                    throw new FactoidCommandException("PlayerContainer Error", player, "COMMAND.CONTAINERTYPE.INVALID");
+                    throw new FactoidCommandException("PlayerContainer Error", player, "COMMAND.CONTAINERTYPE.NOTPERMITTED");
                 }
             }
         }
 
         if (pcType.hasParameter()) {
-            curArg = getNext();
-            if (curArg == null) {
-                throw new FactoidCommandException("PlayerContainer Error", player, "COMMAND.CONTAINER.NULL");
+            if (param == null) {
+                curArg = getNext();
             }
-            pc = PlayerContainer.create(land, pcType, curArg);
+            if (param == null) {
+                throw new FactoidCommandException("PlayerContainer Error", player, "COMMAND.CONTAINER.CONTAINERNULL");
+            }
+            pc = PlayerContainer.create(land, pcType, param);
         } else {
             pc = PlayerContainer.create(land, pcType, "");
         }
@@ -175,7 +184,7 @@ public class ArgList {
         String curArg = getNext();
 
         if (curArg == null) {
-            throw new FactoidCommandException("Permission Error", player, "COMMAND.PERMISSIONTYPE.NULL");
+            throw new FactoidCommandException("Permission Error", player, "COMMAND.PERMISSIONTYPE.TYPENULL");
         }
 
         PermissionType pt = PermissionType.getFromString(curArg);
@@ -197,7 +206,7 @@ public class ArgList {
         String curArg = getNext();
 
         if (curArg == null) {
-            throw new FactoidCommandException("Permission Error", player, "COMMAND.PERMISSIONVALUE.NULL");
+            throw new FactoidCommandException("Permission Error", player, "COMMAND.PERMISSIONVALUE.VALUENULL");
         }
 
         return new Permission(pt, Boolean.parseBoolean(curArg), true);
