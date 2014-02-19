@@ -32,8 +32,12 @@ public class Config {
     public boolean UseEconomy = false;
     public int InfoItem = 352;
     public int SelectItem = 367;
-    public boolean PriorityOld = false;
-    public boolean CanMakeCollision = false;
+    public enum AllowCollisionType {
+        TRUE,
+        APPROVE,
+        FALSE;
+    }
+    public AllowCollisionType AllowCollision = AllowCollisionType.APPROVE;
     public int MaxLand = 1;
     public int MinLandSize = 1;
     public int MaxLandSize = 1;
@@ -86,8 +90,7 @@ public class Config {
         UseEconomy = config.getBoolean("general.UseEconomy");
         InfoItem = config.getInt("general.InfoItem");
         SelectItem = config.getInt("general.SelectItem");
-        PriorityOld = config.getBoolean("land.PriorityOld");
-        CanMakeCollision = config.getBoolean("land.CanMakeCollision");
+        AllowCollision = AllowCollisionType.valueOf(config.getString("land.CanMakeCollision").toUpperCase());
         MaxLand = config.getInt("land.MaxLand");
         MinLandSize = config.getInt("land.MinLandSize");
         MaxLandSize = config.getInt("land.MaxLandSize");
@@ -107,11 +110,11 @@ public class Config {
         
         ownerConfigFlag = new HashSet<>();
         for(String value : config.getStringList("land.OwnerCanSet.Flags")) {
-            ownerConfigFlag.add(FlagType.getFromString(value));
+            ownerConfigFlag.add(FlagType.valueOf(value.toUpperCase()));
         }
         ownerConfigPerm = new HashSet<>();
         for(String value : config.getStringList("land.OwnerCanSet.Permissions")) {
-            ownerConfigPerm.add(PermissionType.getFromString(value));
+            ownerConfigPerm.add(PermissionType.valueOf(value.toUpperCase()));
         }
     }
 
@@ -162,7 +165,7 @@ public class Config {
                             Factoid.getLog().write("Container: " + container + ":" + containerName + ", " + perm);
                             dl.addPermission(
                                     PlayerContainer.create(null, PlayerContainerType.getFromString(container), containerName.toLowerCase()),
-                                    new Permission(PermissionType.getFromString(perm),
+                                    new Permission(PermissionType.valueOf(perm.toUpperCase()),
                                             fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Value"),
                                             fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Heritable")));
                         }
@@ -172,7 +175,7 @@ public class Config {
                         Factoid.getLog().write("Container: " + container + ", " + perm);
                         dl.addPermission(
                                 PlayerContainer.create(null, PlayerContainerType.getFromString(container), null),
-                                new Permission(PermissionType.getFromString(perm),
+                                new Permission(PermissionType.valueOf(perm.toUpperCase()),
                                         fc.getBoolean(perms + "." + container + "." + perm + ".Value"),
                                         fc.getBoolean(perms + "." + container + "." + perm + ".Heritable")));
                     }
@@ -184,7 +187,7 @@ public class Config {
         if (csFlags != null) {
             for (String flag : csFlags.getKeys(false)) {
                 Factoid.getLog().write("Flag: " + flag);
-                dl.addFlag(new LandFlag(FlagType.getFromString(flag),
+                dl.addFlag(new LandFlag(FlagType.valueOf(flag.toUpperCase()),
                         fc.getString(flags + "." + flag + ".Value"), fc.getBoolean(flags + "." + flag + ".Heritable")));
             }
         }

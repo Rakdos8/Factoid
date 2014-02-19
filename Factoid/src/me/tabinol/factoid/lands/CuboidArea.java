@@ -202,4 +202,17 @@ public class CuboidArea implements Comparable<CuboidArea> {
 
         return z2;
     }
+
+    public static CuboidArea getFromString(String str) {
+        
+        String[] multiStr = str.split(":");
+        
+        return new CuboidArea(multiStr[0],
+                Integer.parseInt(multiStr[1]),
+                Integer.parseInt(multiStr[2]),
+                Integer.parseInt(multiStr[3]),
+                Integer.parseInt(multiStr[4]),
+                Integer.parseInt(multiStr[5]),
+                Integer.parseInt(multiStr[6]));
+    }
 }

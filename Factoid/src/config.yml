@@ -17,8 +17,12 @@ general:                             #----General Config----
   InfoItem: 352                      # Item that give Land information
   SelectItem: 367                    # Item that give Land selection
 land:
-  PriorityOld: false
-  CanMakeCollision: false
+  # AllowCollision:
+  # true: Collisions are permited without verification.
+  # approve: A player with permission factoid.approvecollision must approve
+  #          the land created if there is a collision.
+  # false: No collision permited.
+  AllowCollision: approve            # true, approve, false
   MaxLand: 1
   MinLandSize: 1
   MaxLandSize: 1

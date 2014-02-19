@@ -167,14 +167,8 @@ public class StorageFlat extends Storage implements StorageInt {
 
         // Create Land and add areas
         while ((str = cf.getNextString()) != null) {
-            String[] multiStr = str.split(":");
-            CuboidArea area = new CuboidArea(multiStr[1],
-                    Integer.parseInt(multiStr[2]),
-                    Integer.parseInt(multiStr[3]),
-                    Integer.parseInt(multiStr[4]),
-                    Integer.parseInt(multiStr[5]),
-                    Integer.parseInt(multiStr[6]),
-                    Integer.parseInt(multiStr[7]));
+            String[] multiStr = str.split(":", 2);
+            CuboidArea area = CuboidArea.getFromString(multiStr[1]);
             if (!isLandCreated) {
                 if (parentName != null) {
                     land = Factoid.getLands().createLand(landName, pc, area, Factoid.getLands().getLand(parentName),
@@ -214,7 +208,7 @@ public class StorageFlat extends Storage implements StorageInt {
         while ((str = cf.getNextString()) != null) {
             String[] multiStr = str.split(":");
             pc = PlayerContainer.create(land, PlayerContainerType.getFromString(multiStr[0]), multiStr[1]);
-            land.addPermission(pc, new Permission(PermissionType.getFromString(multiStr[2]),
+            land.addPermission(pc, new Permission(PermissionType.valueOf(multiStr[2]),
                     Boolean.parseBoolean(multiStr[3]), Boolean.parseBoolean(multiStr[4])));
         }
         cf.readParam();
@@ -222,7 +216,7 @@ public class StorageFlat extends Storage implements StorageInt {
         //Create flags
         while ((str = cf.getNextString()) != null) {
             String[] multiStr = StringChanges.splitKeepQuote(str, ":");
-            FlagType ft = FlagType.getFromString(multiStr[0]);
+            FlagType ft = FlagType.valueOf(multiStr[0]);
             land.addFlag(new LandFlag(ft, multiStr[1], Boolean.parseBoolean(multiStr[2])));
         }
         cf.readParam();

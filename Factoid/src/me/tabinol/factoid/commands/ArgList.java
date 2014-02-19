@@ -89,7 +89,7 @@ public class ArgList {
             throw new FactoidCommandException("Flag error", player, "COMMAND.FLAGS.FLAGNULL");
         }
 
-        FlagType flagType = FlagType.getFromString(curArg);
+        FlagType flagType = FlagType.valueOf(curArg.toUpperCase());
 
         if (flagType == null) {
             throw new FactoidCommandException("Flag error", player, "COMMAND.FLAGS.FLAGNULL");
@@ -187,7 +187,7 @@ public class ArgList {
             throw new FactoidCommandException("Permission Error", player, "COMMAND.PERMISSIONTYPE.TYPENULL");
         }
 
-        PermissionType pt = PermissionType.getFromString(curArg);
+        PermissionType pt = PermissionType.valueOf(curArg.toUpperCase());
 
         if (pt == null) {
             throw new FactoidCommandException("Permission Error", player, "COMMAND.PERMISSIONTYPE.INVALID");

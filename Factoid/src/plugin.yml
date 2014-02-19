@@ -19,6 +19,7 @@ permissions:
         children:
             factoid.adminmod: true
             factoid.adminmod.auto: true
+            factoid.approvecollision: true
             factoid.use: true
             factoid.reload: true
     factoid.adminmod:
@@ -26,6 +27,11 @@ permissions:
         default: op
     factoid.adminmod.auto:
         description: Auto Admin Mod on connect
+        default: op
+        children:
+            factoid.adminmod: true
+    factoid.approvecollision:
+        description: Can approve land creation collisions
         default: op
     factoid.use:
         description: Can use factoid command

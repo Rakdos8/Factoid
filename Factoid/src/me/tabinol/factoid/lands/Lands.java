@@ -8,6 +8,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.event.LandDeleteEvent;
+import me.tabinol.factoid.lands.approve.ApproveList;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.PermissionType;
@@ -22,16 +23,17 @@ public class Lands {
     public final static int INDEX_X2 = 2;
     public final static int INDEX_Z2 = 3;
     // INDEX first, Tree by worlds (then by Areas)
-    private TreeMap<String, TreeSet<AreaIndex>>[] areaList;
+    private final TreeMap<String, TreeSet<AreaIndex>>[] areaList;
     // Tree by name
-    private TreeMap<String, Land> landList;
+    private final TreeMap<String, Land> landList;
     // GLOBAL configuration
-    private DummyLand globalArea;
+    private final DummyLand globalArea;
     // Outside a Land (in specific worlds)
     protected TreeMap<String, DummyLand> outsideArea;
     // Default config of a land, String = "Global" or WorldName
     protected DummyLand defaultConf;
-    private PluginManager pm;
+    private final PluginManager pm;
+    private final ApproveList approveList;
 
     public Lands(DummyLand globalArea, TreeMap<String, DummyLand> outsideArea, DummyLand defaultConf) {
 
@@ -44,8 +46,14 @@ public class Lands {
         this.outsideArea = outsideArea;
         this.defaultConf = defaultConf;
         landList = new TreeMap<>();
+        approveList = new ApproveList();
     }
 
+    public ApproveList getApproveList() {
+        
+        return approveList;
+    }
+    
     // For Land with no parent
     public Land createLand(String landName, PlayerContainer owner, CuboidArea area) {
         
@@ -69,7 +77,7 @@ public class Lands {
             genealogy = parent.getGenealogy() + 1;
         }
         
-        if (landList.containsKey(landNameLower)) {
+        if (landList.containsKey(landNameLower) || approveList.isInApprove(landNameLower)) {
             return null;
         }
         land = new Land(landNameLower, owner, area, genealogy, parent, areaId);
