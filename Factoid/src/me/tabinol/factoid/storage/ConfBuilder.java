@@ -4,28 +4,32 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import me.tabinol.factoid.lands.CuboidArea;
 
 public class ConfBuilder {
 
-    private String newline;
-    private StringBuffer sb;
+    private final String newline;
+    private final StringBuffer sb;
 
     public ConfBuilder(String name) {
 
         sb = new StringBuffer();
         newline = System.getProperty("line.separator");
+        writeVersion(StorageFlat.ACTUAL_VERSION);
         writeName(name);
+    }
+
+    private void writeVersion(int version) {
+        
+        writeParam("Version", version);
     }
 
     private void writeName(String name) {
 
         writeParam("Name", name);
     }
-
+    
     public void writeln(String string) {
 
         sb.append(string).append(newline);

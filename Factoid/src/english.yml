@@ -1,11 +1,33 @@
+# Do not change de Version number if you don't know what you are doing!
+VERSION: 1
 ENABLE: "Factoid is Enabled."
 DISABLE: "Factoid is Disabled."
 CONSOLE: "Hey Console! Wait...what?"
 SCOREBOARD:
   LANDINFO: "Players List"
+COLLISION:
+  SHOW:
+    COLLISION: "Collision with '%', area id '%'."
+    OUT_OF_PARENT: "This land is outside of parent '%'."
+    CHILD_OUT_OF_BORDER: "The land child '%' will be out of border."
+    HAS_CHILDREN: "This land is parent of '%'."
+    NAME_IN_USE: "This name is allready in use."
+    IN_APPROVE_LIST: "This land is allready in approve list."
+    LISTSTART: "-Action(s) to be approved-%"
+    LIST: "Land: %, requester: %, action: %."
+    LISTROWNULL: "No action in list to be approved."
+    PARAMNULL: "You must specify a land name from the list."
+    NOTIFYLAND: "The land '%' is added for approval by %."
+    NOTIFY: "% action(s) waiting for approval."
+  GENERAL:
+    NEEDAPPROVE: "Your operation is listed for approval. \"/factoid approve remove %\" if you want to cancel."
+    CANNOTDONE: "Collision problem! Your action can't be done."
+    DONE: "This action is approved."
+    REMOVE: "The action is removed from the approve list."
 COMMAND:
   NOTEXIST: "This command does not exist."
   GENERAL:
+    MISSINGPERMISSION: "You must have the permission to execute this action."
     ALREADY: " You are already in Flags Mode."
     QUIT:
       FLAGMODE: "Quit the Flags Mode before."
@@ -62,8 +84,13 @@ COMMAND:
     HINTUSE: "/factoid create [Type] [Land Name]"
     NEEDNAME: "You have to provide a Land Name."
     SELECTMODE: "You must be in Select Mode before."
-    NOPERMISSION: "You don't have the permission do create a Land."
+    NOPERMISSION: "You don't have the permission to create a Land."
     PARENTNOTEXIST: "The parent land doesn't exist."
+  RENAME:
+    MISSINGPERMISSION: "You don't have the permission to rename the Land."
+    NEEDNAME: "You must specify a new name."
+    HINTUSE: "This name can't be used."
+    ISDONE: "The land '%' is renamed '%'."
   FLAGS:
     JOINMODE: "You are now in Flags Mode."
     HINT: "Your modification will be instantany effective."
@@ -169,6 +196,7 @@ COMMAND:
     CONFIRM: "To confirm your choice, type /factoid confirm or to cancel type /factoid cancel ."
     MISSINGPERMISSION: "You must have the permission to execute this action."
     CANCEL: "you have canceled your action."
+    ISPARENT: "You can't delete a parent land."
   PRIORITY:
     MISSINGPERMISSION: "You must have the permission to change the priority."
     NOTCHILD: "You can't change a priority on a child land."

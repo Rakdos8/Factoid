@@ -20,7 +20,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Config {
 
-    public final static String GLOBAL = "_Global_";
+    public final static String GLOBAL = "_global_";
     private Factoid thisPlugin;
     private FileConfiguration config;
     private FileConfiguration landDefault;
@@ -32,12 +32,15 @@ public class Config {
     public boolean UseEconomy = false;
     public int InfoItem = 352;
     public int SelectItem = 367;
+
     public enum AllowCollisionType {
+
         TRUE,
         APPROVE,
         FALSE;
     }
-    public AllowCollisionType AllowCollision = AllowCollisionType.APPROVE;
+    public AllowCollisionType AllowCollision;
+    public long ApproveNotifyTime = 24002;
     public int MaxLand = 1;
     public int MinLandSize = 1;
     public int MaxLandSize = 1;
@@ -90,7 +93,13 @@ public class Config {
         UseEconomy = config.getBoolean("general.UseEconomy");
         InfoItem = config.getInt("general.InfoItem");
         SelectItem = config.getInt("general.SelectItem");
-        AllowCollision = AllowCollisionType.valueOf(config.getString("land.CanMakeCollision").toUpperCase());
+        // Remove error if the parameter is not here (AllowCollision)
+        try {
+            AllowCollision = AllowCollisionType.valueOf(config.getString("land.AllowCollision").toUpperCase());
+        } catch (NullPointerException ex) {
+            AllowCollision = AllowCollisionType.APPROVE;
+        }
+        ApproveNotifyTime = config.getLong("general.ApproveNotifyTime");
         MaxLand = config.getInt("land.MaxLand");
         MinLandSize = config.getInt("land.MinLandSize");
         MaxLandSize = config.getInt("land.MaxLandSize");
@@ -107,23 +116,15 @@ public class Config {
             MinPriceLocation = config.getInt("economy.MinPriceLocation");
             MaxPriceLocation = config.getInt("economy.MaxPriceLocation");
         }
-        
+
         ownerConfigFlag = new HashSet<>();
-        for(String value : config.getStringList("land.OwnerCanSet.Flags")) {
+        for (String value : config.getStringList("land.OwnerCanSet.Flags")) {
             ownerConfigFlag.add(FlagType.valueOf(value.toUpperCase()));
         }
         ownerConfigPerm = new HashSet<>();
-        for(String value : config.getStringList("land.OwnerCanSet.Permissions")) {
+        for (String value : config.getStringList("land.OwnerCanSet.Permissions")) {
             ownerConfigPerm.add(PermissionType.valueOf(value.toUpperCase()));
         }
-    }
-
-    public DummyLand getGlobalArea() {
-
-        Factoid.getLog().write("Create conf for: _Global_");
-
-        return landCreate(GLOBAL, worldConfig, GLOBAL + ".ContainerPermissions",
-                GLOBAL + ".ContainerFlags");
     }
 
     public TreeMap<String, DummyLand> getLandOutsideArea() {
@@ -132,11 +133,10 @@ public class Config {
         Set<String> keys = worldConfig.getConfigurationSection("").getKeys(false);
 
         for (String worldName : keys) {
-            if (!worldName.equalsIgnoreCase(GLOBAL)) {
-                Factoid.getLog().write("Create conf for World: " + worldName);
-                landList.put(worldName, landCreate(worldName, worldConfig, worldName + ".ContainerPermissions",
-                        worldName + ".ContainerFlags"));
-            }
+            String worldNameLower = worldName.toLowerCase();
+            Factoid.getLog().write("Create conf for World: " + worldNameLower);
+            landList.put(worldNameLower, landCreate(worldNameLower, worldConfig, worldName + ".ContainerPermissions",
+                    worldName + ".ContainerFlags"));
         }
 
         return landList;

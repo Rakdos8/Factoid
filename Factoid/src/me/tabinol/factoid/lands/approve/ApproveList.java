@@ -7,8 +7,9 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.lands.CuboidArea;
+import me.tabinol.factoid.lands.Areas.CuboidArea;
 import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
 import me.tabinol.factoid.utilities.StringChanges;
@@ -25,7 +26,7 @@ public class ApproveList {
 
     public ApproveList() {
 
-        approveFile = new File(Factoid.getThisPlugin().getDataFolder() + "approvelist.yml");
+        approveFile = new File(Factoid.getThisPlugin().getDataFolder() + "/approvelist.yml");
         approveConfig = new YamlConfiguration();
         landNames = new TreeSet<>();
         loadFile();
@@ -35,12 +36,15 @@ public class ApproveList {
 
         landNames.add(approve.getLandName());
         ConfigurationSection section = approveConfig.createSection(approve.getLandName());
-        section.set("CuboidArea", approve.getCuboidArea().toString());
+        section.set("Action", approve.getAction().toString());
+        section.set("RemovedAreaId", approve.getRemovedAreaId());
+        section.set("NewArea", approve.getNewArea().toString());
         section.set("Owner", approve.getOwner().toString());
         if (approve.getParent() != null) {
             section.set("Parent", approve.getParent().getName());
         }
         saveFile();
+        ApproveNotif.notifyForApprove(approve.getLandName(), approve.getOwner().getPrint());
     }
 
     public Set<String> getApproveList() {
@@ -66,29 +70,32 @@ public class ApproveList {
         String[] ownerS = StringChanges.splitAddVoid(section.getString("Owner"), ":");
         PlayerContainer pc = PlayerContainer.create(null, PlayerContainerType.getFromString(ownerS[0]), ownerS[1]);
         Land parent = null;
-        if(section.contains("Parent")) {
+        if (section.contains("Parent")) {
             parent = Factoid.getLands().getLand(section.getString("Parent"));
-            if(parent == null) {
+            if (parent == null) {
                 Factoid.getLog().write("Error, parent not found");
                 return null;
             }
         }
 
-        return new Approve(landName, CuboidArea.getFromString(section.getString("CuboidArea")),
-                pc, parent);
+        return new Approve(landName, LandAction.valueOf(section.getString("Action")),
+                section.getInt("RemovedAreaId"),
+                CuboidArea.getFromString(section.getString("NewArea")), pc, parent);
     }
-    
+
     public void removeApprove(Approve approve) {
-        
+
         Factoid.getLog().write("Remove Approve from list: " + approve.getLandName());
-        
+
         approveConfig.set(approve.getLandName(), null);
+        landNames.remove(approve.getLandName());
+        saveFile();
     }
 
     private void loadFile() {
 
         Factoid.getLog().write("Loading Approve list file");
-        
+
         if (!approveFile.exists()) {
             try {
                 approveFile.createNewFile();
@@ -109,9 +116,9 @@ public class ApproveList {
     }
 
     private void saveFile() {
-        
+
         Factoid.getLog().write("Saving Approve list file");
-        
+
         try {
             approveConfig.save(approveFile);
         } catch (IOException ex) {

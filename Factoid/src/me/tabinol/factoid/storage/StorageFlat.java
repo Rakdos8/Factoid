@@ -3,13 +3,13 @@ package me.tabinol.factoid.storage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.exceptions.FactoidLandException;
 import me.tabinol.factoid.factions.Faction;
-import me.tabinol.factoid.lands.CuboidArea;
+import me.tabinol.factoid.lands.Areas.CuboidArea;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
@@ -22,6 +22,7 @@ import me.tabinol.factoid.utilities.StringChanges;
 public class StorageFlat extends Storage implements StorageInt {
 
     public static final String EXT_CONF = ".conf";
+    public static final int ACTUAL_VERSION = 1; // +1 if there is a new version of the .conf
     private String factionsDir;
     private String landsDir;
 
@@ -136,6 +137,7 @@ public class StorageFlat extends Storage implements StorageInt {
 
         ConfLoader cf = new ConfLoader(br);
         String str;
+        int version = cf.getVersion();
         Faction faction = new Faction(cf.getName());
         cf.readParam();
         while ((str = cf.getNextString()) != null) {
@@ -149,6 +151,7 @@ public class StorageFlat extends Storage implements StorageInt {
 
         ConfLoader cf = new ConfLoader(br);
         String str;
+        int version = cf.getVersion();
         String landName = cf.getName();
         Land land = null;
         boolean isLandCreated = false;
@@ -171,10 +174,18 @@ public class StorageFlat extends Storage implements StorageInt {
             CuboidArea area = CuboidArea.getFromString(multiStr[1]);
             if (!isLandCreated) {
                 if (parentName != null) {
-                    land = Factoid.getLands().createLand(landName, pc, area, Factoid.getLands().getLand(parentName),
-                            Integer.parseInt(multiStr[0]));
+                    try {
+                        land = Factoid.getLands().createLand(landName, pc, area, Factoid.getLands().getLand(parentName),
+                                Integer.parseInt(multiStr[0]));
+                    } catch (FactoidLandException ex) {
+                        Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "Error on loading land: " + landName, ex);
+                    }
                 } else {
-                    land = Factoid.getLands().createLand(landName, pc, area, null, Integer.parseInt(multiStr[0]));
+                    try {
+                        land = Factoid.getLands().createLand(landName, pc, area, null, Integer.parseInt(multiStr[0]));
+                    } catch (FactoidLandException ex) {
+                        Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "Error on loading land: " + landName, ex);
+                    }
                 }
                 isLandCreated = true;
             } else {

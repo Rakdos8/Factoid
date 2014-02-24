@@ -1,5 +1,7 @@
 package me.tabinol.factoid.lands;
 
+import me.tabinol.factoid.lands.Areas.CuboidArea;
+import me.tabinol.factoid.lands.Areas.AreaIndex;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,7 +9,11 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.event.LandDeleteEvent;
+import me.tabinol.factoid.exceptions.FactoidLandException;
+import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
+import me.tabinol.factoid.lands.collisions.Collisions.LandError;
 import me.tabinol.factoid.lands.approve.ApproveList;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
@@ -30,19 +36,19 @@ public class Lands {
     private final DummyLand globalArea;
     // Outside a Land (in specific worlds)
     protected TreeMap<String, DummyLand> outsideArea;
-    // Default config of a land, String = "Global" or WorldName
+    // Default config of a land, String = "global" or WorldName
     protected DummyLand defaultConf;
     private final PluginManager pm;
     private final ApproveList approveList;
 
-    public Lands(DummyLand globalArea, TreeMap<String, DummyLand> outsideArea, DummyLand defaultConf) {
+    public Lands(TreeMap<String, DummyLand> outsideArea, DummyLand defaultConf) {
 
         areaList = new TreeMap[4];
         pm = Factoid.getThisPlugin().getServer().getPluginManager();
         for (int t = 0; t < areaList.length; t++) {
             areaList[t] = new TreeMap<>();
         }
-        this.globalArea = globalArea;
+        this.globalArea = outsideArea.get(Config.GLOBAL);
         this.outsideArea = outsideArea;
         this.defaultConf = defaultConf;
         landList = new TreeMap<>();
@@ -55,19 +61,22 @@ public class Lands {
     }
     
     // For Land with no parent
-    public Land createLand(String landName, PlayerContainer owner, CuboidArea area) {
+    public Land createLand(String landName, PlayerContainer owner, CuboidArea area)
+            throws FactoidLandException {
         
         return createLand(landName, owner, area, null, 1);
     }
     
     // For Land with parent
-    public Land createLand(String landName, PlayerContainer owner, CuboidArea area, Land parent) {
+    public Land createLand(String landName, PlayerContainer owner, CuboidArea area, Land parent)
+            throws FactoidLandException {
         
         return createLand(landName, owner, area, parent, 1);
     }
     
     // Only for Land load at start
-    public Land createLand(String landName, PlayerContainer owner, CuboidArea area, Land parent, int areaId) {
+    public Land createLand(String landName, PlayerContainer owner, CuboidArea area, Land parent, int areaId)
+            throws FactoidLandException {
 
         String landNameLower = landName.toLowerCase();
         int genealogy = 0;
@@ -77,22 +86,40 @@ public class Lands {
             genealogy = parent.getGenealogy() + 1;
         }
         
-        if (landList.containsKey(landNameLower) || approveList.isInApprove(landNameLower)) {
-            return null;
+        if(isNameExist(landName)) {
+            throw new FactoidLandException(landName, area, LandAction.LAND_ADD, LandError.NAME_IN_USE);
         }
+        
         land = new Land(landNameLower, owner, area, genealogy, parent, areaId);
+
         addLandToList(land);
         Factoid.getLog().write("add land: " + landNameLower);
         
         return land;
     }
+    
+    public boolean isNameExist(String landName) {
 
-    public boolean removeLand(Land land) {
+        String landNameLower = landName.toLowerCase();
+        
+        if (landList.containsKey(landNameLower) || approveList.isInApprove(landNameLower)) {
+            return true;
+        }
+        
+        return false;
+    }
+
+    public boolean removeLand(Land land) throws FactoidLandException {
 
         LandDeleteEvent landEvent = new LandDeleteEvent(land);
 
         if (!landList.containsKey(land.getName())) {
             return false;
+        }
+        
+        // If the land has children
+        if(!land.getChildren().isEmpty()) {
+            throw new FactoidLandException(land.getName(), null, LandAction.LAND_REMOVE, LandError.HAS_CHILDREN);
         }
         
         // Call Land Event and check if it is cancelled
@@ -108,7 +135,7 @@ public class Lands {
         return true;
     }
 
-    public boolean removeLand(String landName) {
+    public boolean removeLand(String landName) throws FactoidLandException {
 
         String landLower;
         
@@ -117,6 +144,27 @@ public class Lands {
         }
         return removeLand(landList.get(landLower));
 
+    }
+    
+    public boolean renameLand(String oldName, String newName) throws FactoidLandException {
+        
+        String oldNameLower = oldName.toLowerCase();
+        String newNameLower = newName.toLowerCase();
+        
+        if(isNameExist(newNameLower)) {
+            throw new FactoidLandException(newNameLower, null, LandAction.LAND_RENAME, LandError.NAME_IN_USE);
+        }
+
+        Land land = landList.remove(oldNameLower);
+        
+        if(land == null) {
+            return false;
+        }
+        
+        land.setName(newNameLower);
+        landList.put(newNameLower, land);
+        
+        return true;
     }
 
     public Land getLand(String landName) {
@@ -133,6 +181,11 @@ public class Lands {
         }
         return ca.getLand();
     }
+    
+    public Collection<Land> getLands() {
+        
+        return landList.values();
+    }
 
     public DummyLand getLandOrOutsideArea(Location loc) {
 
@@ -147,10 +200,16 @@ public class Lands {
     
     public DummyLand getOutsideArea(Location loc) {
         
-        DummyLand dummyLand;
+        return getOutsideArea(loc.getWorld().getName());
+    }
+    
+    public DummyLand getOutsideArea(String worldName) {
         
-        if((dummyLand = outsideArea.get(loc.getWorld().getName())) == null) {
-            outsideArea.put(loc.getWorld().getName(), dummyLand = new DummyLand(loc.getWorld().getName()));
+        DummyLand dummyLand;
+        String worldNameLower = worldName.toLowerCase();
+        
+        if((dummyLand = outsideArea.get(worldNameLower)) == null) {
+            outsideArea.put(worldNameLower, dummyLand = new DummyLand(worldNameLower));
         }
         
         return dummyLand;
@@ -180,7 +239,7 @@ public class Lands {
 
         return lands;
     }
-
+    
     protected boolean getPermissionInWorld(String worldName, String playerName, PermissionType pt, boolean onlyInherit) {
 
         Boolean result;

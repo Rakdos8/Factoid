@@ -6,7 +6,7 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ArgList;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.commands.OnCommand;
-import me.tabinol.factoid.lands.CuboidArea;
+import me.tabinol.factoid.lands.Areas.CuboidArea;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.lands.selection.LandMakeSquare;

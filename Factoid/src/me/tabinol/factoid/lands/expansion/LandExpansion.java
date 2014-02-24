@@ -3,7 +3,7 @@ package me.tabinol.factoid.lands.expansion;
 import java.util.Map;
 import java.util.HashMap;
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.lands.CuboidArea;
+import me.tabinol.factoid.lands.Areas.CuboidArea;
 import me.tabinol.factoid.lands.selection.LandMakeSquare;
 import me.tabinol.factoid.lands.selection.LandResetSelection;
 import org.bukkit.Material;

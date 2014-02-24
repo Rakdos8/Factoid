@@ -3,7 +3,7 @@ package me.tabinol.factoid.lands.selection;
 import java.util.Map;
 import java.util.HashMap;
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.lands.CuboidArea;
+import me.tabinol.factoid.lands.Areas.CuboidArea;
 import org.bukkit.Material;
 import org.bukkit.event.Listener;
 import org.bukkit.Server;

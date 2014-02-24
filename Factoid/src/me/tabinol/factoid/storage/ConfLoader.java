@@ -8,18 +8,26 @@ import me.tabinol.factoid.Factoid;
 
 public class ConfLoader {
 
+    private int version;
     private String name;
     private String param = null;
     private String value = null;
-    private BufferedReader br;
+    private final BufferedReader br;
     private ConfLoader child;
 
     public ConfLoader(BufferedReader br) {
 
         this.br = br;
+        readVersion();
         readName();
     }
 
+    private void readVersion() {
+        
+        readParam();
+        version = getValueInt();
+    }
+    
     private void readName() {
 
         readParam();
@@ -107,6 +115,11 @@ public class ConfLoader {
     public String getName() {
 
         return name;
+    }
+    
+    public int getVersion() {
+        
+        return version;
     }
 
     public void startChild() {

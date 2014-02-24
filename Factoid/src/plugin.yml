@@ -19,7 +19,7 @@ permissions:
         children:
             factoid.adminmod: true
             factoid.adminmod.auto: true
-            factoid.approvecollision: true
+            factoid.collisionapprove: true
             factoid.use: true
             factoid.reload: true
     factoid.adminmod:
@@ -30,7 +30,7 @@ permissions:
         default: op
         children:
             factoid.adminmod: true
-    factoid.approvecollision:
+    factoid.collisionapprove:
         description: Can approve land creation collisions
         default: op
     factoid.use:

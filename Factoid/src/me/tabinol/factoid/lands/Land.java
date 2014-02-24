@@ -1,8 +1,7 @@
 package me.tabinol.factoid.lands;
 
+import me.tabinol.factoid.lands.Areas.CuboidArea;
 import java.util.Collection;
-import java.util.EnumMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -40,7 +39,7 @@ public class Land extends DummyLand {
     private TreeSet<String> playerNotify = new TreeSet<>();
 
     // Please use createLand in Lands class to create a Land
-    public Land(String landName, PlayerContainer owner, CuboidArea area, int genealogy, Land parent, int areaId) {
+    protected Land(String landName, PlayerContainer owner, CuboidArea area, int genealogy, Land parent, int areaId) {
 
         super(area.getWorldName().toLowerCase());
         name = landName.toLowerCase();
@@ -169,6 +168,7 @@ public class Land extends DummyLand {
         return areas.values();
     }
 
+    /*
     public boolean isCollision(CuboidArea area2) {
 
         for (CuboidArea area1 : areas.values()) {
@@ -179,6 +179,7 @@ public class Land extends DummyLand {
 
         return false;
     }
+    */
 
     public boolean isLocationInside(Location loc) {
 
@@ -196,10 +197,12 @@ public class Land extends DummyLand {
         return name;
     }
 
-    public void setName(String newName) {
+    protected void setName(String newName) {
 
+        setAutoSave(false);
         Factoid.getStorage().removeLand(this);
-        this.name = newName.toLowerCase();
+        this.name = newName;
+        setAutoSave(true);
         doSave();
     }
 
@@ -335,6 +338,21 @@ public class Land extends DummyLand {
 
         return ancestor;
     }
+    
+    public boolean isDescendants(Land land) {
+        
+        if(land == this) {
+            return true;
+        }
+        
+        for(Land landT : children.values()) {
+            if(landT.isDescendants(land) == true) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     private void addChild(Land land) {
 
@@ -353,7 +371,7 @@ public class Land extends DummyLand {
         return children.get(landName);
     }
 
-    public Collection getChildren() {
+    public Collection<Land> getChildren() {
 
         return children.values();
     }
@@ -432,12 +450,12 @@ public class Land extends DummyLand {
         return playerNotify.contains(playerName.toLowerCase());
     }
 
-    public TreeSet<String> getPlayersNotify() {
+    public Set<String> getPlayersNotify() {
 
         return playerNotify;
     }
 
-    public HashSet<Player> getPlayersInLand() {
+    public Set<Player> getPlayersInLand() {
 
         return PlayerListener.getPlayersInLand(this);
     }

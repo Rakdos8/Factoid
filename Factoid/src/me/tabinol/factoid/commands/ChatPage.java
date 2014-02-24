@@ -8,12 +8,12 @@ import org.bukkit.util.ChatPaginator;
 
 public class ChatPage {
 
-    private int pageHeight;
-    private int pageWidth;
-    private String header;
-    private String text;
-    private Player player;
-    private String param;
+    private final int pageHeight;
+    private final int pageWidth;
+    private final String header;
+    private final String text;
+    private final Player player;
+    private final String param;
     private int totalPages;
 
     public ChatPage(String header, String text, Player player, String param) throws FactoidCommandException {

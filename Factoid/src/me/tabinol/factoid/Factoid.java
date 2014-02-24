@@ -1,7 +1,6 @@
 package me.tabinol.factoid;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.entity.Player;
 
 import me.tabinol.factoid.utilities.Lang;
 import me.tabinol.factoid.utilities.Log;
@@ -11,6 +10,7 @@ import me.tabinol.factoid.config.DependPlugin;
 import me.tabinol.factoid.config.PlayerConfig;
 import me.tabinol.factoid.factions.Factions;
 import me.tabinol.factoid.lands.Lands;
+import me.tabinol.factoid.lands.approve.ApproveNotif;
 import me.tabinol.factoid.listeners.LandListener;
 import me.tabinol.factoid.listeners.PlayerListener;
 import me.tabinol.factoid.listeners.WorldListener;
@@ -28,6 +28,7 @@ public class Factoid extends JavaPlugin {
     private PlayerListener playerListener;
     private WorldListener worldListener;
     private LandListener landListener;
+    private ApproveNotif approveNotif;
     private static Storage storage;
     private static Log log;
     private static Factoid thisPlugin;
@@ -54,13 +55,14 @@ public class Factoid extends JavaPlugin {
         language = new Lang();
         storage = new StorageFlat();
         factions = new Factions();
-        lands = new Lands(conf.getGlobalArea(), conf.getLandOutsideArea(), conf.getLandDefaultConf());
+        lands = new Lands(conf.getLandOutsideArea(), conf.getLandDefaultConf());
         storage.loadAll();
         worldListener = new WorldListener();
         playerListener = new PlayerListener();
         landListener = new LandListener();
         CommandListener = new OnCommand();
         Scoreboard = new ScoreBoard();
+        approveNotif = new ApproveNotif();
         getServer().getPluginManager().registerEvents(worldListener, this);
         getServer().getPluginManager().registerEvents(playerListener, this);
         getServer().getPluginManager().registerEvents(landListener, this);
@@ -75,13 +77,14 @@ public class Factoid extends JavaPlugin {
         log.setDebug(conf.debug);
         language.reloadConfig();
         factions = new Factions();
-        lands = new Lands(conf.getGlobalArea(), conf.getLandOutsideArea(), conf.getLandDefaultConf());
+        lands = new Lands(conf.getLandOutsideArea(), conf.getLandDefaultConf());
         storage.loadAll();
     }
     
     @Override
     public void onDisable() {
         
+        approveNotif.cancel();
         log.write(Factoid.getLanguage().getMessage("DISABLE"));
         log.interrupt();
         language.interrupt();

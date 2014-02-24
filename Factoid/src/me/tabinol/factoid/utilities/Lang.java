@@ -4,14 +4,19 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.Level;
 import me.tabinol.factoid.Factoid;
+import org.bukkit.ChatColor;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Lang extends Thread {
 
+    public static final int ACTUAL_VERSION = 1; // +1 if there is a new version of the .conf
     private String lang = null;
     private File langFile;
     private FileConfiguration langconfig;
@@ -21,6 +26,7 @@ public class Lang extends Thread {
         this.langconfig = new YamlConfiguration();
         this.plugin = Factoid.getThisPlugin();
         reloadConfig();
+        checkVersion();
     }
 
     public final void reloadConfig() {
@@ -32,11 +38,25 @@ public class Lang extends Thread {
         }
     }
 
+    // Check if it is the next version, if not, the file will be renamed
+    public final void checkVersion() {
+
+        int fileVersion = langconfig.getInt("VERSION");
+
+        // We must rename the file and activate the new file
+        if (ACTUAL_VERSION != fileVersion) {
+            langFile.renameTo(new File(plugin.getDataFolder() + "/lang/", lang + ".yml.v" + fileVersion));
+            reloadConfig();
+            plugin.getLogger().log(Level.INFO, "There is a new language file. Your old language file was renamed \""
+                    + lang + ".yml.v" + fileVersion + "\".");
+        }
+    }
+
     public String getMessage(String path, String... param) {
 
         String message = langconfig.getString(path);
 
-        if(message == null) {
+        if (message == null) {
             return "MESSAGE NOT FOUND FOR PATH: " + path;
         }
         if (param.length >= 1) {
@@ -50,12 +70,12 @@ public class Lang extends Thread {
                 return "Error! variable missing for Entries.";
             }
         }
-        
+
         return message;
     }
-    
+
     public boolean isMessageExist(String path) {
-        
+
         return langconfig.getString(path) != null;
     }
 
@@ -119,5 +139,17 @@ public class Lang extends Thread {
             }
         }
         return counter;
+    }
+
+    // Notify with a message
+    public static void notifyPlayer(String message, Permission permission) {
+
+        for (Player players : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
+            if (players.hasPermission(permission)) {
+                players.sendMessage(ChatColor.GREEN + "[Factoid] " + message);
+            }
+        }
+
+        Factoid.getThisPlugin().getLogger().log(Level.INFO, "[Factoid] " + message);
     }
 }

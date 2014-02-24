@@ -1,7 +1,7 @@
 package me.tabinol.factoid.listeners;
 
 import java.util.ArrayList;
-import java.util.TreeSet;
+import java.util.Set;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.config.PlayerConfig;
@@ -198,7 +198,7 @@ public class LandListener implements Listener {
 
     private void notifyPlayers(Land land, String message, Player playerIn) {
 
-        TreeSet<String> playersNotify = land.getPlayersNotify();
+        Set<String> playersNotify = land.getPlayersNotify();
 
         for (Player player : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
             if (playersNotify.contains(player.getName().toLowerCase())) {

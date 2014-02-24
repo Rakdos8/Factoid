@@ -25,6 +25,18 @@ public class Calculate {
         return nbSource >= nb1 && nbSource <= nb2;
     }
     
+    // -1 before, 0 inside, +1 after
+    public static int comparePosition(int nbSource, int nb1, int nb2) {
+        
+        if(nbSource < nb1) {
+            return -1;
+        }
+        if(nbSource > nb2) {
+            return 1;
+        }
+        return 0;
+    }
+    
     public static Double AdditionDouble(Double a, Double b){
         Double t = null;
         if(a<0){
