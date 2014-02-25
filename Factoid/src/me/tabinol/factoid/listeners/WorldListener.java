@@ -259,7 +259,8 @@ public class WorldListener implements Listener {
 
         if (conf.OverrideExplosions && conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())
                 && event.getEntity() instanceof ItemFrame
-                && (event.getCause() == DamageCause.BLOCK_EXPLOSION || event.getCause() == DamageCause.ENTITY_EXPLOSION)) {
+                && (event.getCause() == DamageCause.BLOCK_EXPLOSION || event.getCause() == DamageCause.ENTITY_EXPLOSION
+                || event.getCause() == DamageCause.PROJECTILE)) {
             // Check for ItemFrame
             Factoid.getLog().write("Cancel HangingBreak : " + event.getEntity() + ", Cause: " + event.getCause());
             event.setCancelled(true);

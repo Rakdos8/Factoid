@@ -49,6 +49,9 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
         if (pct == PlayerContainerType.PLAYER) {
             return new PlayerContainerPlayer(name);
         }
+        if (pct == PlayerContainerType.PERMISSION) {
+            return new PlayerContainerPermission(name);
+        }
         return null;
     }
 

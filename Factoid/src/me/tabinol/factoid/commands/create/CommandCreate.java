@@ -25,6 +25,7 @@ public class CommandCreate {
     private final ArgList argList;
     private final int areaNb;
     private CuboidArea area = null;
+    private boolean done = false;
 
     public enum CreateType {
 
@@ -51,24 +52,36 @@ public class CommandCreate {
                 throw new FactoidCommandException("CommandCreate", player, "COMMAND.CREATE.SELECTMODE");
             }
             area = select.toCuboidArea();
-            doLand();
+            done = doLand();
         } else if (createType == CreateType.AREA || createType == CreateType.AREA_REPLACE) {
             if (select == null) {
                 throw new FactoidCommandException("CommandCreate", player, "COMMAND.AREA.SELECTMODE");
             }
             area = select.toCuboidArea();
-            doArea();
+            done = doArea();
         }
 
+        // If the work is not done, exit
+        if(!done) {
+            return;
+        }
+        
         // Quit select mod
         OnCommand.getPlayerSelectingLand().remove(player);
         select.resetSelection();
 
         log.write(player.getName() + " have quit SelectMode.");
         player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.QUIT.SELECTMODE"));
+        
+        done = true;
+    }
+    
+    public boolean isDone() {
+        
+        return done;
     }
 
-    private void doLand() throws FactoidCommandException {
+    private boolean doLand() throws FactoidCommandException {
 
         if (argList.isLast()) {
             throw new FactoidCommandException("CommandCreate", player, "COMMAND.CREATE.NEEDNAME");
@@ -100,7 +113,7 @@ public class CommandCreate {
 
         // Check for collision
         if (OnCommand.checkCollision(player, curArg, null, LandAction.LAND_ADD, 0, area, parent, true)) {
-            return;
+            return false;
         }
 
         // Create Land
@@ -118,9 +131,11 @@ public class CommandCreate {
 
         player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.DONE"));
         log.write(player.getName() + " have create a land named " + land.getName() + " at position " + land.getAreas().toString());
+        
+        return true;
     }
 
-    private void doArea() throws FactoidCommandException {
+    private boolean doArea() throws FactoidCommandException {
 
         Land land = OnCommand.getLandSelectioned().get(player);
 
@@ -132,7 +147,7 @@ public class CommandCreate {
 
             // Check for collision
             if (OnCommand.checkCollision(player, land.getName(), land, LandAction.AREA_ADD, 0, area, land.getParent(), true)) {
-                return;
+                return false;
             }
             // Add Area
             land.addArea(area);
@@ -141,7 +156,7 @@ public class CommandCreate {
 
             // Check for collision
             if (OnCommand.checkCollision(player, land.getName(), land, LandAction.AREA_MODIFY, areaNb, area, land.getParent(), true)) {
-                return;
+                return false;
             }
             // Replace Area
             land.replaceArea(areaNb, area);
@@ -149,5 +164,7 @@ public class CommandCreate {
 
         player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.AREA.ISDONE", land.getName()));
         log.write(player.getName() + " have create an area named " + land.getName() + " at position " + land.getAreas().toString());
+        
+        return true;
     }
 }

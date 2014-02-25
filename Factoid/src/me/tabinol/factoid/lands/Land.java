@@ -79,13 +79,20 @@ public class Land extends DummyLand {
 
     public void addArea(CuboidArea area) {
 
-        int nextKey;
+        int nextKey = 0;
 
         if (areas.isEmpty()) {
             nextKey = 1;
         } else {
-            nextKey = areas.lastKey() + 1;
+            for (int key : areas.keySet()) {
+
+                if (nextKey < key) {
+                    nextKey = key;
+                }
+            }
+            nextKey++;
         }
+
         addArea(area, nextKey);
     }
 
@@ -169,18 +176,17 @@ public class Land extends DummyLand {
     }
 
     /*
-    public boolean isCollision(CuboidArea area2) {
+     public boolean isCollision(CuboidArea area2) {
 
-        for (CuboidArea area1 : areas.values()) {
-            if (area1.isCollision(area2)) {
-                return true;
-            }
-        }
+     for (CuboidArea area1 : areas.values()) {
+     if (area1.isCollision(area2)) {
+     return true;
+     }
+     }
 
-        return false;
-    }
-    */
-
+     return false;
+     }
+     */
     public boolean isLocationInside(Location loc) {
 
         for (CuboidArea area1 : areas.values()) {
@@ -338,19 +344,19 @@ public class Land extends DummyLand {
 
         return ancestor;
     }
-    
+
     public boolean isDescendants(Land land) {
-        
-        if(land == this) {
+
+        if (land == this) {
             return true;
         }
-        
-        for(Land landT : children.values()) {
-            if(landT.isDescendants(land) == true) {
+
+        for (Land landT : children.values()) {
+            if (landT.isDescendants(land) == true) {
                 return true;
             }
         }
-        
+
         return false;
     }
 

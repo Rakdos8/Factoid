@@ -1,28 +1,27 @@
 package me.tabinol.factoid.playercontainer;
 
-import me.tabinol.factoid.config.DependPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class PlayerContainerGroup extends PlayerContainer implements PlayerContainerInterface {
+public class PlayerContainerPermission extends PlayerContainer implements PlayerContainerInterface {
     
-    public PlayerContainerGroup(String groupName) {
+    public PlayerContainerPermission(String bukkitPermission) {
         
-        super(groupName, PlayerContainerType.GROUP);
+        super(bukkitPermission, PlayerContainerType.PERMISSION);
     }
     
     @Override
     public boolean equals(PlayerContainer container2) {
         
-        return container2 instanceof PlayerContainerGroup &&
+        return container2 instanceof PlayerContainerPermission &&
                 name.equalsIgnoreCase(container2.getName());
     }
 
     @Override
     public PlayerContainer copyOf() {
         
-        return new PlayerContainerGroup(name);
+        return new PlayerContainerPermission(name);
     }
 
     @Override
@@ -31,7 +30,7 @@ public class PlayerContainerGroup extends PlayerContainer implements PlayerConta
         Player player = Bukkit.getPlayer(playerName);
         
         if(player != null) {
-            return DependPlugin.permission.playerInGroup(player, name);
+            return player.hasPermission(name);
         } else {
             return false;
         }
@@ -40,6 +39,6 @@ public class PlayerContainerGroup extends PlayerContainer implements PlayerConta
     @Override
     public String getPrint() {
         
-        return ChatColor.BLUE + "G:" + ChatColor.WHITE + name;
+        return ChatColor.GRAY + "B:" + ChatColor.WHITE + name;
     }
 }

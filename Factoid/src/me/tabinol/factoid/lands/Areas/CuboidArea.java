@@ -128,6 +128,7 @@ public class CuboidArea implements Comparable<CuboidArea> {
         HashSet<CuboidArea> areaList = new HashSet<>();
 
         if (!worldName.equalsIgnoreCase(area2.worldName)) {
+            areaList.add(area2);
             return areaList;
         }
 
@@ -154,12 +155,15 @@ public class CuboidArea implements Comparable<CuboidArea> {
 
         // first check if both points are before or after
         if ((x1pos == -1 && x2pos == -1) || (x1pos == 1 && x2pos == 1)) {
+            areaList.add(area2);
             return areaList;
         }
         if ((y1pos == -1 && y2pos == -1) || (y1pos == 1 && y2pos == 1)) {
+            areaList.add(area2);
             return areaList;
         }
         if ((z1pos == -1 && z2pos == -1) || (z1pos == 1 && z2pos == 1)) {
+            areaList.add(area2);
             return areaList;
         }
 

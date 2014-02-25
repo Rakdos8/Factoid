@@ -48,18 +48,21 @@ public class OnCommand extends Thread implements CommandExecutor {
     // Represent a Entry for a "/factoid confirm"
     public enum ConfirmType {
 
-        REMOVE_LAND;
+        REMOVE_LAND,
+        REMOVE_AREA;
     }
 
     public class ConfirmEntry {
 
         public final ConfirmType confirmType;
         public final Land land;
+        public final int areaNb;
 
-        public ConfirmEntry(ConfirmType confirmType, Land land) {
+        public ConfirmEntry(ConfirmType confirmType, Land land, int areaNb) {
 
             this.confirmType = confirmType;
             this.land = land;
+            this.areaNb = areaNb;
         }
     }
 
@@ -312,16 +315,16 @@ public class OnCommand extends Thread implements CommandExecutor {
 
         } else if (curArg.equalsIgnoreCase("remove") || curArg.equalsIgnoreCase("replace")) {
 
-            curArg = argList.getNext();
+            String areaNbStr = argList.getNext();
             int areaNb;
             if (!Factoid.getPlayerConf().isAdminMod(player) && !land.isOwner(player.getName())) {
                 throw new FactoidCommandException("Priority", player, "COMMAND.GENERAL.MISSINGPERMISSION");
             }
-            if (curArg == null) {
+            if (areaNbStr == null) {
                 throw new FactoidCommandException("Area", player, "COMMAND.REMOVE.AREA.EMPTY");
             }
             try {
-                areaNb = Integer.parseInt(curArg);
+                areaNb = Integer.parseInt(areaNbStr);
             } catch (NumberFormatException ex) {
                 throw new FactoidCommandException("Area", player, "COMMAND.REMOVE.AREA.INVALID");
             }
@@ -341,12 +344,14 @@ public class OnCommand extends Thread implements CommandExecutor {
                     return;
                 }
 
-                // Remove area
-                if (land.removeArea(areaNb) == false) {
+                // Check if exist
+                if (land.getArea(areaNb) == null) {
                     throw new FactoidCommandException("Area", player, "COMMAND.REMOVE.AREA.INVALID");
                 }
-                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.REMOVE.DONE.AREA", land.getName()));
-                log.write("Land " + land.getName() + " is removed by " + player.getName());
+
+                ConfirmList.put(player, new ConfirmEntry(ConfirmType.REMOVE_AREA, LandSelectioned.get(player), areaNb));
+                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.REMOVE.CONFIRM"));
+
             } else {
 
                 //Only for a replace
@@ -519,15 +524,15 @@ public class OnCommand extends Thread implements CommandExecutor {
         Land land = getLandSelected(player);
 
         if (!player.getName().equalsIgnoreCase(land.getOwner().getName()) && !Factoid.getPlayerConf().isAdminMod(player)) {
-            throw new FactoidCommandException("Banned", player, "COMMAND.RENAME.MISSINGPERMISSION");
+            throw new FactoidCommandException("CommandRename", player, "COMMAND.RENAME.MISSINGPERMISSION");
         }
 
         if (argList.isLast()) {
-            throw new FactoidCommandException("CommandCreate", player, "COMMAND.RENAME.NEEDNAME");
+            throw new FactoidCommandException("CommandRename", player, "COMMAND.RENAME.NEEDNAME");
         }
         String curArg = argList.getNext();
         if (OnCommand.getBannedWord().contains(curArg.toLowerCase())) {
-            throw new FactoidCommandException("CommandCreate", player, "COMMAND.RENAME.HINTUSE");
+            throw new FactoidCommandException("CommandRename", player, "COMMAND.RENAME.HINTUSE");
         }
 
         // Check for collision
@@ -669,7 +674,7 @@ public class OnCommand extends Thread implements CommandExecutor {
             return;
         }
 
-        ConfirmList.put(player, new ConfirmEntry(ConfirmType.REMOVE_LAND, LandSelectioned.get(player)));
+        ConfirmList.put(player, new ConfirmEntry(ConfirmType.REMOVE_LAND, LandSelectioned.get(player), 0));
         player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.REMOVE.CONFIRM"));
     }
 
@@ -679,6 +684,8 @@ public class OnCommand extends Thread implements CommandExecutor {
 
         if ((confirmEntry = ConfirmList.get(player)) != null) {
             if (confirmEntry.confirmType == ConfirmType.REMOVE_LAND) {
+
+                // Remove land
                 int i = confirmEntry.land.getAreas().size();
                 try {
                     Factoid.getLands().removeLand(confirmEntry.land);
@@ -687,20 +694,25 @@ public class OnCommand extends Thread implements CommandExecutor {
                 }
                 player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.REMOVE.DONE.LAND", confirmEntry.land.getName(), i + ""));
                 log.write(player.getName() + " confirm for removing " + confirmEntry.land.getName());
+
+            } else if (confirmEntry.confirmType == ConfirmType.REMOVE_AREA) {
+
+                // Remove area
+                if (!confirmEntry.land.removeArea(confirmEntry.areaNb)) {
+                    throw new FactoidCommandException("Area", player, "COMMAND.REMOVE.AREA.INVALID");
+                }
+                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.REMOVE.DONE.AREA", confirmEntry.land.getName()));
+                log.write("area " + confirmEntry.areaNb + " for land " + confirmEntry.land.getName() + " is removed by " + player.getName());
+
             }
         }
     }
 
     public static void doCommandCancel(Player player) throws FactoidCommandException {
 
-        ConfirmEntry confirmEntry;
-
-        if ((confirmEntry = ConfirmList.get(player)) != null) {
-            if (confirmEntry.confirmType == ConfirmType.REMOVE_LAND) {
-                ConfirmList.remove(player);
-                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.REMOVE.CANCEL"));
-                Factoid.getLog().write(player.getName() + " cancel for removing land");
-            }
+        if (ConfirmList.remove(player) != null) {
+            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.REMOVE.CANCEL"));
+            Factoid.getLog().write(player.getName() + " cancel for action");
         } else if (PlayerSelectingLand.containsKey(player)) {
             LandSelection select = OnCommand.PlayerSelectingLand.get(player);
             OnCommand.PlayerSelectingLand.remove(player);
@@ -939,19 +951,21 @@ public class OnCommand extends Thread implements CommandExecutor {
             LandAction action, int removeId, CuboidArea newArea, Land parent, boolean addForApprove) throws FactoidCommandException {
 
         // allowApprove: false: The command can absolutely not be done if there is error!
-        Collisions coll = new Collisions(landName, land, action, removeId, newArea, parent, addForApprove);
+        Collisions coll = new Collisions(landName, land, action, removeId, newArea, parent, !addForApprove);
         boolean allowApprove = coll.getAllowApprove();
         if (coll.hasCollisions()) {
             player.sendMessage(coll.getPrints());
 
-            if (addForApprove && Factoid.getConf().AllowCollision == Config.AllowCollisionType.APPROVE && allowApprove == true) {
-                player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COLLISION.GENERAL.NEEDAPPROVE", landName));
-                Factoid.getLog().write("land " + landName + " has collision and needs approval.");
-                Factoid.getLands().getApproveList().addApprove(new Approve(landName, action, removeId, newArea,
-                        new PlayerContainerPlayer(player.getName()), parent));
-                return true;
-            } else if (Factoid.getConf().AllowCollision == Config.AllowCollisionType.FALSE || allowApprove == false) {
-                throw new FactoidCommandException("Land collision", player, "COMMAND.GENERAL.CANNOTDONE");
+            if (addForApprove) {
+                if (Factoid.getConf().AllowCollision == Config.AllowCollisionType.APPROVE && allowApprove == true) {
+                    player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COLLISION.GENERAL.NEEDAPPROVE", landName));
+                    Factoid.getLog().write("land " + landName + " has collision and needs approval.");
+                    Factoid.getLands().getApproveList().addApprove(new Approve(landName, action, removeId, newArea,
+                            new PlayerContainerPlayer(player.getName()), parent));
+                    return true;
+                } else if (Factoid.getConf().AllowCollision == Config.AllowCollisionType.FALSE || allowApprove == false) {
+                    throw new FactoidCommandException("Land collision", player, "COLLISION.GENERAL.CANNOTDONE");
+                }
             }
         }
 

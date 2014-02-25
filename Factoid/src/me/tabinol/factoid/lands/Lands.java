@@ -12,6 +12,7 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.event.LandDeleteEvent;
 import me.tabinol.factoid.exceptions.FactoidLandException;
+import me.tabinol.factoid.lands.approve.Approve;
 import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import me.tabinol.factoid.lands.collisions.Collisions.LandError;
 import me.tabinol.factoid.lands.approve.ApproveList;
@@ -56,24 +57,24 @@ public class Lands {
     }
 
     public ApproveList getApproveList() {
-        
+
         return approveList;
     }
-    
+
     // For Land with no parent
     public Land createLand(String landName, PlayerContainer owner, CuboidArea area)
             throws FactoidLandException {
-        
+
         return createLand(landName, owner, area, null, 1);
     }
-    
+
     // For Land with parent
     public Land createLand(String landName, PlayerContainer owner, CuboidArea area, Land parent)
             throws FactoidLandException {
-        
+
         return createLand(landName, owner, area, parent, 1);
     }
-    
+
     // Only for Land load at start
     public Land createLand(String landName, PlayerContainer owner, CuboidArea area, Land parent, int areaId)
             throws FactoidLandException {
@@ -81,32 +82,26 @@ public class Lands {
         String landNameLower = landName.toLowerCase();
         int genealogy = 0;
         Land land;
-        
-        if(parent != null) {
+
+        if (parent != null) {
             genealogy = parent.getGenealogy() + 1;
         }
-        
-        if(isNameExist(landName)) {
+
+        if (isNameExist(landName)) {
             throw new FactoidLandException(landName, area, LandAction.LAND_ADD, LandError.NAME_IN_USE);
         }
-        
+
         land = new Land(landNameLower, owner, area, genealogy, parent, areaId);
 
         addLandToList(land);
         Factoid.getLog().write("add land: " + landNameLower);
-        
+
         return land;
     }
-    
+
     public boolean isNameExist(String landName) {
 
-        String landNameLower = landName.toLowerCase();
-        
-        if (landList.containsKey(landNameLower) || approveList.isInApprove(landNameLower)) {
-            return true;
-        }
-        
-        return false;
+        return landList.containsKey(landName.toLowerCase());
     }
 
     public boolean removeLand(Land land) throws FactoidLandException {
@@ -116,18 +111,18 @@ public class Lands {
         if (!landList.containsKey(land.getName())) {
             return false;
         }
-        
+
         // If the land has children
-        if(!land.getChildren().isEmpty()) {
+        if (!land.getChildren().isEmpty()) {
             throw new FactoidLandException(land.getName(), null, LandAction.LAND_REMOVE, LandError.HAS_CHILDREN);
         }
-        
+
         // Call Land Event and check if it is cancelled
         pm.callEvent(landEvent);
-        if(landEvent.isCancelled()) {
+        if (landEvent.isCancelled()) {
             return false;
         }
-        
+
         removeLandToList(land);
         land.getParent().removeChild(land.getName());
         Factoid.getStorage().removeLand(land);
@@ -138,32 +133,32 @@ public class Lands {
     public boolean removeLand(String landName) throws FactoidLandException {
 
         String landLower;
-        
+
         if (landName == null || !landList.containsKey(landLower = landName.toLowerCase())) {
             return false;
         }
         return removeLand(landList.get(landLower));
 
     }
-    
+
     public boolean renameLand(String oldName, String newName) throws FactoidLandException {
-        
+
         String oldNameLower = oldName.toLowerCase();
         String newNameLower = newName.toLowerCase();
-        
-        if(isNameExist(newNameLower)) {
+
+        if (isNameExist(newNameLower)) {
             throw new FactoidLandException(newNameLower, null, LandAction.LAND_RENAME, LandError.NAME_IN_USE);
         }
 
         Land land = landList.remove(oldNameLower);
-        
-        if(land == null) {
+
+        if (land == null) {
             return false;
         }
-        
+
         land.setName(newNameLower);
         landList.put(newNameLower, land);
-        
+
         return true;
     }
 
@@ -181,9 +176,9 @@ public class Lands {
         }
         return ca.getLand();
     }
-    
+
     public Collection<Land> getLands() {
-        
+
         return landList.values();
     }
 
@@ -197,21 +192,21 @@ public class Lands {
 
         return getOutsideArea(loc);
     }
-    
+
     public DummyLand getOutsideArea(Location loc) {
-        
+
         return getOutsideArea(loc.getWorld().getName());
     }
-    
+
     public DummyLand getOutsideArea(String worldName) {
-        
+
         DummyLand dummyLand;
         String worldNameLower = worldName.toLowerCase();
-        
-        if((dummyLand = outsideArea.get(worldNameLower)) == null) {
+
+        if ((dummyLand = outsideArea.get(worldNameLower)) == null) {
             outsideArea.put(worldNameLower, dummyLand = new DummyLand(worldNameLower));
         }
-        
+
         return dummyLand;
     }
 
@@ -239,7 +234,7 @@ public class Lands {
 
         return lands;
     }
-    
+
     protected boolean getPermissionInWorld(String worldName, String playerName, PermissionType pt, boolean onlyInherit) {
 
         Boolean result;
