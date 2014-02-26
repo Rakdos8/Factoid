@@ -4,19 +4,19 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Map;
 import java.util.logging.Level;
 import me.tabinol.factoid.Factoid;
-import org.bukkit.ChatColor;
+import me.tabinol.factoid.commands.OnCommand;
+import org.bukkit.configuration.ConfigurationSection;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Lang extends Thread {
 
-    public static final int ACTUAL_VERSION = 1; // +1 if there is a new version of the .conf
+    public static final int ACTUAL_VERSION = 3; // +1 if there is a new version of the .conf
     private String lang = null;
     private File langFile;
     private FileConfiguration langconfig;
@@ -141,15 +141,16 @@ public class Lang extends Thread {
         return counter;
     }
 
-    // Notify with a message
-    public static void notifyPlayer(String message, Permission permission) {
-
-        for (Player players : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
-            if (players.hasPermission(permission)) {
-                players.sendMessage(ChatColor.GREEN + "[Factoid] " + message);
-            }
+    public String getHelp(String commandName) {
+        
+        ConfigurationSection helpSec = langconfig.getConfigurationSection("HELP." + commandName);
+        Map<String, Object> valueList = helpSec.getValues(false);
+        StringBuilder sb = new StringBuilder();
+        
+        for(int t = 1; t <= valueList.size(); t ++) {
+            sb.append((String) valueList.get(t + "")).append(OnCommand.NEWLINE);
         }
-
-        Factoid.getThisPlugin().getLogger().log(Level.INFO, "[Factoid] " + message);
+        
+        return sb.toString();
     }
 }

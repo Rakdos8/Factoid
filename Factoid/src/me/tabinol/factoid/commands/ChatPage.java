@@ -35,8 +35,12 @@ public class ChatPage {
         if (pageNumber > totalPages) {
             throw new FactoidCommandException("Page error", player, "COMMAND.PAGE.INVALID");
         }
-        player.sendMessage(ChatColor.GRAY + Factoid.getLanguage().getMessage(header, 
-                ChatColor.GREEN + param + ChatColor.GRAY));
+        if (param != null) {
+            player.sendMessage(ChatColor.GRAY + Factoid.getLanguage().getMessage(header,
+                    ChatColor.GREEN + param + ChatColor.GRAY));
+        } else {
+            player.sendMessage(ChatColor.GRAY + Factoid.getLanguage().getMessage(header));
+        }
         player.sendMessage(page.getLines());
         if (totalPages > 1) {
             player.sendMessage(ChatColor.GRAY + Factoid.getLanguage().getMessage("COMMAND.PAGE.MULTIPAGE",
@@ -45,9 +49,9 @@ public class ChatPage {
             player.sendMessage(ChatColor.GRAY + Factoid.getLanguage().getMessage("COMMAND.PAGE.ONEPAGE"));
         }
     }
-    
+
     public final int getTotalPages() {
-        
+
         return totalPages;
     }
 }

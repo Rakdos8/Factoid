@@ -52,7 +52,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         REMOVE_AREA;
     }
 
-    public class ConfirmEntry {
+    public static class ConfirmEntry {
 
         public final ConfirmType confirmType;
         public final Land land;
@@ -66,8 +66,8 @@ public class OnCommand extends Thread implements CommandExecutor {
         }
     }
 
-    private final Log log;
-    private final JavaPlugin plugin;
+    private static Log log;
+    private static JavaPlugin plugin;
     public static final String NEWLINE = System.getProperty("line.separator");
     private static final Map<Player, LandSelection> PlayerSelectingLand = new HashMap<>();
     // private static Map<String, CuboidArea> PlayerSelectingWorldEdit = new HashMap();
@@ -114,134 +114,20 @@ public class OnCommand extends Thread implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("factoid") || cmd.getName().equalsIgnoreCase("claim")) {
 
             ArgList argList = new ArgList(arg, sender);
-            String curArg = argList.getNext();
-
-            if (arg.length == 0) {
-                // No parameters print help
-                return true;
-            }
-
             try {
-                // Commands that can be done from the console
-                if (curArg.equalsIgnoreCase("reload")) {
-                    doCommandReload(sender);
-                    return true;
-                }
-
-                // If it is console, do not go forward
-                if (!(sender instanceof Player)) {
-                    sender.sendMessage(Factoid.getLanguage().getMessage("CONSOLE"));
-                    return true;
-                }
-
-                Player player = (Player) sender;
-
-                if (curArg.equalsIgnoreCase("select")) {
-                    new CommandSelect(player, argList, null);
-                    return true;
-                }
-
-                if (curArg.equalsIgnoreCase("expand")) {
-                    doCommandExpand(player, argList);
-                    return true;
-                }
-
-                if (curArg.equalsIgnoreCase("create")) {
-                    new CommandCreate(CreateType.LAND, player, argList, 0);
-                    return true;
-                }
-
-                if (curArg.equalsIgnoreCase("area")) {
-                    doCommandArea(player, argList);
-                    return true;
-                }
-
-                if (curArg.equalsIgnoreCase("owner")) {
-                    doCommandOwner(player, argList);
-                    return true;
-                }
-
-                if (curArg.equalsIgnoreCase("flag")) {
-                    doCommandFlag(player, argList);
-                    return true;
-                }
-
-                if (curArg.equalsIgnoreCase("permission")) {
-                    doCommandPermission(player, argList);
-                    return true;
-                }
-
-                if (curArg.equalsIgnoreCase("resident")) {
-                    doCommandResident(player, argList);
-                    return true;
-                }
-
-                if (curArg.equalsIgnoreCase("ban")) {
-                    doCommandBanned(player, argList);
-                    return true;
-                }
-
-                if (curArg.equalsIgnoreCase("remove")) {
-                    doCommandRemove(player);
-                    return true;
-                }
-
-                if (curArg.equalsIgnoreCase("confirm")) {
-                    doCommandConfirm(player);
-                    return true;
-                }
-
-                if (curArg.equalsIgnoreCase("cancel")) {
-                    doCommandCancel(player);
-                    return true;
-                }
-
-                if (curArg.equalsIgnoreCase("here") || curArg.equalsIgnoreCase("current")) {
-                    doCommandHere(player);
-                    return true;
-                }
-
-                if (curArg.equalsIgnoreCase("adminmod")) {
-                    doCommandAdminmod(player);
-                    return true;
-                }
-
-                if (curArg.equalsIgnoreCase("page")) {
-                    doCommandPage(player, argList);
-                    return true;
-                }
-                if (curArg.equalsIgnoreCase("default")) {
-                    doCommandDefault(player);
-                    return true;
-                }
-                if (curArg.equalsIgnoreCase("priority")) {
-                    doCommandPrority(player, argList);
-                    return true;
-                }
-                if (curArg.equalsIgnoreCase("approve")) {
-                    doCommandApprove(player, argList);
-                    return true;
-                }
-                if (curArg.equalsIgnoreCase("rename")) {
-                    doCommandRename(player, argList);
-                    return true;
-                }
-
-                // If error on command, send the message to thee player
+                // Check the command to send
+                CommandList.getCommand(sender, argList);
+                return true;
+                // If error on command, send the message to the player
             } catch (FactoidCommandException ex) {
                 return true;
             }
-
-            // If the command does not exist
-            sender.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.NOTEXIST"));
-            return true;
-
         }
 
         return false;
     }
 
-    private void doCommandReload(CommandSender sender) throws FactoidCommandException {
+    protected static void doCommandReload(CommandSender sender) throws FactoidCommandException {
 
         checkBukkitPermission(sender, "factoid.reload", "COMMAND.RELOAD.NOPERMISSION");
         sender.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RELOAD.START"));
@@ -249,7 +135,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         sender.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RELOAD.COMPLETE"));
     }
 
-    private void doCommandExpand(Player player, ArgList argList) throws FactoidCommandException {
+    protected static void doCommandExpand(Player player, ArgList argList) throws FactoidCommandException {
 
         /**
          * *** TO DO : COLLISIONS! ******
@@ -280,7 +166,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         }
     }
 
-    private Land getLandSelected(Player player) throws FactoidCommandException {
+    private static Land getLandSelected(Player player) throws FactoidCommandException {
 
         Land land;
 
@@ -300,7 +186,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         return land;
     }
 
-    private void doCommandArea(Player player, ArgList argList) throws FactoidCommandException {
+    protected static void doCommandArea(Player player, ArgList argList) throws FactoidCommandException {
 
         Land land = getLandSelected(player);
         String curArg = argList.getNext();
@@ -374,7 +260,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         }
     }
 
-    private void doCommandPrority(Player player, ArgList argList) throws FactoidCommandException {
+    protected static void doCommandPrority(Player player, ArgList argList) throws FactoidCommandException {
 
         Land land = getLandSelected(player);
         String curArg = argList.getNext();
@@ -403,7 +289,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         log.write("Priority for land " + land.getName() + " changed for " + land.getPriority());
     }
 
-    private void doCommandOwner(Player player, ArgList argList) throws FactoidCommandException {
+    protected static void doCommandOwner(Player player, ArgList argList) throws FactoidCommandException {
 
         Land land = getLandSelected(player);
 
@@ -419,7 +305,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         log.write("The land " + land.getName() + "is set to owner: " + pc.getPrint());
     }
 
-    private void doCommandDefault(Player player) throws FactoidCommandException {
+    protected static void doCommandDefault(Player player) throws FactoidCommandException {
 
         Land land = getLandSelected(player);
 
@@ -432,7 +318,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         log.write("The land " + land.getName() + "is set to default configuration by " + player.getName());
     }
 
-    private void doCommandFlag(Player player, ArgList argList) throws FactoidCommandException {
+    protected static void doCommandFlag(Player player, ArgList argList) throws FactoidCommandException {
 
         Land land = getLandSelected(player);
         String curArg = argList.getNext();
@@ -475,7 +361,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         }
     }
 
-    private void doCommandPermission(Player player, ArgList argList) throws FactoidCommandException {
+    protected static void doCommandPermission(Player player, ArgList argList) throws FactoidCommandException {
 
         Land land = getLandSelected(player);
         String curArg = argList.getNext();
@@ -491,7 +377,7 @@ public class OnCommand extends Thread implements CommandExecutor {
                 throw new FactoidCommandException("Permission", player, "COMMAND.PERMISSION.NOENTERNOTINSPAWN");
             }
             land.addPermission(pc, perm);
-            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.ISDONE", perm.getPermType().toString(), perm.getValue() + ""));
+            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.ISDONE", perm.getPermType().toString(), perm.getValue() + "", land.getName()));
             log.write("Permission set: " + perm.getPermType().toString() + ", value: " + perm.getValue());
 
         } else if (curArg.equalsIgnoreCase("unset")) {
@@ -519,7 +405,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         }
     }
 
-    private void doCommandRename(Player player, ArgList argList) throws FactoidCommandException {
+    protected static void doCommandRename(Player player, ArgList argList) throws FactoidCommandException {
 
         Land land = getLandSelected(player);
 
@@ -551,7 +437,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         log.write(player.getName() + " has renamed " + oldName + " to " + curArg);
     }
 
-    private void doCommandResident(Player player, ArgList argList) throws FactoidCommandException {
+    protected static void doCommandResident(Player player, ArgList argList) throws FactoidCommandException {
 
         Land land = getLandSelected(player);
         String curArg = argList.getNext();
@@ -596,7 +482,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         }
     }
 
-    private void doCommandBanned(Player player, ArgList argList) throws FactoidCommandException {
+    protected static void doCommandBanned(Player player, ArgList argList) throws FactoidCommandException {
 
         Land land = getLandSelected(player);
         String curArg = argList.getNext();
@@ -645,7 +531,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         }
     }
 
-    private void doCommandRemove(Player player /*, ArgList argList */) throws FactoidCommandException {
+    protected static void doCommandRemove(Player player /*, ArgList argList */) throws FactoidCommandException {
 
         Land land;
 
@@ -678,7 +564,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.REMOVE.CONFIRM"));
     }
 
-    private void doCommandConfirm(Player player) throws FactoidCommandException {
+    protected static void doCommandConfirm(Player player) throws FactoidCommandException {
 
         ConfirmEntry confirmEntry;
 
@@ -731,14 +617,14 @@ public class OnCommand extends Thread implements CommandExecutor {
         }
     }
 
-    private void doCommandHere(Player player) throws FactoidCommandException {
+    protected static void doCommandHere(Player player) throws FactoidCommandException {
 
         Location playerloc = player.getLocation();
         CuboidArea area = Factoid.getLands().getCuboidArea(playerloc);
         landInfo(area, player);
     }
 
-    private void doCommandAdminmod(Player player) throws FactoidCommandException {
+    protected static void doCommandAdminmod(Player player) throws FactoidCommandException {
 
         PlayerConfig pc = Factoid.getPlayerConf();
 
@@ -752,7 +638,11 @@ public class OnCommand extends Thread implements CommandExecutor {
         }
     }
 
-    private void doCommandApprove(Player player, ArgList argList) throws FactoidCommandException {
+    protected static void doCommandHelp(Player player, ArgList argList) throws FactoidCommandException {
+
+    }
+
+    protected static void doCommandApprove(Player player, ArgList argList) throws FactoidCommandException {
 
         String curArg = argList.getNext();
         ApproveList approveList = Factoid.getLands().getApproveList();
@@ -781,9 +671,9 @@ public class OnCommand extends Thread implements CommandExecutor {
             } else {
 
                 // List not empty
-                createPage("COLLISION.SHOW.LISTSTART", stList.toString(), player, "");
+                createPage("COLLISION.SHOW.LISTSTART", stList.toString(), player, null);
             }
-        } else if (curArg.equalsIgnoreCase("info") || curArg.equalsIgnoreCase("add") || curArg.equalsIgnoreCase("remove")) {
+        } else if (curArg.equalsIgnoreCase("info") || curArg.equalsIgnoreCase("confirm") || curArg.equalsIgnoreCase("cancel")) {
 
             String param = argList.getNext();
 
@@ -794,9 +684,9 @@ public class OnCommand extends Thread implements CommandExecutor {
             Approve approve = approveList.getApprove(param);
 
             // Check permission
-            if (approve == null || (curArg.equalsIgnoreCase("add") && !isApprover)
-                    || (curArg.equalsIgnoreCase("remove") || curArg.equalsIgnoreCase("info"))
-                    && (!isApprover || !approve.getOwner().hasAccess(player.getName()))) {
+            if (approve == null || (curArg.equalsIgnoreCase("confirm") && !isApprover)
+                    || ((curArg.equalsIgnoreCase("cancel") || curArg.equalsIgnoreCase("info"))
+                    && (!isApprover || !approve.getOwner().hasAccess(player.getName())))) {
                 throw new FactoidCommandException("Approve", player, "COLLISION.SHOW.PARAMNULL");
             }
 
@@ -806,20 +696,20 @@ public class OnCommand extends Thread implements CommandExecutor {
             CuboidArea newArea = approve.getNewArea();
             Land parent = approve.getParent();
 
-            if (curArg.equalsIgnoreCase("info") || curArg.equalsIgnoreCase("add")) {
+            if (curArg.equalsIgnoreCase("info") || curArg.equalsIgnoreCase("confirm")) {
 
                 // Info on the specified land (Collision)
                 checkCollision(player, param, land,
                         action, removeId, newArea, parent, false);
 
-                if (curArg.equalsIgnoreCase("add")) {
+                if (curArg.equalsIgnoreCase("confirm")) {
 
                     // Create the action (if it is possible)
                     approveList.removeApprove(approve);
                     approve.createAction();
                     player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COLLISION.GENERAL.DONE"));
                 }
-            } else if (curArg.equalsIgnoreCase("remove")) {
+            } else if (curArg.equalsIgnoreCase("cancel")) {
 
                 // Remove in approve list
                 approveList.removeApprove(approve);
@@ -828,7 +718,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         }
     }
 
-    private void doCommandPage(Player player, ArgList argList) throws FactoidCommandException {
+    protected static void doCommandPage(Player player, ArgList argList) throws FactoidCommandException {
 
         ChatPage chatPage = chatPageList.get(player);
         int pageNumber;
@@ -850,7 +740,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         chatPage.getPage(pageNumber);
     }
 
-    private static void createPage(String header, String text, Player player, String param) throws FactoidCommandException {
+    protected static void createPage(String header, String text, Player player, String param) throws FactoidCommandException {
 
         ChatPage chatPage = new ChatPage(header, text, player, param);
 
@@ -861,7 +751,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         }
     }
 
-    private void checkBukkitPermission(CommandSender sender, String permission, String langMsgNoPermission) throws FactoidCommandException {
+    protected static void checkBukkitPermission(CommandSender sender, String permission, String langMsgNoPermission) throws FactoidCommandException {
 
         if (!sender.hasPermission(permission)) {
             throw new FactoidCommandException("checkBukkitPermission: " + permission, sender, langMsgNoPermission);

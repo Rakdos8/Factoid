@@ -147,13 +147,9 @@ public class ArgList {
         PlayerContainerType pcType = PlayerContainerType.getFromString(curArg);
 
         if (pcType == null) {
-            if (isLast()) {
-                // Type player if it is the player directly
-                pcType = PlayerContainerType.PLAYER;
-                param = curArg;
-            } else {
-                throw new FactoidCommandException("PlayerContainer Error", player, "COMMAND.CONTAINERTYPE.INVALID");
-            }
+            // Type player if it is the player directly
+            pcType = PlayerContainerType.PLAYER;
+            param = curArg;
         }
 
         if (bannedPCTList != null) {
@@ -166,7 +162,7 @@ public class ArgList {
 
         if (pcType.hasParameter()) {
             if (param == null) {
-                curArg = getNext();
+                param = getNext();
             }
             if (param == null) {
                 throw new FactoidCommandException("PlayerContainer Error", player, "COMMAND.CONTAINER.CONTAINERNULL");

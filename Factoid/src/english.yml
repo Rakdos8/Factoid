@@ -1,8 +1,87 @@
 # Do not change de Version number if you don't know what you are doing!
-VERSION: 1
+VERSION: 3
 ENABLE: "Factoid is Enabled."
 DISABLE: "Factoid is Disabled."
 CONSOLE: "Hey Console! Wait...what?"
+HELP:
+  LISTSTART: "-Command list-"
+  GENERAL:
+    1: "Type \"/factoid help\" <command> for specific command help."
+    2: "-General commands-"
+    3: "/factoid select             : Select a land."
+    4: "/factoid here               : Land information."
+    5: "/factoid adminmod           : Set/Unset admin mod."
+    6: "/factoid reload             : Reload the plugin."
+    7: "/factoid approve            : Approve or not a change."
+    8: "-Land commands (a land must be selected)"
+    9: "/factoid area               : Area of the land."
+    10: "/factoid ban                : Banned from the land."
+    11: "/factoid cancel             : Cancel an action."
+    12: "/factoid create             : Create a land."
+    13: "/factoid expand             : Expand the land."
+    14: "/factoid flag               : Flags of the land."
+    15: "/factoid owner              : Owner of the land."
+    16: "/factoid page               : View a command result page."
+    17: "/factoid permission         : Permissions of the land."
+    18: "/factoid priority           : Priority of the land."
+    19: "/factoid rename             : Rename a land."
+    20: "/factoid resident           : Resident of the land."
+  SELECT:
+    1: "/factoid select <here/land name> : Select a land for modification."
+    2: "/factoid select                  : Start the visal selection."
+    3: "/factoid select done             : Set a visual selection done."
+    4: "/factoid select worldedit        : Select the WorldEdit selection."
+  HERE:
+    1: "/factoid here : Show global informations of the curent land."
+  ADMINMOD:
+    1: "/factoid adminmod : Activate or disactivate admin mod."
+  RELOAD:
+    1: "/factoid reload : Reload the plugin configuration."
+  APPROVE:
+    1: "/factoid approve list          : List actions to approve."
+    2: "/factoid approve info <land>   : Information of the action."
+    3: "/factoid approve accept <land> : Approve an action."
+    4: "/factoid approve cancel <land> : Cancel an action."
+  AREA:
+    1: "/factoid area list             : List areas."
+    2: "/factoid area add              : Add an area."
+    3: "/factoid area remove <area nb> : Remove an area."
+    4: "/factoid area replace          : Replace an area."
+  BAN:
+    1: "/factoid ban list                     : List banned players/containers."
+    2: "/factoid ban add <player container>   : Ban a player/container"
+    3: "/factoid ban remove <player container>: Remove a banned player/cont."
+  CANCEL:
+    1: "/factoid cancel : Cancel a selection or an action."
+  CREATE:
+    1: "/factoid create <land name> [parent] : Create a land."
+  DEFAULT:
+    1: "/factoid default : Reset land configuration to default."
+  EXPAND:
+    1: "/factoid expand : Expand the land selection."
+  FLAG:
+    1: "/factoid flag list               : List flags."
+    2: "/factoid flag set <flag> <value> : Add a flag."
+    3: "/factoid flag unset <flag>       : Remove a flag."
+  OWNER:
+    1: "/factoid owner <player container> : Change the owner of the land."
+  PAGE:
+    1: "/factoid page <page number> : Show a page for a long result."
+  PERMISSION:
+    1: "/factoid permission list" 
+    2: "  > List permissions."
+    3: "/factoid permission set <player container> <perm> <value>"
+    4: "  > Add a permission."
+    5: "/factoid flag unset unset <player container> <perm>"
+    6: "  > Remove a permission."
+  PRIORITY:
+    1: "/factoid owner <player container> : Change the land priority."
+  RENAME:
+    1: "/factoid rename <new name> : Rename a land."
+  RESIDENT:
+    1: "/factoid resident list                  : List residents."
+    2: "/factoid area add <player container>    : Add a resident."
+    3: "/factoid area remove <player container> : Remove a resident."
 SCOREBOARD:
   LANDINFO: "Players List"
 COLLISION:
@@ -13,19 +92,19 @@ COLLISION:
     HAS_CHILDREN: "This land is parent of '%'."
     NAME_IN_USE: "This name is allready in use."
     IN_APPROVE_LIST: "This land is allready in approve list."
-    LISTSTART: "-Action(s) to be approved-%"
+    LISTSTART: "-Action(s) to be approved-"
     LIST: "Land: %, requester: %, action: %."
     LISTROWNULL: "No action in list to be approved."
     PARAMNULL: "You must specify a land name from the list."
     NOTIFYLAND: "The land '%' is added for approval by %."
     NOTIFY: "% action(s) waiting for approval."
   GENERAL:
-    NEEDAPPROVE: "Your operation is listed for approval. \"/factoid approve remove %\" if you want to cancel."
+    NEEDAPPROVE: "Your operation is listed for approval. \"/factoid approve cancel %\" if you want to cancel."
     CANNOTDONE: "Collision problem! Your action can't be done."
     DONE: "This action is approved."
     REMOVE: "The action is removed from the approve list."
 COMMAND:
-  NOTEXIST: "This command does not exist."
+  NOTEXIST: "This command does not exist. You can do \"/factoid help\""
   GENERAL:
     MISSINGPERMISSION: "You must have the permission to execute this action."
     ALREADY: " You are already in Flags Mode."
@@ -106,7 +185,7 @@ COMMAND:
     REMOVEISDONE: "you have removed '%' from flag list."
   CONTAINERTYPE:
     TYPENULL: "Please enter un Player Container Type or a player name."
-    INVALID: "This type doesn't exist."
+    # INVALID: "This type doesn't exist."
     NOTPERMITTED: "This Player Container is not permitted here."
   CONTAINER:
     CONTAINERNULL: "This Player Container needs a name."

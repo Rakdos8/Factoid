@@ -1,8 +1,9 @@
 package me.tabinol.factoid.lands.approve;
 
+import java.util.logging.Level;
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.utilities.Lang;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -44,12 +45,23 @@ public class ApproveNotif extends BukkitRunnable {
 
     public static void notifyForApprove(String landName, String playerName) {
 
-        Lang.notifyPlayer(Factoid.getLanguage().getMessage("COLLISION.SHOW.NOTIFYLAND", landName, playerName + ChatColor.GREEN), PERM_APPROVE);
+        notifyPlayer(Factoid.getLanguage().getMessage("COLLISION.SHOW.NOTIFYLAND", landName, playerName + ChatColor.GREEN));
     }
 
     private void notifyListApprove(int lstCount) {
 
-        Lang.notifyPlayer(Factoid.getLanguage().getMessage("COLLISION.SHOW.NOTIFY", lstCount + ""), PERM_APPROVE);
+        notifyPlayer(Factoid.getLanguage().getMessage("COLLISION.SHOW.NOTIFY", lstCount + ""));
     }
+    
+    // Notify with a message
+    private static void notifyPlayer(String message) {
 
+        for (Player players : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
+            if (players.hasPermission(PERM_APPROVE)) {
+                players.sendMessage(ChatColor.GREEN + "[Factoid] " + message);
+            }
+        }
+
+        Factoid.getThisPlugin().getLogger().log(Level.INFO, "[Factoid] " + message);
+    }
 }
