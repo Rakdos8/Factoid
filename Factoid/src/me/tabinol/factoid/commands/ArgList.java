@@ -96,7 +96,7 @@ public class ArgList {
         }
 
         if (!isAdminmod && !(isOwner && Factoid.getConf().ownerConfigFlag.contains(flagType))) {
-            throw new FactoidCommandException("Flag error", player, "COMMAND.FLAGS.MISSINGPERMISSION");
+            throw new FactoidCommandException("Flag error", player, "GENERAL.MISSINGPERMISSION");
         }
 
         return flagType;
@@ -107,7 +107,7 @@ public class ArgList {
         FlagType flagType = getFlagTypeFromArg(isAdminmob, isOwner);
 
         if (isLast()) {
-            throw new FactoidCommandException("Flag error", player, "COMMAND.FLAGS.MISSINGINFO");
+            throw new FactoidCommandException("Flag error", player, "GENERAL.MISSINGINFO");
         }
 
         LandFlag landFlag;
@@ -190,7 +190,7 @@ public class ArgList {
         }
 
         if (!isAdminmod && !(isOwner && Factoid.getConf().ownerConfigPerm.contains(pt))) {
-            throw new FactoidCommandException("Permission Error", player, "COMMAND.PERMISSION.MISSINGPERMISSION");
+            throw new FactoidCommandException("Permission Error", player, "GENERAL.MISSINGPERMISSION");
         }
 
         return pt;

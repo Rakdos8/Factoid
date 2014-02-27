@@ -16,7 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Lang extends Thread {
 
-    public static final int ACTUAL_VERSION = 3; // +1 if there is a new version of the .conf
+    public static final int ACTUAL_VERSION = 4; // +1 if there is a new version of the .conf
     private String lang = null;
     private File langFile;
     private FileConfiguration langconfig;

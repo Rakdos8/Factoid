@@ -108,7 +108,7 @@ public class CommandCreate {
         if (!Factoid.getPlayerConf().isAdminMod(player)
                 && !((parent == null && Factoid.getLands().getOutsideArea(area.getWorldName()).checkPermissionAndInherit(player.getName(), PermissionType.LAND_CREATE))
                 || (parent != null && parent.checkPermissionAndInherit(player.getName(), PermissionType.LAND_CREATE)))) {
-            throw new FactoidCommandException("CommandCreate", player, "COMMAND.CREATE.NOPERMISSION");
+            throw new FactoidCommandException("CommandCreate", player, "GENERAL.MISSINGPERMISSION");
         }
 
         // Check for collision
@@ -122,11 +122,8 @@ public class CommandCreate {
         try {
             land = Factoid.getLands().createLand(curArg, new PlayerContainerPlayer(player.getName()), area, parent);
         } catch (FactoidLandException ex) {
-            Logger.getLogger(CommandCreate.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        if (land == null) {
-            throw new FactoidCommandException("CommandCreate", player, "COMMAND.CREATE.ERROR");
+            Logger.getLogger(CommandCreate.class.getName()).log(Level.SEVERE, "On land create", ex);
+            throw new FactoidCommandException("On land create", player, "GENERAL.ERROR");
         }
 
         player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.DONE"));

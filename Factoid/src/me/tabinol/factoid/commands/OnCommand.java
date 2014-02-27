@@ -28,7 +28,6 @@ import me.tabinol.factoid.lands.selection.LandMakeSquare;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 
-import me.tabinol.factoid.commands.select.CommandSelect;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.config.PlayerConfig;
 import me.tabinol.factoid.exceptions.FactoidLandException;
@@ -129,7 +128,7 @@ public class OnCommand extends Thread implements CommandExecutor {
 
     protected static void doCommandReload(CommandSender sender) throws FactoidCommandException {
 
-        checkBukkitPermission(sender, "factoid.reload", "COMMAND.RELOAD.NOPERMISSION");
+        checkBukkitPermission(sender, "factoid.reload", "GENERAL.MISSINGPERMISSION");
         sender.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RELOAD.START"));
         Factoid.getThisPlugin().reload();
         sender.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RELOAD.COMPLETE"));
@@ -171,16 +170,16 @@ public class OnCommand extends Thread implements CommandExecutor {
         Land land;
 
         if (PlayerExpandingLand.containsKey(player)) {
-            throw new FactoidCommandException("Player Select", player, "COMMAND.GENERAL.QUIT.EXPANDMODE");
+            throw new FactoidCommandException("Player Select", player, "COMMAND.SELECT.QUIT.EXPANDMODE");
 
         }
         if (PlayerSetFlagUI.containsKey(player)) {
-            throw new FactoidCommandException("Player Select", player, "COMMAND.GENERAL.ALREADY");
+            throw new FactoidCommandException("Player Select", player, "COMMAND.SELECT.QUIT.FLAGSMODE");
         }
         if (LandSelectioned.containsKey(player)) {
             land = LandSelectioned.get(player);
         } else {
-            throw new FactoidCommandException("Player Select", player, "COMMAND.GENERAL.JOIN.SELECTMODE");
+            throw new FactoidCommandException("Player Select", player, "COMMAND.SELECT.JOIN.SELECTMODE");
         }
 
         return land;
@@ -194,7 +193,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         if (curArg.equalsIgnoreCase("add")) {
 
             if (!Factoid.getPlayerConf().isAdminMod(player) && !land.isOwner(player.getName())) {
-                throw new FactoidCommandException("Priority", player, "COMMAND.GENERAL.MISSINGPERMISSION");
+                throw new FactoidCommandException("Priority", player, "GENERAL.MISSINGPERMISSION");
             }
 
             new CommandCreate(CreateType.AREA, player, argList, 0);
@@ -204,7 +203,7 @@ public class OnCommand extends Thread implements CommandExecutor {
             String areaNbStr = argList.getNext();
             int areaNb;
             if (!Factoid.getPlayerConf().isAdminMod(player) && !land.isOwner(player.getName())) {
-                throw new FactoidCommandException("Priority", player, "COMMAND.GENERAL.MISSINGPERMISSION");
+                throw new FactoidCommandException("Priority", player, "GENERAL.MISSINGPERMISSION");
             }
             if (areaNbStr == null) {
                 throw new FactoidCommandException("Area", player, "COMMAND.REMOVE.AREA.EMPTY");
@@ -222,7 +221,7 @@ public class OnCommand extends Thread implements CommandExecutor {
             if (curArg.equalsIgnoreCase("remove")) {
 
                 if (!Factoid.getPlayerConf().isAdminMod(player) && !land.isOwner(player.getName())) {
-                    throw new FactoidCommandException("Priority", player, "COMMAND.GENERAL.MISSINGPERMISSION");
+                    throw new FactoidCommandException("Priority", player, "GENERAL.MISSINGPERMISSION");
                 }
 
                 // Check for collision
@@ -267,7 +266,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         short newPrio;
 
         if (!Factoid.getPlayerConf().isAdminMod(player)) {
-            throw new FactoidCommandException("Priority", player, "COMMAND.PRIORITY.MISSINGPERMISSION");
+            throw new FactoidCommandException("Priority", player, "GENERAL.MISSINGPERMISSION");
         }
         if (land.getParent() != null) {
             throw new FactoidCommandException("Priority", player, "COMMAND.PRIORITY.NOTCHILD");
@@ -294,7 +293,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         Land land = getLandSelected(player);
 
         if (!player.getName().equalsIgnoreCase(land.getOwner().getName()) && !Factoid.getPlayerConf().isAdminMod(player)) {
-            throw new FactoidCommandException("Owner", player, "COMMAND.OWNER.MISSINGPERMISSION");
+            throw new FactoidCommandException("Owner", player, "GENERAL.MISSINGPERMISSION");
         }
 
         PlayerContainer pc = argList.getPlayerContainerFromArg(land,
@@ -310,7 +309,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         Land land = getLandSelected(player);
 
         if (!Factoid.getPlayerConf().isAdminMod(player)) {
-            throw new FactoidCommandException("Command Default", player, "COMMAND.SETDEFAULT.MISSINGPERMISSION");
+            throw new FactoidCommandException("Command Default", player, "GENERAL.MISSINGPERMISSION");
         }
 
         land.setDefault();
@@ -410,7 +409,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         Land land = getLandSelected(player);
 
         if (!player.getName().equalsIgnoreCase(land.getOwner().getName()) && !Factoid.getPlayerConf().isAdminMod(player)) {
-            throw new FactoidCommandException("CommandRename", player, "COMMAND.RENAME.MISSINGPERMISSION");
+            throw new FactoidCommandException("CommandRename", player, "GENERAL.MISSINGPERMISSION");
         }
 
         if (argList.isLast()) {
@@ -432,6 +431,7 @@ public class OnCommand extends Thread implements CommandExecutor {
             Factoid.getLands().renameLand(oldName, curArg);
         } catch (FactoidLandException ex) {
             Logger.getLogger(OnCommand.class.getName()).log(Level.SEVERE, "On land rename", ex);
+            throw new FactoidCommandException("On land rename", player, "GENERAL.ERROR");
         }
         player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RENAME.ISDONE", oldName, curArg));
         log.write(player.getName() + " has renamed " + oldName + " to " + curArg);
@@ -444,7 +444,7 @@ public class OnCommand extends Thread implements CommandExecutor {
 
         if (!player.getName().equalsIgnoreCase(land.getOwner().getName()) && !Factoid.getPlayerConf().isAdminMod(player)
                 && !land.checkPermissionAndInherit(player.getName(), PermissionType.RESIDENT_MANAGER)) {
-            throw new FactoidCommandException("Resident", player, "COMMAND.RESIDENT.MISSINGPERMISSION");
+            throw new FactoidCommandException("Resident", player, "GENERAL.MISSINGPERMISSION");
         }
 
         // Temporary desactivated
@@ -489,7 +489,7 @@ public class OnCommand extends Thread implements CommandExecutor {
 
         if (!player.getName().equalsIgnoreCase(land.getOwner().getName()) && !Factoid.getPlayerConf().isAdminMod(player)
                 && !land.checkPermissionAndInherit(player.getName(), PermissionType.LAND_BAN)) {
-            throw new FactoidCommandException("Banned", player, "COMMAND.BANNED.MISSINGPERMISSION");
+            throw new FactoidCommandException("Banned", player, "GENERAL.MISSINGPERMISSION");
         }
 
         // Temporary desactivated
@@ -549,7 +549,7 @@ public class OnCommand extends Thread implements CommandExecutor {
             throw new FactoidCommandException("Land Remove", player, "COMMAND.REMOVE.DUPLICATION");
         }
         if (!player.getName().equalsIgnoreCase(land.getOwner().getName()) && !Factoid.getPlayerConf().isAdminMod(player)) {
-            throw new FactoidCommandException("Land Remove", player, "COMMAND.REMOVE.MISSINGPERMISSION");
+            throw new FactoidCommandException("Land Remove", player, "GENERAL.MISSINGPERMISSION");
         }
         if (!land.getChildren().isEmpty()) {
             throw new FactoidCommandException("Land Remove", player, "COMMAND.REMOVE.ISPARENT");
@@ -576,7 +576,8 @@ public class OnCommand extends Thread implements CommandExecutor {
                 try {
                     Factoid.getLands().removeLand(confirmEntry.land);
                 } catch (FactoidLandException ex) {
-                    Logger.getLogger(OnCommand.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(OnCommand.class.getName()).log(Level.SEVERE, "On land remove", ex);
+                    throw new FactoidCommandException("On land remove", player, "GENERAL.ERROR");
                 }
                 player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.REMOVE.DONE.LAND", confirmEntry.land.getName(), i + ""));
                 log.write(player.getName() + " confirm for removing " + confirmEntry.land.getName());
@@ -628,7 +629,7 @@ public class OnCommand extends Thread implements CommandExecutor {
 
         PlayerConfig pc = Factoid.getPlayerConf();
 
-        checkBukkitPermission(player, "factoid.adminmod", "COMMAND.ADMINMOD.NOPERMISSION");
+        checkBukkitPermission(player, "factoid.adminmod", "GENERAL.MISSINGPERMISSION");
         if (pc.isAdminMod(player)) {
             pc.removeAdminMod(player);
             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ADMINMOD.QUIT"));

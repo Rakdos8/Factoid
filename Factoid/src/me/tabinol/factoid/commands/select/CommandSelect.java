@@ -72,7 +72,7 @@ public class CommandSelect extends Thread {
                     PlayerContainer owner = landtest.getOwner();
                     if (!owner.hasAccess(player.getName()) && !Factoid.getPlayerConf().isAdminMod(player)
                             && !landtest.checkPermissionAndInherit(player.getName(), PermissionType.RESIDENT_MANAGER)) {
-                        throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.MISSINGPERMISSION");
+                        throw new FactoidCommandException("CommandSelect", player, "GENERAL.MISSINGPERMISSION");
                     }
                     if (!OnCommand.getLandSelectioned().containsKey(player)) {
                         OnCommand.getLandSelectioned().put(player, landtest);

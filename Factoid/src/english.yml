@@ -1,5 +1,5 @@
 # Do not change de Version number if you don't know what you are doing!
-VERSION: 3
+VERSION: 4
 ENABLE: "Factoid is Enabled."
 DISABLE: "Factoid is Disabled."
 CONSOLE: "Hey Console! Wait...what?"
@@ -8,29 +8,29 @@ HELP:
   GENERAL:
     1: "Type \"/factoid help\" <command> for specific command help."
     2: "-General commands-"
-    3: "/factoid select             : Select a land."
-    4: "/factoid here               : Land information."
-    5: "/factoid adminmod           : Set/Unset admin mod."
-    6: "/factoid reload             : Reload the plugin."
-    7: "/factoid approve            : Approve or not a change."
-    8: "-Land commands (a land must be selected)"
-    9: "/factoid area               : Area of the land."
-    10: "/factoid ban                : Banned from the land."
-    11: "/factoid cancel             : Cancel an action."
-    12: "/factoid create             : Create a land."
-    13: "/factoid expand             : Expand the land."
-    14: "/factoid flag               : Flags of the land."
-    15: "/factoid owner              : Owner of the land."
-    16: "/factoid page               : View a command result page."
-    17: "/factoid permission         : Permissions of the land."
-    18: "/factoid priority           : Priority of the land."
-    19: "/factoid rename             : Rename a land."
-    20: "/factoid resident           : Resident of the land."
+    3: "/factoid select : Select a land."
+    4: "/factoid here : Land information."
+    5: "/factoid adminmod : Set/Unset admin mod."
+    6: "/factoid reload : Reload the plugin."
+    7: "/factoid approve : Approve or not a change."
+    8: "-Land commands (a land must be selected)-"
+    9: "/factoid area : Area of the land."
+    10: "/factoid ban : Banned from the land."
+    11: "/factoid cance : Cancel an action."
+    12: "/factoid create : Create a land."
+    13: "/factoid expand : Expand the land."
+    14: "/factoid flag : Flags of the land."
+    15: "/factoid owner : Owner of the land."
+    16: "/factoid page : View a command result page."
+    17: "/factoid permission : Permissions of the land."
+    18: "/factoid priority : Priority of the land."
+    19: "/factoid rename : Rename a land."
+    20: "/factoid resident : Resident of the land."
   SELECT:
     1: "/factoid select <here/land name> : Select a land for modification."
-    2: "/factoid select                  : Start the visal selection."
-    3: "/factoid select done             : Set a visual selection done."
-    4: "/factoid select worldedit        : Select the WorldEdit selection."
+    2: "/factoid select : Start the visal selection."
+    3: "/factoid select done : Set a visual selection done."
+    4: "/factoid select worldedit : Select the WorldEdit selection."
   HERE:
     1: "/factoid here : Show global informations of the curent land."
   ADMINMOD:
@@ -38,19 +38,19 @@ HELP:
   RELOAD:
     1: "/factoid reload : Reload the plugin configuration."
   APPROVE:
-    1: "/factoid approve list          : List actions to approve."
-    2: "/factoid approve info <land>   : Information of the action."
+    1: "/factoid approve list : List actions to approve."
+    2: "/factoid approve info <land> : Information of the action."
     3: "/factoid approve accept <land> : Approve an action."
     4: "/factoid approve cancel <land> : Cancel an action."
   AREA:
-    1: "/factoid area list             : List areas."
-    2: "/factoid area add              : Add an area."
+    1: "/factoid area list : List areas."
+    2: "/factoid area add : Add an area."
     3: "/factoid area remove <area nb> : Remove an area."
-    4: "/factoid area replace          : Replace an area."
+    4: "/factoid area replace : Replace an area."
   BAN:
-    1: "/factoid ban list                     : List banned players/containers."
-    2: "/factoid ban add <player container>   : Ban a player/container"
-    3: "/factoid ban remove <player container>: Remove a banned player/cont."
+    1: "/factoid ban list : List banned players/containers."
+    2: "/factoid ban add <player container> : Ban a player/container"
+    3: "/factoid ban remove <player container> : Remove a banned player/cont."
   CANCEL:
     1: "/factoid cancel : Cancel a selection or an action."
   CREATE:
@@ -60,9 +60,9 @@ HELP:
   EXPAND:
     1: "/factoid expand : Expand the land selection."
   FLAG:
-    1: "/factoid flag list               : List flags."
+    1: "/factoid flag list : List flags."
     2: "/factoid flag set <flag> <value> : Add a flag."
-    3: "/factoid flag unset <flag>       : Remove a flag."
+    3: "/factoid flag unset <flag> : Remove a flag."
   OWNER:
     1: "/factoid owner <player container> : Change the owner of the land."
   PAGE:
@@ -79,11 +79,15 @@ HELP:
   RENAME:
     1: "/factoid rename <new name> : Rename a land."
   RESIDENT:
-    1: "/factoid resident list                  : List residents."
-    2: "/factoid area add <player container>    : Add a resident."
+    1: "/factoid resident list : List residents."
+    2: "/factoid area add <player container> : Add a resident."
     3: "/factoid area remove <player container> : Remove a resident."
 SCOREBOARD:
   LANDINFO: "Players List"
+GENERAL:
+  MISSINGPERMISSION: "Sorry, you don't have the permission."
+  ERROR: "An Error Occur Please contact an Administrator."
+  MISSINGINFO: "Some information is missing. Check your command again."
 COLLISION:
   SHOW:
     COLLISION: "Collision with '%', area id '%'."
@@ -105,13 +109,6 @@ COLLISION:
     REMOVE: "The action is removed from the approve list."
 COMMAND:
   NOTEXIST: "This command does not exist. You can do \"/factoid help\""
-  GENERAL:
-    MISSINGPERMISSION: "You must have the permission to execute this action."
-    ALREADY: " You are already in Flags Mode."
-    QUIT:
-      FLAGMODE: "Quit the Flags Mode before."
-    JOIN:
-      SELECTMODE: "Join the Select Mode before."
   PAGE:
     ONEPAGE: "-Page (1/1)-"
     MULTIPAGE: "-Page (%/%)- type: /factoid page <number>"
@@ -124,7 +121,6 @@ COMMAND:
     QUIT:
       EXPENDMODE: "Quit the Expand Mode before."
       FLAGSMODE: "Quit the Flags Mode before."
-    MISSINGPERMISSION: "You must have the permission to execute this action."
     NOLAND: "This land doesn't Exist."
     LAND:
       NOCOLLISION: "Your selection has no collision."
@@ -140,6 +136,8 @@ COMMAND:
       SELECTIONNED: " you have selectioned your land with WorldEdit!"
       NOSELECTIONNED: " No WorldEdit selection or not a cuboid region!"
       SELECTIONINCOMPLET: " The WorldEdit selection is incomplete!"
+    JOIN:
+      SELECTMODE: "Join the Select Mode before."
   EXPAND:
     JOINMODE: "You are now in Expand Mode."
     QUITMODE: "You are no longer in Expand Mode."
@@ -154,30 +152,23 @@ COMMAND:
     QUIT:
       SELECTMODE: "You are no longer in Select Mode."
       FLAGMODE: "Quit the Flags Mode before."
-    JOIN:
-      SELECTMODE: "Join the Select Mode before."
-    ERROR: "An Error Occur Please contact an Administrator."
     COLLISION: "Your selection have an collision with an another Land."
     DONE: "You have created your land."
     ALREADYUSE: "This Land name is already used."
     HINTUSE: "/factoid create [Type] [Land Name]"
     NEEDNAME: "You have to provide a Land Name."
     SELECTMODE: "You must be in Select Mode before."
-    NOPERMISSION: "You don't have the permission to create a Land."
     PARENTNOTEXIST: "The parent land doesn't exist."
   RENAME:
-    MISSINGPERMISSION: "You don't have the permission to rename the Land."
     NEEDNAME: "You must specify a new name."
     HINTUSE: "This name can't be used."
     ISDONE: "The land '%' is renamed '%'."
   FLAGS:
     JOINMODE: "You are now in Flags Mode."
     HINT: "Your modification will be instantany effective."
-    MISSINGINFO: "Some information is missing. Check your command again."
     LAND:
       INVALID: "the selectioned land is invalid."
     FLAGNULL: "This Flag doesn't exist."
-    MISSINGPERMISSION: "You must have the permission to execute this action."
     ISDONE: "you have set '%' to '%'."
     LISTSTART: "-Flags of '%'-"
     LISTROWNULL: "No Flags."
@@ -185,7 +176,6 @@ COMMAND:
     REMOVEISDONE: "you have removed '%' from flag list."
   CONTAINERTYPE:
     TYPENULL: "Please enter un Player Container Type or a player name."
-    # INVALID: "This type doesn't exist."
     NOTPERMITTED: "This Player Container is not permitted here."
   CONTAINER:
     CONTAINERNULL: "This Player Container needs a name."
@@ -193,10 +183,8 @@ COMMAND:
     TYPENULL: "Please enter a Permission Type."
     INVALID: "This Permission Type is invalid."
   PERMISSION:
-    MISSINGPERMISSION: "You don't have the permission to change this permission."
     JOINMODE: "You are now in Flags Mode."
     HINT: "Your modification will be instantany effective."
-    MISSINGINFO: "Some information is missing. Check your command again."
     LAND:
       INVALID: "the selectioned land is invalid."
     PERMISSIONNULL: "This permission doesn't exist."
@@ -225,37 +213,18 @@ COMMAND:
       EXPANDMODE: "Quit the Expand Mode before."
     JOIN:
       SELECTMODE: "Join the Select Mode before."
-    MISSINGPERMISSION: "You must have the permission to execute this action."
     ISDONE: "'%' is now a resident of '%'."
     REMOVENOTEXIST: "Not in resident list."
     REMOVEISDONE: "you have removed '%' from resident list of '%'."
   OWNER:
-    MISSINGPERMISSION: "You must have the permission to execute this action."
     ISDONE: "the owner is now '%' for the land '%'."
   SETDEFAULT:
-    MISSINGPERMISSION: "You must have the permission to execute this action."
     ISDONE: "The land '%' has now the default configuration."
   BANNED:
-    MISSINGINFO: "Some information is missing. Check your command again."
-    LAND:
-      INVALID: "the selectioned land is invalid."
-    PLAYERCONTAINERTYPENULL: "This type doesn't exist."
-    PLAYERCONTAINERRESIDENT: "You cannot ban All Resident."
-    PLAYERCONTAINEREVERYBODY: "You cannot ban Everyone."
     ISDONE: "you have ban '%' in '%'."
-    ISDONEREMOVE: "you have unban '%' in '%'."
     LISTSTART: "-Banned of '%'-"
     LISTROWNULL: "No Banned."
-    FLAGS:
-    JOINMODE: "You are now in Flags Mode."
-    HINT: "Your modification will be instantany effective."
-    MISSINGINFO: "Some information is missing. Check your command again."
-    LAND:
-      INVALID: "the selectioned land is invalid."
-    FLAGNULL: "This Flag doesn't exist."
-    MISSINGPERMISSION: "You must have the permission to execute this action."
     NOTINSPAWN: "You can't ban where the world spawn is."
-    ISDONE: "you have set '%' to '%'."
     REMOVENOTEXIST: "Not in banned list."
     REMOVEISDONE: "you have removed '%' from ban list in '%'."
   REMOVE:
@@ -271,13 +240,10 @@ COMMAND:
     JOIN:
       SELECTMODE: "you are already in the Select Mode."
     DUPLICATION: "finish your removal before do an another one."
-    # REMOVENULL: "Choose one of these option: Remove Area , Remove Land."
     CONFIRM: "To confirm your choice, type /factoid confirm or to cancel type /factoid cancel ."
-    MISSINGPERMISSION: "You must have the permission to execute this action."
     CANCEL: "you have canceled your action."
     ISPARENT: "You can't delete a parent land."
   PRIORITY:
-    MISSINGPERMISSION: "You must have the permission to change the priority."
     NOTCHILD: "You can't change a priority on a child land."
     INVALID: "The priority must be a number from % to %."
     DONE: "You have set the priority of '%' to %."
@@ -295,18 +261,13 @@ COMMAND:
   ADMINMOD:
     JOIN: "you are now in AdminMod."
     QUIT: "you quit AdminMod."
-    NOPERMISSION: "You don't have the permission for AdminMod."
   CANCEL:
     SELECT: "Your selection is cancelled."
   RELOAD:
     START: "The reload is started."
     COMPLETE: "The reload is complete."
-    NOPERMISSION: "You don't have the permission for reloading."
 ACTION:
-  MISSINGPERMISSION: "You can't do this action here!"
   BANNED: "You are banned from the land %!"
-  # NOPVP: "The PvP is not actived here!"
-  # NOFACTIONPVP: "You can not kill a member of your faction!"
   NOENTRY: "You can not enter in the land %!"
   PLAYERENTER: "% is entering the land %."
   PLAYEREXIT: "% is exiting the land %."

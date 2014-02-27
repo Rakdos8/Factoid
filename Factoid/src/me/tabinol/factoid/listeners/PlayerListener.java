@@ -544,7 +544,7 @@ public class PlayerListener implements Listener {
 
     private void MessagePermission(Player player) {
 
-        player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("ACTION.MISSINGPERMISSION"));
+        player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("GENERAL.MISSINGPERMISSION"));
     }
 
     private void handleNewLocation(Event event, Player player, Location loc, boolean newPlayer) {
