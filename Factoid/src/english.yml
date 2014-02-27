@@ -219,6 +219,7 @@ COMMAND:
   OWNER:
     ISDONE: "the owner is now '%' for the land '%'."
   SETDEFAULT:
+    CONFIRM: "To confirm your choice, type /factoid confirm or to cancel type /factoid cancel ."
     ISDONE: "The land '%' has now the default configuration."
   BANNED:
     ISDONE: "you have ban '%' in '%'."
@@ -241,7 +242,6 @@ COMMAND:
       SELECTMODE: "you are already in the Select Mode."
     DUPLICATION: "finish your removal before do an another one."
     CONFIRM: "To confirm your choice, type /factoid confirm or to cancel type /factoid cancel ."
-    CANCEL: "you have canceled your action."
     ISPARENT: "You can't delete a parent land."
   PRIORITY:
     NOTCHILD: "You can't change a priority on a child land."
@@ -262,6 +262,8 @@ COMMAND:
     JOIN: "you are now in AdminMod."
     QUIT: "you quit AdminMod."
   CANCEL:
+    ACTION: "Your action is cancelled."
+    FLAGS: "The flags selection mode is cancelled."
     SELECT: "Your selection is cancelled."
   RELOAD:
     START: "The reload is started."

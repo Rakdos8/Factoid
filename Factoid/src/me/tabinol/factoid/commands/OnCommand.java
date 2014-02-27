@@ -48,7 +48,8 @@ public class OnCommand extends Thread implements CommandExecutor {
     public enum ConfirmType {
 
         REMOVE_LAND,
-        REMOVE_AREA;
+        REMOVE_AREA,
+        LAND_DEFAULT;
     }
 
     public static class ConfirmEntry {
@@ -312,9 +313,8 @@ public class OnCommand extends Thread implements CommandExecutor {
             throw new FactoidCommandException("Command Default", player, "GENERAL.MISSINGPERMISSION");
         }
 
-        land.setDefault();
-        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SETDEFAULT.ISDONE", land.getName()));
-        log.write("The land " + land.getName() + "is set to default configuration by " + player.getName());
+        ConfirmList.put(player, new ConfirmEntry(ConfirmType.LAND_DEFAULT, LandSelectioned.get(player), 0));
+        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SETDEFAULT.CONFIRM"));
     }
 
     protected static void doCommandFlag(Player player, ArgList argList) throws FactoidCommandException {
@@ -591,6 +591,12 @@ public class OnCommand extends Thread implements CommandExecutor {
                 player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.REMOVE.DONE.AREA", confirmEntry.land.getName()));
                 log.write("area " + confirmEntry.areaNb + " for land " + confirmEntry.land.getName() + " is removed by " + player.getName());
 
+            } else if (confirmEntry.confirmType == ConfirmType.LAND_DEFAULT) {
+
+                // Set to default
+                confirmEntry.land.setDefault();
+                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SETDEFAULT.ISDONE", confirmEntry.land.getName()));
+                log.write("The land " + confirmEntry.land.getName() + "is set to default configuration by " + player.getName());
             }
         }
     }
@@ -598,7 +604,7 @@ public class OnCommand extends Thread implements CommandExecutor {
     public static void doCommandCancel(Player player) throws FactoidCommandException {
 
         if (ConfirmList.remove(player) != null) {
-            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.REMOVE.CANCEL"));
+            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CANCEL.ACTION"));
             Factoid.getLog().write(player.getName() + " cancel for action");
         } else if (PlayerSelectingLand.containsKey(player)) {
             LandSelection select = OnCommand.PlayerSelectingLand.get(player);
@@ -637,10 +643,6 @@ public class OnCommand extends Thread implements CommandExecutor {
             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ADMINMOD.JOIN"));
             pc.addAdminMod(player);
         }
-    }
-
-    protected static void doCommandHelp(Player player, ArgList argList) throws FactoidCommandException {
-
     }
 
     protected static void doCommandApprove(Player player, ArgList argList) throws FactoidCommandException {
@@ -715,6 +717,8 @@ public class OnCommand extends Thread implements CommandExecutor {
                 // Remove in approve list
                 approveList.removeApprove(approve);
                 player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COLLISION.GENERAL.REMOVE"));
+            } else {
+                throw new FactoidCommandException("Approve", player, "GENERAL.MISSINGPERMISSION");
             }
         }
     }
