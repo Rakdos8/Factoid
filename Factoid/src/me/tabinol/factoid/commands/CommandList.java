@@ -9,33 +9,35 @@ import org.bukkit.entity.Player;
 
 public enum CommandList {
 
-    RELOAD(true),
-    SELECT(false),
-    EXPAND(false),
-    CREATE(false),
-    AREA(false),
-    OWNER(false),
-    FLAG(false),
-    PERMISSION(false),
-    RESIDENT(false),
-    BAN(false),
-    REMOVE(false),
-    CONFIRM(false),
-    CANCEL(false),
-    HERE(false),
-    ADMINMOD(false),
-    PAGE(false),
-    DEFAULT(false),
-    PRIORITY(false),
-    APPROVE(false),
-    RENAME(false),
-    HELP(true);
+    RELOAD(true, false),
+    SELECT(false, false),
+    EXPAND(false, false),
+    CREATE(false, true),
+    AREA(false, true),
+    OWNER(false, true),
+    FLAG(false, true),
+    PERMISSION(false, true),
+    RESIDENT(false, true),
+    BAN(false, true),
+    REMOVE(false, false),
+    CONFIRM(false, false),
+    CANCEL(false, false),
+    HERE(false, false),
+    ADMINMOD(false, false),
+    PAGE(false, true),
+    DEFAULT(false, false),
+    PRIORITY(false, true),
+    APPROVE(false, true),
+    RENAME(false, true),
+    HELP(true, false);
 
     private final boolean canDoFromConsole; // Can be typed from console?
+    private final boolean parameterOnly; // Not working whitout parameter? (will show help)
 
-    private CommandList(boolean canDoFromConsole) {
+    private CommandList(boolean canDoFromConsole, boolean parameterOnly) {
 
         this.canDoFromConsole = canDoFromConsole;
+        this.parameterOnly = parameterOnly;
     }
 
     private enum SecondName {
@@ -63,13 +65,18 @@ public enum CommandList {
         String command = argList.getNext();
 
         // Show help if there is no arguments
-        if (command == null && sender instanceof Player) {
-            showHelp((Player) sender, "GENERAL");
-            return;
+        if (command == null) {
+            showHelp(sender, "GENERAL");
         }
 
         // take the name
         cl = getCommandValue(command, sender);
+
+        //Check if a parameter is needed and show help if the needed parameter is not here
+        if (cl.parameterOnly && argList.isLast()) {
+            showHelp(sender, cl.name());
+            return;
+        }
 
         // now execute de command
         doCommand(sender, cl, argList);
@@ -77,9 +84,9 @@ public enum CommandList {
     }
 
     private static CommandList getCommandValue(String command, CommandSender sender) throws FactoidCommandException {
-        
+
         CommandList cl;
-        
+
         try {
             cl = valueOf(command.toUpperCase());
         } catch (IllegalArgumentException e) {
@@ -95,11 +102,11 @@ public enum CommandList {
             }
             cl = sn.name;
         }
-        
+
         return cl;
-        
+
     }
-    
+
     private static void doCommand(CommandSender sender, CommandList cl, ArgList argList) throws FactoidCommandException {
 
         // Commands that can be done from the console
@@ -182,26 +189,26 @@ public enum CommandList {
 
     }
 
-    private static void showHelp(Player player, ArgList argList) throws FactoidCommandException {
-        
+    private static void showHelp(CommandSender sender, ArgList argList) throws FactoidCommandException {
+
         String arg = argList.getNext();
-        
-        if(arg == null) {
-            showHelp(player, "GENERAL");
+
+        if (arg == null) {
+            showHelp(sender, "GENERAL");
         } else {
             // Will throw an exception if the command name is invalid
-            CommandList cl = getCommandValue(arg, player);
-            showHelp(player, cl.name());
+            CommandList cl = getCommandValue(arg, sender);
+            showHelp(sender, cl.name());
         }
-        
+
     }
 
-    
-    private static void showHelp(Player player, String commandName) throws FactoidCommandException {
+    private static void showHelp(CommandSender sender, String commandName) throws FactoidCommandException {
 
         if (commandName.equals("GENERAL")) {
-            OnCommand.createPage("HELP.LISTSTART", Factoid.getLanguage().getHelp(commandName), player, null);
+            OnCommand.createPage("HELP.LISTSTART", Factoid.getLanguage().getHelp(commandName), sender, null);
+        } else {
+            sender.sendMessage(Factoid.getLanguage().getHelp(commandName));
         }
-        else player.sendMessage(Factoid.getLanguage().getHelp(commandName));
     }
 }

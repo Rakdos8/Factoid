@@ -70,14 +70,13 @@ public class OnCommand extends Thread implements CommandExecutor {
     private static JavaPlugin plugin;
     public static final String NEWLINE = System.getProperty("line.separator");
     private static final Map<Player, LandSelection> PlayerSelectingLand = new HashMap<>();
-    // private static Map<String, CuboidArea> PlayerSelectingWorldEdit = new HashMap();
     private static final Map<Player, Land> LandSelectioned = new HashMap<>();
     private static final Map<Player, List<LandMakeSquare>> LandSelectionedUI = new HashMap<>();
     private static final Map<Player, LandExpansion> PlayerExpandingLand = new HashMap<>();
     private static final Map<Player, LandSetFlag> PlayerSetFlagUI = new HashMap<>();
     private static final List<String> BannedWord = new ArrayList<>();
     private static final Map<Player, ConfirmEntry> ConfirmList = new HashMap<>();
-    private static final Map<Player, ChatPage> chatPageList = new HashMap<>();
+    private static final Map<CommandSender, ChatPage> chatPageList = new HashMap<>();
 
     public OnCommand() {
 
@@ -256,7 +255,7 @@ public class OnCommand extends Thread implements CommandExecutor {
                 Logger.getLogger(OnCommand.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            throw new FactoidCommandException("Area", player, "COMMAND.REMOVE.AREA.INVALID");
+            throw new FactoidCommandException("Area", player, "GENERAL.MISSINGINFO");
         }
     }
 
@@ -339,7 +338,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         } else if (curArg.equalsIgnoreCase("unset")) {
             FlagType flagType = argList.getFlagTypeFromArg(Factoid.getPlayerConf().isAdminMod(player), land.isOwner(player.getName()));
             if (!land.removeFlag(flagType)) {
-                throw new FactoidCommandException("Flags", player, "COMMAND.FLAGS.REMOVENOTEXIST"); // ****** AJOUTER dans lang (et les 3 suivants) ********
+                throw new FactoidCommandException("Flags", player, "COMMAND.FLAGS.REMOVENOTEXIST");
             }
             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.REMOVEISDONE", flagType.toString()));
             log.write("Flag unset: " + flagType.toString());
@@ -355,8 +354,11 @@ public class OnCommand extends Thread implements CommandExecutor {
                 stList.append(NEWLINE);
             } else {
                 player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.LISTROWNULL"));
+                return;
             }
             createPage("COMMAND.FLAGS.LISTSTART", stList.toString(), player, land.getName());
+        } else {
+            throw new FactoidCommandException("Area", player, "GENERAL.MISSINGINFO");
         }
     }
 
@@ -399,8 +401,11 @@ public class OnCommand extends Thread implements CommandExecutor {
                 }
             } else {
                 player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.LISTROWNULL"));
+                return;
             }
             createPage("COMMAND.PERMISSION.LISTSTART", stList.toString(), player, land.getName());
+        } else {
+            throw new FactoidCommandException("Area", player, "GENERAL.MISSINGINFO");
         }
     }
 
@@ -477,8 +482,11 @@ public class OnCommand extends Thread implements CommandExecutor {
                 stList.append(NEWLINE);
             } else {
                 player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.LISTROWNULL"));
+                return;
             }
             createPage("COMMAND.RESIDENT.LISTSTART", stList.toString(), player, land.getName());
+        } else {
+            throw new FactoidCommandException("Area", player, "GENERAL.MISSINGINFO");
         }
     }
 
@@ -526,8 +534,11 @@ public class OnCommand extends Thread implements CommandExecutor {
                 stList.append(NEWLINE);
             } else {
                 player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.LISTROWNULL"));
+                return;
             }
             createPage("COMMAND.BANNED.LISTSTART", stList.toString(), player, land.getName());
+        } else {
+            throw new FactoidCommandException("Area", player, "GENERAL.MISSINGINFO");
         }
     }
 
@@ -720,6 +731,8 @@ public class OnCommand extends Thread implements CommandExecutor {
             } else {
                 throw new FactoidCommandException("Approve", player, "GENERAL.MISSINGPERMISSION");
             }
+        } else {
+            throw new FactoidCommandException("Area", player, "GENERAL.MISSINGINFO");
         }
     }
 
@@ -745,14 +758,14 @@ public class OnCommand extends Thread implements CommandExecutor {
         chatPage.getPage(pageNumber);
     }
 
-    protected static void createPage(String header, String text, Player player, String param) throws FactoidCommandException {
+    protected static void createPage(String header, String text, CommandSender sender, String param) throws FactoidCommandException {
 
-        ChatPage chatPage = new ChatPage(header, text, player, param);
+        ChatPage chatPage = new ChatPage(header, text, sender, param);
 
         if (chatPage.getTotalPages() > 1) {
-            chatPageList.put(player, chatPage);
+            chatPageList.put(sender, chatPage);
         } else {
-            chatPageList.remove(player);
+            chatPageList.remove(sender);
         }
     }
 
@@ -838,7 +851,7 @@ public class OnCommand extends Thread implements CommandExecutor {
         return ConfirmList;
     }
 
-    public static Map<Player, ChatPage> getChatPageList() {
+    public static Map<CommandSender, ChatPage> getChatPageList() {
         return chatPageList;
     }
 

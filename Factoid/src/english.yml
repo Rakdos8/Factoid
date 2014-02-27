@@ -1,4 +1,4 @@
-# Do not change de Version number if you don't know what you are doing!
+# Do not change the version number if you don't know what you are doing!
 VERSION: 4
 ENABLE: "Factoid is Enabled."
 DISABLE: "Factoid is Disabled."
@@ -16,7 +16,7 @@ HELP:
     8: "-Land commands (a land must be selected)-"
     9: "/factoid area : Area of the land."
     10: "/factoid ban : Banned from the land."
-    11: "/factoid cance : Cancel an action."
+    11: "/factoid cancel : Cancel an action."
     12: "/factoid create : Create a land."
     13: "/factoid expand : Expand the land."
     14: "/factoid flag : Flags of the land."
@@ -68,12 +68,9 @@ HELP:
   PAGE:
     1: "/factoid page <page number> : Show a page for a long result."
   PERMISSION:
-    1: "/factoid permission list" 
-    2: "  > List permissions."
-    3: "/factoid permission set <player container> <perm> <value>"
-    4: "  > Add a permission."
-    5: "/factoid flag unset unset <player container> <perm>"
-    6: "  > Remove a permission."
+    1: "/factoid permission list : List permissions."
+    2: "/factoid permission set <player container> <perm> <value> : Add a permission."
+    3: "/factoid flag unset unset <player container> <perm> : Remove a permission."
   PRIORITY:
     1: "/factoid owner <player container> : Change the land priority."
   RENAME:
@@ -155,7 +152,7 @@ COMMAND:
     COLLISION: "Your selection have an collision with an another Land."
     DONE: "You have created your land."
     ALREADYUSE: "This Land name is already used."
-    HINTUSE: "/factoid create [Type] [Land Name]"
+    HINTUSE: "/factoid create [Land Name]"
     NEEDNAME: "You have to provide a Land Name."
     SELECTMODE: "You must be in Select Mode before."
     PARENTNOTEXIST: "The parent land doesn't exist."
@@ -198,28 +195,15 @@ COMMAND:
   PERMISSIONVALUE:
     VALUENULL: "You must enter a value for this permision."
   RESIDENT:
-    MISSINGINFO: "Some information is missing. Check your command again."
-    LAND:
-      INVALID: "the selectioned land is invalid."
-    PLAYERCONTAINERTYPENULL: "This type doesn't exist."
-    PLAYERCONTAINERRESIDENT: "You cannot set a Resident as a resident."
-    PLAYERCONTAINEREVERYBODY: "You cannot set a EveryBody as a resident."
     LISTSTART: "-Residents of '%'-"
     LISTROWNULL: "No Redisent."
-    FLAGS:
-    JOINMODE: "You are now in Flags Mode."
-    HINT: "Your modification will be instantany effective."
-    QUIT:
-      EXPANDMODE: "Quit the Expand Mode before."
-    JOIN:
-      SELECTMODE: "Join the Select Mode before."
     ISDONE: "'%' is now a resident of '%'."
     REMOVENOTEXIST: "Not in resident list."
-    REMOVEISDONE: "you have removed '%' from resident list of '%'."
+    REMOVEISDONE: "You have removed '%' from resident list of '%'."
   OWNER:
-    ISDONE: "the owner is now '%' for the land '%'."
+    ISDONE: "The owner is now '%' for the land '%'."
   SETDEFAULT:
-    CONFIRM: "To confirm your choice, type /factoid confirm or to cancel type /factoid cancel ."
+    CONFIRM: "To confirm your choice, type \"/factoid confirm\" or to cancel type \"/factoid cancel\"."
     ISDONE: "The land '%' has now the default configuration."
   BANNED:
     ISDONE: "you have ban '%' in '%'."
@@ -235,13 +219,8 @@ COMMAND:
     DONE: 
       LAND: "You have removed the land % (% areas)."
       AREA: "You have removed the area of the land % ."
-    QUIT:
-      FLAGSMODE: "Quit the Flags Mode before."
-      EXPANDMODE: "Quit the Expand Mode before."
-    JOIN:
-      SELECTMODE: "you are already in the Select Mode."
     DUPLICATION: "finish your removal before do an another one."
-    CONFIRM: "To confirm your choice, type /factoid confirm or to cancel type /factoid cancel ."
+    CONFIRM: "To confirm your choice, type \"/factoid confirm\" or to cancel type \"/factoid cancel\"."
     ISPARENT: "You can't delete a parent land."
   PRIORITY:
     NOTCHILD: "You can't change a priority on a child land."
