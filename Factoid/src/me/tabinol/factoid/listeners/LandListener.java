@@ -3,8 +3,7 @@ package me.tabinol.factoid.listeners;
 import java.util.ArrayList;
 import java.util.Set;
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.commands.OnCommand;
-import me.tabinol.factoid.config.PlayerConfig;
+import me.tabinol.factoid.config.PlayerStaticConfig;
 import me.tabinol.factoid.event.PlayerContainerAddNoEnterEvent;
 import me.tabinol.factoid.event.PlayerContainerLandBanEvent;
 import me.tabinol.factoid.event.PlayerLandChangeEvent;
@@ -26,7 +25,7 @@ public class LandListener implements Listener {
 
     private final ArrayList<Player> playerHeal;
     private final LandHeal landHeal;
-    private final PlayerConfig playerConf;
+    private final PlayerStaticConfig playerConf;
 
     private class LandHeal extends BukkitRunnable {
 
@@ -81,13 +80,8 @@ public class LandListener implements Listener {
             playerHeal.remove(player);
         }
 
-        // OnCommand.getPlayerSelectingWorldEdit().remove(playerNameLower);
-        OnCommand.getLandSelectioned().remove(player);
-        OnCommand.getLandSelectionedUI().remove(player);
-        OnCommand.getPlayerExpandingLand().remove(player);
-        OnCommand.getPlayerSetFlagUI().remove(player);
-        OnCommand.getConfirmList().remove(player);
-        OnCommand.getChatPageList().remove(player);
+        // Remove all player config
+        playerConf.remove(player);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -102,13 +96,14 @@ public class LandListener implements Listener {
         if (lastLand != null) {
 
             // Message quit
-            if ((flag = lastLand.getFlagAndInherit(FlagType.MESSAGE_QUIT)) != null
+            if (!(land != null && lastLand != null && lastLand.isDescendants(land)) 
+                    && (flag = lastLand.getFlagNoInherit(FlagType.MESSAGE_QUIT)) != null
                     && (value = flag.getValueString()) != null) {
                 player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + lastLand.getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
             }
 
             //Notify players for exit
-            if (!playerConf.isAdminMod(player)) {
+            if (!playerConf.get(player).isAdminMod()) {
                 notifyPlayers(lastLand, "ACTION.PLAYEREXIT", player);
             }
             
@@ -120,7 +115,7 @@ public class LandListener implements Listener {
         if (land != null) {
             dummyLand = land;
 
-            if (!playerConf.isAdminMod(player)) {
+            if (!playerConf.get(player).isAdminMod()) {
                 // is banned or can enter
                 if ((land.isBanned(player.getName())
                         || land.checkPermissionAndInherit(player.getName(), PermissionType.LAND_ENTER) != PermissionType.LAND_ENTER.baseValue())
@@ -146,7 +141,8 @@ public class LandListener implements Listener {
             }
 
             // Message join
-            if ((flag = land.getFlagAndInherit(FlagType.MESSAGE_JOIN)) != null
+            if (!(lastLand != null && lastLand != null && land.isDescendants(lastLand))
+                    && (flag = land.getFlagNoInherit(FlagType.MESSAGE_JOIN)) != null
                     && (value = flag.getValueString()) != null) {
                 player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + land.getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
             }
@@ -190,7 +186,7 @@ public class LandListener implements Listener {
         for (Player players : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
             if (pc.hasAccess(players.getName())
                     && !land.isOwner(players.getName())
-                    && !playerConf.isAdminMod(players)) {
+                    && !playerConf.get(players).isAdminMod()) {
                 tpSpawn(players, land, message);
             }
         }

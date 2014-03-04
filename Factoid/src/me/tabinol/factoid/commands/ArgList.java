@@ -95,7 +95,7 @@ public class ArgList {
             throw new FactoidCommandException("Flag error", player, "COMMAND.FLAGS.FLAGNULL");
         }
 
-        if (!isAdminmod && !(isOwner && Factoid.getConf().ownerConfigFlag.contains(flagType))) {
+        if (!isAdminmod && !(isOwner && Factoid.getConf().getOwnerConfigFlag().contains(flagType))) {
             throw new FactoidCommandException("Flag error", player, "GENERAL.MISSINGPERMISSION");
         }
 
@@ -189,7 +189,7 @@ public class ArgList {
             throw new FactoidCommandException("Permission Error", player, "COMMAND.PERMISSIONTYPE.INVALID");
         }
 
-        if (!isAdminmod && !(isOwner && Factoid.getConf().ownerConfigPerm.contains(pt))) {
+        if (!isAdminmod && !(isOwner && Factoid.getConf().getOwnerConfigPerm().contains(pt))) {
             throw new FactoidCommandException("Permission Error", player, "GENERAL.MISSINGPERMISSION");
         }
 

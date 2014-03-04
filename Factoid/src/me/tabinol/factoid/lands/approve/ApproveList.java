@@ -44,7 +44,7 @@ public class ApproveList {
             section.set("Parent", approve.getParent().getName());
         }
         saveFile();
-        ApproveNotif.notifyForApprove(approve.getLandName(), approve.getOwner().getPrint());
+        Factoid.getApproveNotif().notifyForApprove(approve.getLandName(), approve.getOwner().getPrint());
     }
 
     public Set<String> getApproveList() {

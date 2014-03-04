@@ -85,6 +85,12 @@ GENERAL:
   MISSINGPERMISSION: "Désolé, vous n'avez pas la permission."
   ERROR: "Il y a une erreur, contactez un administrateur."
   MISSINGINFO: "Il manque des information, vérifier la commande."
+  QUIT:
+    EXPENDMODE: "Quittez le mode expansion."
+    FLAGSMODE: "Quittez le mode drapeau avant."
+  JOIN:
+    SELECTMODE: "Joindre le mode sélection avant."
+    SELECTAREA: "Vous devez avoir sélectionné votre étendue avant."
 COLLISION:
   SHOW:
     COLLISION: "Collision avec '%', étendue id '%'."
@@ -106,18 +112,15 @@ COLLISION:
     REMOVE: "Cette action est enlevé de la liste."
 COMMAND:
   NOTEXIST: "Cette commande n'éxiste pas. Vous pouvez faire \"/factoid help\""
+  CONFIRM: "Pour confirmer votre choix, tapez \"/factoid confirm\" ou pour annuler, tapez \"/factoid cancel\"."
   PAGE:
     ONEPAGE: "-Page (1/1)-"
     MULTIPAGE: "-Page (%/%)- tapez: /factoid page <numéro>"
     INVALID: "Le numéro de la page est invalide!"
-    PAGENULL: "Pas de page sélectionné"
   SELECT:
     JOINMODE: "Vous êtes maintenant en mode sélection."
     HINT: "Tapez % '/factoid select done' % % pour confirmer votre choix."
     ALREADY: "Vous êtes déjà en mode sélection."
-    QUIT:
-      EXPENDMODE: "Quittez le mode expansion."
-      FLAGSMODE: "Quittez le mode drapeau avant."
     NOLAND: "Ce terrain n'existe pas."
     LAND:
       NOCOLLISION: "Votre sélection n'a pas de collision."
@@ -133,8 +136,6 @@ COMMAND:
       SELECTIONNED: " Vous avez sélectionné un terrain avec WorldEdit!"
       NOSELECTIONNED: " Pas de sélection WorldEdit ou pas de type cuboïd!"
       SELECTIONINCOMPLET: " La sélection WorldEdit est incomplète!"
-    JOIN:
-      SELECTMODE: "Joindre le mode sélection avant."
   EXPAND:
     JOINMODE: "Vous êtes en mode Expansion."
     QUITMODE: "Vous n'êtes plus en mode Expansion."
@@ -153,11 +154,8 @@ COMMAND:
     DONE: "Vous avez créé votre terrain."
     ALREADYUSE: "Le nom de terrain est déjà utilisé."
     HINTUSE: "/factoid create [nom du terrain]"
-    NEEDNAME: "Vous devez fournir un nom de terrain."
-    SELECTMODE: "Vous devez être en mode Sélection avant."
     PARENTNOTEXIST: "Le terrain parent n'existe pas."
   RENAME:
-    NEEDNAME: "Vous devez préciser un nouveau nom."
     HINTUSE: "Ce nom ne peut être utilisé."
     ISDONE: "Le terrain '%' est renommé '%'."
   FLAGS:
@@ -203,7 +201,6 @@ COMMAND:
   OWNER:
     ISDONE: "Le propriétaire est maintenant '%' pour le terrain '%'."
   SETDEFAULT:
-    CONFIRM: "Pour confirmer votre choix, tapez \"/factoid confirm\" ou pour annuler, tapez \"/factoid cancel\"."
     ISDONE: "Le terrain '%' a maintenant la configuration par défaut."
   BANNED:
     ISDONE: "Vous avez banni '%' de '%'."
@@ -219,9 +216,6 @@ COMMAND:
     DONE: 
       LAND: "Vous avez enlevé le terrain % (% étendues)."
       AREA: "Vous avez enlevé une étendue du terrain % ."
-    DUPLICATION: "Finissez votre enlèvement avant d'en commencer un autre."
-    CONFIRM: "Pour confirmer votre choix, tapez \"/factoid confirm\" ou pour annuler, tapez \"/factoid cancel\"."
-    ISPARENT: "Vous ne pouvez pas détruire un terrain parent."
   PRIORITY:
     NOTCHILD: "Vous ne pouvez pas changer la priorité sur un terrain enfant."
     INVALID: "La priorité doit être un nombre de % à %."

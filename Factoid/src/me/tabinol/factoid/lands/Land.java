@@ -2,6 +2,7 @@ package me.tabinol.factoid.lands;
 
 import me.tabinol.factoid.lands.Areas.CuboidArea;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -12,10 +13,8 @@ import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.PermissionType;
-import me.tabinol.factoid.listeners.PlayerListener;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerNobody;
-import me.tabinol.factoid.storage.Storage;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -25,18 +24,19 @@ public class Land extends DummyLand {
     public static final short MINIM_PRIORITY = 0;
     public static final short MAXIM_PRIORITY = 100;
     private String name;
-    private TreeMap<Integer, CuboidArea> areas = new TreeMap<>();
-    private TreeMap<String, Land> children = new TreeMap<>();
+    private Map<Integer, CuboidArea> areas = new TreeMap<>();
+    private Map<String, Land> children = new TreeMap<>();
     private short priority = DEFAULT_PRIORITY; // Do not put more then 100000!!!!
     private int genealogy = 0; // 0 = first, 1 = child, 2 = child of child, ...
     private Land parent = null;
     private PlayerContainer owner;
-    private TreeSet<PlayerContainer> residents = new TreeSet<>();
-    private TreeSet<PlayerContainer> banneds = new TreeSet<>();
+    private Set<PlayerContainer> residents = new TreeSet<>();
+    private Set<PlayerContainer> banneds = new TreeSet<>();
     private boolean autoSave = true;
     private Faction factionTerritory = null;
     private double money = 0L;
-    private TreeSet<String> playerNotify = new TreeSet<>();
+    private Set<String> playerNotify = new TreeSet<>();
+    private final Set<Player> playersInLand = new HashSet<>();
 
     // Please use createLand in Lands class to create a Land
     protected Land(String landName, PlayerContainer owner, CuboidArea area, int genealogy, Land parent, int areaId) {
@@ -50,7 +50,7 @@ public class Land extends DummyLand {
         }
         this.owner = owner;
         this.genealogy = genealogy;
-        if (!Storage.isInLoad()) {
+        if (!Factoid.getStorage().isInLoad()) {
             if (!Factoid.getLands().defaultConf.flags.isEmpty()) {
                 flags = Factoid.getLands().defaultConf.flags.clone();
             }
@@ -258,7 +258,7 @@ public class Land extends DummyLand {
         return false;
     }
 
-    public final TreeSet<PlayerContainer> getResidents() {
+    public final Set<PlayerContainer> getResidents() {
 
         return residents;
     }
@@ -293,7 +293,7 @@ public class Land extends DummyLand {
         return false;
     }
 
-    public final TreeSet<PlayerContainer> getBanneds() {
+    public final Set<PlayerContainer> getBanneds() {
 
         return banneds;
     }
@@ -461,8 +461,23 @@ public class Land extends DummyLand {
         return playerNotify;
     }
 
+    public void addPlayerInLand(Player player) {
+        
+        playersInLand.add(player);
+    }
+    
+    public boolean removePlayerInLand(Player player) {
+        
+        return playersInLand.remove(player);
+    }
+    
+    public boolean isPlayerInLand(Player player) {
+        
+        return playersInLand.contains(player);
+    }
+    
     public Set<Player> getPlayersInLand() {
 
-        return PlayerListener.getPlayersInLand(this);
+        return playersInLand;
     }
 }

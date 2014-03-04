@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.util.Map;
 import java.util.logging.Level;
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.commands.OnCommand;
 import org.bukkit.configuration.ConfigurationSection;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -30,9 +29,9 @@ public class Lang extends Thread {
     }
 
     public final void reloadConfig() {
-        this.lang = Factoid.getConf().Lang;
+        this.lang = Factoid.getConf().getLang();
         this.langFile = new File(plugin.getDataFolder() + "/lang/", lang + ".yml");
-        if (Factoid.getConf().Lang != null) {
+        if (Factoid.getConf().getLang() != null) {
             Make();
             loadYamls();
         }
@@ -148,7 +147,7 @@ public class Lang extends Thread {
         StringBuilder sb = new StringBuilder();
         
         for(int t = 1; t <= valueList.size(); t ++) {
-            sb.append((String) valueList.get(t + "")).append(OnCommand.NEWLINE);
+            sb.append((String) valueList.get(t + "")).append(Factoid.getConf().NEWLINE);
         }
         
         return sb.toString();

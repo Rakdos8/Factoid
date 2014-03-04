@@ -4,15 +4,10 @@ import java.util.Map;
 import java.util.HashMap;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.Areas.CuboidArea;
-import me.tabinol.factoid.lands.selection.LandMakeSquare;
-import me.tabinol.factoid.lands.selection.LandResetSelection;
 import org.bukkit.Material;
 import org.bukkit.event.Listener;
-import org.bukkit.Server;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.World;
@@ -37,9 +32,9 @@ public class LandExpansion extends Thread implements Listener{
     private boolean isDone = false;
     private String direction = null;
     
-    public LandExpansion(Player player,Server server,JavaPlugin plugin){
+    public LandExpansion(Player player){
         LandExpansion(player, player.getLocation(), 0, 0, 
-        Factoid.getConf().MinLandHigh, Factoid.getConf().MaxLandHigh, 0, 0, false);
+        Factoid.getConf().getMinLandHigh(), Factoid.getConf().getMaxLandHigh(), 0, 0, false);
     }
     
     // For WorldEdit

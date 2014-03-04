@@ -10,7 +10,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import me.tabinol.factoid.utilities.Calculate;
 import org.bukkit.block.BlockFace;
-import me.tabinol.factoid.commands.OnCommand;
 
 
 public class LandExpandSquare extends Thread{
@@ -76,7 +75,7 @@ public class LandExpandSquare extends Thread{
             } else {
                 player.sendBlockChange(FronCornerLeftLoc, Material.BEACON, this.by);
 
-                if (Factoid.getConf().BeaconLigth) {
+                if (Factoid.getConf().isBeaconLight()) {
                     player.sendBlockChange(new Location(world, FronCornerLeftLoc.getX(), FronCornerLeftLoc.getY() - 1, FronCornerLeftLoc.getZ()), Material.IRON_BLOCK, this.by);
                     player.sendBlockChange(new Location(world, FronCornerLeftLoc.getX() - 1, FronCornerLeftLoc.getY() - 1, FronCornerLeftLoc.getZ()), Material.IRON_BLOCK, this.by);
                     player.sendBlockChange(new Location(world, FronCornerLeftLoc.getX() + 1, FronCornerLeftLoc.getY() - 1, FronCornerLeftLoc.getZ()), Material.IRON_BLOCK, this.by);
@@ -101,7 +100,7 @@ public class LandExpandSquare extends Thread{
                 IsCollisionFront = true;
             } else {
                 player.sendBlockChange(FrontCornerRigthLoc, Material.BEACON, this.by);
-                if (Factoid.getConf().BeaconLigth) {
+                if (Factoid.getConf().isBeaconLight()) {
                     player.sendBlockChange(new Location(world, FrontCornerRigthLoc.getX(), FrontCornerRigthLoc.getY() - 1, FrontCornerRigthLoc.getZ()), Material.IRON_BLOCK, this.by);
                     player.sendBlockChange(new Location(world, FrontCornerRigthLoc.getX() - 1, FrontCornerRigthLoc.getY() - 1, FrontCornerRigthLoc.getZ()), Material.IRON_BLOCK, this.by);
                     player.sendBlockChange(new Location(world, FrontCornerRigthLoc.getX() + 1, FrontCornerRigthLoc.getY() - 1, FrontCornerRigthLoc.getZ()), Material.IRON_BLOCK, this.by);
@@ -126,7 +125,7 @@ public class LandExpandSquare extends Thread{
                 IsCollisionBack = true;
             } else {
                 player.sendBlockChange(BackCornerLeftLoc, Material.BEACON, this.by);
-                if (Factoid.getConf().BeaconLigth) {
+                if (Factoid.getConf().isBeaconLight()) {
                     player.sendBlockChange(new Location(world, BackCornerLeftLoc.getX(), BackCornerLeftLoc.getY() - 1, BackCornerLeftLoc.getZ()), Material.IRON_BLOCK, this.by);
                     player.sendBlockChange(new Location(world, BackCornerLeftLoc.getX() - 1, BackCornerLeftLoc.getY() - 1, BackCornerLeftLoc.getZ()), Material.IRON_BLOCK, this.by);
                     player.sendBlockChange(new Location(world, BackCornerLeftLoc.getX() + 1, BackCornerLeftLoc.getY() - 1, BackCornerLeftLoc.getZ()), Material.IRON_BLOCK, this.by);
@@ -151,7 +150,7 @@ public class LandExpandSquare extends Thread{
                 IsCollisionBack = true;
             } else {
                 player.sendBlockChange(BackCornerRigthLoc, Material.BEACON, this.by);
-                if (Factoid.getConf().BeaconLigth) {
+                if (Factoid.getConf().isBeaconLight()) {
                     player.sendBlockChange(new Location(world, BackCornerRigthLoc.getX(), BackCornerRigthLoc.getY() - 1, BackCornerRigthLoc.getZ()), Material.IRON_BLOCK, this.by);
                     player.sendBlockChange(new Location(world, BackCornerRigthLoc.getX() - 1, BackCornerRigthLoc.getY() - 1, BackCornerRigthLoc.getZ()), Material.IRON_BLOCK, this.by);
                     player.sendBlockChange(new Location(world, BackCornerRigthLoc.getX() + 1, BackCornerRigthLoc.getY() - 1, BackCornerRigthLoc.getZ()), Material.IRON_BLOCK, this.by);

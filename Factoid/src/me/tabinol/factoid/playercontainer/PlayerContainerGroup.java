@@ -1,5 +1,6 @@
 package me.tabinol.factoid.playercontainer;
 
+import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.DependPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -31,7 +32,7 @@ public class PlayerContainerGroup extends PlayerContainer implements PlayerConta
         Player player = Bukkit.getPlayer(playerName);
         
         if(player != null) {
-            return DependPlugin.permission.playerInGroup(player, name);
+            return Factoid.getDependPlugin().getPermission().playerInGroup(player, name);
         } else {
             return false;
         }

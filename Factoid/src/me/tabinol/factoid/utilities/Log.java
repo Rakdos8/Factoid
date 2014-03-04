@@ -15,7 +15,7 @@ public class Log extends Thread {
 
     public Log() {
 
-        this.debug = Factoid.getConf().debug;
+        this.debug = Factoid.getConf().isDebug();
         this.Folder = Factoid.getThisPlugin().getDataFolder();
     }
 

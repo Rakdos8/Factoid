@@ -85,6 +85,12 @@ GENERAL:
   MISSINGPERMISSION: "Sorry, you don't have the permission."
   ERROR: "An Error Occur Please contact an Administrator."
   MISSINGINFO: "Some information is missing. Check your command again."
+  QUIT:
+    EXPENDMODE: "Quit the Expand Mode before."
+    FLAGSMODE: "Quit the Flags Mode before."
+  JOIN:
+    SELECTMODE: "Join the Select Mode before."
+    SELECTAREA: "You need to have an area selected before."
 COLLISION:
   SHOW:
     COLLISION: "Collision with '%', area id '%'."
@@ -106,18 +112,15 @@ COLLISION:
     REMOVE: "The action is removed from the approve list."
 COMMAND:
   NOTEXIST: "This command does not exist. You can do \"/factoid help\""
+  CONFIRM: "To confirm your choice, type \"/factoid confirm\" or to cancel type \"/factoid cancel\"."
   PAGE:
     ONEPAGE: "-Page (1/1)-"
     MULTIPAGE: "-Page (%/%)- type: /factoid page <number>"
     INVALID: "The page number is invalid!"
-    PAGENULL: "No page selected"
   SELECT:
     JOINMODE: "You are now in Select Mode."
     HINT: "Type % '/factoid select done' % % to confirm your choice."
     ALREADY: "You are already in Select Mode."
-    QUIT:
-      EXPENDMODE: "Quit the Expand Mode before."
-      FLAGSMODE: "Quit the Flags Mode before."
     NOLAND: "This land doesn't Exist."
     LAND:
       NOCOLLISION: "Your selection has no collision."
@@ -133,8 +136,6 @@ COMMAND:
       SELECTIONNED: " you have selectioned your land with WorldEdit!"
       NOSELECTIONNED: " No WorldEdit selection or not a cuboid region!"
       SELECTIONINCOMPLET: " The WorldEdit selection is incomplete!"
-    JOIN:
-      SELECTMODE: "Join the Select Mode before."
   EXPAND:
     JOINMODE: "You are now in Expand Mode."
     QUITMODE: "You are no longer in Expand Mode."
@@ -153,11 +154,8 @@ COMMAND:
     DONE: "You have created your land."
     ALREADYUSE: "This Land name is already used."
     HINTUSE: "/factoid create [Land Name]"
-    NEEDNAME: "You have to provide a Land Name."
-    SELECTMODE: "You must be in Select Mode before."
     PARENTNOTEXIST: "The parent land doesn't exist."
   RENAME:
-    NEEDNAME: "You must specify a new name."
     HINTUSE: "This name can't be used."
     ISDONE: "The land '%' is renamed '%'."
   FLAGS:
@@ -203,7 +201,6 @@ COMMAND:
   OWNER:
     ISDONE: "The owner is now '%' for the land '%'."
   SETDEFAULT:
-    CONFIRM: "To confirm your choice, type \"/factoid confirm\" or to cancel type \"/factoid cancel\"."
     ISDONE: "The land '%' has now the default configuration."
   BANNED:
     ISDONE: "you have ban '%' in '%'."
@@ -219,9 +216,6 @@ COMMAND:
     DONE: 
       LAND: "You have removed the land % (% areas)."
       AREA: "You have removed the area of the land % ."
-    DUPLICATION: "finish your removal before do an another one."
-    CONFIRM: "To confirm your choice, type \"/factoid confirm\" or to cancel type \"/factoid cancel\"."
-    ISPARENT: "You can't delete a parent land."
   PRIORITY:
     NOTCHILD: "You can't change a priority on a child land."
     INVALID: "The priority must be a number from % to %."

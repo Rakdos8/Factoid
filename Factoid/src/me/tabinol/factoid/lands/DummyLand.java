@@ -31,9 +31,9 @@ public class DummyLand {
 
         return worldName;
     }
-    
+
     public World getWord() {
-        
+
         return Factoid.getThisPlugin().getServer().getWorld(worldName);
     }
 
@@ -95,6 +95,11 @@ public class DummyLand {
         return checkPermissionAndInherit(playerName, pt, false);
     }
 
+    public Boolean checkPermissionNoInherit(String playerName, PermissionType pt) {
+
+        return getPermission(playerName, pt, false);
+    }
+
     protected Boolean checkPermissionAndInherit(String playerName, PermissionType pt, boolean onlyInherit) {
 
         if (this instanceof Land) {
@@ -143,6 +148,11 @@ public class DummyLand {
     public LandFlag getFlagAndInherit(FlagType ft) {
 
         return getFlagAndInherit(ft, false);
+    }
+
+    public LandFlag getFlagNoInherit(FlagType ft) {
+
+        return getFlag(ft, false);
     }
 
     protected LandFlag getFlagAndInherit(FlagType ft, boolean onlyInherit) {

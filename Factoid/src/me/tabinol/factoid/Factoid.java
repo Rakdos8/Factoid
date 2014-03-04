@@ -7,7 +7,7 @@ import me.tabinol.factoid.utilities.Log;
 import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.config.DependPlugin;
-import me.tabinol.factoid.config.PlayerConfig;
+import me.tabinol.factoid.config.PlayerStaticConfig;
 import me.tabinol.factoid.factions.Factions;
 import me.tabinol.factoid.lands.Lands;
 import me.tabinol.factoid.lands.approve.ApproveNotif;
@@ -20,22 +20,17 @@ import me.tabinol.factoid.scoreboard.ScoreBoard;
 
 public class Factoid extends JavaPlugin {
 
-    public static Object getThisServer() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     private OnCommand CommandListener;
     private PlayerListener playerListener;
     private WorldListener worldListener;
     private LandListener landListener;
-    private ApproveNotif approveNotif;
+    private static ApproveNotif approveNotif;
     private static Storage storage;
     private static Log log;
     private static Factoid thisPlugin;
     private static Config conf;
-    private static PlayerConfig playerConf;
+    private static PlayerStaticConfig playerConf;
     private static Lang language;
-    // Access to Factions and Lands (static)
     private static Factions factions;
     private static Lands lands;
     private static String version;
@@ -49,13 +44,13 @@ public class Factoid extends JavaPlugin {
         thisPlugin = this;
         version = this.getDescription().getVersion();
         conf = new Config();
-        playerConf = new PlayerConfig();
+        playerConf = new PlayerStaticConfig();
         log = new Log();
         dependPlugin = new DependPlugin();
         language = new Lang();
         storage = new StorageFlat();
         factions = new Factions();
-        lands = new Lands(conf.getLandOutsideArea(), conf.getLandDefaultConf());
+        lands = new Lands();
         storage.loadAll();
         worldListener = new WorldListener();
         playerListener = new PlayerListener();
@@ -74,10 +69,10 @@ public class Factoid extends JavaPlugin {
         
         reloadConfig();
         conf.reloadConfig();
-        log.setDebug(conf.debug);
+        log.setDebug(conf.isDebug());
         language.reloadConfig();
         factions = new Factions();
-        lands = new Lands(conf.getLandOutsideArea(), conf.getLandDefaultConf());
+        lands = new Lands();
         storage.loadAll();
     }
     
@@ -100,7 +95,7 @@ public class Factoid extends JavaPlugin {
         return conf;
     }
     
-    public static PlayerConfig getPlayerConf() {
+    public static PlayerStaticConfig getPlayerConf() {
         
         return playerConf;
     }
@@ -143,6 +138,11 @@ public class Factoid extends JavaPlugin {
     public static DependPlugin getDependPlugin() {
         
         return dependPlugin;
+    }
+    
+    public static ApproveNotif getApproveNotif() {
+        
+        return approveNotif;
     }
     
 }

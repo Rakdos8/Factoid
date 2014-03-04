@@ -18,7 +18,7 @@ public class ApproveNotif extends BukkitRunnable {
     
     private void runTaskLater() {
         
-        long notifyTime = Factoid.getConf().ApproveNotifyTime;
+        long notifyTime = Factoid.getConf().getApproveNotifyTime();
         
         if(notifyTime == 0) {
             this.runTaskLater(Factoid.getThisPlugin(), 24002);
@@ -32,7 +32,7 @@ public class ApproveNotif extends BukkitRunnable {
 
         int lstCount;
 
-        if (Factoid.getConf().ApproveNotifyTime != 0
+        if (Factoid.getConf().getApproveNotifyTime() != 0
                 && (lstCount = Factoid.getLands().getApproveList().getApproveList().size()) != 0) {
 
             // If there is some notification to done
@@ -43,7 +43,7 @@ public class ApproveNotif extends BukkitRunnable {
         }
     }
 
-    public static void notifyForApprove(String landName, String playerName) {
+    public void notifyForApprove(String landName, String playerName) {
 
         notifyPlayer(Factoid.getLanguage().getMessage("COLLISION.SHOW.NOTIFYLAND", landName, playerName + ChatColor.GREEN));
     }
@@ -54,7 +54,7 @@ public class ApproveNotif extends BukkitRunnable {
     }
     
     // Notify with a message
-    private static void notifyPlayer(String message) {
+    private void notifyPlayer(String message) {
 
         for (Player players : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
             if (players.hasPermission(PERM_APPROVE)) {

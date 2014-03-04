@@ -54,7 +54,7 @@ public class WorldListener implements Listener {
             return;
         }
 
-        if (conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())) {
+        if (conf.getWorlds().contains(event.getEntity().getWorld().getName().toLowerCase())) {
 
             Location loc = event.getEntity().getLocation();
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(loc);
@@ -86,7 +86,7 @@ public class WorldListener implements Listener {
             return;
         }
 
-        if (conf.OverrideExplosions) {
+        if (conf.isOverrideExplosions()) {
 
             float power;
 
@@ -134,7 +134,7 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onHangingBreak(HangingBreakEvent event) {
 
-        if (conf.OverrideExplosions && conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())) {
+        if (conf.isOverrideExplosions() && conf.getWorlds().contains(event.getEntity().getWorld().getName().toLowerCase())) {
             // Check for painting
             if (event.getCause() == RemoveCause.EXPLOSION) {
                 Factoid.getLog().write("Cancel HangingBreak : " + event.getEntity() + ", Cause: " + event.getCause());
@@ -185,7 +185,7 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
 
-        if (conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())) {
+        if (conf.getWorlds().contains(event.getEntity().getWorld().getName().toLowerCase())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
             LandFlag flag;
 
@@ -204,7 +204,7 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockIgnite(BlockIgniteEvent event) {
 
-        if (conf.Worlds.contains(event.getBlock().getWorld().getName().toLowerCase())) {
+        if (conf.getWorlds().contains(event.getBlock().getWorld().getName().toLowerCase())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
             LandFlag flag;
 
@@ -221,7 +221,7 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBurn(BlockBurnEvent event) {
 
-        if (conf.Worlds.contains(event.getBlock().getWorld().getName().toLowerCase())) {
+        if (conf.getWorlds().contains(event.getBlock().getWorld().getName().toLowerCase())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
             LandFlag flag;
 
@@ -237,7 +237,7 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
 
-        if (conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())) {
+        if (conf.getWorlds().contains(event.getEntity().getWorld().getName().toLowerCase())) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getEntity().getLocation());
             LandFlag flag;
 
@@ -257,7 +257,7 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
 
-        if (conf.OverrideExplosions && conf.Worlds.contains(event.getEntity().getWorld().getName().toLowerCase())
+        if (conf.isOverrideExplosions() && conf.getWorlds().contains(event.getEntity().getWorld().getName().toLowerCase())
                 && event.getEntity() instanceof ItemFrame
                 && (event.getCause() == DamageCause.BLOCK_EXPLOSION || event.getCause() == DamageCause.ENTITY_EXPLOSION
                 || event.getCause() == DamageCause.PROJECTILE)) {

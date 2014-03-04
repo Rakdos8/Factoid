@@ -201,7 +201,7 @@ public class Collisions {
         StringBuilder str = new StringBuilder();
 
         for (CollisionsEntry ce : coll) {
-            str.append(ce.getPrint()).append(OnCommand.NEWLINE);
+            str.append(ce.getPrint()).append(Factoid.getConf().NEWLINE);
         }
 
         return str.toString();

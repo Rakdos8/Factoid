@@ -10,9 +10,9 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
+import me.tabinol.factoid.config.WorldConfig;
 import me.tabinol.factoid.event.LandDeleteEvent;
 import me.tabinol.factoid.exceptions.FactoidLandException;
-import me.tabinol.factoid.lands.approve.Approve;
 import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import me.tabinol.factoid.lands.collisions.Collisions.LandError;
 import me.tabinol.factoid.lands.approve.ApproveList;
@@ -42,16 +42,22 @@ public class Lands {
     private final PluginManager pm;
     private final ApproveList approveList;
 
-    public Lands(TreeMap<String, DummyLand> outsideArea, DummyLand defaultConf) {
+    public Lands() {
 
         areaList = new TreeMap[4];
         pm = Factoid.getThisPlugin().getServer().getPluginManager();
         for (int t = 0; t < areaList.length; t++) {
             areaList[t] = new TreeMap<>();
         }
+        WorldConfig worldConfig = new WorldConfig();
+        
+        // Load World Config
+        this.outsideArea = worldConfig.getLandOutsideArea();
         this.globalArea = outsideArea.get(Config.GLOBAL);
-        this.outsideArea = outsideArea;
-        this.defaultConf = defaultConf;
+        
+        // Load Land default
+        this.defaultConf = worldConfig.getLandDefaultConf();
+        
         landList = new TreeMap<>();
         approveList = new ApproveList();
     }

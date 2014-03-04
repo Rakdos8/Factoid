@@ -12,9 +12,9 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 public class DependPlugin {
 
     private Plugin worldEdit = null;
-    public static Permission permission = null;
-    public static Economy economy = null;
-    public static Chat chat = null;
+    private Permission permission = null;
+    private Economy economy = null;
+    private Chat chat = null;
 
     public DependPlugin() {
 
@@ -71,4 +71,18 @@ public class DependPlugin {
         return (economy != null);
     }
 
+    public Permission getPermission() {
+        
+        return permission;
+    }
+    
+    public Economy getEconomy() {
+        
+        return economy;
+    }
+    
+    public Chat getChat() {
+        
+        return chat;
+    }
 }

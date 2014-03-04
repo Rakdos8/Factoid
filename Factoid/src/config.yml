@@ -37,7 +37,7 @@ land:
   OwnerCanSet:                     # What the owner can set on his land?
     Permissions: [BUILD, OPEN, USE]
     Flags: [MESSAGE_JOIN, MESSAGE_QUIT]
-  BeaconLigth: false               #Set beacon ligth effect of an selection
+  BeaconLight: false               #Set beacon ligth effect of an selection
 economy:
   PricebyCube: 100
   MinPriceLocation: 1
