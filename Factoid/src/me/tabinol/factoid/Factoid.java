@@ -7,7 +7,7 @@ import me.tabinol.factoid.utilities.Log;
 import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.config.DependPlugin;
-import me.tabinol.factoid.config.PlayerStaticConfig;
+import me.tabinol.factoid.config.players.PlayerStaticConfig;
 import me.tabinol.factoid.factions.Factions;
 import me.tabinol.factoid.lands.Lands;
 import me.tabinol.factoid.lands.approve.ApproveNotif;

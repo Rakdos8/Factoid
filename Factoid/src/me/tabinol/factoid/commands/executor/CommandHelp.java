@@ -49,10 +49,17 @@ public class CommandHelp extends CommandExec {
 
     private void showHelp() throws FactoidCommandException {
 
+        String help = Factoid.getLanguage().getHelp(commandName);
+        
+        // If there is no help for this command
+        if(help == null) {
+            throw new FactoidCommandException("Command with no help", entity.player, "HELP.NOHELP");
+        }
+        
         if (commandName.equals("GENERAL")) {
-            new ChatPage("HELP.LISTSTART", Factoid.getLanguage().getHelp(commandName), sender, null).getPage(1);
+            new ChatPage("HELP.LISTSTART", help, sender, null).getPage(1);
         } else {
-            sender.sendMessage(Factoid.getLanguage().getHelp(commandName));
+            sender.sendMessage(help);
         }
     }
 

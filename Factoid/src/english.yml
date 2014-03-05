@@ -1,9 +1,10 @@
 # Do not change the version number if you don't know what you are doing!
-VERSION: 4
+VERSION: 5
 ENABLE: "Factoid is Enabled."
 DISABLE: "Factoid is Disabled."
 CONSOLE: "Hey Console! Wait...what?"
 HELP:
+  NOHELP: "No help avalaible for this command."
   LISTSTART: "-Command list-"
   GENERAL:
     1: "Type \"/factoid help\" <command> for specific command help."
@@ -113,6 +114,7 @@ COLLISION:
 COMMAND:
   NOTEXIST: "This command does not exist. You can do \"/factoid help\""
   CONFIRM: "To confirm your choice, type \"/factoid confirm\" or to cancel type \"/factoid cancel\"."
+  NOCONFIRM: "Nothing to confirm."
   PAGE:
     ONEPAGE: "-Page (1/1)-"
     MULTIPAGE: "-Page (%/%)- type: /factoid page <number>"
@@ -238,6 +240,7 @@ COMMAND:
     ACTION: "Your action is cancelled."
     FLAGS: "The flags selection mode is cancelled."
     SELECT: "Your selection is cancelled."
+    NOCANCEL: "Nothing to cancel."
   RELOAD:
     START: "The reload is started."
     COMPLETE: "The reload is complete."

@@ -3,7 +3,7 @@ package me.tabinol.factoid.commands.executor;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ArgList;
 import me.tabinol.factoid.commands.CommandList;
-import me.tabinol.factoid.config.PlayerStaticConfig;
+import me.tabinol.factoid.config.players.PlayerConfEntry;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -15,7 +15,7 @@ public class CommandEntities {
     protected final ArgList argList;
     protected final Player player;
     protected final String playerName;
-    protected final PlayerStaticConfig.PlayerConfEntry playerConf;
+    protected final PlayerConfEntry playerConf;
 
     public CommandEntities(CommandList command, CommandSender sender, ArgList argList) {
         

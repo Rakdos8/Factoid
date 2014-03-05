@@ -8,7 +8,7 @@ softdepend: [WorldEdit]
 commands:
    factoid:
       description: Factoid Command
-      alias: claim
+      aliases: [fd, claim]
       usage: /factoid help
       permission: factoid.use
       permission-message: you don't have permission for that!

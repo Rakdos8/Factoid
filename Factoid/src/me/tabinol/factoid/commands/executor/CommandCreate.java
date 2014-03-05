@@ -17,28 +17,27 @@ import org.bukkit.ChatColor;
 public class CommandCreate extends CommandExec {
 
     public CommandCreate(CommandEntities entity) throws FactoidCommandException {
-        
+
         super(entity, false, true);
     }
-    
+
     @Override
     public void commandExecute() throws FactoidCommandException {
 
         checkSelections(false, false, null, true);
         checkPermission(true, false, null, null);
 
-        
         LandSelection select = entity.playerConf.getAreaSelection();
 
-            CuboidArea area = select.toCuboidArea();
+        CuboidArea area = select.toCuboidArea();
 
-            // Quit select mod
+        // Quit select mod
         entity.playerConf.setAreaSelection(null);
         entity.playerConf.setLandSelected(null);
         select.resetSelection();
 
         String curArg = entity.argList.getNext();
-        
+
         // Check if is is a banned word
         if (BannedWords.isBannedWord(curArg.toUpperCase())) {
             throw new FactoidCommandException("CommandCreate", entity.player, "COMMAND.CREATE.HINTUSE");
@@ -79,5 +78,6 @@ public class CommandCreate extends CommandExec {
 
         entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.DONE"));
         Factoid.getLog().write(entity.playerName + " have create a land named " + land.getName() + " at position " + land.getAreas().toString());
+        new CommandCancel(entity.player, true).commandExecute();
     }
 }

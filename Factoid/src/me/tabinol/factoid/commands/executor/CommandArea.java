@@ -39,6 +39,7 @@ public class CommandArea extends CommandExec {
 
             entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.AREA.ISDONE", land.getName()));
             Factoid.getLog().write(entity.playerName + " have create an area named " + land.getName() + " at position " + land.getAreas().toString());
+            new CommandCancel(entity.player, false).commandExecute();
 
         } else if (curArg.equalsIgnoreCase("remove") || curArg.equalsIgnoreCase("replace")) {
 
@@ -95,7 +96,7 @@ public class CommandArea extends CommandExec {
 
                 entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.AREA.ISDONE", land.getName()));
                 Factoid.getLog().write(entity.playerName + " have create an area named " + land.getName() + " at position " + land.getAreas().toString());
-
+                new CommandCancel(entity.player, false).commandExecute();
             }
 
         } else if (curArg.equalsIgnoreCase("list")) {

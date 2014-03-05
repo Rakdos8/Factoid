@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ArgList;
+import me.tabinol.factoid.config.players.PlayerConfEntry;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.config.PlayerStaticConfig;
 import me.tabinol.factoid.lands.Areas.CuboidArea;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.permissions.PermissionType;
@@ -20,7 +20,7 @@ public class CommandSelect extends CommandExec {
 
     private final Player player;
     private final Location location;
-    private final PlayerStaticConfig.PlayerConfEntry playerConf;
+    private final PlayerConfEntry playerConf;
     private final ArgList argList;
 
     public CommandSelect(CommandEntities entity) throws FactoidCommandException {
@@ -59,7 +59,7 @@ public class CommandSelect extends CommandExec {
                     if (Factoid.getDependPlugin().getWorldEdit() == null) {
                         throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.WORLDEDIT.NOTLOAD");
                     }
-                    new CommandSelectWorldedit(player).MakeSelect();
+                    new CommandSelectWorldedit(player, playerConf).MakeSelect();
                 
                 } else {
                     
@@ -105,6 +105,7 @@ public class CommandSelect extends CommandExec {
                         playerConf.setLandSelectedUI(listdummy);
 
                         player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.SELECTIONEDLAND", landtest.getName()));
+                        playerConf.setAutoCancelSelect(true);
                     } else {
                         
                         player.sendMessage(ChatColor.RED + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.CANNOTMPODIFY", landtest.getName()));
@@ -116,6 +117,7 @@ public class CommandSelect extends CommandExec {
                 player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.HINT", ChatColor.ITALIC.toString(), ChatColor.RESET.toString(), ChatColor.DARK_GRAY.toString()));
                 LandSelection select = new LandSelection(player);
                 playerConf.setAreaSelection(select);
+                playerConf.setAutoCancelSelect(true);
             }
         } else if ((curArg = argList.getNext()) != null && curArg.equalsIgnoreCase("done")) {
             
@@ -135,6 +137,7 @@ public class CommandSelect extends CommandExec {
         checkSelections(null, null, null, true);
 
         LandSelection select = playerConf.getAreaSelection();
+        playerConf.setAutoCancelSelect(true);
 
         if (!select.getCollision()) {
 

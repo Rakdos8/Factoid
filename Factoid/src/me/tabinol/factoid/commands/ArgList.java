@@ -84,14 +84,15 @@ public class ArgList {
     public FlagType getFlagTypeFromArg(boolean isAdminmod, boolean isOwner) throws FactoidCommandException {
 
         String curArg = getNext();
+        FlagType flagType;
 
         if (curArg == null) {
             throw new FactoidCommandException("Flag error", player, "COMMAND.FLAGS.FLAGNULL");
         }
 
-        FlagType flagType = FlagType.valueOf(curArg.toUpperCase());
-
-        if (flagType == null) {
+        try {
+            flagType = FlagType.valueOf(curArg.toUpperCase());
+        } catch (IllegalArgumentException ex) {
             throw new FactoidCommandException("Flag error", player, "COMMAND.FLAGS.FLAGNULL");
         }
 
@@ -178,14 +179,15 @@ public class ArgList {
     public PermissionType getPermissionTypeFromArg(boolean isAdminmod, boolean isOwner) throws FactoidCommandException {
 
         String curArg = getNext();
+        PermissionType pt;
 
         if (curArg == null) {
             throw new FactoidCommandException("Permission Error", player, "COMMAND.PERMISSIONTYPE.TYPENULL");
         }
 
-        PermissionType pt = PermissionType.valueOf(curArg.toUpperCase());
-
-        if (pt == null) {
+        try {
+            pt = PermissionType.valueOf(curArg.toUpperCase());
+        } catch (IllegalArgumentException ex) {
             throw new FactoidCommandException("Permission Error", player, "COMMAND.PERMISSIONTYPE.INVALID");
         }
 

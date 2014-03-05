@@ -47,6 +47,9 @@ public class Config {
     private long approveNotifyTime = 24002;
     public long getApproveNotifyTime() { return approveNotifyTime; }
     
+    private long selectAutoCancel = 12000;
+    public long getSelectAutoCancel() {return selectAutoCancel; }
+    
     private int maxLand = 1;
     public int getMaxLand() { return maxLand; } 
     
@@ -128,7 +131,8 @@ public class Config {
         } catch (NullPointerException ex) {
             allowCollision = AllowCollisionType.APPROVE;
         }
-        approveNotifyTime = config.getLong("general.ApproveNotifyTime");
+        approveNotifyTime = config.getLong("land.ApproveNotifyTime");
+        selectAutoCancel = config.getLong("land.SelectAutoCancel");
         maxLand = config.getInt("land.MaxLand");
         minLandSize = config.getInt("land.MinLandSize");
         maxLandSize = config.getInt("land.MaxLandSize");

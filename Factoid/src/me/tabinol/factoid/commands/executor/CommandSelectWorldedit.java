@@ -10,6 +10,7 @@ import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
+import me.tabinol.factoid.config.players.PlayerConfEntry;
 
 // WorldEdit is in a separate class from CommandSelect because if WorldEdit
 // is not installed, we don't want to makes error.
@@ -17,10 +18,12 @@ import com.sk89q.worldedit.regions.Region;
 public class CommandSelectWorldedit {
     
     Player player;
+    PlayerConfEntry entry;
     
-    public CommandSelectWorldedit(Player player) throws FactoidCommandException{
+    public CommandSelectWorldedit(Player player, PlayerConfEntry entry) throws FactoidCommandException{
         
         this.player = player;
+        this.entry = entry;
     }
     
     protected void MakeSelect() throws FactoidCommandException {
@@ -44,8 +47,9 @@ public class CommandSelectWorldedit {
                     sel.getMinimumPoint().getBlockX(), sel.getMaximumPoint().getBlockX(), sel.getMinimumPoint().getBlockY(),
                     sel.getMaximumPoint().getBlockY(), sel.getMaximumPoint().getBlockZ(), sel.getMinimumPoint().getBlockZ());
             
-            Factoid.getPlayerConf().get(player).setAreaSelection(select);
+            entry.setAreaSelection(select);
             select.setSelected();
+            entry.setAutoCancelSelect(true);
 
         } catch (IncompleteRegionException ex) {
             throw new FactoidCommandException("CommandSelectWorldEdit", player, "COMMAND.SELECT.WORLDEDIT.SELECTIONINCOMPLET");

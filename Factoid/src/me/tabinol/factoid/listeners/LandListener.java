@@ -3,7 +3,7 @@ package me.tabinol.factoid.listeners;
 import java.util.ArrayList;
 import java.util.Set;
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.config.PlayerStaticConfig;
+import me.tabinol.factoid.config.players.PlayerStaticConfig;
 import me.tabinol.factoid.event.PlayerContainerAddNoEnterEvent;
 import me.tabinol.factoid.event.PlayerContainerLandBanEvent;
 import me.tabinol.factoid.event.PlayerLandChangeEvent;
@@ -79,9 +79,6 @@ public class LandListener implements Listener {
         if (playerHeal.contains(player)) {
             playerHeal.remove(player);
         }
-
-        // Remove all player config
-        playerConf.remove(player);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

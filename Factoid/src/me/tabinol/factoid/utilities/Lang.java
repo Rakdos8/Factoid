@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.util.Map;
 import java.util.logging.Level;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.exceptions.FactoidCommandException;
 import org.bukkit.configuration.ConfigurationSection;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -15,11 +16,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Lang extends Thread {
 
-    public static final int ACTUAL_VERSION = 4; // +1 if there is a new version of the .conf
+    public static final int ACTUAL_VERSION = 5; // +1 if there is a new version of the .conf
     private String lang = null;
     private File langFile;
-    private FileConfiguration langconfig;
-    private JavaPlugin plugin;
+    private final FileConfiguration langconfig;
+    private final JavaPlugin plugin;
 
     public Lang() {
         this.langconfig = new YamlConfiguration();
@@ -143,6 +144,12 @@ public class Lang extends Thread {
     public String getHelp(String commandName) {
         
         ConfigurationSection helpSec = langconfig.getConfigurationSection("HELP." + commandName);
+        
+        // No help for this command?
+        if(helpSec == null) {
+            return null;
+        }
+        
         Map<String, Object> valueList = helpSec.getValues(false);
         StringBuilder sb = new StringBuilder();
         

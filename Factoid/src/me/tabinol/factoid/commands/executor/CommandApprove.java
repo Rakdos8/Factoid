@@ -65,7 +65,7 @@ public class CommandApprove extends CommandExec {
             // Check permission
             if (approve == null || (curArg.equalsIgnoreCase("confirm") && !isApprover)
                     || ((curArg.equalsIgnoreCase("cancel") || curArg.equalsIgnoreCase("info"))
-                    && (!isApprover || !approve.getOwner().hasAccess(entity.playerName)))) {
+                    && !(isApprover || approve.getOwner().hasAccess(entity.playerName)))) {
                 throw new FactoidCommandException("Approve", entity.sender, "COLLISION.SHOW.PARAMNULL");
             }
 

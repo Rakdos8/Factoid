@@ -1,9 +1,10 @@
 # Ne pas changer la version si vous ne savez pas ce que vous faites!
-VERSION: 4
+VERSION: 5
 ENABLE: "Factoid est actif."
 DISABLE: "Factoid est désactivé."
 CONSOLE: "Hé Console! attends...quoi?"
 HELP:
+  NOHELP: "Pas d'aide disponible pour cette commande."
   LISTSTART: "-Command list-"
   GENERAL:
     1: "Tapez \"/factoid help\" <commande> pour l'aide sur la commande."
@@ -107,12 +108,13 @@ COLLISION:
     NOTIFY: "% action(s) en attente d'approbation."
   GENERAL:
     NEEDAPPROVE: "Votre action est en attente d'approbation. \"/factoid approve cancel %\" si vous voulez annuler."
-    CANNOTDONE: "Problème de collision! Votre action ne peux être complétée."
+    CANNOTDONE: "Problème de collision! Votre action ne peut être complétée."
     DONE: "Cette action est approuvée."
     REMOVE: "Cette action est enlevé de la liste."
 COMMAND:
   NOTEXIST: "Cette commande n'éxiste pas. Vous pouvez faire \"/factoid help\""
   CONFIRM: "Pour confirmer votre choix, tapez \"/factoid confirm\" ou pour annuler, tapez \"/factoid cancel\"."
+  NOCONFIRM: "Aucune action à confirmer."
   PAGE:
     ONEPAGE: "-Page (1/1)-"
     MULTIPAGE: "-Page (%/%)- tapez: /factoid page <numéro>"
@@ -238,6 +240,7 @@ COMMAND:
     ACTION: "Votre action est annulée."
     FLAGS: "Le mode de sélection de drapeaux est annulé."
     SELECT: "Votre sélection est annulée."
+    NOCANCEL: "Rien à annuler."
   RELOAD:
     START: "Le rechargement est commencé."
     COMPLETE: "Le rechargement est complété."

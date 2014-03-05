@@ -39,14 +39,15 @@ public class CommandFlag extends CommandExec {
             
             LandFlag landFlag = entity.argList.getFlagFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.playerName));
             land.addFlag(landFlag);
-            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.ISDONE", landFlag.getFlagType().toString(), landFlag.getValueString()));
+            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.ISDONE", landFlag.getFlagType().toString(), 
+                    landFlag.getValuePrint() + ChatColor.YELLOW));
             Factoid.getLog().write("Flag set: " + landFlag.getFlagType().toString() + ", value: " + landFlag.getValueString());
 
         } else if (curArg.equalsIgnoreCase("unset")) {
         
             FlagType flagType = entity.argList.getFlagTypeFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.playerName));
             if (!land.removeFlag(flagType)) {
-                throw new FactoidCommandException("Flags", entity.player, "COMMAND.FLAGS.REMOVENOTEXIST"); // ****** AJOUTER dans lang (et les 3 suivants) ********
+                throw new FactoidCommandException("Flags", entity.player, "COMMAND.FLAGS.REMOVENOTEXIST");
             }
             entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.REMOVEISDONE", flagType.toString()));
             Factoid.getLog().write("Flag unset: " + flagType.toString());

@@ -22,9 +22,9 @@ public class OnCommand extends Thread implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] arg) {
 
-        if (cmd.getName().equalsIgnoreCase("factoid") || cmd.getName().equalsIgnoreCase("claim")) {
-
-            ArgList argList = new ArgList(arg, sender);
+        // Others commands then /factoid, /claim and /fd will not be send.
+        
+        ArgList argList = new ArgList(arg, sender);
             try {
                 // Check the command to send
                 getCommand(sender, argList);
@@ -33,9 +33,6 @@ public class OnCommand extends Thread implements CommandExecutor {
             } catch (FactoidCommandException ex) {
                 return true;
             }
-        }
-
-        return false;
     }
 
     // Get command from args
@@ -49,6 +46,7 @@ public class OnCommand extends Thread implements CommandExecutor {
             // Show help if there is no arguments
             if (command == null) {
                 new CommandHelp(sender, "GENERAL").commandExecute();
+                return;
             }
 
             // take the name

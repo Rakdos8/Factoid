@@ -9,8 +9,8 @@ import me.tabinol.factoid.commands.executor.CommandCancel;
 import me.tabinol.factoid.commands.executor.CommandHere;
 import me.tabinol.factoid.commands.executor.CommandSelect;
 import me.tabinol.factoid.config.Config;
-import me.tabinol.factoid.config.PlayerStaticConfig;
-import me.tabinol.factoid.config.PlayerStaticConfig.PlayerConfEntry;
+import me.tabinol.factoid.config.players.PlayerConfEntry;
+import me.tabinol.factoid.config.players.PlayerStaticConfig;
 import me.tabinol.factoid.event.PlayerLandChangeEvent;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.DummyLand;
@@ -193,7 +193,7 @@ public class PlayerListener implements Listener {
                     || playerConf.get(player).getLandSelected() != null)) {
 
                 try {
-                    new CommandCancel(player).commandExecute();
+                    new CommandCancel(player, false).commandExecute();
                 } catch (FactoidCommandException ex) {
                     Logger.getLogger(PlayerListener.class.getName()).log(Level.SEVERE, null, ex);
                     try {

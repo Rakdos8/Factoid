@@ -25,6 +25,8 @@ land:
   AllowCollision: approve            # true, approve, false
   ApproveNotifyTime: 24002           # Time to notify for Approval (in ticks)
                                      # or 0 for disabling
+  SelectAutoCancel: 12000            # Time before auto cancel a selection
+                                     # or 0 for disabling
   MaxLand: 1
   MinLandSize: 1
   MaxLandSize: 1

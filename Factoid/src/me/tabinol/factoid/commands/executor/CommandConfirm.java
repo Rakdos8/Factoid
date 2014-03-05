@@ -12,7 +12,7 @@ public class CommandConfirm extends CommandExec {
 
     public CommandConfirm(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity, false, true);
+        super(entity, false, false);
     }
 
     @Override
@@ -21,6 +21,7 @@ public class CommandConfirm extends CommandExec {
         ConfirmEntry confirmEntry;
 
         if ((confirmEntry = entity.playerConf.getConfirm()) != null) {
+            
             if (confirmEntry.confirmType == ConfirmEntry.ConfirmType.REMOVE_LAND) {
 
                 // Remove land
@@ -50,6 +51,13 @@ public class CommandConfirm extends CommandExec {
                 entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SETDEFAULT.ISDONE", confirmEntry.land.getName()));
                 Factoid.getLog().write("The land " + confirmEntry.land.getName() + "is set to default configuration by " + entity.playerName);
             }
+            
+            // Remove confirm
+            entity.playerConf.setConfirm(null);
+            
+        } else {
+            
+            throw new FactoidCommandException("Nothing to confirm", entity.player, "COMMAND.NOCONFIRM");
         }
     }
 }

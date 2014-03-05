@@ -16,6 +16,7 @@ public abstract class CommandExec implements CommandInterface {
     protected final CommandEntities entity;
     protected final Land land;
     private boolean isExecutable = true;
+    public boolean resetSelectCancel = false; // If reset select cancel is done (1 time only)
 
     protected CommandExec(CommandEntities entity,
             boolean canFromConsole, boolean needsMoreParameter) throws FactoidCommandException {
@@ -81,10 +82,17 @@ public abstract class CommandExec implements CommandInterface {
             throws FactoidCommandException {
 
         if (result != neededResult) {
-            if (result = true) {
+            if (result == true) {
                 throw new FactoidCommandException("Player Select", entity.player, messageTrue);
             } else {
                 throw new FactoidCommandException("Player Select", entity.player, messageFalse);
+            }
+        } else {
+            if(!resetSelectCancel && result == true) {
+                
+                // Reset autocancel if there is a command executed that need it
+                entity.playerConf.setAutoCancelSelect(true);
+                resetSelectCancel = true;
             }
         }
     }
