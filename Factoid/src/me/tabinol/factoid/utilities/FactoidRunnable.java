@@ -1,8 +1,8 @@
 package me.tabinol.factoid.utilities;
 
 import me.tabinol.factoid.Factoid;
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 /**
  * Schedule task in Factoid
@@ -11,12 +11,12 @@ import org.bukkit.scheduler.BukkitTask;
  */
 public abstract class FactoidRunnable extends BukkitRunnable {
 
-    private BukkitTask bukkitTask;
+    private Integer taskId = null;
 
     public FactoidRunnable() {
 
         super();
-        bukkitTask = null;
+        taskId = null;
     }
 
     public void runLater(Long tick, boolean multiple) {
@@ -24,29 +24,29 @@ public abstract class FactoidRunnable extends BukkitRunnable {
         stopNextRun();
 
         if (multiple) {
-            this.runTaskTimer(Factoid.getThisPlugin(), tick, tick);
+            taskId = this.runTaskTimer(Factoid.getThisPlugin(), tick, tick).getTaskId();
         } else {
-            this.runTaskLater(Factoid.getThisPlugin(), tick);
+            taskId = this.runTaskLater(Factoid.getThisPlugin(), tick).getTaskId();
         }
     }
 
     public boolean isActive() {
 
-        return bukkitTask != null;
+        return taskId != null;
     }
 
     // *** IF IT IS NOT MULTIPLE RUN, YOU NEED TO SET DONE IN RUN() METHOD ***
     public void setOneTimeDone() {
 
-        bukkitTask = null;
+        taskId = null;
     }
 
     public void stopNextRun() {
 
-        if (bukkitTask != null) {
+        if (taskId != null) {
 
-            bukkitTask.cancel();
-            bukkitTask = null;
+            Bukkit.getServer().getScheduler().cancelTask(taskId);
+            taskId = null;
         }
     }
 
