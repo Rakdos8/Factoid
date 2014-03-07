@@ -25,5 +25,9 @@ public class CommandOwner extends CommandExec {
         land.setOwner(pc);
         entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.OWNER.ISDONE", pc.getPrint(), land.getName()));
         Factoid.getLog().write("The land " + land.getName() + "is set to owner: " + pc.getPrint());
+
+        // Cancel the selection
+        new CommandCancel(entity.playerConf, true).commandExecute();
+
     }
 }

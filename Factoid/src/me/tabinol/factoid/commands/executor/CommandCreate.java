@@ -3,6 +3,7 @@ package me.tabinol.factoid.commands.executor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.commands.ArgList;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.config.BannedWords;
 import me.tabinol.factoid.exceptions.FactoidLandException;
@@ -78,6 +79,10 @@ public class CommandCreate extends CommandExec {
 
         entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.DONE"));
         Factoid.getLog().write(entity.playerName + " have create a land named " + land.getName() + " at position " + land.getAreas().toString());
-        new CommandCancel(entity.player, true).commandExecute();
+        
+        // Cancel et select the land
+        new CommandCancel(entity.playerConf, true).commandExecute();
+        new CommandSelect(entity.player, new ArgList(new String[] {land.getName()}, 
+                entity.player), null).commandExecute();
     }
 }

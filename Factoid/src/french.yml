@@ -10,7 +10,7 @@ HELP:
     1: "Tapez \"/factoid help\" <commande> pour l'aide sur la commande."
     2: "-General commands-"
     3: "/factoid select : Sélectionner un terrain."
-    4: "/factoid here : Information sur le terrain."
+    4: "/factoid info : Information sur le terrain."
     5: "/factoid adminmod : Activer/Désactiver le mode admin."
     6: "/factoid reload : Recharger le plugin."
     7: "/factoid approve : Approuver ou non une action."
@@ -21,19 +21,23 @@ HELP:
     12: "/factoid create : Créer un terrain."
     13: "/factoid expand : Étendre un terrain."
     14: "/factoid flag : Drapeaux des terrains."
-    15: "/factoid owner : Le propriétaire du terrain."
-    16: "/factoid page : Voir la page du résultat d'une commande."
-    17: "/factoid permission : Permissions du terrain."
-    18: "/factoid priority : Priorité du terrain."
-    19: "/factoid rename : Renommer un terrain."
-    20: "/factoid resident : Résidents du terrain."
+    15: "/factoid kick : (*) Jeter un joueur hors du terrain."
+    16: "/factoid notify : (*) Activer/Désactiver la notification de terrain."
+    17: "/factoid owner : Le propriétaire du terrain."
+    18: "/factoid page : Voir la page du résultat d'une commande."
+    19: "/factoid permission : Permissions du terrain."
+    20: "/factoid priority : Priorité du terrain."
+    21: "/factoid rename : Renommer un terrain."
+    22: "/factoid resident : Résidents du terrain."
+    23: "/factoid who : (*) Lister les joueurs sur un terrain."
+    24: "(*) Si un terrain n'est pas sélectionné, le nom du celui-ci peut être le dernier argument."
   SELECT:
     1: "/factoid select <here/nom du terrain> : Sélectionner un terrain pour une modification."
     2: "/factoid select : Démarrer la sélection visuelle."
     3: "/factoid select done : Conclure une sélection visuelle."
     4: "/factoid select worldedit : Prendre une sélection WorldEdit."
-  HERE:
-    1: "/factoid here : Affiche les informations générales du terrain."
+  INFO:
+    1: "/factoid info [terrain] : Affiche les informations générales du terrain."
   ADMINMOD:
     1: "/factoid adminmod : Activer ou désactiver le mode admin."
   RELOAD:
@@ -64,6 +68,10 @@ HELP:
     1: "/factoid flag list : Afficher les drapeaux."
     2: "/factoid flag set <drapeau> <drapeau> : Ajoute un drapeau."
     3: "/factoid flag unset <drapeau> : Enlève un drapeau."
+  KICK:
+    1: "/factoid kick <joueur> [terrain] : Jeter un joueur hors du terrain."
+  NOTIFY:
+    1: "/factoid notify [terrain] : Activer/Désactiver la notification de terrain."
   OWNER:
     1: "/factoid owner <contenant joueur> : Change le propriétaire du terrain."
   PAGE:
@@ -80,6 +88,8 @@ HELP:
     1: "/factoid resident list : Affiche les résidents."
     2: "/factoid area add <contenant joueur> : Ajoute un résident."
     3: "/factoid area remove <contenant joueur> : Enlève un résident."
+  WHO:
+    1: "/factoid who [terrain] : Lister les joueurs sur un terrain."
 SCOREBOARD:
   LANDINFO: "Liste des joueurs"
 GENERAL:
@@ -222,7 +232,7 @@ COMMAND:
     NOTCHILD: "Vous ne pouvez pas changer la priorité sur un terrain enfant."
     INVALID: "La priorité doit être un nombre de % à %."
     DONE: "Vous avez ajusté la priorité de '%' à %."
-  CURRENT:
+  INFO:
     LAND:
       LISTSTART: "-Information du terrain '%'-"
       NAME: "Le terrain sélectionné est: % "
@@ -233,6 +243,7 @@ COMMAND:
       MAINPERMISSION: "Vos principales permissions: %"
       AREA: "-Étendue(s)- pour '%'"
     NOLAND: "Il n'y a pas de terrain ici."
+    NOTEXIST: "Ce terrain n'existe pas."
   ADMINMOD:
     JOIN: "Vous êtes maintenant en Mode Admin."
     QUIT: "Vous quittez le Mode Admin."
@@ -244,6 +255,14 @@ COMMAND:
   RELOAD:
     START: "Le rechargement est commencé."
     COMPLETE: "Le rechargement est complété."
+  NOTIFY:
+    JOIN: "La notification est activée pour le terrain '%'"
+    QUIT: "La notification est désactivée pour le terrain '%'"
+  WHO:
+    LISTSTART: "-Joueur(s) sur le terrain '%'-"
+    LISTNULL: "Pas de joueur sur le terrain '%'."
+  KICK:
+    PLAYERNULL: "Le joueur n'est pas valide."
 ACTION:
   BANNED: "Vous êtes banni du terrain %!"
   NOENTRY: "Vous ne pouvez pas entrez sur le terrain %!"

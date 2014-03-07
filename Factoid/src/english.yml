@@ -10,7 +10,7 @@ HELP:
     1: "Type \"/factoid help\" <command> for specific command help."
     2: "-General commands-"
     3: "/factoid select : Select a land."
-    4: "/factoid here : Land information."
+    4: "/factoid info : Land information."
     5: "/factoid adminmod : Set/Unset admin mod."
     6: "/factoid reload : Reload the plugin."
     7: "/factoid approve : Approve or not a change."
@@ -21,19 +21,23 @@ HELP:
     12: "/factoid create : Create a land."
     13: "/factoid expand : Expand the land."
     14: "/factoid flag : Flags of the land."
-    15: "/factoid owner : Owner of the land."
-    16: "/factoid page : View a command result page."
-    17: "/factoid permission : Permissions of the land."
-    18: "/factoid priority : Priority of the land."
-    19: "/factoid rename : Rename a land."
-    20: "/factoid resident : Resident of the land."
+    15: "/factoid kick : (*) Kick a player from a land."
+    16: "/factoid notify : (*) Set/Unset land notification."
+    17: "/factoid owner : Owner of the land."
+    18: "/factoid page : View a command result page."
+    19: "/factoid permission : Permissions of the land."
+    20: "/factoid priority : Priority of the land."
+    21: "/factoid rename : Rename a land."
+    22: "/factoid resident : Resident of the land."
+    23: "/factoid who : (*) Show players on a land."
+    24: "(*) If the land is not selected, the name can be the last parameter."
   SELECT:
     1: "/factoid select <here/land name> : Select a land for modification."
     2: "/factoid select : Start the visal selection."
     3: "/factoid select done : Set a visual selection done."
     4: "/factoid select worldedit : Select the WorldEdit selection."
-  HERE:
-    1: "/factoid here : Show global informations of the curent land."
+  INFO:
+    1: "/factoid INFO [land] : Show global informations of the curent land."
   ADMINMOD:
     1: "/factoid adminmod : Activate or disactivate admin mod."
   RELOAD:
@@ -64,6 +68,10 @@ HELP:
     1: "/factoid flag list : List flags."
     2: "/factoid flag set <flag> <value> : Add a flag."
     3: "/factoid flag unset <flag> : Remove a flag."
+  KICK:
+    15: "/factoid kick [player] <land> : Kick a player from a land."
+  NOTIFY:
+    16: "/factoid notify <land> : Set/Unset land notification."
   OWNER:
     1: "/factoid owner <player container> : Change the owner of the land."
   PAGE:
@@ -80,6 +88,9 @@ HELP:
     1: "/factoid resident list : List residents."
     2: "/factoid area add <player container> : Add a resident."
     3: "/factoid area remove <player container> : Remove a resident."
+  WHO:
+    1: "/factoid who [land] : Show players on a land."
+
 SCOREBOARD:
   LANDINFO: "Players List"
 GENERAL:
@@ -222,7 +233,7 @@ COMMAND:
     NOTCHILD: "You can't change a priority on a child land."
     INVALID: "The priority must be a number from % to %."
     DONE: "You have set the priority of '%' to %."
-  CURRENT:
+  INFO:
     LAND:
       LISTSTART: "-Land info for '%'-"
       NAME: "The Land selected is: % "
@@ -233,6 +244,7 @@ COMMAND:
       MAINPERMISSION: "Your main permissions are: %"
       AREA: "-Area(s)- for '%'"
     NOLAND: "There's no Land here."
+    NOTEXIST: "This land doesn't exist."
   ADMINMOD:
     JOIN: "you are now in AdminMod."
     QUIT: "you quit AdminMod."
@@ -244,6 +256,14 @@ COMMAND:
   RELOAD:
     START: "The reload is started."
     COMPLETE: "The reload is complete."
+  NOTIFY:
+    JOIN: "The notification is enabled on land '%'"
+    QUIT: "The notification is disabled on land '%'"
+  WHO:
+    LISTSTART: "-Player(s) on the land '%'-"
+    LISTNULL: "No player on the land '%'."
+  KICK:
+    PLAYERNULL: "The player is not valid."
 ACTION:
   BANNED: "You are banned from the land %!"
   NOENTRY: "You can not enter in the land %!"

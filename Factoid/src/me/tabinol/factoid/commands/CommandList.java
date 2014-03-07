@@ -15,19 +15,23 @@ public enum CommandList {
     REMOVE,
     CONFIRM,
     CANCEL,
-    HERE,
+    INFO,
     ADMINMOD,
     PAGE,
     DEFAULT,
     PRIORITY,
     APPROVE,
     RENAME,
-    HELP;
+    HELP,
+    KICK,
+    WHO,
+    NOTIFY;
 
     // If a command has a second name
     public enum SecondName {
 
-        CURRENT(HERE);
+        CURRENT(INFO),
+        HERE(INFO);
 
         public final CommandList mainCommand;
 

@@ -14,7 +14,7 @@ import org.bukkit.ChatColor;
 public abstract class CommandExec implements CommandInterface {
 
     protected final CommandEntities entity;
-    protected final Land land;
+    protected Land land;
     private boolean isExecutable = true;
     public boolean resetSelectCancel = false; // If reset select cancel is done (1 time only)
 
@@ -63,23 +63,25 @@ public abstract class CommandExec implements CommandInterface {
 
         // "If" is not in checkSelection to save CPU
         if (mustBeExpandMode != null) {
-            checkSelection(entity.playerConf.getExpendingLand() != null, mustBeExpandMode, "GENERAL.QUIT.EXPANDMODE", null);
+            checkSelection(entity.playerConf.getExpendingLand() != null, mustBeExpandMode, "GENERAL.QUIT.EXPANDMODE", null, true);
         }
 
         if (mustBeExpandMode != null) {
-            checkSelection(entity.playerConf.getSetFlagUI() != null, mustBeFlagMode, "GENERAL.QUIT.FLAGMODE", null);
+            checkSelection(entity.playerConf.getSetFlagUI() != null, mustBeFlagMode, "GENERAL.QUIT.FLAGMODE", null, true);
         }
         if (mustBeSelectMode != null) {
-            checkSelection(entity.playerConf.getLandSelected() != null, mustBeSelectMode, null, "COMMAND.SELECT.JOIN.SELECTMODE");
+            // Pasted to variable land, can take direcly
+            checkSelection(land != null, mustBeSelectMode, null, "GENERAL.JOIN.SELECTMODE",
+                    entity != null && entity.playerConf.getLandSelected() != null);
         }
         if (mustBeAreaSelected != null) {
-            checkSelection(entity.playerConf.getAreaSelection() != null, mustBeAreaSelected, null, "COMMAND.GENERAL.SELECTAREA");
+            checkSelection(entity.playerConf.getAreaSelection() != null, mustBeAreaSelected, null, "GENERAL.JOIN.SELECTAREA", true);
         }
     }
 
     // Check selection for per type
-    private void checkSelection(boolean result, boolean neededResult, String messageTrue, String messageFalse)
-            throws FactoidCommandException {
+    private void checkSelection(boolean result, boolean neededResult, String messageTrue, String messageFalse,
+            boolean startSelectCancel) throws FactoidCommandException {
 
         if (result != neededResult) {
             if (result == true) {
@@ -88,8 +90,8 @@ public abstract class CommandExec implements CommandInterface {
                 throw new FactoidCommandException("Player Select", entity.player, messageFalse);
             }
         } else {
-            if(!resetSelectCancel && result == true) {
-                
+            if (startSelectCancel && !resetSelectCancel && result == true) {
+
                 // Reset autocancel if there is a command executed that need it
                 entity.playerConf.setAutoCancelSelect(true);
                 resetSelectCancel = true;
@@ -146,5 +148,13 @@ public abstract class CommandExec implements CommandInterface {
             }
         }
         return false;
+    }
+
+    // The name says what it does!!!
+    protected void getLandFromCommandIfNoLandSelected() {
+
+        if (land == null && !entity.argList.isLast()) {
+            land = Factoid.getLands().getLand(entity.argList.getNext());
+        }
     }
 }

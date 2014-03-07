@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.CommandExecutor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import me.tabinol.factoid.Factoid;
 import static me.tabinol.factoid.commands.CommandList.valueOf;
 
 public class OnCommand extends Thread implements CommandExecutor {
@@ -51,6 +52,11 @@ public class OnCommand extends Thread implements CommandExecutor {
 
             // take the name
             cl = getCommandValue(command, sender);
+            
+            // Remove page from memory if needed
+            if(cl != CommandList.PAGE) {
+                Factoid.getPlayerConf().get(sender).setChatPage(null);
+            }
 
             // Do de command (get the class name from the CommandName)
             Class commandClass = Class.forName("me.tabinol.factoid.commands.executor.Command"
@@ -98,7 +104,7 @@ public class OnCommand extends Thread implements CommandExecutor {
             // Check if the second name works
             CommandList.SecondName sn = null;
             try {
-                sn = CommandList.SecondName.valueOf(command.toLowerCase());
+                sn = CommandList.SecondName.valueOf(command.toUpperCase());
             } catch (IllegalArgumentException e2) {
 
                 // The command does not exist

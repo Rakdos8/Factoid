@@ -13,9 +13,6 @@ public class PlayerStaticConfig {
     public PlayerStaticConfig() {
 
         playerConfList = new HashMap<>();
-
-        // Add the consle in the list
-        add(Factoid.getThisPlugin().getServer().getConsoleSender());
     }
 
     // Methods for geting a player static config
@@ -23,7 +20,7 @@ public class PlayerStaticConfig {
 
         PlayerConfEntry entry = new PlayerConfEntry(sender);
         playerConfList.put(sender, entry);
-        
+
         return entry;
     }
 
@@ -31,12 +28,33 @@ public class PlayerStaticConfig {
 
         // First, remove AutoCancelSelect
         playerConfList.get(sender).setAutoCancelSelect(false);
-        
+
         playerConfList.remove(sender);
     }
 
     public PlayerConfEntry get(CommandSender sender) {
 
         return playerConfList.get(sender);
+    }
+
+    public void addAll() {
+
+        // Add the consle in the list
+        add(Factoid.getThisPlugin().getServer().getConsoleSender());
+
+        // Add online players
+        for (CommandSender sender : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
+            add(sender);
+        }
+    }
+
+    public void removeAll() {
+        for (PlayerConfEntry entry : playerConfList.values()) {
+
+            // First, remove AutoCancelSelect
+            entry.setAutoCancelSelect(false);
+
+        }
+        playerConfList.clear();
     }
 }

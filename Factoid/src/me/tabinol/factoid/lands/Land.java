@@ -429,11 +429,13 @@ public class Land extends DummyLand {
     public void addMoney(double money) {
 
         this.money += money;
+        doSave();
     }
 
     public void substractMoney(double money) {
 
         this.money -= money;
+        doSave();
     }
 
     public double getMoney() {
@@ -444,11 +446,15 @@ public class Land extends DummyLand {
     public void addPlayerNotify(String playerName) {
 
         playerNotify.add(playerName.toLowerCase());
+        doSave();
     }
 
     public boolean removePlayerNotify(String playerName) {
 
-        return playerNotify.remove(playerName.toLowerCase());
+        boolean ret = playerNotify.remove(playerName.toLowerCase());
+        doSave();
+        
+        return ret;
     }
 
     public boolean isPlayerNotify(String playerName) {
@@ -462,22 +468,55 @@ public class Land extends DummyLand {
     }
 
     public void addPlayerInLand(Player player) {
-        
+
         playersInLand.add(player);
     }
-    
+
     public boolean removePlayerInLand(Player player) {
-        
+
         return playersInLand.remove(player);
     }
-    
+
+    // No parent verify
     public boolean isPlayerInLand(Player player) {
-        
+
         return playersInLand.contains(player);
     }
-    
+
+    public boolean isPlayerinLandNoVanish(Player player, Player fromPlayer) {
+
+        if (playersInLand.contains(player)
+                && (fromPlayer.canSee(player) || Factoid.getPlayerConf().get(fromPlayer).isAdminMod())) {
+            return true;
+        }
+
+        // Check Parent
+        if(parent != null) {
+            return parent.isPlayerinLandNoVanish(player, fromPlayer);
+        }
+        
+        return false;
+    }
+
+    // No parent verify
     public Set<Player> getPlayersInLand() {
 
         return playersInLand;
+    }
+
+    public Set<Player> getPlayersInLandNoVanish(Player fromPlayer) {
+
+        Set<Player> playerList = new HashSet<>();
+
+        for (Player player : playersInLand) {
+            if (fromPlayer.canSee(player) || Factoid.getPlayerConf().get(fromPlayer).isAdminMod()) {
+                playerList.add(player);
+                if(parent != null) {
+                    playerList.addAll(parent.getPlayersInLandNoVanish(fromPlayer));
+                }
+            }
+        }
+
+        return playerList;
     }
 }

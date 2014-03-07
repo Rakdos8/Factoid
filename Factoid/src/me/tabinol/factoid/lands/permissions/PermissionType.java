@@ -51,7 +51,7 @@ public enum PermissionType {
     LAND_REMOVE(false),
     LAND_KICK(false),
     LAND_BAN(false),
-    LAND_WHOS(false),
+    LAND_WHO(false),
     LAND_NOTIFY(false),
     MONEY_DEPOSIT(false),
     MONEY_WITHDRAW(false);

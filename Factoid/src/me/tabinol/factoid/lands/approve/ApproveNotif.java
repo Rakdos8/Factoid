@@ -2,44 +2,40 @@ package me.tabinol.factoid.lands.approve;
 
 import java.util.logging.Level;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.utilities.FactoidRunnable;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class ApproveNotif extends BukkitRunnable {
+public class ApproveNotif extends FactoidRunnable {
 
     public static final Permission PERM_APPROVE = new Permission("factoid.collisionapprove");
 
     public ApproveNotif() {
         
-        runTaskLater();
+        super();
     }
-    
-    private void runTaskLater() {
-        
+
+    public void runApproveNotifLater() {
+
         long notifyTime = Factoid.getConf().getApproveNotifyTime();
-        
-        if(notifyTime == 0) {
-            this.runTaskLater(Factoid.getThisPlugin(), 24002);
-        } else {
-            this.runTaskLater(Factoid.getThisPlugin(), notifyTime);
+
+        // Start only if notification is activated in configuration
+        if (notifyTime != 0) {
+            this.runLater(notifyTime, true);
         }
-        
-    } 
-    
+
+    }
+
+    @Override
     public void run() {
 
         int lstCount;
 
-        if (Factoid.getConf().getApproveNotifyTime() != 0
-                && (lstCount = Factoid.getLands().getApproveList().getApproveList().size()) != 0) {
+        if ((lstCount = Factoid.getLands().getApproveList().getApproveList().size()) != 0) {
 
             // If there is some notification to done
             notifyListApprove(lstCount);
-
-            // Reschedule
-            runTaskLater();
         }
     }
 
@@ -52,7 +48,7 @@ public class ApproveNotif extends BukkitRunnable {
 
         notifyPlayer(Factoid.getLanguage().getMessage("COLLISION.SHOW.NOTIFY", lstCount + ""));
     }
-    
+
     // Notify with a message
     private void notifyPlayer(String message) {
 

@@ -6,7 +6,7 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ArgList;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.commands.executor.CommandCancel;
-import me.tabinol.factoid.commands.executor.CommandHere;
+import me.tabinol.factoid.commands.executor.CommandInfo;
 import me.tabinol.factoid.commands.executor.CommandSelect;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.config.players.PlayerConfEntry;
@@ -18,6 +18,7 @@ import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.PermissionType;
+import me.tabinol.factoid.lands.selection.LandSelection;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -98,11 +99,18 @@ public class PlayerListener implements Listener {
         }
     }
 
+    // Must be running after LandListener
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
 
         Player player = event.getPlayer();
 
+        // Remove player from the land
+        Land land = playerConf.get(player).getLastLand();
+        if(land != null) {
+            land.removePlayerInLand(player);
+        }
+        
         // Remove player from Static Config
         playerConf.remove(player);
     }
@@ -152,6 +160,7 @@ public class PlayerListener implements Listener {
             Material ml = event.getClickedBlock().getType();
             Player player = event.getPlayer();
             Action action = event.getAction();
+            PlayerConfEntry entry;
 
             Factoid.getLog().write("PlayerInteract player name: " + event.getPlayer().getName() + ", Action: " + event.getAction());
 
@@ -160,7 +169,7 @@ public class PlayerListener implements Listener {
                     && action == Action.LEFT_CLICK_BLOCK
                     && player.getItemInHand().getTypeId() == conf.getInfoItem()) {
                 try {
-                    new CommandHere(player, Factoid.getLands().getCuboidArea(event.getClickedBlock().getLocation())).commandExecute();
+                    new CommandInfo(player, Factoid.getLands().getCuboidArea(event.getClickedBlock().getLocation())).commandExecute();
                 } catch (FactoidCommandException ex) {
                     Logger.getLogger(PlayerListener.class.getName()).log(Level.SEVERE, "Error when trying to get area", ex);
                 }
@@ -189,11 +198,11 @@ public class PlayerListener implements Listener {
             } else if (player.getItemInHand() != null
                     && action == Action.RIGHT_CLICK_BLOCK
                     && player.getItemInHand().getTypeId() == conf.getSelectItem()
-                    && (playerConf.get(player).getAreaSelection() != null
-                    || playerConf.get(player).getLandSelected() != null)) {
+                    && ((entry = playerConf.get(player)).getAreaSelection() != null
+                    || entry.getLandSelected() != null)) {
 
                 try {
-                    new CommandCancel(player, false).commandExecute();
+                    new CommandCancel(entry, false).commandExecute();
                 } catch (FactoidCommandException ex) {
                     Logger.getLogger(PlayerListener.class.getName()).log(Level.SEVERE, null, ex);
                     try {

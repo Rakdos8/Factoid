@@ -45,6 +45,7 @@ public class Factoid extends JavaPlugin {
         version = this.getDescription().getVersion();
         conf = new Config();
         playerConf = new PlayerStaticConfig();
+        playerConf.addAll();
         log = new Log();
         dependPlugin = new DependPlugin();
         language = new Lang();
@@ -58,6 +59,7 @@ public class Factoid extends JavaPlugin {
         CommandListener = new OnCommand();
         Scoreboard = new ScoreBoard();
         approveNotif = new ApproveNotif();
+        approveNotif.runApproveNotifLater();
         getServer().getPluginManager().registerEvents(worldListener, this);
         getServer().getPluginManager().registerEvents(playerListener, this);
         getServer().getPluginManager().registerEvents(landListener, this);
@@ -74,13 +76,16 @@ public class Factoid extends JavaPlugin {
         factions = new Factions();
         lands = new Lands();
         storage.loadAll();
+        approveNotif.stopNextRun();
+        approveNotif.runApproveNotifLater();
     }
     
     @Override
     public void onDisable() {
         
-        approveNotif.cancel();
         log.write(Factoid.getLanguage().getMessage("DISABLE"));
+        approveNotif.cancel();
+        playerConf.removeAll();
         log.interrupt();
         language.interrupt();
     }

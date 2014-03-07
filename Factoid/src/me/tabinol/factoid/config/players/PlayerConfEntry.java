@@ -1,6 +1,6 @@
 package me.tabinol.factoid.config.players;
 
-    // Entries for each pla
+    // Entries for each player
 import java.util.List;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
@@ -187,14 +187,18 @@ public class PlayerConfEntry {
             return;
         }
 
-        if(cancelSelect == null) {
+        if(cancelSelect == null && value == true) {
             cancelSelect = new PlayerAutoCancelSelect(this);
+        }
+        
+        if(cancelSelect == null) {
+            return;
         }
 
         if (value == true) {
 
             // Schedule task
-            cancelSelect.runLater(timeTick);
+            cancelSelect.runLater(timeTick, false);
         } else {
             
             // Stop!

@@ -1,7 +1,6 @@
 package me.tabinol.factoid.listeners;
 
 import java.util.ArrayList;
-import java.util.Set;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.players.PlayerStaticConfig;
 import me.tabinol.factoid.event.PlayerContainerAddNoEnterEvent;
@@ -18,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -71,10 +71,19 @@ public class LandListener implements Listener {
 
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    // Must be running before PlayerListener
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
 
         Player player = event.getPlayer();
+
+        Land land = playerConf.get(player).getLastLand();
+
+        // Notify for quit
+        while (land != null) {
+            notifyPlayers(land, "ACTION.PLAYEREXIT", player);
+            land = land.getParent();
+        }
 
         if (playerHeal.contains(player)) {
             playerHeal.remove(player);
@@ -92,22 +101,22 @@ public class LandListener implements Listener {
 
         if (lastLand != null) {
 
-            // Message quit
-            if (!(land != null && lastLand != null && lastLand.isDescendants(land)) 
-                    && (flag = lastLand.getFlagNoInherit(FlagType.MESSAGE_QUIT)) != null
-                    && (value = flag.getValueString()) != null) {
-                player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + lastLand.getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
+            if (!(land != null && lastLand.isDescendants(land))) {
+
+                //Notify players for exit
+                notifyPlayers(lastLand, "ACTION.PLAYEREXIT", player);
+
+                // Message quit
+                if ((flag = lastLand.getFlagNoInherit(FlagType.MESSAGE_QUIT)) != null
+                        && (value = flag.getValueString()) != null) {
+                    player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + lastLand.getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
+                }
             }
 
-            //Notify players for exit
-            if (!playerConf.get(player).isAdminMod()) {
-                notifyPlayers(lastLand, "ACTION.PLAYEREXIT", player);
-            }
-            
             /*for(String playername : lastLand.getPlayersInLand()){
-                Factoid.getScoreboard().sendScoreboard(lastLand.getPlayersInLand(), Factoid.getThisPlugin().getServer().getPlayer(playername), lastLand.getName());
-            }
-            Factoid.getScoreboard().sendScoreboard(lastLand.getPlayersInLand(), player, lastLand.getName());*/
+             Factoid.getScoreboard().sendScoreboard(lastLand.getPlayersInLand(), Factoid.getThisPlugin().getServer().getPlayer(playername), lastLand.getName());
+             }
+             Factoid.getScoreboard().sendScoreboard(lastLand.getPlayersInLand(), player, lastLand.getName());*/
         }
         if (land != null) {
             dummyLand = land;
@@ -132,23 +141,28 @@ public class LandListener implements Listener {
                         return;
                     }
                 }
+            }
+
+            if (!(lastLand != null && land.isDescendants(lastLand))) {
 
                 //Notify players for Enter
-                notifyPlayers(land, "ACTION.PLAYERENTER", player);
+                Land landTest = land;
+                while (landTest != null && landTest != lastLand) {
+                    notifyPlayers(landTest, "ACTION.PLAYERENTER", player);
+                    landTest = landTest.getParent();
+                }
+                // Message join
+                if ((flag = land.getFlagNoInherit(FlagType.MESSAGE_JOIN)) != null
+                        && (value = flag.getValueString()) != null) {
+                    player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + land.getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
+                }
             }
 
-            // Message join
-            if (!(lastLand != null && lastLand != null && land.isDescendants(lastLand))
-                    && (flag = land.getFlagNoInherit(FlagType.MESSAGE_JOIN)) != null
-                    && (value = flag.getValueString()) != null) {
-                player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + land.getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
-            }
-            
+
             /*for(String playername:land.getPlayersInLand()){
-                Factoid.getScoreboard().sendScoreboard(land.getPlayersInLand(), Factoid.getThisPlugin().getServer().getPlayer(playername), land.getName());
-            }
-            Factoid.getScoreboard().sendScoreboard(land.getPlayersInLand(), player, land.getName());*/
-
+             Factoid.getScoreboard().sendScoreboard(land.getPlayersInLand(), Factoid.getThisPlugin().getServer().getPlayer(playername), land.getName());
+             }
+             Factoid.getScoreboard().sendScoreboard(land.getPlayersInLand(), player, land.getName());*/
         } else {
             dummyLand = Factoid.getLands().getOutsideArea(event.getToLoc());
             Factoid.getScoreboard().resetScoreboard(player);
@@ -189,13 +203,17 @@ public class LandListener implements Listener {
         }
     }
 
+    // Notify players for land Enter/Exit
     private void notifyPlayers(Land land, String message, Player playerIn) {
 
-        Set<String> playersNotify = land.getPlayersNotify();
+        Player player;
 
-        for (Player player : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
-            if (playersNotify.contains(player.getName().toLowerCase())) {
-                player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage(message, playerIn.getDisplayName(), land.getName()));
+        for (String playerName : land.getPlayersNotify()) {
+            if ((player = Factoid.getThisPlugin().getServer().getPlayer(playerName)) != null && player != playerIn
+                    // Only adminmod can see vanish
+                    && (player.canSee(playerIn) || playerConf.get(player).isAdminMod())) {
+                player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage(
+                        message, playerIn.getDisplayName(), land.getName() + ChatColor.GRAY));
             }
         }
     }

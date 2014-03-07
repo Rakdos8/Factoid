@@ -26,7 +26,7 @@ public class ChatPage {
         this.param = param;
     }
 
-    public final void getPage(int pageNumber) throws FactoidCommandException {
+    public void getPage(int pageNumber) throws FactoidCommandException {
 
         // Create page with Bukkit paginator
         ChatPaginator.ChatPage page = ChatPaginator.paginate(text, pageNumber, pageWidth, pageHeight);

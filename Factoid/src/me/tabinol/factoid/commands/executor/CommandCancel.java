@@ -22,14 +22,14 @@ public class CommandCancel extends CommandExec {
     }
 
     // Called from PlayerListener
-    public CommandCancel(Player player, boolean fromAutoCancel) throws FactoidCommandException {
+    public CommandCancel(PlayerConfEntry entry, boolean fromAutoCancel) throws FactoidCommandException {
 
         super(null, false, false);
-        this.player = player;
-        playerConf = Factoid.getPlayerConf().get(player);
+        this.player = entry.getPlayer();
+        playerConf = entry;
         this.fromAutoCancel = fromAutoCancel;
     }
-
+    
     @Override
     public void commandExecute() throws FactoidCommandException {
 
@@ -72,9 +72,11 @@ public class CommandCancel extends CommandExec {
             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CANCEL.SELECT"));
             playerConf.setLandSelected(null);
             playerConf.setLandSelectedUI(null);
+
+            // Cancel selection (it is the last think selected
+            playerConf.setAutoCancelSelect(false);
             
             if(!fromAutoCancel) {
-                playerConf.setAutoCancelSelect(false);
                 return;
             }
         }
