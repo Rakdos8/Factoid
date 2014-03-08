@@ -7,16 +7,14 @@ import java.io.OutputStream;
 import java.util.Map;
 import java.util.logging.Level;
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.exceptions.FactoidCommandException;
 import org.bukkit.configuration.ConfigurationSection;
-
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Lang extends Thread {
 
-    public static final int ACTUAL_VERSION = 5; // +1 if there is a new version of the .conf
+    public static final int ACTUAL_VERSION = Factoid.getMavenAppProperties().getPropertyInt("langVersion");
     private String lang = null;
     private File langFile;
     private final FileConfiguration langconfig;

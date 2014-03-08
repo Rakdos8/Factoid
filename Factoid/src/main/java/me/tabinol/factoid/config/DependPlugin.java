@@ -38,7 +38,7 @@ public class DependPlugin {
             Factoid.getThisPlugin().getLogger().log(Level.INFO, pluginName + " detected!");
         } else {
             Factoid.getLog().write(pluginName + " NOT detected!");
-            Factoid.getThisPlugin().getLogger().log(Level.INFO, pluginName + " NOT Detected!");
+            Factoid.getThisPlugin().getLogger().log(Level.INFO, pluginName + " IS NOT Detected!");
         }
 
         return plugin;

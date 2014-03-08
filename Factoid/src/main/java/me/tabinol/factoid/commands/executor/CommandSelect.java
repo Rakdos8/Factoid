@@ -25,7 +25,7 @@ public class CommandSelect extends CommandExec {
 
     public CommandSelect(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity, false, true);
+        super(entity, false, false);
         player = entity.player;
         location = null;
         playerConf = entity.playerConf;

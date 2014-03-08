@@ -23,7 +23,7 @@ import me.tabinol.factoid.utilities.StringChanges;
 public class StorageFlat extends Storage implements StorageInt {
 
     public static final String EXT_CONF = ".conf";
-    public static final int ACTUAL_VERSION = 1; // +1 if there is a new version of the .conf
+    public static final int ACTUAL_VERSION = Factoid.getMavenAppProperties().getPropertyInt("landVersion");
     private String factionsDir;
     private String landsDir;
 

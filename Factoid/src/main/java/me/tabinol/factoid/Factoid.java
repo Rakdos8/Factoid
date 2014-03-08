@@ -17,6 +17,7 @@ import me.tabinol.factoid.listeners.WorldListener;
 import me.tabinol.factoid.storage.Storage;
 import me.tabinol.factoid.storage.StorageFlat;
 import me.tabinol.factoid.scoreboard.ScoreBoard;
+import me.tabinol.factoid.utilities.MavenAppProperties;
 
 public class Factoid extends JavaPlugin {
 
@@ -24,6 +25,7 @@ public class Factoid extends JavaPlugin {
     private PlayerListener playerListener;
     private WorldListener worldListener;
     private LandListener landListener;
+    private static MavenAppProperties mavenAppProperties;
     private static ApproveNotif approveNotif;
     private static Storage storage;
     private static Log log;
@@ -40,6 +42,8 @@ public class Factoid extends JavaPlugin {
     @Override
     public void onEnable() {
         
+        mavenAppProperties = new MavenAppProperties();
+        mavenAppProperties.loadProperties();
         // Static access to «this» Factoid
         thisPlugin = this;
         version = this.getDescription().getVersion();
@@ -148,6 +152,11 @@ public class Factoid extends JavaPlugin {
     public static ApproveNotif getApproveNotif() {
         
         return approveNotif;
+    }
+    
+    public static MavenAppProperties getMavenAppProperties() {
+        
+        return mavenAppProperties;
     }
     
 }

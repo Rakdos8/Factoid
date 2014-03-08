@@ -1,5 +1,5 @@
 # Do not change the version number if you don't know what you are doing!
-VERSION: 5
+VERSION: ${langVersion}
 ENABLE: "Factoid is Enabled."
 DISABLE: "Factoid is Disabled."
 CONSOLE: "Hey Console! Wait...what?"
