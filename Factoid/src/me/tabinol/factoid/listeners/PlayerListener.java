@@ -18,7 +18,6 @@ import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.PermissionType;
-import me.tabinol.factoid.lands.selection.LandSelection;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;

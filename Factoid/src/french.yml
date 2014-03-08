@@ -262,7 +262,10 @@ COMMAND:
     LISTSTART: "-Joueur(s) sur le terrain '%'-"
     LISTNULL: "Pas de joueur sur le terrain '%'."
   KICK:
-    PLAYERNULL: "Le joueur n'est pas valide."
+    PLAYERNULL: "Ce joueur n'est pas valide."
+    NOTINLAND: "Ce joueur n'est pas sur le terrain."
+    DONE: "% a été éjecté du terrain '%'."
+    KICKED: "Vous avez été éjecté du terrain '%'."
 ACTION:
   BANNED: "Vous êtes banni du terrain %!"
   NOENTRY: "Vous ne pouvez pas entrez sur le terrain %!"

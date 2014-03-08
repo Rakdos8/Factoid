@@ -44,10 +44,10 @@ public class Factoid extends JavaPlugin {
         thisPlugin = this;
         version = this.getDescription().getVersion();
         conf = new Config();
-        playerConf = new PlayerStaticConfig();
-        playerConf.addAll();
         log = new Log();
         dependPlugin = new DependPlugin();
+        playerConf = new PlayerStaticConfig();
+        playerConf.addAll();
         language = new Lang();
         storage = new StorageFlat();
         factions = new Factions();
@@ -84,7 +84,7 @@ public class Factoid extends JavaPlugin {
     public void onDisable() {
         
         log.write(Factoid.getLanguage().getMessage("DISABLE"));
-        approveNotif.cancel();
+        approveNotif.stopNextRun();
         playerConf.removeAll();
         log.interrupt();
         language.interrupt();

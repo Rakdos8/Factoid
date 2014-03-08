@@ -263,7 +263,10 @@ COMMAND:
     LISTSTART: "-Player(s) on the land '%'-"
     LISTNULL: "No player on the land '%'."
   KICK:
-    PLAYERNULL: "The player is not valid."
+    PLAYERNULL: "This player is not valid."
+    NOTINLAND: "This player is not on the land."
+    DONE: "% is now kicked of land '%'."
+    KICKED: "You have been kicked of land '%'."
 ACTION:
   BANNED: "You are banned from the land %!"
   NOENTRY: "You can not enter in the land %!"

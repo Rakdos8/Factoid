@@ -17,7 +17,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -72,7 +71,7 @@ public class LandListener implements Listener {
     }
 
     // Must be running before PlayerListener
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerQuit(PlayerQuitEvent event) {
 
         Player player = event.getPlayer();
@@ -211,7 +210,7 @@ public class LandListener implements Listener {
         for (String playerName : land.getPlayersNotify()) {
             if ((player = Factoid.getThisPlugin().getServer().getPlayer(playerName)) != null && player != playerIn
                     // Only adminmod can see vanish
-                    && (player.canSee(playerIn) || playerConf.get(player).isAdminMod())) {
+                    && (!playerConf.isVanished(playerIn) || playerConf.get(player).isAdminMod())) {
                 player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage(
                         message, playerIn.getDisplayName(), land.getName() + ChatColor.GRAY));
             }

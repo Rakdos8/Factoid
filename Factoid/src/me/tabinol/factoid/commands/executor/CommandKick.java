@@ -51,7 +51,8 @@ public class CommandKick extends CommandExec {
         Player playerKick = Factoid.getThisPlugin().getServer().getPlayer(playerKickName);
 
         // Player not in land?
-        if (playerKick == null || land.isPlayerinLandNoVanish(playerKick, player)) {
+        if (playerKick == null || !land.isPlayerinLandNoVanish(playerKick, player)
+                || Factoid.getPlayerConf().get(playerKick).isAdminMod()) {
             throw new FactoidCommandException("Kicked", player, "COMMAND.KICK.NOTINLAND");
         }
         

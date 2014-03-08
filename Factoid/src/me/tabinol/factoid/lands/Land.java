@@ -453,7 +453,7 @@ public class Land extends DummyLand {
 
         boolean ret = playerNotify.remove(playerName.toLowerCase());
         doSave();
-        
+
         return ret;
     }
 
@@ -486,15 +486,17 @@ public class Land extends DummyLand {
     public boolean isPlayerinLandNoVanish(Player player, Player fromPlayer) {
 
         if (playersInLand.contains(player)
-                && (fromPlayer.canSee(player) || Factoid.getPlayerConf().get(fromPlayer).isAdminMod())) {
+                && (!Factoid.getPlayerConf().isVanished(player) || Factoid.getPlayerConf().get(fromPlayer).isAdminMod())) {
             return true;
         }
 
-        // Check Parent
-        if(parent != null) {
-            return parent.isPlayerinLandNoVanish(player, fromPlayer);
+        // Check Chidren
+        for (Land landChild : children.values()) {
+            if (landChild.isPlayerinLandNoVanish(player, fromPlayer)) {
+                return true;
+            }
         }
-        
+
         return false;
     }
 
@@ -509,10 +511,10 @@ public class Land extends DummyLand {
         Set<Player> playerList = new HashSet<>();
 
         for (Player player : playersInLand) {
-            if (fromPlayer.canSee(player) || Factoid.getPlayerConf().get(fromPlayer).isAdminMod()) {
+            if (!Factoid.getPlayerConf().isVanished(player) || Factoid.getPlayerConf().get(fromPlayer).isAdminMod()) {
                 playerList.add(player);
-                if(parent != null) {
-                    playerList.addAll(parent.getPlayersInLandNoVanish(fromPlayer));
+                for (Land landChild : children.values()) {
+                    playerList.addAll(landChild.getPlayersInLandNoVanish(fromPlayer));
                 }
             }
         }

@@ -3,6 +3,7 @@ package me.tabinol.factoid.utilities;
 import me.tabinol.factoid.Factoid;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 /**
  * Schedule task in Factoid
@@ -11,7 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 public abstract class FactoidRunnable extends BukkitRunnable {
 
-    private Integer taskId = null;
+    private BukkitTask taskId = null;
 
     public FactoidRunnable() {
 
@@ -24,9 +25,10 @@ public abstract class FactoidRunnable extends BukkitRunnable {
         stopNextRun();
 
         if (multiple) {
-            taskId = this.runTaskTimer(Factoid.getThisPlugin(), tick, tick).getTaskId();
+            taskId = Bukkit.getServer().getScheduler().runTaskLater(Factoid.getThisPlugin(), this, tick);
+              
         } else {
-            taskId = this.runTaskLater(Factoid.getThisPlugin(), tick).getTaskId();
+            taskId = Bukkit.getServer().getScheduler().runTaskLater(Factoid.getThisPlugin(), this, tick);
         }
     }
 
@@ -45,7 +47,7 @@ public abstract class FactoidRunnable extends BukkitRunnable {
 
         if (taskId != null) {
 
-            Bukkit.getServer().getScheduler().cancelTask(taskId);
+            taskId.cancel();
             taskId = null;
         }
     }

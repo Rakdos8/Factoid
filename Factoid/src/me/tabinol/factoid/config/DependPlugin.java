@@ -12,6 +12,8 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 public class DependPlugin {
 
     private Plugin worldEdit = null;
+    private Plugin essentials = null;
+    private Plugin vanishNoPacket = null;
     private Permission permission = null;
     private Economy economy = null;
     private Chat chat = null;
@@ -19,6 +21,8 @@ public class DependPlugin {
     public DependPlugin() {
 
         worldEdit = getPlugin("WorldEdit");
+        essentials = getPlugin("Essentials");
+        vanishNoPacket = getPlugin("VanishNoPacket");
         setupPermissions();
         setupChat();
         setupEconomy();
@@ -45,6 +49,16 @@ public class DependPlugin {
         return worldEdit;
     }
 
+    public Plugin getEssentials() {
+        
+        return essentials;
+    }
+    
+    public Plugin getVanishNoPacket() {
+        
+        return vanishNoPacket;
+    }
+    
     private boolean setupPermissions() {
         RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
         if (permissionProvider != null) {

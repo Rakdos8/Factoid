@@ -1,18 +1,37 @@
 package me.tabinol.factoid.config.players;
 
+import me.tabinol.factoid.config.vanish.VanishEssentials;
 import java.util.HashMap;
 import java.util.Map;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.config.vanish.DummyVanish;
+import me.tabinol.factoid.config.vanish.Vanish;
+import me.tabinol.factoid.config.vanish.VanishNoPacket;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 // Contain lists for player (selection, ect, ...)
 public class PlayerStaticConfig {
 
     private final Map<CommandSender, PlayerConfEntry> playerConfList;
+    private final Vanish vanish;
 
     public PlayerStaticConfig() {
 
         playerConfList = new HashMap<>();
+
+        // Ceck for VanishNoPacket plugin
+        if (Factoid.getDependPlugin().getVanishNoPacket() != null) {
+            vanish = new VanishNoPacket();
+
+            // Check for Essentials plugin
+        } else if (Factoid.getDependPlugin().getEssentials() != null) {
+            vanish = new VanishEssentials();
+
+            // Dummy Vanish if no plugins
+        } else {
+            vanish = new DummyVanish();
+        }
     }
 
     // Methods for geting a player static config
@@ -49,6 +68,7 @@ public class PlayerStaticConfig {
     }
 
     public void removeAll() {
+
         for (PlayerConfEntry entry : playerConfList.values()) {
 
             // First, remove AutoCancelSelect
@@ -56,5 +76,10 @@ public class PlayerStaticConfig {
 
         }
         playerConfList.clear();
+    }
+    
+    public boolean isVanished(Player player) {
+        
+        return vanish.isVanished(player);
     }
 }
