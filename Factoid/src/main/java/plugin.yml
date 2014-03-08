@@ -4,7 +4,7 @@ version: 0.1
 description: Factoid
 author: [Kaz00,Tabinol]
 depend: [Vault]
-softdepend: [WorldEdit,Essentials]
+softdepend: [WorldEdit,Essentials,VanishNoPacket]
 commands:
    factoid:
       description: Factoid Command
