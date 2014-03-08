@@ -4,7 +4,7 @@
 
     <groupId>me.tabinol.factoid</groupId>
     <artifactId>Factoid</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1</version>
     <packaging>jar</packaging>
 
     <name>Factoid</name>
@@ -88,22 +88,24 @@
                 </exclusion>
             </exclusions>
         </dependency>
-		<dependency>
-			<groupId>com.earth2me.essemtials</groupId>
-			<artifactId>Essentials</artifactId>
-			<systemPath>${project.basedir}/lib/Essentials.jar</systemPath>
-			<version>2.12.2</version>
-			<scope>system</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.kitteh.vanish</groupId>
-			<artifactId>VanishNoPacket</artifactId>
-			<systemPath>${project.basedir}/lib/VanishNoPacket.jar</systemPath>
-			<version>3.18.9</version>
-			<scope>system</scope>
-			<optional>true</optional>
-		</dependency>
+        <dependency>
+            <groupId>com.earth2me.essemtials</groupId>
+            <artifactId>Essentials</artifactId>
+            <systemPath>${project.basedir}/lib/Essentials.jar</systemPath>
+            <version>2.12.2</version>
+            <scope>system</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.kitteh.vanish</groupId>
+            <artifactId>VanishNoPacket</artifactId>
+            <systemPath>${project.basedir}/lib/VanishNoPacket.jar</systemPath>
+            <version>3.18.9</version>
+            <scope>system</scope>
+            <optional>true</optional>
+        </dependency>
+        
+        <!-- For Maven -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -112,6 +114,8 @@
         </dependency>
     </dependencies>
     <build>
+        <!-- <finalName>${project.artifactId}-${project.version}</finalName> -->
+        <finalName>${project.artifactId}-${project.version}-r${prefix.revision}</finalName>
         <resources>
             <resource>
                 <targetPath>.</targetPath>
@@ -122,5 +126,26 @@
                 </includes>
             </resource>
         </resources>
+        <plugins>
+            <plugin>
+                <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
+                <artifactId>svn-revision-number-maven-plugin</artifactId>
+                <version>1.13</version> <!-- please use the latest version -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <entries>
+                        <entry>
+                            <prefix>prefix</prefix>
+                        </entry>
+                    </entries>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

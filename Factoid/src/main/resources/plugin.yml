@@ -1,6 +1,6 @@
 name: Factoid
 main: me.tabinol.factoid.Factoid
-version: 0.1
+version: ${project.version}-r${prefix.revision}
 description: Factoid
 author: [Kaz00,Tabinol]
 depend: [Vault]
