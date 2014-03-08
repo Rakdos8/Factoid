@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.commands.OnCommand;
+import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.lands.Areas.CuboidArea;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.Lands;
@@ -38,7 +39,7 @@ public class Collisions {
         }
     }
 
-    private final ArrayList<CollisionsEntry> coll;
+    private final List<CollisionsEntry> coll;
     private final Lands lands;
     private final String landName;
     private final Land land;
@@ -51,7 +52,7 @@ public class Collisions {
     public Collisions(String landName, Land land, LandAction action, int removedAreaId, CuboidArea newArea, Land parent,
             boolean checkApproveList) {
 
-        coll = new ArrayList<>();
+        coll = new ArrayList<CollisionsEntry>();
         lands = Factoid.getLands();
         this.landName = landName;
         this.land = land;
@@ -136,7 +137,7 @@ public class Collisions {
 
     private void checkIfChildrenOutside() {
 
-        HashSet<CuboidArea> areaList = new HashSet<>();
+        HashSet<CuboidArea> areaList = new HashSet<CuboidArea>();
 
         // If this is a Land remove, the list must be empty
         if (action != LandAction.LAND_REMOVE) {
@@ -174,13 +175,13 @@ public class Collisions {
     private boolean checkIfAreaOutsideParent(CuboidArea childArea, Collection parentAreas) {
 
         // area = this new area, areas2 = areas of parents
-        Collection<CuboidArea> childAreas = new HashSet<>();
+        Collection<CuboidArea> childAreas = new HashSet<CuboidArea>();
         childAreas.add(childArea);
         Iterator<CuboidArea> iterator = parentAreas.iterator();
 
         while (iterator.hasNext()) {
             CuboidArea parentArea = iterator.next();
-            Collection<CuboidArea> childAreasNew = new HashSet<>();
+            Collection<CuboidArea> childAreasNew = new HashSet<CuboidArea>();
             for (CuboidArea areaC : childAreas) {
                 childAreasNew.addAll(parentArea.getOutside(areaC));
             }
@@ -201,7 +202,7 @@ public class Collisions {
         StringBuilder str = new StringBuilder();
 
         for (CollisionsEntry ce : coll) {
-            str.append(ce.getPrint()).append(Factoid.getConf().NEWLINE);
+            str.append(ce.getPrint()).append(Config.NEWLINE);
         }
 
         return str.toString();

@@ -11,7 +11,7 @@ public class StringChanges {
             return null;
         }
 
-        ArrayList<String> listLower = new ArrayList<>();
+        ArrayList<String> listLower = new ArrayList<String>();
 
         for (String str : list) {
             listLower.add(str.toLowerCase());
@@ -45,7 +45,7 @@ public class StringChanges {
     public static String[] splitKeepQuote(String str, String split) {
 
         String[] strs = str.split(split);
-        ArrayList<String> strl = new ArrayList<>();
+        ArrayList<String> strl = new ArrayList<String>();
         StringBuffer sb = null;
 
         for (String strv : strs) {
@@ -98,7 +98,7 @@ public class StringChanges {
     public static int toInteger(String n){
         try{
            return Integer.parseInt(n);
-        }catch(Exception e){
+        }catch(NumberFormatException e){
             return 0;
         }
     }
@@ -116,7 +116,7 @@ public class StringChanges {
     public static double toDouble(String n){
         try{
            return Double.parseDouble(n);
-        }catch(Exception e){
+        }catch(NumberFormatException e){
             return 0;
         }
     }
@@ -134,7 +134,7 @@ public class StringChanges {
     public static long toLong(String n){
         try{
            return Long.parseLong(n);
-        }catch(Exception e){
+        }catch(NumberFormatException e){
             return 0;
         }
     }

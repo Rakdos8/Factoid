@@ -28,7 +28,7 @@ public class ApproveList {
 
         approveFile = new File(Factoid.getThisPlugin().getDataFolder() + "/approvelist.yml");
         approveConfig = new YamlConfiguration();
-        landNames = new TreeSet<>();
+        landNames = new TreeSet<String>();
         loadFile();
     }
 
@@ -105,7 +105,9 @@ public class ApproveList {
         }
         try {
             approveConfig.load(approveFile);
-        } catch (IOException | InvalidConfigurationException ex) {
+        } catch (IOException ex) {
+            Logger.getLogger(ApproveList.class.getName()).log(Level.SEVERE, "On approve file load", ex);
+        } catch (InvalidConfigurationException ex) {
             Logger.getLogger(ApproveList.class.getName()).log(Level.SEVERE, "On approve file load", ex);
         }
 

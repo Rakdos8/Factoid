@@ -64,7 +64,7 @@ public class LandListener implements Listener {
 
         super();
         playerConf = Factoid.getPlayerConf();
-        playerHeal = new ArrayList<>();
+        playerHeal = new ArrayList<Player>();
         landHeal = new LandHeal();
         landHeal.runTaskTimer(Factoid.getThisPlugin(), 20, 20);
 

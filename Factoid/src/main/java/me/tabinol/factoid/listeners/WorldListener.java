@@ -1,9 +1,7 @@
 package me.tabinol.factoid.listeners;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.lands.DummyLand;
@@ -147,7 +145,7 @@ public class WorldListener implements Listener {
             float yield, float power, boolean setFire, boolean doExplosion) {
 
         LandFlag flag;
-        ArrayList<Block> listToRem = new ArrayList<>();
+        ArrayList<Block> listToRem = new ArrayList<Block>();
 
         Factoid.getLog().write("Explosion : " + ", Yield: " + yield + ", power: " + power);
 

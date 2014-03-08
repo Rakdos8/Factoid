@@ -47,7 +47,7 @@ public class Lands {
         areaList = new TreeMap[4];
         pm = Factoid.getThisPlugin().getServer().getPluginManager();
         for (int t = 0; t < areaList.length; t++) {
-            areaList[t] = new TreeMap<>();
+            areaList[t] = new TreeMap<String, TreeSet<AreaIndex>>();
         }
         WorldConfig worldConfig = new WorldConfig();
         
@@ -58,7 +58,7 @@ public class Lands {
         // Load Land default
         this.defaultConf = worldConfig.getLandDefaultConf();
         
-        landList = new TreeMap<>();
+        landList = new TreeMap<String, Land>();
         approveList = new ApproveList();
     }
 
@@ -219,7 +219,7 @@ public class Lands {
     public Collection getLands(Location loc) {
 
         Collection<CuboidArea> areas = getCuboidAreas(loc);
-        HashMap<String, Land> lands = new HashMap<>();
+        HashMap<String, Land> lands = new HashMap<String, Land>();
 
         for (CuboidArea area : areas) {
             lands.put(area.getLand().getName(), area.getLand());
@@ -230,7 +230,7 @@ public class Lands {
 
     public Collection getLands(PlayerContainer owner) {
 
-        Collection<Land> lands = new TreeSet<>();
+        Collection<Land> lands = new TreeSet<Land>();
 
         for (Land land : landList.values()) {
             if (land.getOwner().equals(owner)) {
@@ -273,7 +273,7 @@ public class Lands {
 
     public Collection getCuboidAreas(Location loc) {
 
-        Collection<CuboidArea> areas = new ArrayList<>();
+        Collection<CuboidArea> areas = new ArrayList<CuboidArea>();
         String worldName = loc.getWorld().getName();
         int SearchIndex;
         int nbToFind;

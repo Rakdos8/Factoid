@@ -9,7 +9,7 @@ public class Factions {
     
     public Factions() {
         
-        factionList = new TreeMap<>();
+        factionList = new TreeMap<String, Faction>();
     }
     
     public boolean createFaction(Faction faction) {

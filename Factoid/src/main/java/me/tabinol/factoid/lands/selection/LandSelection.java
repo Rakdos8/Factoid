@@ -6,7 +6,6 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.Areas.CuboidArea;
 import org.bukkit.Material;
 import org.bukkit.event.Listener;
-import org.bukkit.Server;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -20,8 +19,8 @@ public class LandSelection extends Thread implements Listener {
     private World world;
     private byte by = 0;
     private boolean isSelected = false;
-    private Map<Location, Material> BlockList = new HashMap<>();
-    private Map<String, Location> CornerList = new HashMap<>();
+    private Map<Location, Material> BlockList = new HashMap<Location, Material>();
+    private Map<String, Location> CornerList = new HashMap<String, Location>();
     private Location LandPos;
     private boolean IsCollision;
     private int trueY1;

@@ -12,7 +12,7 @@ import java.util.HashSet;
 public class ScoreBoard extends Thread{
     
     private ScoreboardManager manager;
-    private Map<Player,Scoreboard> ScoreboardList = new HashMap<>();
+    private Map<Player,Scoreboard> ScoreboardList = new HashMap<Player,Scoreboard>();
     
     public ScoreBoard(){
         super();

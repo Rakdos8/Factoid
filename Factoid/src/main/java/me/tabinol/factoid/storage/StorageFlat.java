@@ -3,6 +3,7 @@ package me.tabinol.factoid.storage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -84,12 +85,11 @@ public class StorageFlat extends Storage implements StorageInt {
             if (file.isFile() && file.getName().toLowerCase().endsWith(EXT_CONF)) {
                 try {
                     FileReader fr = new FileReader(file);
-                    try (BufferedReader br = new BufferedReader(fr)) {
-                        loadFaction(br);
-                        br.close();
-                        loadedfactions++;
-                    }
-                } catch (Exception ex) {
+                    BufferedReader br = new BufferedReader(fr);
+                    loadFaction(br);
+                    br.close();
+                    loadedfactions++;
+                } catch (IOException ex) {
                     Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "On loading faction: " + file.getName(), ex);
                     Factoid.getLog().write("See console: Error on loading: " + file.getName());
                 }
@@ -117,12 +117,11 @@ public class StorageFlat extends Storage implements StorageInt {
                     empty = false;
                     try {
                         FileReader fr = new FileReader(file);
-                        try (BufferedReader br = new BufferedReader(fr)) {
-                            loadLand(br);
-                            br.close();
-                            loadedlands++;
-                        }
-                    } catch (Exception ex) {
+                        BufferedReader br = new BufferedReader(fr);
+                        loadLand(br);
+                        br.close();
+                        loadedlands++;
+                    } catch (IOException ex) {
                         Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "On loading land: " + file.getName(), ex);
                         Factoid.getLog().write("See console: Error on loading: " + file.getName());
                     }
@@ -235,11 +234,11 @@ public class StorageFlat extends Storage implements StorageInt {
         //Set Priority
         land.setPriority(cf.getValueShort());
         cf.readParam();
-        
+
         //Money
         land.addMoney(cf.getValueDouble());
         cf.readParam();
-        
+
         //Players Notify
         while ((str = cf.getNextString()) != null) {
             land.addPlayerNotify(str);
@@ -270,30 +269,30 @@ public class StorageFlat extends Storage implements StorageInt {
             } else {
                 cb.writeParam("FactionTerritory", land.getFactionTerritory().getName());
             }
-            
+
             //CuboidAreas
-            strs = new ArrayList<>();
+            strs = new ArrayList<String>();
             for (int index : land.getAreasKey()) {
                 strs.add(index + ":" + land.getArea(index).toString());
             }
             cb.writeParam("CuboidAreas", strs.toArray(new String[0]));
 
             //Residents
-            strs = new ArrayList<>();
+            strs = new ArrayList<String>();
             for (PlayerContainer pc : land.getResidents()) {
                 strs.add(pc.toString());
             }
             cb.writeParam("Residents", strs.toArray(new String[0]));
 
             //Banneds
-            strs = new ArrayList<>();
+            strs = new ArrayList<String>();
             for (PlayerContainer pc : land.getBanneds()) {
                 strs.add(pc.toString());
             }
             cb.writeParam("Banneds", strs.toArray(new String[0]));
 
             //Permissions
-            strs = new ArrayList<>();
+            strs = new ArrayList<String>();
             for (PlayerContainer pc : land.getSetPCHavePermission()) {
                 for (Permission perm : land.getPermissionsForPC(pc)) {
                     strs.add(pc.toString() + ":" + perm.toString());
@@ -302,7 +301,7 @@ public class StorageFlat extends Storage implements StorageInt {
             cb.writeParam("Permissions", strs.toArray(new String[0]));
 
             //Flags
-            strs = new ArrayList<>();
+            strs = new ArrayList<String>();
             for (LandFlag flag : land.getFlags()) {
                 strs.add(flag.toString());
             }
@@ -310,7 +309,7 @@ public class StorageFlat extends Storage implements StorageInt {
 
             // Priority
             cb.writeParam("Priority", land.getPriority());
-            
+
             // Money
             cb.writeParam("Money", land.getMoney());
 

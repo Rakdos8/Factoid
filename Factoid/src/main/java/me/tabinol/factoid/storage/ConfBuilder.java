@@ -21,7 +21,7 @@ public class ConfBuilder {
     }
 
     private void writeVersion(int version) {
-        
+
         writeParam("Version", version);
     }
 
@@ -29,7 +29,7 @@ public class ConfBuilder {
 
         writeParam("Name", name);
     }
-    
+
     public void writeln(String string) {
 
         sb.append(string).append(newline);
@@ -53,9 +53,9 @@ public class ConfBuilder {
 
         writeln(paramName + ":" + param);
     }
-    
+
     public void writeParam(String paramName, double param) {
-        
+
         writeln(paramName + ":" + param);
     }
 
@@ -70,7 +70,7 @@ public class ConfBuilder {
         }
         writeln("}");
     }
-    
+
     public void writeParam(String paramName, ConfBuilder[] cfs) {
 
         if (cfs == null) {
@@ -95,11 +95,10 @@ public class ConfBuilder {
     public void save(File file) {
         try {
             FileWriter fr = new FileWriter(file, false);
-            try (BufferedWriter br = new BufferedWriter(fr)) {
-                br.write(sb.toString());
-            }
+            BufferedWriter br = new BufferedWriter(fr);
+            br.write(sb.toString());
         } catch (IOException ex) {
-            Logger.getLogger(ConfBuilder.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConfBuilder.class.getName()).log(Level.SEVERE, "Save land Error on file " + file.getName(), ex);
         }
     }
 }

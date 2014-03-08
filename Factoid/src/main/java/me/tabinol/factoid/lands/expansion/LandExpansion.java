@@ -19,8 +19,8 @@ public class LandExpansion extends Thread implements Listener{
     private World world;
     private byte by = 0;
     private boolean isSelected = false;
-    private Map<Location, Material> BlockList = new HashMap<>();
-    private Map<String, Location> CornerList = new HashMap<>();
+    private Map<Location, Material> BlockList = new HashMap<Location, Material>();
+    private Map<String, Location> CornerList = new HashMap<String, Location>();
     private Location LandPos;
     private boolean IsCollision;
     private int trueY1;

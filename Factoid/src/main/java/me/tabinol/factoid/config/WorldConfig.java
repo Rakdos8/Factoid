@@ -41,7 +41,7 @@ public class WorldConfig {
 
     public TreeMap<String, DummyLand> getLandOutsideArea() {
 
-        TreeMap<String, DummyLand> landList = new TreeMap<>();
+        TreeMap<String, DummyLand> landList = new TreeMap<String, DummyLand>();
         Set<String> keys = worldConfig.getConfigurationSection("").getKeys(false);
 
         for (String worldName : keys) {

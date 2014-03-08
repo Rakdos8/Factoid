@@ -125,7 +125,7 @@ public class CuboidArea implements Comparable<CuboidArea> {
     // Return and create outise area(s) if the area is outside
     public Collection<CuboidArea> getOutside(CuboidArea area2) {
 
-        HashSet<CuboidArea> areaList = new HashSet<>();
+        HashSet<CuboidArea> areaList = new HashSet<CuboidArea>();
 
         if (!worldName.equalsIgnoreCase(area2.worldName)) {
             areaList.add(area2);

@@ -18,7 +18,7 @@ public class PlayerStaticConfig {
 
     public PlayerStaticConfig() {
 
-        playerConfList = new HashMap<>();
+        playerConfList = new HashMap<CommandSender, PlayerConfEntry>();
 
         // Ceck for VanishNoPacket plugin
         if (Factoid.getDependPlugin().getVanishNoPacket() != null) {

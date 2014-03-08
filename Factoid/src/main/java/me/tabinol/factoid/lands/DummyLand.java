@@ -22,8 +22,8 @@ public class DummyLand {
 
     public DummyLand(String worldName) {
 
-        permissions = new TreeMap<>();
-        flags = new EnumMap<>(FlagType.class);
+        permissions = new TreeMap<PlayerContainer, EnumMap<PermissionType, Permission>>();
+        flags = new EnumMap<FlagType, LandFlag>(FlagType.class);
         this.worldName = worldName;
     }
 
@@ -42,7 +42,7 @@ public class DummyLand {
         EnumMap<PermissionType, Permission> permPlayer;
 
         if (!permissions.containsKey(pc)) {
-            permPlayer = new EnumMap<>(PermissionType.class);
+            permPlayer = new EnumMap<PermissionType, Permission>(PermissionType.class);
             permissions.put(pc, permPlayer);
         } else {
             permPlayer = permissions.get(pc);

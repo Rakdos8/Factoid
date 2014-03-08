@@ -27,7 +27,7 @@ public class LandFlag {
         } else if(flagType.getFlagValueType() == FlagValueType.STRING) {
             this.valueString = StringChanges.fromQuote(valueString);
         } else if(flagType.getFlagValueType() == FlagValueType.STRING_LIST) {
-            ArrayList<String> result = new ArrayList<>();
+            ArrayList<String> result = new ArrayList<String>();
             String[] strs = StringChanges.splitKeepQuote(valueString, ";");
             for(String str : strs) {
                 result.add(StringChanges.fromQuote(str));

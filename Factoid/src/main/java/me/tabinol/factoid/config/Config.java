@@ -1,6 +1,7 @@
 package me.tabinol.factoid.config;
 
-import java.util.HashSet;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import me.tabinol.factoid.Factoid;
@@ -139,6 +140,8 @@ public class Config {
         maxAreaPerLand = config.getInt("land.area.MaxAreaPerLand");
         minAreaSize = config.getInt("land.area.MinAreaSize");
         maxAreaSize = config.getInt("land.area.MaxAreaSize");
+        minLandHigh = config.getInt("land.area.MinLandHigh");
+        maxLandHigh = config.getInt("land.area.MaxLandHigh");
         beaconLight = config.getBoolean("land.BeaconLight");
         overrideExplosions = config.getBoolean("general.OverrideExplosions");
 
@@ -150,11 +153,11 @@ public class Config {
             maxPriceLocation = config.getInt("economy.MaxPriceLocation");
         }
 
-        ownerConfigFlag = new HashSet<>();
+        ownerConfigFlag = Collections.synchronizedSet(EnumSet.noneOf(FlagType.class));
         for (String value : config.getStringList("land.OwnerCanSet.Flags")) {
             ownerConfigFlag.add(FlagType.valueOf(value.toUpperCase()));
         }
-        ownerConfigPerm = new HashSet<>();
+        ownerConfigPerm = Collections.synchronizedSet(EnumSet.noneOf(PermissionType.class));
         for (String value : config.getStringList("land.OwnerCanSet.Permissions")) {
             ownerConfigPerm.add(PermissionType.valueOf(value.toUpperCase()));
         }

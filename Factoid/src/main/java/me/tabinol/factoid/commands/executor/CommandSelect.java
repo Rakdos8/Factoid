@@ -95,7 +95,7 @@ public class CommandSelect extends CommandExec {
                     if (playerConf.getLandSelected() == null) {
                         
                         playerConf.setLandSelected(landtest);
-                        List<LandMakeSquare> listdummy = new ArrayList<>();
+                        List<LandMakeSquare> listdummy = new ArrayList<LandMakeSquare>();
                         for (CuboidArea area : landtest.getAreas()) {
                             LandMakeSquare landmake = new LandMakeSquare(player, null,
                                     area.getX1(), area.getX2(), area.getY1(), area.getY2(), area.getZ1(), area.getZ2(), true);

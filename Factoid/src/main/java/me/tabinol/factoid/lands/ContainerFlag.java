@@ -13,7 +13,7 @@ public class ContainerFlag {
         
         this.pc = pc;
         if(flags == null) {
-            this.flags = new HashSet<>();
+            this.flags = new HashSet<LandFlag>();
         } else {
             this.flags = flags;
         }
