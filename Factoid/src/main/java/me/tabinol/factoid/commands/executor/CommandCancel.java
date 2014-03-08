@@ -3,7 +3,8 @@ package me.tabinol.factoid.commands.executor;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.players.PlayerConfEntry;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.lands.selection.LandSelection;
+import me.tabinol.factoid.lands.selection.Land.LandSelection;
+import me.tabinol.factoid.lands.selection.Area.AreaSelection;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -33,7 +34,8 @@ public class CommandCancel extends CommandExec {
     @Override
     public void commandExecute() throws FactoidCommandException {
 
-        LandSelection select;
+        LandSelection selectLand;
+        AreaSelection selectArea;
 
         if (playerConf.getConfirm() != null) {
             playerConf.setConfirm(null);
@@ -45,9 +47,21 @@ public class CommandCancel extends CommandExec {
             }
         }
         
-        if ((select = playerConf.getAreaSelection()) != null) {
+        if ((selectLand = playerConf.getLandSelection()) != null) {
 
-            select.resetSelection();
+            selectLand.resetSelection();
+            playerConf.setLandSelection(null);
+            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.CANCEL"));
+            Factoid.getLog().write(player.getName() + ": Select cancel");
+
+            if(!fromAutoCancel) {
+                return;
+            }
+        }
+        
+        if ((selectArea = playerConf.getAreaSelection()) != null) {
+
+            selectArea.resetSelection();
             playerConf.setAreaSelection(null);
             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.CANCEL"));
             Factoid.getLog().write(player.getName() + ": Select cancel");

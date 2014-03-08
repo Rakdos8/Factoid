@@ -137,11 +137,16 @@ COMMAND:
     LAND:
       NOCOLLISION: "Votre sélection n'a pas de collision."
       COLLISION: "Votre sélection a une collision avec un autre terrain."
+    AREA:
+      NOCOLLISION: "Votre sélection n'a pas de collision."
+      COLLISION: "Votre sélection a une collision avec un autre zone."
     CANCEL: "Vous avez annulé votre sélection."
     CANTDONE: "Vous ne pouvez pas terminer (Done) une sélection qui est déjà un terrain."
     CANTDONEWORLDEDIT: "Vous ne pouvez pas terminer (Done) une sélection WorldEdit. Vous pouvez créer un terrain."
     NEWLAND: "Vous avez sélectionné un nouveau terrain."
-    SELECTIONEDLAND: "Vous avez sélectionné '%'"
+    NEWAREA: "Vous avez sélectionné une nouvelle zone."
+    SELECTIONEDLAND: "Vous avez sélectionné le terrain '%'"
+    SELECTIONEDAREA: "Vous avez sélectionné la zone '%'"
     CANNOTMPODIFY: "Vous ne pouvez pas sélectionner '%' lors qu'une personne le modifie."
     WORLDEDIT:
       NOTLOAD: " WorldEdit n'est pas chargé."

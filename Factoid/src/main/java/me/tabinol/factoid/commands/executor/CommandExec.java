@@ -54,7 +54,7 @@ public abstract class CommandExec implements CommandInterface {
 
     // Check for needed selection and not needed (null for no verification)
     protected void checkSelections(Boolean mustBeExpandMode, Boolean mustBeFlagMode,
-            Boolean mustBeSelectMode, Boolean mustBeAreaSelected) throws FactoidCommandException {
+            Boolean mustBeSelectMode, Boolean mustBeLandSelected, Boolean mustBeAreaSelected) throws FactoidCommandException {
 
         // No check if entity is null (if it is not from a command)
         if (entity == null) {
@@ -74,6 +74,10 @@ public abstract class CommandExec implements CommandInterface {
             checkSelection(land != null, mustBeSelectMode, null, "GENERAL.JOIN.SELECTMODE",
                     entity != null && entity.playerConf.getLandSelected() != null);
         }
+        if (mustBeLandSelected != null) {
+            checkSelection(entity.playerConf.getLandSelection() != null, mustBeLandSelected, null, "GENERAL.JOIN.SELECTLAND", true);
+        }
+        
         if (mustBeAreaSelected != null) {
             checkSelection(entity.playerConf.getAreaSelection() != null, mustBeAreaSelected, null, "GENERAL.JOIN.SELECTAREA", true);
         }

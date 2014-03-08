@@ -9,9 +9,12 @@ import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.lands.Areas.CuboidArea;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.permissions.PermissionType;
-import me.tabinol.factoid.lands.selection.LandMakeSquare;
-import me.tabinol.factoid.lands.selection.LandSelection;
+import me.tabinol.factoid.lands.selection.Land.LandMakeSquare;
+import me.tabinol.factoid.lands.selection.Area.AreaMakeSquare;
+import me.tabinol.factoid.lands.selection.Land.LandSelection;
+import me.tabinol.factoid.lands.selection.Area.AreaSelection;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
+import me.tabinol.factoid.utilities.StringChanges;
 import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -45,7 +48,7 @@ public class CommandSelect extends CommandExec {
     @Override
     public void commandExecute() throws FactoidCommandException {
 
-        checkSelections(false, false, null, null);
+        checkSelections(false, false, null, null, null);
 
         String curArg;
 
@@ -61,6 +64,58 @@ public class CommandSelect extends CommandExec {
                     }
                     new CommandSelectWorldedit(player, playerConf).MakeSelect();
                 
+                }else if(curArg.equalsIgnoreCase("area") && false){
+                    Land land = null;
+                    CuboidArea area = null;
+                    if(argList.length() == 2){
+                        
+                        String landName = argList.getNext().split(".")[0];
+                        String areaNameString = argList.getNext().split(".")[1];
+                        int areaName = 0;
+                        if(StringChanges.isInt(areaNameString)){
+                            areaName = StringChanges.toInteger(areaNameString);
+                        }
+                        land = Factoid.getLands().getLand(landName);
+                        area = land.getArea(areaName);
+                    }else if(entity.playerConf.getLandSelected() != null){
+                        
+                        land = entity.playerConf.getLandSelected();
+                        int areaName = 0;
+                        if(StringChanges.isInt(argList.getNext())){
+                            areaName = StringChanges.toInteger(argList.getNext());
+                        }
+                        area = land.getArea(areaName);
+                    }
+                    
+                    
+                        
+                        if(land == null){
+                            throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.NOLAND");
+                        }
+                        
+                        
+                        
+                        PlayerContainer owner = land.getOwner();
+                    
+                        if (!owner.hasAccess(player.getName()) && !playerConf.isAdminMod()
+                                && !land.checkPermissionAndInherit(player.getName(), PermissionType.RESIDENT_MANAGER)) {
+                            throw new FactoidCommandException("CommandSelect", player, "GENERAL.MISSINGPERMISSION");
+                        }
+                        if (playerConf.getAreaSelected() == null) {
+
+                            playerConf.setAreaSelected(area);
+                            List<AreaMakeSquare> listdummy = new ArrayList<AreaMakeSquare>();
+                            AreaMakeSquare Areamake = new AreaMakeSquare(player, null,
+                                    area.getX1(), area.getX2(), area.getY1(), area.getY2(), area.getZ1(), area.getZ2(), true);
+                            Areamake.makeSquare();
+                            listdummy.add(Areamake);
+                            playerConf.setAreaSelectedUI(listdummy);
+
+                            player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.SELECTIONEDAREA", area.getKey()+""));
+                            playerConf.setAutoCancelSelect(true);
+                        } else {
+                            player.sendMessage(ChatColor.RED + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getLanguage().getMessage("COMMAND.SELECT.CANNOTMPODIFY", land.getName()));
+                        }
                 } else {
                     
                     Land landtest;
@@ -116,27 +171,53 @@ public class CommandSelect extends CommandExec {
                 player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.JOINMODE"));
                 player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.HINT", ChatColor.ITALIC.toString(), ChatColor.RESET.toString(), ChatColor.DARK_GRAY.toString()));
                 LandSelection select = new LandSelection(player);
-                playerConf.setAreaSelection(select);
+                playerConf.setLandSelection(select);
                 playerConf.setAutoCancelSelect(true);
             }
         } else if ((curArg = argList.getNext()) != null && curArg.equalsIgnoreCase("done")) {
             
             if (playerConf.getLandSelected() != null) {
-                throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.CANTDONE");
+                    throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.CANTDONE");
             }
             
-            doSelectDone();
-        
+            if (playerConf.getAreaSelected() == null && playerConf.getAreaSelection() != null) {
+                
+                doSelectAreaDone();
+            }else{
+                
+                doSelectLandDone();
+            }
+            
+ 
         } else {
             throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.ALREADY");
         }
     }
 
-    private void doSelectDone() throws FactoidCommandException {
+    private void doSelectLandDone() throws FactoidCommandException {
 
-        checkSelections(null, null, null, true);
+        checkSelections(null, null, null, true, null);
 
-        LandSelection select = playerConf.getAreaSelection();
+        LandSelection select = playerConf.getLandSelection();
+        playerConf.setAutoCancelSelect(true);
+
+        if (!select.getCollision()) {
+
+            player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY
+                    + Factoid.getLanguage().getMessage("COMMAND.SELECT.LAND.NOCOLLISION"));
+            select.setSelected();
+        } else {
+            player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.RED
+                    + Factoid.getLanguage().getMessage("COMMAND.SELECT.LAND.COLLISION"));
+            select.setSelected();
+        }
+    }
+    
+    private void doSelectAreaDone() throws FactoidCommandException {
+
+        checkSelections(null, null, null, null, true);
+
+        AreaSelection select = playerConf.getAreaSelection();
         playerConf.setAutoCancelSelect(true);
 
         if (!select.getCollision()) {

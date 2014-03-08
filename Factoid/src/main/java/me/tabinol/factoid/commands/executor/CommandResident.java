@@ -19,7 +19,7 @@ public class CommandResident extends CommandExec {
     @Override
     public void commandExecute() throws FactoidCommandException {
 
-        checkSelections(false, false, true, null);
+        checkSelections(false, false, true, null, null);
         checkPermission(true, true, PermissionType.RESIDENT_MANAGER, null);
         
         String curArg = entity.argList.getNext();

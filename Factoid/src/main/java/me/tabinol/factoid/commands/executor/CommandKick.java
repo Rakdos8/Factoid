@@ -39,7 +39,7 @@ public class CommandKick extends CommandExec {
 
         // Only if it is from Kick command
         if (entity != null) {
-            checkSelections(false, false, true, null);
+            checkSelections(false, false, true, null, null);
             checkPermission(true, true, PermissionType.LAND_KICK, null);
         }
 

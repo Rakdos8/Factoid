@@ -21,7 +21,7 @@ public class CommandPermission extends CommandExec {
     @Override
     public void commandExecute() throws FactoidCommandException {
 
-        checkSelections(false, false, true, null);
+        checkSelections(false, false, true, null, null);
         String curArg = entity.argList.getNext();
 
         if (curArg.equalsIgnoreCase("set")) {

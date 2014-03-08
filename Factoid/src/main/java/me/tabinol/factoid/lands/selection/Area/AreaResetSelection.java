@@ -1,5 +1,6 @@
-package me.tabinol.factoid.lands.selection;
+package me.tabinol.factoid.lands.selection.Area;
 
+import me.tabinol.factoid.lands.selection.area.*;
 import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.Location;
@@ -7,7 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-public class LandResetSelection extends Thread{
+public class AreaResetSelection extends Thread{
     
     private Player player;
     private World world;
@@ -15,7 +16,7 @@ public class LandResetSelection extends Thread{
     private Map<Location,Material> BlockList = new HashMap<Location,Material>();
     private Map<String,Location> CornerList = new HashMap<String,Location>();
     
-    public LandResetSelection(Map<Location,Material> BlockList,Map<String,Location> CornerList,Player player){
+    public AreaResetSelection(Map<Location,Material> BlockList,Map<String,Location> CornerList,Player player){
         this.BlockList = BlockList;
         this.CornerList = CornerList;
         this.player = player;

@@ -1,5 +1,6 @@
-package me.tabinol.factoid.lands.selection;
+package me.tabinol.factoid.lands.selection.Area;
 
+import me.tabinol.factoid.lands.selection.Land.*;
 import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.Location;
@@ -11,7 +12,7 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.*;
 import org.bukkit.block.BlockFace;
 
-public class LandMakeSquare extends Thread {
+public class AreaMakeSquare extends Thread {
 
     private Player player;
     private World world;
@@ -26,7 +27,7 @@ public class LandMakeSquare extends Thread {
     private boolean IsCollisionRigth = false;
     private boolean SELECTING = false;
 
-    public LandMakeSquare(Player player, Location loc, int x1, int x2, int y1, int y2, int z1, int z2, boolean isSelecting) {
+    public AreaMakeSquare(Player player, Location loc, int x1, int x2, int y1, int y2, int z1, int z2, boolean isSelecting) {
         this.player = player;
         this.world = player.getWorld();
         if (loc != null) {

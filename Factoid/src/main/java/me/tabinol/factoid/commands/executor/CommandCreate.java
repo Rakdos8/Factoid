@@ -11,7 +11,7 @@ import me.tabinol.factoid.lands.Areas.CuboidArea;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import me.tabinol.factoid.lands.permissions.PermissionType;
-import me.tabinol.factoid.lands.selection.LandSelection;
+import me.tabinol.factoid.lands.selection.Land.LandSelection;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import org.bukkit.ChatColor;
 
@@ -25,10 +25,10 @@ public class CommandCreate extends CommandExec {
     @Override
     public void commandExecute() throws FactoidCommandException {
 
-        checkSelections(false, false, null, true);
+        checkSelections(false, false, null, true, null);
         checkPermission(true, false, null, null);
 
-        LandSelection select = entity.playerConf.getAreaSelection();
+        LandSelection select = entity.playerConf.getLandSelection();
 
         CuboidArea area = select.toCuboidArea();
 

@@ -1,5 +1,7 @@
-package me.tabinol.factoid.lands.selection;
+package me.tabinol.factoid.lands.selection.Area;
 
+import me.tabinol.factoid.lands.selection.Area.AreaMakeSquare;
+import me.tabinol.factoid.lands.selection.Area.AreaResetSelection;
 import java.util.Map;
 import java.util.HashMap;
 import me.tabinol.factoid.Factoid;
@@ -13,7 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.World;
 
-public class LandSelection extends Thread implements Listener {
+public class AreaSelection extends Thread implements Listener {
 
     private Player player;
     private World world;
@@ -21,12 +23,12 @@ public class LandSelection extends Thread implements Listener {
     private boolean isSelected = false;
     private Map<Location, Material> BlockList = new HashMap<Location, Material>();
     private Map<String, Location> CornerList = new HashMap<String, Location>();
-    private Location LandPos;
+    private Location AreaPos;
     private boolean IsCollision;
     private int trueY1;
     private int trueY2;
 
-    public LandSelection(Player player) {
+    public AreaSelection(Player player) {
         LandSelection(player, player.getLocation(), 0, 0, 
         Factoid.getConf().getMaxLandHigh(), Factoid.getConf().getMaxLandHigh(), 0, 0, false);
     }
@@ -37,7 +39,7 @@ public class LandSelection extends Thread implements Listener {
     // }
 
     // For WorldEdit
-    public LandSelection(Player player, int x1, int x2, int y1, int y2, int z1, int z2) {
+    public AreaSelection(Player player, int x1, int x2, int y1, int y2, int z1, int z2) {
 
         LandSelection(player, null, x1, x2, y1, y2, z1, z2, false);
     }
@@ -48,11 +50,11 @@ public class LandSelection extends Thread implements Listener {
         Factoid.getThisPlugin().getServer().getPluginManager().registerEvents(this, Factoid.getThisPlugin());
         this.player = player;
         this.world = player.getWorld();
-        LandMakeSquare landmake = new LandMakeSquare(player, loc, x1, x2, y1, y2, z1, z2, isSelection);
-        this.BlockList = landmake.makeSquare();
-        this.CornerList = landmake.getCorner();
-        this.LandPos = player.getLocation();
-        this.IsCollision = landmake.getCollision();
+        AreaMakeSquare Areamake = new AreaMakeSquare(player, loc, x1, x2, y1, y2, z1, z2, isSelection);
+        this.BlockList = Areamake.makeSquare();
+        this.CornerList = Areamake.getCorner();
+        this.AreaPos = player.getLocation();
+        this.IsCollision = Areamake.getCollision();
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -61,13 +63,13 @@ public class LandSelection extends Thread implements Listener {
             if (event.getFrom() != event.getTo()) {
                 if (event.getPlayer().getName().equals(this.player.getName())) {
                     if (!this.BlockList.isEmpty() && !this.CornerList.isEmpty()) {
-                        boolean done = new LandResetSelection(this.BlockList, this.CornerList, this.player).Reset();
+                        boolean done = new AreaResetSelection(this.BlockList, this.CornerList, this.player).Reset();
                         if (done) {
                             this.BlockList.clear();
-                            LandMakeSquare landmake = new LandMakeSquare(this.player, event.getTo(), 0, 0, 0, 0, 0, 0, false);
+                            AreaMakeSquare landmake = new AreaMakeSquare(this.player, event.getTo(), 0, 0, 0, 0, 0, 0, false);
                             this.BlockList = landmake.makeSquare();
                             this.CornerList = landmake.getCorner();
-                            this.LandPos = event.getTo();
+                            this.AreaPos = event.getTo();
                             this.IsCollision = landmake.getCollision();
                         }
                     }
@@ -93,7 +95,7 @@ public class LandSelection extends Thread implements Listener {
     }
 
     public Location getSelection() {
-        return this.LandPos;
+        return this.AreaPos;
     }
 
     public Map<String, Location> getCorner() {
@@ -114,7 +116,7 @@ public class LandSelection extends Thread implements Listener {
 
     public void resetSelection() {
         if (!this.BlockList.isEmpty() && !this.CornerList.isEmpty()) {
-            boolean done = new LandResetSelection(this.BlockList, this.CornerList, this.player).Reset();
+            boolean done = new AreaResetSelection(this.BlockList, this.CornerList, this.player).Reset();
             if (done) {
                 this.BlockList.clear();
             }

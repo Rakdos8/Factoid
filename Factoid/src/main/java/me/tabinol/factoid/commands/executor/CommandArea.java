@@ -19,13 +19,13 @@ public class CommandArea extends CommandExec {
 
     @Override
     public void commandExecute() throws FactoidCommandException {
-
+        
         String curArg = entity.argList.getNext();
-
-        if (curArg.equalsIgnoreCase("add")) {
+        
+        if (curArg.equalsIgnoreCase("create")) {
 
             checkPermission(true, true, null, null);
-            checkSelections(false, false, true, null);
+            checkSelections(false, false, true, null, true);
 
             CuboidArea area = entity.playerConf.getAreaSelection().toCuboidArea();
 
@@ -63,7 +63,7 @@ public class CommandArea extends CommandExec {
             // Only for a remove
             if (curArg.equalsIgnoreCase("remove")) {
 
-                checkSelections(false, false, true, null);
+                checkSelections(false, false, true, null, true);
 
                 // Check for collision
                 if (checkCollision(curArg, land, LandAction.AREA_REMOVE, areaNb, null, land.getParent(), true)) {
@@ -82,7 +82,7 @@ public class CommandArea extends CommandExec {
             } else {
 
                 //Only for a replace
-                checkSelections(false, false, true, true);
+                checkSelections(false, false, true, true , true);
 
                 CuboidArea area = entity.playerConf.getAreaSelection().toCuboidArea();
 

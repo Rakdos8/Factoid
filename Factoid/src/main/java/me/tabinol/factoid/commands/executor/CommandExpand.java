@@ -18,7 +18,7 @@ public class CommandExpand extends CommandExec {
         /**
          * *** TO DO : COLLISIONS! ******
          */
-        checkSelections(null, false, true, null);
+        checkSelections(null, false, true, null, null);
         checkPermission(true, true, null, null);
 
         // Land land = entity.playerConf.getLandSelected();

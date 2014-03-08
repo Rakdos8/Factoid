@@ -6,10 +6,13 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.commands.ConfirmEntry;
 import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.lands.Areas.CuboidArea;
 import me.tabinol.factoid.lands.expansion.LandExpansion;
 import me.tabinol.factoid.lands.flags.LandSetFlag;
-import me.tabinol.factoid.lands.selection.LandMakeSquare;
-import me.tabinol.factoid.lands.selection.LandSelection;
+import me.tabinol.factoid.lands.selection.Land.LandMakeSquare;
+import me.tabinol.factoid.lands.selection.Area.AreaMakeSquare;
+import me.tabinol.factoid.lands.selection.Land.LandSelection;
+import me.tabinol.factoid.lands.selection.Area.AreaSelection;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,9 +22,12 @@ public class PlayerConfEntry {
     private final CommandSender sender; // The player (or sender)
     private final Player player; // The player (if is not console)
     private boolean adminMod = false; // If the player is in Admin Mod
-    private LandSelection areaSelection = null; // For area selection
+    private LandSelection landSelection = null; // For all area in an Land selection
+    private AreaSelection areaSelection = null; // For all area in an Land selection
     private Land landSelected = null; // When a land is selected
+    private CuboidArea areaSelected = null; // When a area is selected
     private List<LandMakeSquare> landSelectedUI = null; // UI selection
+    private List<AreaMakeSquare> areaSelectedUI = null; // UI selection
     private LandExpansion expandingLand = null; // Land expand
     private LandSetFlag setFlagUI = null; // Land selection for UI flags
     private ConfirmEntry confirm = null; // "/factoid confirm" command
@@ -68,14 +74,44 @@ public class PlayerConfEntry {
         adminMod = value;
     }
 
-    public LandSelection getAreaSelection() {
+    public LandSelection getLandSelection() {
+
+        return landSelection;
+    }
+
+    public void setLandSelection(LandSelection newlandSelection) {
+
+        landSelection = newlandSelection;
+    }
+    
+    public AreaSelection getAreaSelection() {
 
         return areaSelection;
     }
 
-    public void setAreaSelection(LandSelection landSelection) {
+    public void setAreaSelection(AreaSelection newareaSelection) {
 
-        areaSelection = landSelection;
+        areaSelection = newareaSelection;
+    }
+    
+    public CuboidArea getAreaSelected() {
+        
+        return areaSelected;
+    }
+
+    public void setAreaSelected(CuboidArea area) {
+
+        areaSelected = area;
+    }
+    
+    public List<AreaMakeSquare> getAreaSelectedUI() {
+
+        return areaSelectedUI;
+    }
+
+    public void setAreaSelectedUI(List<AreaMakeSquare> list) {
+
+        areaSelectedUI = list;
     }
 
     public Land getLandSelected() {

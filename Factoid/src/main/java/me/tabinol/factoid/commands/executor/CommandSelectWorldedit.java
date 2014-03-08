@@ -2,7 +2,7 @@ package me.tabinol.factoid.commands.executor;
 
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.lands.selection.LandSelection;
+import me.tabinol.factoid.lands.selection.Land.LandSelection;
 import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
 import com.sk89q.worldedit.IncompleteRegionException;
@@ -47,7 +47,7 @@ public class CommandSelectWorldedit {
                     sel.getMinimumPoint().getBlockX(), sel.getMaximumPoint().getBlockX(), sel.getMinimumPoint().getBlockY(),
                     sel.getMaximumPoint().getBlockY(), sel.getMaximumPoint().getBlockZ(), sel.getMinimumPoint().getBlockZ());
             
-            entry.setAreaSelection(select);
+            entry.setLandSelection(select);
             select.setSelected();
             entry.setAutoCancelSelect(true);
 

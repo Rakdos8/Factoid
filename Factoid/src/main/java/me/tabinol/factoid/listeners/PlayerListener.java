@@ -197,8 +197,10 @@ public class PlayerListener implements Listener {
             } else if (player.getItemInHand() != null
                     && action == Action.RIGHT_CLICK_BLOCK
                     && player.getItemInHand().getTypeId() == conf.getSelectItem()
+                    && ((entry = playerConf.get(player)).getLandSelection() != null
+                    || entry.getLandSelected() != null)
                     && ((entry = playerConf.get(player)).getAreaSelection() != null
-                    || entry.getLandSelected() != null)) {
+                    || entry.getAreaSelected() != null)) {
 
                 try {
                     new CommandCancel(entry, false).commandExecute();

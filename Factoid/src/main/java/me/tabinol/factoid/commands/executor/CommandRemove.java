@@ -16,7 +16,7 @@ public class CommandRemove extends CommandExec {
     @Override
     public void commandExecute() throws FactoidCommandException {
 
-        checkSelections(false, false, true, null);
+        checkSelections(false, false, true, null, null);
         checkPermission(true, true, null, null);
 
         // Check for collision
