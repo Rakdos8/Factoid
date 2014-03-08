@@ -14,7 +14,7 @@ commands:
       permission-message: you don't have permission for that!
 permissions:
     factoid.*:
-        description: ModulMonde Command Permission
+        description: Factoid Command Permission
         default: op
         children:
             factoid.adminmod: true
