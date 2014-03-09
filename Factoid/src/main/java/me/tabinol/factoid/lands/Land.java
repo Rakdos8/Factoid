@@ -50,7 +50,7 @@ public class Land extends DummyLand {
             parent.addChild(this);
             this.factionTerritory = parent.factionTerritory;
         }
-        setOwner(owner);
+        this.owner = owner;
         this.genealogy = genealogy;
         if (!Factoid.getStorage().isInLoad()) {
             if (!Factoid.getLands().defaultConf.flags.isEmpty()) {
@@ -240,7 +240,6 @@ public class Land extends DummyLand {
 
     public void setOwner(PlayerContainer owner) {
 
-        owner.setLand(this);
         this.owner = owner;
         doSave();
     }

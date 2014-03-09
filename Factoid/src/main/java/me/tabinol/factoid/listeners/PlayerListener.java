@@ -121,7 +121,7 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         PlayerConfEntry entry = playerConf.get(player);
 
-        // BugFix Citizen plugin
+        // BugFix Citizens plugin
         if (entry == null) {
             return;
         }
@@ -425,7 +425,7 @@ public class PlayerListener implements Listener {
 
             // Check if a player break a ItemFrame
             if (event.getDamager() instanceof Player
-                    && (entry = playerConf.get((Player) event.getDamager())) != null // Citizen bugfix
+                    && (entry = playerConf.get((Player) event.getDamager())) != null // Citizens bugfix
                     && !entry.isAdminMod()
                     && event.getEntity() instanceof ItemFrame) {
 
@@ -458,7 +458,8 @@ public class PlayerListener implements Listener {
                     EntityType et = entity.getType();
 
                     // kill en entity (none player)
-                    if ((entry = playerConf.get((Player) event.getDamager())) != null // Citizen bugfix
+                    if (event.getDamager() instanceof Player &&
+                            (entry = playerConf.get((Player) event.getDamager())) != null // Citizens bugfix
                             && !entry.isAdminMod()
                             && ((land instanceof Land && ((Land) land).isBanned(player.getName()))
                             || (entity instanceof Animals
@@ -479,7 +480,7 @@ public class PlayerListener implements Listener {
                         event.setCancelled(true);
 
                         // For PVP
-                    } else if (entity instanceof Player) {
+                    } else if (entity instanceof Player && playerConf.get((Player) entity) != null) { // Citizens bugfix
 
                         LandFlag flag;
                         Faction faction = Factoid.getFactions().getPlayerFaction(player.getName());

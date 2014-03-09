@@ -3,6 +3,7 @@ package me.tabinol.factoid.storage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -166,7 +167,8 @@ public class StorageFlat extends Storage implements StorageInt {
         String factionTerritory;
         Set<PlayerContainer> residents = new TreeSet<PlayerContainer>();
         Set<PlayerContainer> banneds = new TreeSet<PlayerContainer>();
-        Map<PlayerContainer, Permission> permissions = new TreeMap<PlayerContainer, Permission>();
+        Map<PlayerContainer, EnumMap<PermissionType, Permission>> permissions
+                = new TreeMap<PlayerContainer, EnumMap<PermissionType, Permission>>();
         Set<LandFlag> flags = new HashSet<LandFlag>();
         short priority;
         double money;
@@ -218,9 +220,17 @@ public class StorageFlat extends Storage implements StorageInt {
             //Create permissions
             while ((str = cf.getNextString()) != null) {
                 String[] multiStr = str.split(":");
-                permissions.put(PlayerContainer.create(land, PlayerContainerType.getFromString(multiStr[0]), multiStr[1]),
-                        new Permission(PermissionType.valueOf(multiStr[2]),
-                                Boolean.parseBoolean(multiStr[3]), Boolean.parseBoolean(multiStr[4])));
+                EnumMap<PermissionType, Permission> permPlayer;
+                PlayerContainer pc = PlayerContainer.create(land, PlayerContainerType.getFromString(multiStr[0]), multiStr[1]);
+                PermissionType permType = PermissionType.valueOf(multiStr[2]);
+                if (!permissions.containsKey(pc)) {
+                    permPlayer = new EnumMap<PermissionType, Permission>(PermissionType.class);
+                    permissions.put(pc, permPlayer);
+                } else {
+                    permPlayer = permissions.get(pc);
+                }
+                permPlayer.put(permType, new Permission(permType,
+                        Boolean.parseBoolean(multiStr[3]), Boolean.parseBoolean(multiStr[4])));
             }
             cf.readParam();
 
@@ -293,8 +303,10 @@ public class StorageFlat extends Storage implements StorageInt {
         for (PlayerContainer banned : banneds) {
             land.addResident(banned);
         }
-        for (Map.Entry<PlayerContainer, Permission> entry : permissions.entrySet()) {
-            land.addPermission(entry.getKey(), entry.getValue());
+        for (Map.Entry<PlayerContainer, EnumMap<PermissionType, Permission>> entry : permissions.entrySet()) {
+            for (EnumMap.Entry<PermissionType, Permission> entryP : entry.getValue().entrySet()) {
+                land.addPermission(entry.getKey(), entryP.getValue());
+            }
         }
         for (LandFlag flag : flags) {
             land.addFlag(flag);
