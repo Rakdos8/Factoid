@@ -1,5 +1,7 @@
 package me.tabinol.factoid.playercontainer;
 
+import me.tabinol.factoid.lands.Land;
+
 public interface PlayerContainerInterface {
     
     public String getName();
@@ -13,5 +15,7 @@ public interface PlayerContainerInterface {
     public boolean hasAccess(String playerName);
     
     public String getPrint();
+    
+    public void setLand(Land land);
             
 }

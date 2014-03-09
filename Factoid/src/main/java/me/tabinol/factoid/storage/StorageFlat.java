@@ -1,14 +1,18 @@
 package me.tabinol.factoid.storage;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.FactoidLandException;
+import me.tabinol.factoid.exceptions.FileLoadException;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.Areas.CuboidArea;
 import me.tabinol.factoid.lands.Land;
@@ -23,7 +27,8 @@ import me.tabinol.factoid.utilities.StringChanges;
 public class StorageFlat extends Storage implements StorageInt {
 
     public static final String EXT_CONF = ".conf";
-    public static final int ACTUAL_VERSION = Factoid.getMavenAppProperties().getPropertyInt("landVersion");
+    public static final int LAND_VERSION = Factoid.getMavenAppProperties().getPropertyInt("landVersion");
+    public static final int FACTION_VERSION = Factoid.getMavenAppProperties().getPropertyInt("factionVersion");
     private String factionsDir;
     private String landsDir;
 
@@ -83,16 +88,8 @@ public class StorageFlat extends Storage implements StorageInt {
 
         for (File file : files) {
             if (file.isFile() && file.getName().toLowerCase().endsWith(EXT_CONF)) {
-                try {
-                    FileReader fr = new FileReader(file);
-                    BufferedReader br = new BufferedReader(fr);
-                    loadFaction(br);
-                    br.close();
-                    loadedfactions++;
-                } catch (IOException ex) {
-                    Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "On loading faction: " + file.getName(), ex);
-                    Factoid.getLog().write("See console: Error on loading: " + file.getName());
-                }
+                loadFaction(file);
+                loadedfactions++;
             }
         }
         Factoid.getLog().write(loadedfactions + " faction(s) loaded.");
@@ -115,16 +112,8 @@ public class StorageFlat extends Storage implements StorageInt {
             for (File file : files) {
                 if (file.isFile() && file.getName().toLowerCase().endsWith(pass + EXT_CONF)) {
                     empty = false;
-                    try {
-                        FileReader fr = new FileReader(file);
-                        BufferedReader br = new BufferedReader(fr);
-                        loadLand(br);
-                        br.close();
-                        loadedlands++;
-                    } catch (IOException ex) {
-                        Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "On loading land: " + file.getName(), ex);
-                        Factoid.getLog().write("See console: Error on loading: " + file.getName());
-                    }
+                    loadLand(file);
+                    loadedlands++;
                 }
             }
             pass++;
@@ -132,128 +121,202 @@ public class StorageFlat extends Storage implements StorageInt {
         Factoid.getLog().write(loadedlands + " land(s) loaded.");
     }
 
-    private void loadFaction(BufferedReader br) {
+    private void loadFaction(File file) {
 
-        ConfLoader cf = new ConfLoader(br);
-        String str;
-        int version = cf.getVersion();
-        Faction faction = new Faction(cf.getName());
-        cf.readParam();
-        while ((str = cf.getNextString()) != null) {
-            faction.addPlayer(str);
+        Faction faction;
+        ConfLoader cf = null;
+
+        try {
+            cf = new ConfLoader(file);
+            String str;
+            int version = cf.getVersion();
+            faction = new Faction(cf.getName());
+            cf.readParam();
+            while ((str = cf.getNextString()) != null) {
+                faction.addPlayer(str);
+            }
+
+            cf.close();
+
+            // Catch errors here
+        } catch (NullPointerException ex) {
+            try {
+                throw new FileLoadException(file.getName(), cf.getLine(), cf.getLineNb(), "Problem with parameter.");
+            } catch (FileLoadException ex2) {
+                // Catch load
+                return;
+            }
+        } catch (FileLoadException ex) {
+            // Catch load
+            return;
         }
 
         Factoid.getFactions().createFaction(faction);
     }
 
-    private void loadLand(BufferedReader br) {
+    private void loadLand(File file) {
 
-        ConfLoader cf = new ConfLoader(br);
-        String str;
-        int version = cf.getVersion();
-        String landName = cf.getName();
+        ConfLoader cf = null;
+        String landName;
         Land land = null;
+        Map<Integer, CuboidArea> areas = new TreeMap<Integer, CuboidArea>();
         boolean isLandCreated = false;
-        PlayerContainer pc;
-        cf.readParam();
-        String[] ownerS = StringChanges.splitAddVoid(cf.getValueString(), ":");
-        cf.readParam();
-        String parentName = cf.getValueString();
-        cf.readParam();
-        String factionTerritory = cf.getValueString();
+        PlayerContainer owner;
+        String parentName;
+        String factionTerritory;
+        Set<PlayerContainer> residents = new TreeSet<PlayerContainer>();
+        Set<PlayerContainer> banneds = new TreeSet<PlayerContainer>();
+        Map<PlayerContainer, Permission> permissions = new TreeMap<PlayerContainer, Permission>();
+        Set<LandFlag> flags = new HashSet<LandFlag>();
+        short priority;
+        double money;
+        Set<String> pNotifs = new TreeSet<String>();
 
-        // create owner (PlayerContainer)
-        pc = PlayerContainer.create(null, PlayerContainerType.getFromString(ownerS[0]), ownerS[1]);
+        try {
+            cf = new ConfLoader(file);
+            String str;
+            int version = cf.getVersion();
+            landName = cf.getName();
+            cf.readParam();
+            String[] ownerS = StringChanges.splitAddVoid(cf.getValueString(), ":");
+            cf.readParam();
+            parentName = cf.getValueString();
+            cf.readParam();
+            factionTerritory = cf.getValueString();
 
-        cf.readParam();
+            // create owner (PlayerContainer)
+            owner = PlayerContainer.create(null, PlayerContainerType.getFromString(ownerS[0]), ownerS[1]);
 
-        // Create Land and add areas
-        while ((str = cf.getNextString()) != null) {
-            String[] multiStr = str.split(":", 2);
-            CuboidArea area = CuboidArea.getFromString(multiStr[1]);
+            if (owner == null) {
+                throw new FileLoadException(file.getName(), cf.getLine(), cf.getLineNb(), "Invalid owner.");
+            }
+
+            cf.readParam();
+
+            // Create areas
+            while ((str = cf.getNextString()) != null) {
+                String[] multiStr = str.split(":", 2);
+                areas.put(Integer.parseInt(multiStr[0]), CuboidArea.getFromString(multiStr[1]));
+            }
+
+            cf.readParam();
+
+            //Residents
+            while ((str = cf.getNextString()) != null) {
+                String[] multiStr = StringChanges.splitAddVoid(str, ":");
+                residents.add(PlayerContainer.create(land, PlayerContainerType.getFromString(multiStr[0]), multiStr[1]));
+            }
+            cf.readParam();
+
+            //Banneds
+            while ((str = cf.getNextString()) != null) {
+                String[] multiStr = StringChanges.splitAddVoid(str, ":");
+                banneds.add(PlayerContainer.create(land, PlayerContainerType.getFromString(multiStr[0]), multiStr[1]));
+            }
+            cf.readParam();
+
+            //Create permissions
+            while ((str = cf.getNextString()) != null) {
+                String[] multiStr = str.split(":");
+                permissions.put(PlayerContainer.create(land, PlayerContainerType.getFromString(multiStr[0]), multiStr[1]),
+                        new Permission(PermissionType.valueOf(multiStr[2]),
+                                Boolean.parseBoolean(multiStr[3]), Boolean.parseBoolean(multiStr[4])));
+            }
+            cf.readParam();
+
+            //Create flags
+            while ((str = cf.getNextString()) != null) {
+                String[] multiStr = StringChanges.splitKeepQuote(str, ":");
+                FlagType ft = FlagType.valueOf(multiStr[0]);
+                flags.add(new LandFlag(ft, multiStr[1], Boolean.parseBoolean(multiStr[2])));
+            }
+            cf.readParam();
+
+            //Set Priority
+            priority = cf.getValueShort();
+            cf.readParam();
+
+            //Money
+            money = cf.getValueDouble();
+            cf.readParam();
+
+            //Players Notify
+            while ((str = cf.getNextString()) != null) {
+                pNotifs.add(str);
+            }
+
+            cf.close();
+
+            // Catch errors here
+        } catch (NullPointerException ex) {
+            try {
+                throw new FileLoadException(file.getName(), cf.getLine(), cf.getLineNb(), "Problem with parameter.");
+            } catch (FileLoadException ex2) {
+                // Catch load
+                return;
+            }
+        } catch (FileLoadException ex) {
+            // Catch load
+            return;
+        }
+
+        // Create land
+        for (Map.Entry<Integer, CuboidArea> entry : areas.entrySet()) {
             if (!isLandCreated) {
                 if (parentName != null) {
                     try {
-                        land = Factoid.getLands().createLand(landName, pc, area, Factoid.getLands().getLand(parentName),
-                                Integer.parseInt(multiStr[0]));
+                        land = Factoid.getLands().createLand(landName, owner, entry.getValue(), Factoid.getLands().getLand(parentName),
+                                entry.getKey());
                     } catch (FactoidLandException ex) {
                         Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "Error on loading land: " + landName, ex);
                     }
                 } else {
                     try {
-                        land = Factoid.getLands().createLand(landName, pc, area, null, Integer.parseInt(multiStr[0]));
+                        land = Factoid.getLands().createLand(landName, owner, entry.getValue(), null, entry.getKey());
                     } catch (FactoidLandException ex) {
                         Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "Error on loading land: " + landName, ex);
                     }
                 }
                 isLandCreated = true;
             } else {
-                land.addArea(area);
+                land.addArea(entry.getValue(), entry.getKey());
             }
         }
-        cf.readParam();
 
-        //FactionTerritory
+        // Load land params form memory
         if (factionTerritory != null) {
             land.setFactionTerritory(Factoid.getFactions().getFaction(factionTerritory));
         }
-
-        //Residents
-        while ((str = cf.getNextString()) != null) {
-            String[] multiStr = StringChanges.splitAddVoid(str, ":");
-            pc = PlayerContainer.create(land, PlayerContainerType.getFromString(multiStr[0]), multiStr[1]);
-            land.addResident(pc);
+        for (PlayerContainer resident : residents) {
+            land.addResident(resident);
         }
-        cf.readParam();
-
-        //Banneds
-        while ((str = cf.getNextString()) != null) {
-            String[] multiStr = StringChanges.splitAddVoid(str, ":");
-            pc = PlayerContainer.create(land, PlayerContainerType.getFromString(multiStr[0]), multiStr[1]);
-            land.addBanned(pc);
+        for (PlayerContainer banned : banneds) {
+            land.addResident(banned);
         }
-        cf.readParam();
-
-        //Create permissions
-        while ((str = cf.getNextString()) != null) {
-            String[] multiStr = str.split(":");
-            pc = PlayerContainer.create(land, PlayerContainerType.getFromString(multiStr[0]), multiStr[1]);
-            land.addPermission(pc, new Permission(PermissionType.valueOf(multiStr[2]),
-                    Boolean.parseBoolean(multiStr[3]), Boolean.parseBoolean(multiStr[4])));
+        for (Map.Entry<PlayerContainer, Permission> entry : permissions.entrySet()) {
+            land.addPermission(entry.getKey(), entry.getValue());
         }
-        cf.readParam();
-
-        //Create flags
-        while ((str = cf.getNextString()) != null) {
-            String[] multiStr = StringChanges.splitKeepQuote(str, ":");
-            FlagType ft = FlagType.valueOf(multiStr[0]);
-            land.addFlag(new LandFlag(ft, multiStr[1], Boolean.parseBoolean(multiStr[2])));
+        for (LandFlag flag : flags) {
+            land.addFlag(flag);
         }
-        cf.readParam();
-
-        //Set Priority
-        land.setPriority(cf.getValueShort());
-        cf.readParam();
-
-        //Money
-        land.addMoney(cf.getValueDouble());
-        cf.readParam();
-
-        //Players Notify
-        while ((str = cf.getNextString()) != null) {
-            land.addPlayerNotify(str);
+        land.setPriority(priority);
+        land.addMoney(money);
+        for (String pNotif : pNotifs) {
+            land.addPlayerNotify(pNotif);
         }
-        cf.readParam();
     }
 
     @Override
     public void saveLand(Land land) {
+        try {
+            ArrayList<String> strs;
 
-        ArrayList<String> strs;
+            if (inLoad) {
+                return;
+            }
 
-        if (!inLoad) {
             Factoid.getLog().write("Saving land: " + land.getName());
-            ConfBuilder cb = new ConfBuilder(land.getName());
+            ConfBuilder cb = new ConfBuilder(land.getName(), getLandFile(land), LAND_VERSION);
             cb.writeParam("Owner", land.getOwner().toString());
 
             //Parent
@@ -316,7 +379,9 @@ public class StorageFlat extends Storage implements StorageInt {
             // PlayersNotify
             cb.writeParam("PlayersNotify", land.getPlayersNotify().toArray(new String[0]));
 
-            cb.save(getLandFile(land));
+            cb.close();
+        } catch (IOException ex) {
+            Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "Error on saving Faction: " + land.getName(), ex);
         }
     }
 
@@ -328,12 +393,18 @@ public class StorageFlat extends Storage implements StorageInt {
 
     @Override
     public void saveFaction(Faction faction) {
+        try {
+            if (inLoad) {
+                return;
+            }
 
-        if (!inLoad) {
             Factoid.getLog().write("Saving faction: " + faction.getName());
-            ConfBuilder cb = new ConfBuilder(faction.getName());
+            ConfBuilder cb = new ConfBuilder(faction.getName(), getFactionFile(faction), FACTION_VERSION);
             cb.writeParam("Players", (String[]) faction.getPlayers().toArray());
-            cb.save(getFactionFile(faction));
+
+            cb.close();
+        } catch (IOException ex) {
+            Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "Error on saving Faction: " + faction.getName(), ex);
         }
     }
 

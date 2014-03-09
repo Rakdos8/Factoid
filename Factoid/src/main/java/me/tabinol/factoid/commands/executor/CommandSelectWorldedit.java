@@ -2,7 +2,7 @@ package me.tabinol.factoid.commands.executor;
 
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.lands.selection.Land.LandSelection;
+import me.tabinol.factoid.lands.selection.land.LandSelection;
 import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
 import com.sk89q.worldedit.IncompleteRegionException;

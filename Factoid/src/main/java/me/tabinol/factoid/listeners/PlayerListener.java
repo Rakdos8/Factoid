@@ -106,10 +106,10 @@ public class PlayerListener implements Listener {
 
         // Remove player from the land
         Land land = playerConf.get(player).getLastLand();
-        if(land != null) {
+        if (land != null) {
             land.removePlayerInLand(player);
         }
-        
+
         // Remove player from Static Config
         playerConf.remove(player);
     }
@@ -120,6 +120,11 @@ public class PlayerListener implements Listener {
         Location loc = event.getTo();
         Player player = event.getPlayer();
         PlayerConfEntry entry = playerConf.get(player);
+
+        // BugFix Citizen plugin
+        if (entry == null) {
+            return;
+        }
 
         if (!entry.hasTpCancel()) {
             updatePosInfo(event, entry, loc, false);
@@ -133,7 +138,7 @@ public class PlayerListener implements Listener {
 
         Player player = event.getPlayer();
         PlayerConfEntry entry = playerConf.get(player);
-        
+
         if (player == null) {
             return;
         }
@@ -416,9 +421,12 @@ public class PlayerListener implements Listener {
 
         if (conf.getWorlds().contains(event.getEntity().getWorld().getName().toLowerCase())) {
 
+            PlayerConfEntry entry;
+
             // Check if a player break a ItemFrame
             if (event.getDamager() instanceof Player
-                    && !playerConf.get((Player) event.getDamager()).isAdminMod()
+                    && (entry = playerConf.get((Player) event.getDamager())) != null // Citizen bugfix
+                    && !entry.isAdminMod()
                     && event.getEntity() instanceof ItemFrame) {
 
                 Player player = (Player) event.getDamager();
@@ -450,7 +458,8 @@ public class PlayerListener implements Listener {
                     EntityType et = entity.getType();
 
                     // kill en entity (none player)
-                    if (!playerConf.get(player).isAdminMod()
+                    if ((entry = playerConf.get((Player) event.getDamager())) != null // Citizen bugfix
+                            && !entry.isAdminMod()
                             && ((land instanceof Land && ((Land) land).isBanned(player.getName()))
                             || (entity instanceof Animals
                             && !checkPermission(land, player, PermissionType.ANIMAL_KILL))
@@ -595,12 +604,12 @@ public class PlayerListener implements Listener {
                 return;
             }
             entry.setLastLand(land);
-            
+
             // Update player in the lands
-            if(landOld != null && landOld != land) {
+            if (landOld != null && landOld != land) {
                 landOld.removePlayerInLand(player);
             }
-            if(land != null) {
+            if (land != null) {
                 land.addPlayerInLand(player);
             }
         }

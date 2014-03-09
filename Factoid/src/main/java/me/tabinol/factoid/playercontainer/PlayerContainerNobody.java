@@ -1,5 +1,7 @@
 package me.tabinol.factoid.playercontainer;
 
+import me.tabinol.factoid.lands.Land;
+
 public class PlayerContainerNobody extends PlayerContainer implements PlayerContainerInterface {
 
     public PlayerContainerNobody() {
@@ -23,5 +25,10 @@ public class PlayerContainerNobody extends PlayerContainer implements PlayerCont
     public boolean hasAccess(String playerName) {
         
         return false;
+    }
+
+    @Override
+    public void setLand(Land land) {
+        
     }
 }

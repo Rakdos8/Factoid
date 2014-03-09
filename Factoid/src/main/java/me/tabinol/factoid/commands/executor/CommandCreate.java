@@ -11,7 +11,7 @@ import me.tabinol.factoid.lands.Areas.CuboidArea;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import me.tabinol.factoid.lands.permissions.PermissionType;
-import me.tabinol.factoid.lands.selection.Land.LandSelection;
+import me.tabinol.factoid.lands.selection.land.LandSelection;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import org.bukkit.ChatColor;
 

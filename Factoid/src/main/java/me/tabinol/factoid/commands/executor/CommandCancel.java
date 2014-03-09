@@ -3,8 +3,8 @@ package me.tabinol.factoid.commands.executor;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.players.PlayerConfEntry;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.lands.selection.Land.LandSelection;
-import me.tabinol.factoid.lands.selection.Area.AreaSelection;
+import me.tabinol.factoid.lands.selection.land.LandSelection;
+import me.tabinol.factoid.lands.selection.area.AreaSelection;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 

@@ -1,7 +1,7 @@
 package me.tabinol.factoid.playercontainer;
 
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.config.DependPlugin;
+import me.tabinol.factoid.lands.Land;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -42,5 +42,10 @@ public class PlayerContainerGroup extends PlayerContainer implements PlayerConta
     public String getPrint() {
         
         return ChatColor.BLUE + "G:" + ChatColor.WHITE + name;
+    }
+
+    @Override
+    public void setLand(Land land) {
+        
     }
 }

@@ -4,38 +4,36 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ConfBuilder {
 
-    private final String newline;
-    private final StringBuffer sb;
+    private final BufferedWriter br;
 
-    public ConfBuilder(String name) {
+    public ConfBuilder(String name, File file, int version) throws IOException {
 
-        sb = new StringBuffer();
-        newline = System.getProperty("line.separator");
-        writeVersion(StorageFlat.ACTUAL_VERSION);
+        FileWriter fr = new FileWriter(file, false);
+        br = new BufferedWriter(fr);
+        writeVersion(version);
         writeName(name);
     }
 
-    private void writeVersion(int version) {
+    private void writeVersion(int version) throws IOException {
 
         writeParam("Version", version);
     }
 
-    private void writeName(String name) {
+    private void writeName(String name) throws IOException {
 
         writeParam("Name", name);
     }
 
-    public void writeln(String string) {
+    public void writeln(String string) throws IOException {
 
-        sb.append(string).append(newline);
+        br.write(string);
+        br.newLine();
     }
 
-    public void writeParam(String paramName, String param) {
+    public void writeParam(String paramName, String param) throws IOException {
 
         if (param == null) {
             writeln(paramName + ":-null-");
@@ -44,22 +42,22 @@ public class ConfBuilder {
         }
     }
 
-    public void writeParam(String paramName, int param) {
+    public void writeParam(String paramName, int param) throws IOException {
 
         writeln(paramName + ":" + param);
     }
 
-    public void writeParam(String paramName, short param) {
+    public void writeParam(String paramName, short param) throws IOException {
 
         writeln(paramName + ":" + param);
     }
 
-    public void writeParam(String paramName, double param) {
+    public void writeParam(String paramName, double param) throws IOException {
 
         writeln(paramName + ":" + param);
     }
 
-    public void writeParam(String ParamName, String[] params) {
+    public void writeParam(String ParamName, String[] params) throws IOException {
 
         if (params == null) {
             return;
@@ -71,34 +69,8 @@ public class ConfBuilder {
         writeln("}");
     }
 
-    public void writeParam(String paramName, ConfBuilder[] cfs) {
-
-        if (cfs == null) {
-            return;
-        }
-        writeln(paramName + ":conflist{");
-        for (ConfBuilder cf : cfs) {
-            writeln("  {");
-            for (String line : cf.getConf().split(newline)) {
-                writeln("    " + line);
-            }
-            writeln("  }");
-        }
-        writeln("}");
-    }
-
-    public String getConf() {
-
-        return sb.toString();
-    }
-
-    public void save(File file) {
-        try {
-            FileWriter fr = new FileWriter(file, false);
-            BufferedWriter br = new BufferedWriter(fr);
-            br.write(sb.toString());
-        } catch (IOException ex) {
-            Logger.getLogger(ConfBuilder.class.getName()).log(Level.SEVERE, "Save land Error on file " + file.getName(), ex);
-        }
+    public void close() throws IOException {
+        
+        br.close();
     }
 }

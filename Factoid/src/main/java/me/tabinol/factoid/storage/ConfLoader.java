@@ -1,10 +1,12 @@
 package me.tabinol.factoid.storage;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.exceptions.FileLoadException;
 
 public class ConfLoader {
 
@@ -12,61 +14,69 @@ public class ConfLoader {
     private String name;
     private String param = null;
     private String value = null;
+    private final File file;
     private final BufferedReader br;
-    private ConfLoader child;
+    private String actLine = null; // Line read
+    private int actLineNb = 0; // Line nb
 
-    public ConfLoader(BufferedReader br) {
+    public ConfLoader(File file) throws FileLoadException {
 
-        this.br = br;
+        this.file = file;
+        FileReader fr = null;
+        try {
+            fr = new FileReader(file);
+        } catch (FileNotFoundException ex) {
+            // Impossible
+        }
+        br = new BufferedReader(fr);
         readVersion();
         readName();
     }
 
-    private void readVersion() {
-        
+    private void readVersion() throws FileLoadException {
+
         readParam();
         version = getValueInt();
     }
-    
-    private void readName() {
+
+    private void readName() throws FileLoadException {
 
         readParam();
         name = value;
 
     }
 
-    public String readln() {
+    public String readln() throws FileLoadException {
 
         String lrt;
 
+        actLineNb++;
+
         try {
-            String lr = br.readLine();
-            if (lr == null) {
-                return null;
-            }
-            lrt = lr.trim();
-            if (lrt.equals("") || lrt.equals("}")) {
-                return null;
-            }
-            Factoid.getLog().write("Readline: " + lrt);
-            return lrt;
+            actLine = br.readLine();
         } catch (IOException ex) {
-            Logger.getLogger(ConfLoader.class.getName()).log(Level.SEVERE, null, ex);
+            throw new FileLoadException(file.getName(), actLine, actLineNb, "Can't read the next line.");
         }
-        return null;
+
+        if (actLine == null) {
+            return null;
+        }
+        lrt = actLine.trim();
+        if (lrt.equals("") || lrt.equals("}")) {
+            return null;
+        }
+        Factoid.getLog().write("Readline: " + lrt);
+        return lrt;
     }
 
-    public boolean readParam() {
+    public boolean readParam() throws FileLoadException {
 
         String str = readln();
 
         if (str == null) {
             return false;
         }
-        if (str.endsWith(":conflist{")) {
-            param = str.replaceAll(":conflist\\{", "");
-            value = null;
-        } else if (str.endsWith("\\{")) {
+        if (str.endsWith("\\{")) {
             param = str.replaceAll("\\{", "");
             value = null;
         } else if (str.contains(":")) {
@@ -92,22 +102,34 @@ public class ConfLoader {
         return value;
     }
 
-    public int getValueInt() {
+    public int getValueInt() throws FileLoadException {
 
-        return Integer.parseInt(value);
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException ex) {
+            throw new FileLoadException(file.getName(), actLine, actLineNb, "Can't read the Integer parameter.");
+        }
     }
 
-    public short getValueShort() {
+    public short getValueShort() throws FileLoadException {
 
+        try {
         return Short.parseShort(value);
-    }
-    
-    public double getValueDouble() {
-        
-        return Double.parseDouble(value);
+        } catch (NumberFormatException ex) {
+            throw new FileLoadException(file.getName(), actLine, actLineNb, "Can't read the Short parameter.");
+        }
     }
 
-    public String getNextString() {
+    public double getValueDouble() throws FileLoadException {
+
+        try {
+        return Double.parseDouble(value);
+        } catch (NumberFormatException ex) {
+            throw new FileLoadException(file.getName(), actLine, actLineNb, "Can't read the Double parameter.");
+        }
+    }
+
+    public String getNextString() throws FileLoadException {
 
         return readln();
     }
@@ -116,19 +138,34 @@ public class ConfLoader {
 
         return name;
     }
-    
+
     public int getVersion() {
-        
+
         return version;
     }
 
-    public void startChild() {
+    public String getFileName() {
 
-        child = new ConfLoader(br);
+        return file.getName();
     }
 
-    public ConfLoader getChild() {
+    // Used for errors
+    public int getLineNb() {
 
-        return child;
+        return actLineNb;
+    }
+
+    // Used for errors
+    public String getLine() {
+
+        return actLine;
+    }
+
+    public void close() throws FileLoadException {
+        try {
+            br.close();
+        } catch (IOException ex) {
+            throw new FileLoadException(file.getName(), actLine, actLineNb, "Impossible to close the file.");
+        }
     }
 }

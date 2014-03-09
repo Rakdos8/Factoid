@@ -35,4 +35,10 @@ public class PlayerContainerOwner extends PlayerContainer implements PlayerConta
         
         return land;
     }
+
+    @Override
+    public void setLand(Land land) {
+
+        this.land = land;
+    }
 }

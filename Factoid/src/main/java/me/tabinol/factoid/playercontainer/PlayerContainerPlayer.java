@@ -1,5 +1,6 @@
 package me.tabinol.factoid.playercontainer;
 
+import me.tabinol.factoid.lands.Land;
 import org.bukkit.ChatColor;
 
 public class PlayerContainerPlayer extends PlayerContainer implements PlayerContainerInterface {
@@ -32,5 +33,10 @@ public class PlayerContainerPlayer extends PlayerContainer implements PlayerCont
     public String getPrint() {
 
         return ChatColor.DARK_RED + "P:" + ChatColor.WHITE + name;
+    }
+
+    @Override
+    public void setLand(Land land) {
+        
     }
 }

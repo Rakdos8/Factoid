@@ -36,4 +36,10 @@ public class PlayerContainerVisitor extends PlayerContainer implements PlayerCon
         
         return land;
     }
+
+    @Override
+    public void setLand(Land land) {
+    
+        this.land = land;
+    }
 }

@@ -50,7 +50,7 @@ public class Land extends DummyLand {
             parent.addChild(this);
             this.factionTerritory = parent.factionTerritory;
         }
-        this.owner = owner;
+        setOwner(owner);
         this.genealogy = genealogy;
         if (!Factoid.getStorage().isInLoad()) {
             if (!Factoid.getLands().defaultConf.flags.isEmpty()) {
@@ -240,12 +240,14 @@ public class Land extends DummyLand {
 
     public void setOwner(PlayerContainer owner) {
 
+        owner.setLand(this);
         this.owner = owner;
         doSave();
     }
 
     public void addResident(PlayerContainer resident) {
 
+        resident.setLand(this);
         residents.add(resident);
         doSave();
     }
@@ -277,6 +279,7 @@ public class Land extends DummyLand {
 
     public void addBanned(PlayerContainer banned) {
 
+        banned.setLand(this);
         banneds.add(banned);
         doSave();
 
@@ -515,10 +518,10 @@ public class Land extends DummyLand {
         for (Player player : playersInLand) {
             if (!Factoid.getPlayerConf().isVanished(player) || Factoid.getPlayerConf().get(fromPlayer).isAdminMod()) {
                 playerList.add(player);
-                for (Land landChild : children.values()) {
-                    playerList.addAll(landChild.getPlayersInLandNoVanish(fromPlayer));
-                }
             }
+        }
+        for (Land landChild : children.values()) {
+            playerList.addAll(landChild.getPlayersInLandNoVanish(fromPlayer));
         }
 
         return playerList;

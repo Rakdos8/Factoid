@@ -41,6 +41,10 @@ public class DummyLand {
 
         EnumMap<PermissionType, Permission> permPlayer;
 
+        if (this instanceof Land) {
+            pc.setLand((Land) this);
+        }
+        
         if (!permissions.containsKey(pc)) {
             permPlayer = new EnumMap<PermissionType, Permission>(PermissionType.class);
             permissions.put(pc, permPlayer);

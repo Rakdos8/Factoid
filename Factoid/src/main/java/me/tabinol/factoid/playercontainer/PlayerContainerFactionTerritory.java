@@ -39,4 +39,10 @@ public class PlayerContainerFactionTerritory extends PlayerContainer implements 
         
         return land;
     }
+
+    @Override
+    public void setLand(Land land) {
+     
+        this.land = land;
+    }
 }
