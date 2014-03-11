@@ -8,6 +8,7 @@ import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.config.DependPlugin;
 import me.tabinol.factoid.config.players.PlayerStaticConfig;
+import me.tabinol.factoid.economy.PlayerMoney;
 import me.tabinol.factoid.factions.Factions;
 import me.tabinol.factoid.lands.Lands;
 import me.tabinol.factoid.lands.approve.ApproveNotif;
@@ -37,6 +38,7 @@ public class Factoid extends JavaPlugin {
     private static Lands lands;
     private static String version;
     private static DependPlugin dependPlugin;
+    private static PlayerMoney playerMoney;
     private static ScoreBoard Scoreboard;
 
     @Override
@@ -50,6 +52,11 @@ public class Factoid extends JavaPlugin {
         conf = new Config();
         log = new Log();
         dependPlugin = new DependPlugin();
+        if(conf.useEconomy() == true && dependPlugin.getEconomy() != null) {
+            playerMoney = new PlayerMoney();
+        } else {
+            playerMoney = null;
+        }
         playerConf = new PlayerStaticConfig();
         playerConf.addAll();
         language = new Lang();
@@ -73,8 +80,12 @@ public class Factoid extends JavaPlugin {
     
     public void reload() {
         
-        reloadConfig();
         conf.reloadConfig();
+        if(conf.useEconomy() == true && dependPlugin.getEconomy() != null) {
+            playerMoney = new PlayerMoney();
+        } else {
+            playerMoney = null;
+        }
         log.setDebug(conf.isDebug());
         language.reloadConfig();
         factions = new Factions();
@@ -159,4 +170,9 @@ public class Factoid extends JavaPlugin {
         return mavenAppProperties;
     }
     
+    
+    public static PlayerMoney getPlayerMoney() {
+        
+        return playerMoney;
+    }
 }

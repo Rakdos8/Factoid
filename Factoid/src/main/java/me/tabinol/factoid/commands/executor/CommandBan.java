@@ -71,6 +71,9 @@ public class CommandBan extends CommandExec {
                 entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.LISTROWNULL"));
             }
             new ChatPage("COMMAND.BANNED.LISTSTART", stList.toString(), entity.player, land.getName()).getPage(1);
+        
+        } else {
+            throw new FactoidCommandException("Missing information command", entity.player, "GENERAL.MISSINGINFO");
         }
     }
 }

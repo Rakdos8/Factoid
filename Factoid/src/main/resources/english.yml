@@ -22,15 +22,16 @@ HELP:
     13: "/factoid expand : Expand the land."
     14: "/factoid flag : Flags of the land."
     15: "/factoid kick : (*) Kick a player from a land."
-    16: "/factoid notify : (*) Set/Unset land notification."
-    17: "/factoid owner : Owner of the land."
-    18: "/factoid page : View a command result page."
-    19: "/factoid permission : Permissions of the land."
-    20: "/factoid priority : Priority of the land."
-    21: "/factoid rename : Rename a land."
-    22: "/factoid resident : Resident of the land."
-    23: "/factoid who : (*) Show players on a land."
-    24: "(*) If the land is not selected, the name can be the last parameter."
+    16: "/factoid money : Argent du terrain."
+    17: "/factoid notify : (*) Set/Unset land notification."
+    18: "/factoid owner : Owner of the land."
+    19: "/factoid page : View a command result page."
+    20: "/factoid permission : Permissions of the land."
+    21: "/factoid priority : Priority of the land."
+    22: "/factoid rename : Rename a land."
+    23: "/factoid resident : Resident of the land."
+    24: "/factoid who : (*) Show players on a land."
+    25: "(*) If the land is not selected, the name can be the last parameter."
   SELECT:
     1: "/factoid select <here/land name> : Select a land for modification."
     2: "/factoid select : Start the visal selection."
@@ -69,9 +70,13 @@ HELP:
     2: "/factoid flag set <flag> <value> : Add a flag."
     3: "/factoid flag unset <flag> : Remove a flag."
   KICK:
-    15: "/factoid kick [player] <land> : Kick a player from a land."
+    1: "/factoid kick [player] <land> : Kick a player from a land."
+  MONEY:
+    1: "/factoid money balance : Show the money balance of the land."
+    2: "/factoid money deposit <amount> : Deposit money."
+    3: "/factoid money withdraw <amount> : Withdraw money."
   NOTIFY:
-    16: "/factoid notify <land> : Set/Unset land notification."
+    1: "/factoid notify <land> : Set/Unset land notification."
   OWNER:
     1: "/factoid owner <player container> : Change the owner of the land."
   PAGE:
@@ -272,6 +277,12 @@ COMMAND:
     NOTINLAND: "This player is not on the land."
     DONE: "% is now kicked of land '%'."
     KICKED: "You have been kicked of land '%'."
+  ECONOMY:
+    NOTAVAILABLE: "Economy not available."
+    LANDBALANCE: "The balance of the land '%' is '%'."
+    INVALIDAMOUNT: "Invalid amount."
+    LANDDEPOSIT: "You added '%' to land '%'."
+    LANDWITHDRAW: "you removed '%' from land '%'."
 ACTION:
   BANNED: "You are banned from the land %!"
   NOENTRY: "You can not enter in the land %!"

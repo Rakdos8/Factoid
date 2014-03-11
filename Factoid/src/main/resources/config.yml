@@ -41,7 +41,7 @@ land:
     Flags: [MESSAGE_JOIN, MESSAGE_QUIT]
   BeaconLight: false               #Set beacon ligth effect of an selection
 economy:
-  PricebyCube: 100
+  PricebyCube: 0.01
   MinPriceLocation: 1
   MaxPriceLocation: 1
   MinPriceSell: 1

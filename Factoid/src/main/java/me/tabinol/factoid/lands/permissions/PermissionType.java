@@ -1,7 +1,5 @@
 package me.tabinol.factoid.lands.permissions;
 
-// Ceux qui sont en commentaire ne sont pas fait
-
 public enum PermissionType {
     
     UNDEFINED(false),
@@ -44,17 +42,17 @@ public enum PermissionType {
     //TNT(true),
     AUTO_HEAL(false),
     POTION_SPLASH(true),
-    // *** LAND PERM (PAS FAIT)***
     RESIDENT_MANAGER(false),
     LAND_CREATE(false),
-    LAND_ENTER(true), // sauf lui
+    LAND_ENTER(true),
     LAND_REMOVE(false),
     LAND_KICK(false),
     LAND_BAN(false),
     LAND_WHO(false),
     LAND_NOTIFY(false),
     MONEY_DEPOSIT(false),
-    MONEY_WITHDRAW(false);
+    MONEY_WITHDRAW(false),
+    MONEY_BALANCE(false);
     
     private final boolean baseValue;
     

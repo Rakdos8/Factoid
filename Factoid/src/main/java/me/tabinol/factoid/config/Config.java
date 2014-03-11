@@ -16,7 +16,7 @@ public class Config {
     public static final String NEWLINE = System.getProperty("line.separator");
     public static final String GLOBAL = "_global_";
     private final Factoid thisPlugin;
-    private final FileConfiguration config;
+    private FileConfiguration config;
     // Configuration
     private boolean debug = false;
     public boolean isDebug() { return debug; }
@@ -75,20 +75,20 @@ public class Config {
     private int maxLandHigh = 255;
     public int getMaxLandHigh() { return maxLandHigh; }
     
-    private int priceByCube = 1;
-    public int getPriceByCube() { return priceByCube; }
+    private double priceByCube = 1;
+    public double getPriceByCube() { return priceByCube; }
     
-    private int minPriceLocation = 1;
-    public int getMinPriceLocation() { return minPriceLocation; }
+    private double minPriceLocation = 1;
+    public double getMinPriceLocation() { return minPriceLocation; }
     
-    private int maxPriceLocation = 1;
-    public int getMaxPriceLocation() { return maxPriceLocation; }
+    private double maxPriceLocation = 1;
+    public double getMaxPriceLocation() { return maxPriceLocation; }
     
-    private int minPriceSell = 1;
-    public int getMinPriceSell() { return minPriceSell; }
+    private double minPriceSell = 1;
+    public double getMinPriceSell() { return minPriceSell; }
     
-    private int maxPriceSell = 1;
-    public int maxPriceSell() { return maxPriceSell; }
+    private double maxPriceSell = 1;
+    public double maxPriceSell() { return maxPriceSell; }
     
     private boolean beaconLight = false;
     public boolean isBeaconLight() { return beaconLight; }
@@ -115,6 +115,8 @@ public class Config {
 
     public final void reloadConfig() {
 
+        thisPlugin.reloadConfig();
+        config = thisPlugin.getConfig();
         getConfig();
     }
 
@@ -146,11 +148,11 @@ public class Config {
         overrideExplosions = config.getBoolean("general.OverrideExplosions");
 
         if (useEconomy) {
-            priceByCube = config.getInt("economy.PricebyCube");
-            minPriceSell = config.getInt("economy.MinPriceSell");
-            maxPriceSell = config.getInt("economy.MaxPriceSell");
-            minPriceLocation = config.getInt("economy.MinPriceLocation");
-            maxPriceLocation = config.getInt("economy.MaxPriceLocation");
+            priceByCube = config.getDouble("economy.PricebyCube");
+            minPriceSell = config.getDouble("economy.MinPriceSell");
+            maxPriceSell = config.getDouble("economy.MaxPriceSell");
+            minPriceLocation = config.getDouble("economy.MinPriceLocation");
+            maxPriceLocation = config.getDouble("economy.MaxPriceLocation");
         }
 
         ownerConfigFlag = Collections.synchronizedSet(EnumSet.noneOf(FlagType.class));

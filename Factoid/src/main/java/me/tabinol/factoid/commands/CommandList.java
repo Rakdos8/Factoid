@@ -25,7 +25,8 @@ public enum CommandList {
     HELP,
     KICK,
     WHO,
-    NOTIFY;
+    NOTIFY,
+    MONEY;
 
     // If a command has a second name
     public enum SecondName {

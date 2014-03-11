@@ -59,6 +59,9 @@ public class CommandResident extends CommandExec {
                 entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RESIDENT.LISTROWNULL"));
             }
             new ChatPage("COMMAND.RESIDENT.LISTSTART", stList.toString(), entity.player, land.getName()).getPage(1);
+        
+        } else {
+            throw new FactoidCommandException("Missing information command", entity.player, "GENERAL.MISSINGINFO");
         }
     }
 }

@@ -73,6 +73,9 @@ public class CommandPermission extends CommandExec {
                 entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.LISTROWNULL"));
             }
             new ChatPage("COMMAND.PERMISSION.LISTSTART", stList.toString(), entity.player, land.getName()).getPage(1);
+
+        } else {
+            throw new FactoidCommandException("Missing information command", entity.player, "GENERAL.MISSINGINFO");
         }
     }
 }

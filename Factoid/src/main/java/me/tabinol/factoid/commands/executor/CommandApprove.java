@@ -95,6 +95,8 @@ public class CommandApprove extends CommandExec {
             } else {
                 throw new FactoidCommandException("Approve", entity.sender, "GENERAL.MISSINGPERMISSION");
             }
+        } else {
+            throw new FactoidCommandException("Missing information command", entity.sender, "GENERAL.MISSINGINFO");
         }
     }
 }

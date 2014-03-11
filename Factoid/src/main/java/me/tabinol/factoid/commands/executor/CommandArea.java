@@ -107,7 +107,7 @@ public class CommandArea extends CommandExec {
             }
             new ChatPage("COMMAND.CURRENT.LAND.AREA", stList.toString(), entity.sender, land.getName()).getPage(1);
         } else {
-            throw new FactoidCommandException("Area", entity.sender, "COMMAND.REMOVE.AREA.INVALID");
+            throw new FactoidCommandException("Missing information command", entity.sender, "GENERAL.MISSINGINFO");
         }
     }
 

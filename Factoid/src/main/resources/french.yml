@@ -22,15 +22,16 @@ HELP:
     13: "/factoid expand : Étendre un terrain."
     14: "/factoid flag : Drapeaux des terrains."
     15: "/factoid kick : (*) Jeter un joueur hors du terrain."
-    16: "/factoid notify : (*) Activer/Désactiver la notification de terrain."
-    17: "/factoid owner : Le propriétaire du terrain."
-    18: "/factoid page : Voir la page du résultat d'une commande."
-    19: "/factoid permission : Permissions du terrain."
-    20: "/factoid priority : Priorité du terrain."
-    21: "/factoid rename : Renommer un terrain."
-    22: "/factoid resident : Résidents du terrain."
-    23: "/factoid who : (*) Lister les joueurs sur un terrain."
-    24: "(*) Si un terrain n'est pas sélectionné, le nom du celui-ci peut être le dernier argument."
+    16: "/factoid money : Argent du terrain."
+    17: "/factoid notify : (*) Activer/Désactiver la notification de terrain."
+    18: "/factoid owner : Le propriétaire du terrain."
+    19: "/factoid page : Voir la page du résultat d'une commande."
+    20: "/factoid permission : Permissions du terrain."
+    21: "/factoid priority : Priorité du terrain."
+    22: "/factoid rename : Renommer un terrain."
+    23: "/factoid resident : Résidents du terrain."
+    24: "/factoid who : (*) Lister les joueurs sur un terrain."
+    25: "(*) Si un terrain n'est pas sélectionné, le nom du celui-ci peut être le dernier argument."
   SELECT:
     1: "/factoid select <here/nom du terrain> : Sélectionner un terrain pour une modification."
     2: "/factoid select : Démarrer la sélection visuelle."
@@ -70,6 +71,10 @@ HELP:
     3: "/factoid flag unset <drapeau> : Enlève un drapeau."
   KICK:
     1: "/factoid kick <joueur> [terrain] : Jeter un joueur hors du terrain."
+  MONEY:
+    1: "/factoid money balance : Montrer le montant d'argent du terrain."
+    2: "/factoid money deposit <montant> : Déposer de l'argent."
+    3: "/factoid money withdraw <montant> : retirer de l'argent."
   NOTIFY:
     1: "/factoid notify [terrain] : Activer/Désactiver la notification de terrain."
   OWNER:
@@ -95,7 +100,7 @@ SCOREBOARD:
 GENERAL:
   MISSINGPERMISSION: "Désolé, vous n'avez pas la permission."
   ERROR: "Il y a une erreur, contactez un administrateur."
-  MISSINGINFO: "Il manque des information, vérifier la commande."
+  MISSINGINFO: "Il manque des informations, vérifier la commande."
   QUIT:
     EXPENDMODE: "Quittez le mode expansion."
     FLAGSMODE: "Quittez le mode drapeau avant."
@@ -271,6 +276,12 @@ COMMAND:
     NOTINLAND: "Ce joueur n'est pas sur le terrain."
     DONE: "% a été éjecté du terrain '%'."
     KICKED: "Vous avez été éjecté du terrain '%'."
+  ECONOMY:
+    NOTAVAILABLE: "Économie non disponible."
+    LANDBALANCE: "La balance du terrain '%' est '%'."
+    INVALIDAMOUNT: "Montant invalide."
+    LANDDEPOSIT: "Vous avez ajouté '%' au terrain '%'."
+    LANDWITHDRAW: "you avez enlevé '%' au terrain '%'."
 ACTION:
   BANNED: "Vous êtes banni du terrain %!"
   NOENTRY: "Vous ne pouvez pas entrez sur le terrain %!"

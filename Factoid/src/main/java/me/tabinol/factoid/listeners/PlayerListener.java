@@ -188,12 +188,7 @@ public class PlayerListener implements Listener {
                     new CommandSelect(player, new ArgList(new String[]{"here"}, player),
                             event.getClickedBlock().getLocation()).commandExecute();
                 } catch (FactoidCommandException ex) {
-                    Logger.getLogger(PlayerListener.class.getName()).log(Level.SEVERE, null, ex);
-                    try {
-                        throw new FactoidCommandException("On player Select", player, "GENERAL.ERROR");
-                    } catch (FactoidCommandException ex1) {
-                        // Empty
-                    }
+                    // Empty, message is sent by the catch
                 }
 
                 event.setCancelled(true);
@@ -203,19 +198,14 @@ public class PlayerListener implements Listener {
                     && action == Action.RIGHT_CLICK_BLOCK
                     && player.getItemInHand().getTypeId() == conf.getSelectItem()
                     && ((entry = playerConf.get(player)).getLandSelection() != null
-                    || entry.getLandSelected() != null)
-                    && ((entry = playerConf.get(player)).getAreaSelection() != null
+                    || entry.getLandSelected() != null
+                    || (entry = playerConf.get(player)).getAreaSelection() != null
                     || entry.getAreaSelected() != null)) {
 
                 try {
                     new CommandCancel(entry, false).commandExecute();
                 } catch (FactoidCommandException ex) {
-                    Logger.getLogger(PlayerListener.class.getName()).log(Level.SEVERE, null, ex);
-                    try {
-                        throw new FactoidCommandException("On player Cancel", player, "GENERAL.ERROR");
-                    } catch (FactoidCommandException ex1) {
-                        // Empty
-                    }
+                    // Empty, message is sent by the catch
                 }
 
                 event.setCancelled(true);
@@ -458,8 +448,8 @@ public class PlayerListener implements Listener {
                     EntityType et = entity.getType();
 
                     // kill en entity (none player)
-                    if (event.getDamager() instanceof Player &&
-                            (entry = playerConf.get((Player) event.getDamager())) != null // Citizens bugfix
+                    if (event.getDamager() instanceof Player
+                            && (entry = playerConf.get((Player) event.getDamager())) != null // Citizens bugfix
                             && !entry.isAdminMod()
                             && ((land instanceof Land && ((Land) land).isBanned(player.getName()))
                             || (entity instanceof Animals
