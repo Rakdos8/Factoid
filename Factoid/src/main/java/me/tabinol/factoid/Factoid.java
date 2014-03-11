@@ -1,3 +1,20 @@
+/*
+ Factoid: Lands and Factions plugin for Minecraft server
+ Copyright (C) 2014 Kaz00, Tabinol
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package me.tabinol.factoid;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -43,7 +60,7 @@ public class Factoid extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        
+
         mavenAppProperties = new MavenAppProperties();
         mavenAppProperties.loadProperties();
         // Static access to «this» Factoid
@@ -52,7 +69,7 @@ public class Factoid extends JavaPlugin {
         conf = new Config();
         log = new Log();
         dependPlugin = new DependPlugin();
-        if(conf.useEconomy() == true && dependPlugin.getEconomy() != null) {
+        if (conf.useEconomy() == true && dependPlugin.getEconomy() != null) {
             playerMoney = new PlayerMoney();
         } else {
             playerMoney = null;
@@ -77,11 +94,11 @@ public class Factoid extends JavaPlugin {
         getCommand("factoid").setExecutor(CommandListener);
         log.write(Factoid.getLanguage().getMessage("ENABLE"));
     }
-    
+
     public void reload() {
-        
+
         conf.reloadConfig();
-        if(conf.useEconomy() == true && dependPlugin.getEconomy() != null) {
+        if (conf.useEconomy() == true && dependPlugin.getEconomy() != null) {
             playerMoney = new PlayerMoney();
         } else {
             playerMoney = null;
@@ -94,10 +111,10 @@ public class Factoid extends JavaPlugin {
         approveNotif.stopNextRun();
         approveNotif.runApproveNotifLater();
     }
-    
+
     @Override
     public void onDisable() {
-        
+
         log.write(Factoid.getLanguage().getMessage("DISABLE"));
         approveNotif.stopNextRun();
         playerConf.removeAll();
@@ -106,73 +123,72 @@ public class Factoid extends JavaPlugin {
     }
 
     public static Factoid getThisPlugin() {
-        
+
         return thisPlugin;
     }
-    
+
     public static Config getConf() {
-        
+
         return conf;
     }
-    
+
     public static PlayerStaticConfig getPlayerConf() {
-        
+
         return playerConf;
     }
-    
+
     public static Lang getLanguage() {
-        
+
         return language;
     }
-    
+
     public static ScoreBoard getScoreboard() {
-        
+
         return Scoreboard;
     }
-    
+
     public static Log getLog() {
-        
+
         return log;
     }
-    
+
     public static Factions getFactions() {
-        
+
         return factions;
     }
-    
+
     public static Lands getLands() {
-        
+
         return lands;
     }
-    
+
     public static Storage getStorage() {
-        
+
         return storage;
     }
-    
+
     public static String getVersion() {
-        
+
         return version;
     }
-    
+
     public static DependPlugin getDependPlugin() {
-        
+
         return dependPlugin;
     }
-    
+
     public static ApproveNotif getApproveNotif() {
-        
+
         return approveNotif;
     }
-    
+
     public static MavenAppProperties getMavenAppProperties() {
-        
+
         return mavenAppProperties;
     }
-    
-    
+
     public static PlayerMoney getPlayerMoney() {
-        
+
         return playerMoney;
     }
 }
