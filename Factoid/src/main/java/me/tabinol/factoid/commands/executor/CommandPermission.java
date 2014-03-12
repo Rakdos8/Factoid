@@ -47,7 +47,7 @@ public class CommandPermission extends CommandExec {
             Permission perm = entity.argList.getPermissionFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.playerName));
             if (perm.getPermType() == PermissionType.LAND_ENTER
                     && perm.getValue() != perm.getPermType().baseValue()
-                    && land.isLocationInside(land.getWord().getSpawnLocation())) {
+                    && land.isLocationInside(land.getWorld().getSpawnLocation())) {
                 throw new FactoidCommandException("Permission", entity.player, "COMMAND.PERMISSION.NOENTERNOTINSPAWN");
             }
             land.addPermission(pc, perm);

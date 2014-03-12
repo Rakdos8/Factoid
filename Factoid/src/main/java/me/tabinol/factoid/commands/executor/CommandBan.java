@@ -49,7 +49,7 @@ public class CommandBan extends CommandExec {
                     new PlayerContainerType[]{PlayerContainerType.EVERYBODY,
                         PlayerContainerType.OWNER, PlayerContainerType.VISITOR,
                         PlayerContainerType.RESIDENT});
-            if (land.isLocationInside(land.getWord().getSpawnLocation())) {
+            if (land.isLocationInside(land.getWorld().getSpawnLocation())) {
                 throw new FactoidCommandException("Banned", entity.player, "COMMAND.BANNED.NOTINSPAWN");
             }
             land.addBanned(pc);

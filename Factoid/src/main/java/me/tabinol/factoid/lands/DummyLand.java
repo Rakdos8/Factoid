@@ -49,7 +49,7 @@ public class DummyLand {
         return worldName;
     }
 
-    public World getWord() {
+    public World getWorld() {
 
         return Factoid.getThisPlugin().getServer().getWorld(worldName);
     }
