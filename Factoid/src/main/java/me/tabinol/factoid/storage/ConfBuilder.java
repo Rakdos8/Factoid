@@ -21,22 +21,29 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.UUID;
 
 public class ConfBuilder {
 
     private final BufferedWriter br;
 
-    public ConfBuilder(String name, File file, int version) throws IOException {
+    public ConfBuilder(String name, UUID uuid, File file, int version) throws IOException {
 
         FileWriter fr = new FileWriter(file, false);
         br = new BufferedWriter(fr);
         writeVersion(version);
+        writeUUID(uuid);
         writeName(name);
     }
 
     private void writeVersion(int version) throws IOException {
 
         writeParam("Version", version);
+    }
+
+    private void writeUUID(UUID uuid) throws IOException {
+
+        writeParam("UUID", uuid.toString());
     }
 
     private void writeName(String name) throws IOException {

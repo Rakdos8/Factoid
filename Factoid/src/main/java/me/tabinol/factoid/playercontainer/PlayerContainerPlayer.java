@@ -17,43 +17,110 @@
  */
 package me.tabinol.factoid.playercontainer;
 
+import java.util.UUID;
 import me.tabinol.factoid.lands.Land;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
-public class PlayerContainerPlayer extends PlayerContainer implements PlayerContainerInterface {
+public class PlayerContainerPlayer extends PlayerContainer {
 
-    public PlayerContainerPlayer(String playerName) {
+    private UUID minecraftUUID; // UUID of player in Minecraft (Change only form null to UUID?)
+    private final UUID factoidUUID; // Never Changed
+    private String playerName;
+    private Player player; // Is player id the player is online
+    
+    // Compare before create
+    protected PlayerContainerPlayer(UUID factoidUUID, String playerName, UUID MinecraftUUID) {
 
-        super(playerName, PlayerContainerType.PLAYER);
+        super("", PlayerContainerType.PLAYER);
+        this.factoidUUID = factoidUUID;
+        this.minecraftUUID = MinecraftUUID;
+        name = factoidUUID.toString(); // Change the name to the Factoid UUID
+        this.playerName = playerName.toLowerCase();
+        player = null;
     }
 
     @Override
     public boolean equals(PlayerContainer container2) {
-
-        return container2 instanceof PlayerContainerPlayer
-                && name.equalsIgnoreCase(container2.getName());
+        
+        return container2 instanceof PlayerContainerPlayer &&
+                factoidUUID.equals(((PlayerContainerPlayer) container2).factoidUUID);
     }
 
     @Override
     public PlayerContainer copyOf() {
-
-        return new PlayerContainerPlayer(name);
+        
+        return new PlayerContainerPlayer(factoidUUID, name, minecraftUUID);
     }
 
     @Override
-    public boolean hasAccess(String playerName) {
-
-        return (name.equalsIgnoreCase(playerName));
+    public boolean hasAccess(Player player) {
+        
+        if(player != null) {
+            return player.getUniqueId().equals(minecraftUUID);
+        } else {
+            return false;
+        }
     }
 
     @Override
     public String getPrint() {
 
-        return ChatColor.DARK_RED + "P:" + ChatColor.WHITE + name;
+        StringBuilder sb = new StringBuilder();
+        
+        // If the name is not complete, add (*)
+        if(minecraftUUID == null) {
+            sb.append(ChatColor.WHITE).append("(*)");
+        }
+        
+        sb.append(ChatColor.DARK_RED).append("P:");
+        sb.append(ChatColor.WHITE).append(playerName);
+        
+        return sb.toString();
     }
 
     @Override
     public void setLand(Land land) {
+
+    }
+    
+    public UUID getFactoidUUID() {
         
+        return factoidUUID;
+    }
+    
+    public UUID getMinecraftUUID() {
+        
+        return minecraftUUID;
+    }
+    
+    public void setMinecraftUUID(UUID minecraftUUID) {
+        
+        this.minecraftUUID = minecraftUUID;
+    }
+    
+    public String getPlayerName() {
+        
+        return playerName;
+    }
+    
+    public void setPlayerNmae(String playerName) {
+        
+        this.playerName = playerName.toLowerCase();
+    }
+    
+    public boolean isOnline() {
+        
+        return player != null;
+    }
+    
+    public void setPlayer(Player player) {
+        
+        this.player = player;
+    }
+    
+    public Player getPlayer() {
+        
+        return player;
     }
 }

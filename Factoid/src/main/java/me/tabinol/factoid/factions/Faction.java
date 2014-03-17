@@ -19,18 +19,22 @@ package me.tabinol.factoid.factions;
 
 import java.util.Collection;
 import java.util.TreeSet;
+import java.util.UUID;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 
 public class Faction {
 
     private String name;
-    private TreeSet<String> players;
+    private final UUID uuid;
+    private TreeSet<PlayerContainerPlayer> players;
     private boolean autoSave = true;
 
-    public Faction(String name) {
+    public Faction(String name, UUID uuid) {
 
         this.name = name.toLowerCase();
-        this.players = new TreeSet<String>();
+        this.uuid = uuid;
+        this.players = new TreeSet<PlayerContainerPlayer>();
         doSave();
     }
 
@@ -38,31 +42,36 @@ public class Faction {
 
         return name;
     }
-
-    public void addPlayer(String playerName) {
-
-        players.add(playerName.toLowerCase());
-        doSave();
-        Factoid.getLog().write(playerName + " is added in faction " + name);
+    
+    public UUID getUUID() {
+        
+        return uuid;
     }
 
-    public boolean removePlayer(String playerName) {
+    public void addPlayer(PlayerContainerPlayer player) {
 
-        if (players.remove(playerName.toLowerCase())) {
+        players.add(player);
+        doSave();
+        Factoid.getLog().write(player.toString() + " is added in faction " + name);
+    }
+
+    public boolean removePlayer(PlayerContainerPlayer player) {
+
+        if (players.remove(player)) {
             doSave();
-            Factoid.getLog().write(playerName + " is removed in faction " + name);
+            Factoid.getLog().write(player.toString() + " is removed in faction " + name);
             return true;
         }
 
         return false;
     }
 
-    public boolean isPlayerInList(String playerName) {
+    public boolean isPlayerInList(PlayerContainerPlayer player) {
 
-        return players.contains(playerName.toLowerCase());
+        return players.contains(player);
     }
 
-    public Collection<String> getPlayers() {
+    public Collection<PlayerContainerPlayer> getPlayers() {
 
         return players;
     }

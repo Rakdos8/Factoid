@@ -49,7 +49,7 @@ public class CommandApprove extends CommandExec {
             int t = 0;
             for (String approveName : approveList.getApproveList()) {
                 Approve app = approveList.getApprove(approveName);
-                if (isApprover || app.getOwner().hasAccess(entity.playerName)) {
+                if (isApprover || app.getOwner().hasAccess(entity.player)) {
                     stList.append(ChatColor.WHITE + Factoid.getLanguage().getMessage("COLLISION.SHOW.LIST",
                             ChatColor.BLUE + app.getLandName() + ChatColor.WHITE,
                             app.getOwner().getPrint() + ChatColor.WHITE,
@@ -80,7 +80,7 @@ public class CommandApprove extends CommandExec {
             // Check permission
             if (approve == null || (curArg.equalsIgnoreCase("confirm") && !isApprover)
                     || ((curArg.equalsIgnoreCase("cancel") || curArg.equalsIgnoreCase("info"))
-                    && !(isApprover || approve.getOwner().hasAccess(entity.playerName)))) {
+                    && !(isApprover || approve.getOwner().hasAccess(entity.player)))) {
                 throw new FactoidCommandException("Approve", entity.sender, "COLLISION.SHOW.PARAMNULL");
             }
 

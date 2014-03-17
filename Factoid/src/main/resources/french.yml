@@ -244,8 +244,8 @@ COMMAND:
     DONE: "Vous avez ajusté la priorité de '%' à %."
   INFO:
     LAND:
-      LISTSTART: "-Information du terrain '%'-"
-      NAME: "Le terrain sélectionné est: % "
+      LISTSTART: "-Information sur le terrain '%'-"
+      NAME: "Nom: %, ID: %"
       PRIORITY: "Priorité: %, "
       PARENT: "Parent: % "
       OWNER: "Propriétaire: %"

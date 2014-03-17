@@ -23,7 +23,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class PlayerContainerGroup extends PlayerContainer implements PlayerContainerInterface {
+public class PlayerContainerGroup extends PlayerContainer {
     
     public PlayerContainerGroup(String groupName) {
         
@@ -44,9 +44,7 @@ public class PlayerContainerGroup extends PlayerContainer implements PlayerConta
     }
 
     @Override
-    public boolean hasAccess(String playerName) {
-        
-        Player player = Bukkit.getPlayer(playerName);
+    public boolean hasAccess(Player player) {
         
         if(player != null) {
             return Factoid.getDependPlugin().getPermission().playerInGroup(player, name);

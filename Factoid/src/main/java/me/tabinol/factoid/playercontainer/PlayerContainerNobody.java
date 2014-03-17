@@ -18,8 +18,9 @@
 package me.tabinol.factoid.playercontainer;
 
 import me.tabinol.factoid.lands.Land;
+import org.bukkit.entity.Player;
 
-public class PlayerContainerNobody extends PlayerContainer implements PlayerContainerInterface {
+public class PlayerContainerNobody extends PlayerContainer {
 
     public PlayerContainerNobody() {
         
@@ -39,7 +40,7 @@ public class PlayerContainerNobody extends PlayerContainer implements PlayerCont
     }
 
     @Override
-    public boolean hasAccess(String playerName) {
+    public boolean hasAccess(Player player) {
         
         return false;
     }

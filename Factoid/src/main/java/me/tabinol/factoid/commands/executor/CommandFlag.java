@@ -54,7 +54,7 @@ public class CommandFlag extends CommandExec {
 
             // Permission check is on getFlagFromArg
             
-            LandFlag landFlag = entity.argList.getFlagFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.playerName));
+            LandFlag landFlag = entity.argList.getFlagFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.player));
             land.addFlag(landFlag);
             entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.ISDONE", landFlag.getFlagType().toString(), 
                     landFlag.getValuePrint() + ChatColor.YELLOW));
@@ -62,7 +62,7 @@ public class CommandFlag extends CommandExec {
 
         } else if (curArg.equalsIgnoreCase("unset")) {
         
-            FlagType flagType = entity.argList.getFlagTypeFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.playerName));
+            FlagType flagType = entity.argList.getFlagTypeFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.player));
             if (!land.removeFlag(flagType)) {
                 throw new FactoidCommandException("Flags", entity.player, "COMMAND.FLAGS.REMOVENOTEXIST");
             }

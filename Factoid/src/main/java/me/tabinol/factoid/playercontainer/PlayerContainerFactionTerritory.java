@@ -17,9 +17,11 @@
  */
 package me.tabinol.factoid.playercontainer;
 
+import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.Land;
+import org.bukkit.entity.Player;
 
-public class PlayerContainerFactionTerritory extends PlayerContainer implements PlayerContainerInterface {
+public class PlayerContainerFactionTerritory extends PlayerContainer {
     
     private Land land;
     
@@ -43,13 +45,13 @@ public class PlayerContainerFactionTerritory extends PlayerContainer implements 
     }
 
     @Override
-    public boolean hasAccess(String playerName) {
+    public boolean hasAccess(Player player) {
         
         if(land.getFactionTerritory() == null) {
             return false;
         }
         
-        return land.getFactionTerritory().isPlayerInList(playerName);
+        return land.getFactionTerritory().isPlayerInList(Factoid.getPlayerConf().get(player).getPlayerContainer());
     }
 
     public Land getLand() {

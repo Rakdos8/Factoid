@@ -32,7 +32,7 @@ import org.bukkit.entity.Animals;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Flying;
-import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.Hanging;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Slime;
 import org.bukkit.entity.TNTPrimed;
@@ -273,7 +273,7 @@ public class WorldListener implements Listener {
     public void onEntityDamage(EntityDamageEvent event) {
 
         if (conf.isOverrideExplosions() && conf.getWorlds().contains(event.getEntity().getWorld().getName().toLowerCase())
-                && event.getEntity() instanceof ItemFrame
+                && event.getEntity() instanceof Hanging
                 && (event.getCause() == DamageCause.BLOCK_EXPLOSION || event.getCause() == DamageCause.ENTITY_EXPLOSION
                 || event.getCause() == DamageCause.PROJECTILE)) {
             // Check for ItemFrame

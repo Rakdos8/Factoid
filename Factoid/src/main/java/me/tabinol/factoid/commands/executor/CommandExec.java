@@ -129,10 +129,10 @@ public abstract class CommandExec implements CommandInterface {
         if (mustBeAdminMod && entity.playerConf.isAdminMod()) {
             canDo = true;
         }
-        if (mustBeOwner && land.getOwner().hasAccess(entity.playerName)) {
+        if (mustBeOwner && land.getOwner().hasAccess(entity.player)) {
             canDo = true;
         }
-        if (neededPerm != null && land.checkPermissionAndInherit(entity.playerName, neededPerm)) {
+        if (neededPerm != null && land.checkPermissionAndInherit(entity.player, neededPerm)) {
             canDo = true;
         }
         if (bukkitPermission != null && entity.sender.hasPermission(bukkitPermission)) {
@@ -161,7 +161,7 @@ public abstract class CommandExec implements CommandInterface {
                     entity.sender.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COLLISION.GENERAL.NEEDAPPROVE", landName));
                     Factoid.getLog().write("land " + landName + " has collision and needs approval.");
                     Factoid.getLands().getApproveList().addApprove(new Approve(landName, action, removeId, newArea,
-                            new PlayerContainerPlayer(entity.playerName), parent));
+                            entity.playerConf.getPlayerContainer(), parent));
                     return true;
                 } else if (Factoid.getConf().getAllowCollision() == Config.AllowCollisionType.FALSE || allowApprove == false) {
                     throw new FactoidCommandException("Land collision", entity.sender, "COLLISION.GENERAL.CANNOTDONE");

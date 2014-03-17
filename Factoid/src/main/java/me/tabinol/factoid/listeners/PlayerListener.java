@@ -42,9 +42,11 @@ import org.bukkit.entity.Animals;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Hanging;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Tameable;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -229,7 +231,7 @@ public class PlayerListener implements Listener {
 
             } else if (!playerConf.get(player).isAdminMod()) {
                 land = Factoid.getLands().getLandOrOutsideArea(event.getClickedBlock().getLocation());
-                if ((land instanceof Land && ((Land) land).isBanned(player.getName()))
+                if ((land instanceof Land && ((Land) land).isBanned(player))
                         || (((action == Action.RIGHT_CLICK_BLOCK // BEGIN of USE
                         && (ml == Material.WOODEN_DOOR || ml == Material.TRAP_DOOR
                         || ml == Material.STONE_BUTTON || ml == Material.WOOD_BUTTON
@@ -298,7 +300,7 @@ public class PlayerListener implements Listener {
 
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
 
-            if ((land instanceof Land && ((Land) land).isBanned(event.getPlayer().getName()))
+            if ((land instanceof Land && ((Land) land).isBanned(event.getPlayer()))
                     || !checkPermission(land, event.getPlayer(), PermissionType.BUILD)
                     || !checkPermission(land, event.getPlayer(), PermissionType.BUILD_PLACE)) {
                 MessagePermission(event.getPlayer());
@@ -316,7 +318,7 @@ public class PlayerListener implements Listener {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getEntity().getLocation());
             Player player = event.getPlayer();
 
-            if ((land instanceof Land && ((Land) land).isBanned(player.getName()))
+            if ((land instanceof Land && ((Land) land).isBanned(player))
                     || !checkPermission(land, player, PermissionType.BUILD)
                     || !checkPermission(land, player, PermissionType.BUILD_PLACE)) {
                 MessagePermission(player);
@@ -334,7 +336,7 @@ public class PlayerListener implements Listener {
             Player player = (Player) event.getPlayer();
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getRightClicked().getLocation());
 
-            if ((land instanceof Land && ((Land) land).isBanned(player.getName()))
+            if ((land instanceof Land && ((Land) land).isBanned(player))
                     || !checkPermission(land, player, PermissionType.BUILD)
                     || !checkPermission(land, player, PermissionType.BUILD_PLACE)) {
                 MessagePermission(player);
@@ -351,7 +353,7 @@ public class PlayerListener implements Listener {
 
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
 
-            if ((land instanceof Land && ((Land) land).isBanned(event.getPlayer().getName()))
+            if ((land instanceof Land && ((Land) land).isBanned(event.getPlayer()))
                     || !checkPermission(land, event.getPlayer(), PermissionType.BUILD)
                     || !checkPermission(land, event.getPlayer(), PermissionType.BUILD_DESTROY)) {
                 MessagePermission(event.getPlayer());
@@ -371,7 +373,7 @@ public class PlayerListener implements Listener {
 
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getEntity().getLocation());
 
-            if ((land instanceof Land && ((Land) land).isBanned(player.getName()))
+            if ((land instanceof Land && ((Land) land).isBanned(player))
                     || !checkPermission(land, player, PermissionType.BUILD)
                     || !checkPermission(land, player, PermissionType.BUILD_DESTROY)) {
                 MessagePermission(player);
@@ -415,7 +417,7 @@ public class PlayerListener implements Listener {
                 && !playerConf.get(event.getPlayer()).isAdminMod()) {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBed().getLocation());
 
-            if ((land instanceof Land && ((Land) land).isBanned(event.getPlayer().getName()))
+            if ((land instanceof Land && ((Land) land).isBanned(event.getPlayer()))
                     || (!checkPermission(land, event.getPlayer(), PermissionType.SLEEP))) {
                 MessagePermission(event.getPlayer());
                 event.setCancelled(true);
@@ -434,12 +436,12 @@ public class PlayerListener implements Listener {
             if (event.getDamager() instanceof Player
                     && (entry = playerConf.get((Player) event.getDamager())) != null // Citizens bugfix
                     && !entry.isAdminMod()
-                    && event.getEntity() instanceof ItemFrame) {
+                    && event.getEntity() instanceof Hanging) {
 
                 Player player = (Player) event.getDamager();
                 DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getEntity().getLocation());
 
-                if ((land instanceof Land && ((Land) land).isBanned(player.getName()))
+                if ((land instanceof Land && ((Land) land).isBanned(player))
                         || !checkPermission(land, player, PermissionType.BUILD)
                         || !checkPermission(land, player, PermissionType.BUILD_DESTROY)) {
                     MessagePermission(player);
@@ -447,15 +449,15 @@ public class PlayerListener implements Listener {
                 }
             } else {
                 Player player = null;
-                Arrow damagerArrow;
+                Projectile damagerProjectile;
 
                 // Check if the damager is a player
                 if (event.getDamager() instanceof Player) {
                     player = (Player) event.getDamager();
-                } else if (event.getDamager().getType() == EntityType.ARROW) {
-                    damagerArrow = (Arrow) event.getDamager();
-                    if (damagerArrow.getShooter() instanceof Player) {
-                        player = (Player) damagerArrow.getShooter();
+                } else if (event.getDamager() instanceof Projectile) {
+                    damagerProjectile = (Projectile) event.getDamager();
+                    if (damagerProjectile.getShooter() instanceof Player) {
+                        player = (Player) damagerProjectile.getShooter();
                     }
                 }
 
@@ -468,7 +470,7 @@ public class PlayerListener implements Listener {
                     if (event.getDamager() instanceof Player
                             && (entry = playerConf.get((Player) event.getDamager())) != null // Citizens bugfix
                             && !entry.isAdminMod()
-                            && ((land instanceof Land && ((Land) land).isBanned(player.getName()))
+                            && ((land instanceof Land && ((Land) land).isBanned(player))
                             || (entity instanceof Animals
                             && !checkPermission(land, player, PermissionType.ANIMAL_KILL))
                             || (entity instanceof Monster
@@ -487,11 +489,11 @@ public class PlayerListener implements Listener {
                         event.setCancelled(true);
 
                         // For PVP
-                    } else if (entity instanceof Player && playerConf.get((Player) entity) != null) { // Citizens bugfix
+                    } else if (entity instanceof Player && (entry = playerConf.get((Player) entity)) != null) { // Citizens bugfix
 
                         LandFlag flag;
-                        Faction faction = Factoid.getFactions().getPlayerFaction(player.getName());
-                        Faction factionVictime = Factoid.getFactions().getPlayerFaction(((Player) entity).getName());
+                        Faction faction = Factoid.getFactions().getPlayerFaction(playerConf.get(player).getPlayerContainer());
+                        Faction factionVictime = Factoid.getFactions().getPlayerFaction(entry.getPlayerContainer());
 
                         if (faction != null && faction == factionVictime
                                 && (flag = land.getFlagAndInherit(FlagType.FACTION_PVP)) != null && flag.getValueBoolean() == false) {
@@ -515,7 +517,7 @@ public class PlayerListener implements Listener {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlockClicked().getLocation());
             Material mt = event.getBucket();
 
-            if ((land instanceof Land && ((Land) land).isBanned(event.getPlayer().getName()))
+            if ((land instanceof Land && ((Land) land).isBanned(event.getPlayer()))
                     || (mt == Material.LAVA_BUCKET
                     && !checkPermission(land, event.getPlayer(), PermissionType.BUCKET_LAVA))
                     || (mt == Material.WATER_BUCKET
@@ -534,7 +536,7 @@ public class PlayerListener implements Listener {
 
                 DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
 
-                if ((land instanceof Land && ((Land) land).isBanned(event.getPlayer().getName()))
+                if ((land instanceof Land && ((Land) land).isBanned(event.getPlayer()))
                         || (!checkPermission(land, event.getPlayer(), PermissionType.FIRE))) {
                     MessagePermission(event.getPlayer());
                     event.setCancelled(true);
@@ -566,7 +568,7 @@ public class PlayerListener implements Listener {
 
     private boolean checkPermission(DummyLand land, Player player, PermissionType pt) {
 
-        return land.checkPermissionAndInherit(player.getName(), pt) == pt.baseValue();
+        return land.checkPermissionAndInherit(player, pt) == pt.baseValue();
     }
 
     private void MessagePermission(Player player) {

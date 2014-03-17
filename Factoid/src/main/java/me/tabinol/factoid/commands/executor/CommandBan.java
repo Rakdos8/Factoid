@@ -56,7 +56,7 @@ public class CommandBan extends CommandExec {
 
             // Check for kick the player if he is online and in the land
             for (Player pl : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
-                if (land.isPlayerinLandNoVanish(pl, entity.player) && pc.hasAccess(pl.getName())) {
+                if (land.isPlayerinLandNoVanish(pl, entity.player) && pc.hasAccess(pl)) {
                     new CommandKick(entity.player, new ArgList(new String[]{pl.getName()}, entity.player), land).commandExecute();
                 }
             }

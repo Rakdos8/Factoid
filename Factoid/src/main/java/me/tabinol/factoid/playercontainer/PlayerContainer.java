@@ -20,6 +20,7 @@ package me.tabinol.factoid.playercontainer;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.utilities.StringChanges;
 
 public abstract class PlayerContainer implements PlayerContainerInterface, Comparable<PlayerContainer> {
 
@@ -64,7 +65,7 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
             return new PlayerContainerNobody();
         }
         if (pct == PlayerContainerType.PLAYER) {
-            return new PlayerContainerPlayer(name);
+            return Factoid.getPlayerUUID().getPCPFromString(name);
         }
         if (pct == PlayerContainerType.PERMISSION) {
             return new PlayerContainerPermission(name);
@@ -77,7 +78,7 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
 
         return name;
     }
-
+    
     @Override
     public PlayerContainerType getContainerType() {
 
@@ -93,7 +94,9 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
         if (containerType.getValue() > t.containerType.getValue()) {
             return 1;
         }
-        return name.compareToIgnoreCase(t.name);
+
+        // No ignorecase (Already Lower, except UUID)
+        return name.compareTo(t.name);
     }
 
     @Override
@@ -101,10 +104,25 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
 
         return containerType.toString() + ":" + name;
     }
-    
+
     @Override
     public String getPrint() {
-        
+
         return containerType.toString();
+    }
+
+    public static PlayerContainer getFromString(String string) {
+
+        if (!string.contains(":")) {
+
+            // It is a player
+            return Factoid.getPlayerUUID().getPCPFromString(string);
+        } else {
+            
+            // We don't know
+            String strs[] = StringChanges.splitAddVoid(string, ":");
+            PlayerContainerType type = PlayerContainerType.getFromString(strs[0]);
+            return create(null, type, strs[1]);
+        }
     }
 }

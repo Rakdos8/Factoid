@@ -22,12 +22,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.UUID;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.FileLoadException;
 
 public class ConfLoader {
 
     private int version;
+    private UUID uuid;
     private String name;
     private String param = null;
     private String value = null;
@@ -47,6 +49,11 @@ public class ConfLoader {
         }
         br = new BufferedReader(fr);
         readVersion();
+        if(version >= 2) {
+            readUUID();
+        } else {
+            uuid = null;
+        }
         readName();
     }
 
@@ -54,6 +61,16 @@ public class ConfLoader {
 
         readParam();
         version = getValueInt();
+    }
+    
+    private void readUUID() throws FileLoadException {
+        
+        readParam();
+        try {
+        uuid = UUID.fromString(getValueString());
+        } catch(IllegalArgumentException ex) {
+            throw new FileLoadException(file.getName(), actLine, actLineNb, "Can't read UUID.");
+        }
     }
 
     private void readName() throws FileLoadException {
@@ -159,6 +176,11 @@ public class ConfLoader {
     public int getVersion() {
 
         return version;
+    }
+    
+    public UUID getUUID() {
+        
+        return uuid;
     }
 
     public String getFileName() {

@@ -62,9 +62,14 @@ public class PlayerStaticConfig {
 
     public void remove(CommandSender sender) {
 
+        PlayerConfEntry entry = playerConfList.get(sender);
+        
         // First, remove AutoCancelSelect
-        playerConfList.get(sender).setAutoCancelSelect(false);
+        entry.setAutoCancelSelect(false);
 
+        // Change player is offline
+        entry.getPlayerContainer().setPlayer(null);
+        
         playerConfList.remove(sender);
     }
 

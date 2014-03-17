@@ -29,6 +29,7 @@ import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
+import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -139,11 +140,11 @@ public class LandListener implements Listener {
 
             if (!playerConf.get(player).isAdminMod()) {
                 // is banned or can enter
-                if ((land.isBanned(player.getName())
-                        || land.checkPermissionAndInherit(player.getName(), PermissionType.LAND_ENTER) != PermissionType.LAND_ENTER.baseValue())
-                        && !land.isOwner(player.getName())) {
+                if ((land.isBanned(player)
+                        || land.checkPermissionAndInherit(player, PermissionType.LAND_ENTER) != PermissionType.LAND_ENTER.baseValue())
+                        && !land.isOwner(player)) {
                     String message;
-                    if (land.isBanned(player.getName())) {
+                    if (land.isBanned(player)) {
                         message = "ACTION.BANNED";
                     } else {
                         message = "ACTION.NOENTRY";
@@ -185,7 +186,7 @@ public class LandListener implements Listener {
         }
 
         //Check for Healing
-        if (dummyLand.checkPermissionAndInherit(player.getName(), PermissionType.AUTO_HEAL) != PermissionType.AUTO_HEAL.baseValue()) {
+        if (dummyLand.checkPermissionAndInherit(player, PermissionType.AUTO_HEAL) != PermissionType.AUTO_HEAL.baseValue()) {
             if (!playerHeal.contains(player)) {
                 playerHeal.add(player);
             }
@@ -211,8 +212,8 @@ public class LandListener implements Listener {
     private void checkForBannedPlayers(Land land, PlayerContainer pc, String message) {
 
         for (Player players : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
-            if (pc.hasAccess(players.getName())
-                    && !land.isOwner(players.getName())
+            if (pc.hasAccess(players)
+                    && !land.isOwner(players)
                     && !playerConf.get(players).isAdminMod()) {
                 tpSpawn(players, land, message);
             }
@@ -223,9 +224,12 @@ public class LandListener implements Listener {
     private void notifyPlayers(Land land, String message, Player playerIn) {
 
         Player player;
-
-        for (String playerName : land.getPlayersNotify()) {
-            if ((player = Factoid.getThisPlugin().getServer().getPlayer(playerName)) != null && player != playerIn
+        
+        for (PlayerContainerPlayer playerC : land.getPlayersNotify()) {
+            
+            player = playerC.getPlayer();
+            
+            if (player != null && player != playerIn
                     // Only adminmod can see vanish
                     && (!playerConf.isVanished(playerIn) || playerConf.get(player).isAdminMod())) {
                 player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage(

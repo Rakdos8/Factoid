@@ -22,10 +22,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
@@ -39,7 +41,7 @@ import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.Permission;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
-import me.tabinol.factoid.playercontainer.PlayerContainerType;
+import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.utilities.StringChanges;
 
 public class StorageFlat extends Storage implements StorageInt {
@@ -49,6 +51,7 @@ public class StorageFlat extends Storage implements StorageInt {
     public static final int FACTION_VERSION = Factoid.getMavenAppProperties().getPropertyInt("factionVersion");
     private String factionsDir;
     private String landsDir;
+    private boolean toResave = false; // If a new version of .conf file, we need to save again
 
     public StorageFlat() {
 
@@ -92,6 +95,15 @@ public class StorageFlat extends Storage implements StorageInt {
         loadFactions();
         loadLands();
         inLoad = false;
+
+        // New version, we have to save all
+        if (toResave) {
+            saveAll();
+        }
+        
+        // If there is modification in UUID
+        // And the file must be created because it is now a backup
+        Factoid.getPlayerUUID().saveAll();
     }
 
     private void loadFactions() {
@@ -143,15 +155,20 @@ public class StorageFlat extends Storage implements StorageInt {
 
         Faction faction;
         ConfLoader cf = null;
+        ArrayList<PlayerContainerPlayer> playerNames = new ArrayList<PlayerContainerPlayer>();
+        UUID uuid;
 
         try {
             cf = new ConfLoader(file);
             String str;
             int version = cf.getVersion();
-            faction = new Faction(cf.getName());
+            uuid = cf.getUUID();
+            if (uuid == null) {
+                toResave = true;
+            }
             cf.readParam();
             while ((str = cf.getNextString()) != null) {
-                faction.addPlayer(str);
+                playerNames.add((PlayerContainerPlayer) PlayerContainer.getFromString(str));
             }
 
             cf.close();
@@ -169,12 +186,18 @@ public class StorageFlat extends Storage implements StorageInt {
             return;
         }
 
-        Factoid.getFactions().createFaction(faction);
+        // Create Faction
+        faction = Factoid.getFactions().createFaction(cf.getName(), uuid);
+        for (PlayerContainerPlayer player : playerNames) {
+            faction.addPlayer(player);
+        }
     }
 
     private void loadLand(File file) {
 
+        int version;
         ConfLoader cf = null;
+        UUID uuid;
         String landName;
         Land land = null;
         Map<Integer, CuboidArea> areas = new TreeMap<Integer, CuboidArea>();
@@ -189,22 +212,27 @@ public class StorageFlat extends Storage implements StorageInt {
         Set<LandFlag> flags = new HashSet<LandFlag>();
         short priority;
         double money;
-        Set<String> pNotifs = new TreeSet<String>();
+        Set<PlayerContainerPlayer> pNotifs = new TreeSet<PlayerContainerPlayer>();
+        Land parent;
 
         try {
             cf = new ConfLoader(file);
             String str;
-            int version = cf.getVersion();
+            version = cf.getVersion();
+            uuid = cf.getUUID();
+            if (uuid == null) {
+                toResave = true;
+            }
             landName = cf.getName();
             cf.readParam();
-            String[] ownerS = StringChanges.splitAddVoid(cf.getValueString(), ":");
+            String ownerS = cf.getValueString();
             cf.readParam();
             parentName = cf.getValueString();
             cf.readParam();
             factionTerritory = cf.getValueString();
 
             // create owner (PlayerContainer)
-            owner = PlayerContainer.create(null, PlayerContainerType.getFromString(ownerS[0]), ownerS[1]);
+            owner = PlayerContainer.getFromString(ownerS);
 
             if (owner == null) {
                 throw new FileLoadException(file.getName(), cf.getLine(), cf.getLineNb(), "Invalid owner.");
@@ -222,15 +250,13 @@ public class StorageFlat extends Storage implements StorageInt {
 
             //Residents
             while ((str = cf.getNextString()) != null) {
-                String[] multiStr = StringChanges.splitAddVoid(str, ":");
-                residents.add(PlayerContainer.create(land, PlayerContainerType.getFromString(multiStr[0]), multiStr[1]));
+                residents.add(PlayerContainer.getFromString(str));
             }
             cf.readParam();
 
             //Banneds
             while ((str = cf.getNextString()) != null) {
-                String[] multiStr = StringChanges.splitAddVoid(str, ":");
-                banneds.add(PlayerContainer.create(land, PlayerContainerType.getFromString(multiStr[0]), multiStr[1]));
+                banneds.add(PlayerContainer.getFromString(str));
             }
             cf.readParam();
 
@@ -238,7 +264,7 @@ public class StorageFlat extends Storage implements StorageInt {
             while ((str = cf.getNextString()) != null) {
                 String[] multiStr = str.split(":");
                 EnumMap<PermissionType, Permission> permPlayer;
-                PlayerContainer pc = PlayerContainer.create(land, PlayerContainerType.getFromString(multiStr[0]), multiStr[1]);
+                PlayerContainer pc = PlayerContainer.getFromString(multiStr[0] + ":" + multiStr[1]);
                 PermissionType permType = PermissionType.valueOf(multiStr[2]);
                 if (!permissions.containsKey(pc)) {
                     permPlayer = new EnumMap<PermissionType, Permission>(PermissionType.class);
@@ -269,7 +295,7 @@ public class StorageFlat extends Storage implements StorageInt {
 
             //Players Notify
             while ((str = cf.getNextString()) != null) {
-                pNotifs.add(str);
+                pNotifs.add((PlayerContainerPlayer) PlayerContainer.getFromString(str));
             }
 
             cf.close();
@@ -291,15 +317,23 @@ public class StorageFlat extends Storage implements StorageInt {
         for (Map.Entry<Integer, CuboidArea> entry : areas.entrySet()) {
             if (!isLandCreated) {
                 if (parentName != null) {
+                    
+                    // Version 2 is UUID, not land name
+                    if (version >= 2) {
+                        parent = Factoid.getLands().getLand(UUID.fromString(parentName));
+                    } else {
+                        parent = Factoid.getLands().getLand(parentName);
+                    }
+                    
                     try {
-                        land = Factoid.getLands().createLand(landName, owner, entry.getValue(), Factoid.getLands().getLand(parentName),
-                                entry.getKey());
+                        land = Factoid.getLands().createLand(landName, owner, entry.getValue(), parent,
+                                entry.getKey(), uuid);
                     } catch (FactoidLandException ex) {
                         Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "Error on loading land: " + landName, ex);
                     }
                 } else {
                     try {
-                        land = Factoid.getLands().createLand(landName, owner, entry.getValue(), null, entry.getKey());
+                        land = Factoid.getLands().createLand(landName, owner, entry.getValue(), null, entry.getKey(), uuid);
                     } catch (FactoidLandException ex) {
                         Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "Error on loading land: " + landName, ex);
                     }
@@ -330,7 +364,7 @@ public class StorageFlat extends Storage implements StorageInt {
         }
         land.setPriority(priority);
         land.addMoney(money);
-        for (String pNotif : pNotifs) {
+        for (PlayerContainerPlayer pNotif : pNotifs) {
             land.addPlayerNotify(pNotif);
         }
     }
@@ -345,14 +379,14 @@ public class StorageFlat extends Storage implements StorageInt {
             }
 
             Factoid.getLog().write("Saving land: " + land.getName());
-            ConfBuilder cb = new ConfBuilder(land.getName(), getLandFile(land), LAND_VERSION);
+            ConfBuilder cb = new ConfBuilder(land.getName(), land.getUUID(), getLandFile(land), LAND_VERSION);
             cb.writeParam("Owner", land.getOwner().toString());
 
             //Parent
             if (land.getParent() == null) {
                 cb.writeParam("Parent", (String) null);
             } else {
-                cb.writeParam("Parent", land.getParent().getName());
+                cb.writeParam("Parent", land.getParent().getUUID().toString());
             }
 
             //factionTerritory
@@ -406,7 +440,11 @@ public class StorageFlat extends Storage implements StorageInt {
             cb.writeParam("Money", land.getMoney());
 
             // PlayersNotify
-            cb.writeParam("PlayersNotify", land.getPlayersNotify().toArray(new String[0]));
+            strs = new ArrayList<String>();
+            for (PlayerContainerPlayer pc : land.getPlayersNotify()) {
+                strs.add(pc.toString());
+            }
+            cb.writeParam("PlayersNotify", strs.toArray(new String[0]));
 
             cb.close();
         } catch (IOException ex) {
@@ -428,8 +466,13 @@ public class StorageFlat extends Storage implements StorageInt {
             }
 
             Factoid.getLog().write("Saving faction: " + faction.getName());
-            ConfBuilder cb = new ConfBuilder(faction.getName(), getFactionFile(faction), FACTION_VERSION);
-            cb.writeParam("Players", (String[]) faction.getPlayers().toArray());
+            ConfBuilder cb = new ConfBuilder(faction.getName(), faction.getUUID(), getFactionFile(faction), FACTION_VERSION);
+
+            List<String> strs = new ArrayList<String>();
+            for (PlayerContainerPlayer pc : faction.getPlayers()) {
+                strs.add(pc.toString());
+            }
+            cb.writeParam("Players", strs.toArray(new String[0]));
 
             cb.close();
         } catch (IOException ex) {
@@ -441,5 +484,18 @@ public class StorageFlat extends Storage implements StorageInt {
     public void removeFaction(Faction faction) {
 
         getFactionFile(faction).delete();
+    }
+
+    private void saveAll() {
+
+        for (Land land : Factoid.getLands().getLands()) {
+
+            land.forceSave();
+        }
+
+        for (Faction faction : Factoid.getFactions().getFactions()) {
+
+            faction.forceSave();
+        }
     }
 }

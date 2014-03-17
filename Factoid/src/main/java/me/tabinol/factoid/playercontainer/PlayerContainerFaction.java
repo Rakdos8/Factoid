@@ -17,11 +17,13 @@
  */
 package me.tabinol.factoid.playercontainer;
 
+import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.Land;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
-public class PlayerContainerFaction extends PlayerContainer implements PlayerContainerInterface {
+public class PlayerContainerFaction extends PlayerContainer {
 
     private Faction faction;
 
@@ -50,9 +52,9 @@ public class PlayerContainerFaction extends PlayerContainer implements PlayerCon
     }
 
     @Override
-    public boolean hasAccess(String playerName) {
+    public boolean hasAccess(Player player) {
 
-        return faction.isPlayerInList(playerName);
+        return faction.isPlayerInList(Factoid.getPlayerConf().get(player).getPlayerContainer());
     }
 
     @Override

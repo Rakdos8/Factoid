@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.UUID;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.event.PlayerContainerLandBanEvent;
 import me.tabinol.factoid.factions.Faction;
@@ -34,6 +35,7 @@ import me.tabinol.factoid.lands.permissions.Permission;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerNobody;
+import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -42,9 +44,10 @@ public class Land extends DummyLand {
     public static final short DEFAULT_PRIORITY = 10;
     public static final short MINIM_PRIORITY = 0;
     public static final short MAXIM_PRIORITY = 100;
+    private final UUID uuid;
     private String name;
     private Map<Integer, CuboidArea> areas = new TreeMap<Integer, CuboidArea>();
-    private Map<String, Land> children = new TreeMap<String, Land>();
+    private Map<UUID, Land> children = new TreeMap<UUID, Land>();
     private short priority = DEFAULT_PRIORITY; // Do not put more then 100000!!!!
     private int genealogy = 0; // 0 = first, 1 = child, 2 = child of child, ...
     private Land parent = null;
@@ -54,13 +57,15 @@ public class Land extends DummyLand {
     private boolean autoSave = true;
     private Faction factionTerritory = null;
     private double money = 0L;
-    private Set<String> playerNotify = new TreeSet<String>();
+    private Set<PlayerContainerPlayer> playerNotify = new TreeSet<PlayerContainerPlayer>();
     private final Set<Player> playersInLand = new HashSet<Player>();
 
     // Please use createLand in Lands class to create a Land
-    protected Land(String landName, PlayerContainer owner, CuboidArea area, int genealogy, Land parent, int areaId) {
+    protected Land(String landName, UUID uuid, PlayerContainer owner,
+            CuboidArea area, int genealogy, Land parent, int areaId) {
 
         super(area.getWorldName().toLowerCase());
+        this.uuid = uuid;
         name = landName.toLowerCase();
         if (parent != null) {
             this.parent = parent;
@@ -81,7 +86,7 @@ public class Land extends DummyLand {
     public void setDefault() {
         owner = new PlayerContainerNobody();
         residents = new TreeSet<PlayerContainer>();
-        playerNotify = new TreeSet<String>();
+        playerNotify = new TreeSet<PlayerContainerPlayer>();
         permissions = new TreeMap<PlayerContainer, EnumMap<PermissionType, Permission>>();
         flags = Factoid.getLands().defaultConf.flags.clone();
         copyPerms();
@@ -194,18 +199,6 @@ public class Land extends DummyLand {
         return areas.values();
     }
 
-    /*
-     public boolean isCollision(CuboidArea area2) {
-
-     for (CuboidArea area1 : areas.values()) {
-     if (area1.isCollision(area2)) {
-     return true;
-     }
-     }
-
-     return false;
-     }
-     */
     public boolean isLocationInside(Location loc) {
 
         for (CuboidArea area1 : areas.values()) {
@@ -220,6 +213,11 @@ public class Land extends DummyLand {
     public String getName() {
 
         return name;
+    }
+    
+    public UUID getUUID() {
+        
+        return uuid;
     }
 
     protected void setName(String newName) {
@@ -236,9 +234,9 @@ public class Land extends DummyLand {
         return owner;
     }
 
-    public boolean isOwner(String playerName) {
+    public boolean isOwner(Player player) {
 
-        return owner.hasAccess(playerName);
+        return owner.hasAccess(player);
     }
 
     public Faction getFactionTerritory() {
@@ -283,10 +281,10 @@ public class Land extends DummyLand {
         return residents;
     }
 
-    public boolean isResident(String playerName) {
+    public boolean isResident(Player player) {
 
         for (PlayerContainer resident : residents) {
-            if (resident.hasAccess(playerName)) {
+            if (resident.hasAccess(player)) {
                 return true;
             }
         }
@@ -319,10 +317,10 @@ public class Land extends DummyLand {
         return banneds;
     }
 
-    public boolean isBanned(String playerName) {
+    public boolean isBanned(Player player) {
 
         for (PlayerContainer banned : banneds) {
-            if (banned.hasAccess(playerName)) {
+            if (banned.hasAccess(player)) {
                 return true;
             }
         }
@@ -383,19 +381,19 @@ public class Land extends DummyLand {
 
     private void addChild(Land land) {
 
-        children.put(land.name, land);
+        children.put(land.uuid, land);
         doSave();
     }
 
-    protected void removeChild(String landName) {
+    protected void removeChild(UUID uuid) {
 
-        children.remove(landName);
+        children.remove(uuid);
         doSave();
     }
 
-    public Land getChild(String landName) {
+    public Land getChild(UUID uuid) {
 
-        return children.get(landName);
+        return children.get(uuid);
     }
 
     public Collection<Land> getChildren() {
@@ -421,17 +419,17 @@ public class Land extends DummyLand {
         }
     }
 
-    protected Boolean checkLandPermissionAndInherit(String playerName, PermissionType pt, boolean onlyInherit) {
+    protected Boolean checkLandPermissionAndInherit(Player player, PermissionType pt, boolean onlyInherit) {
 
         Boolean permValue;
 
-        if ((permValue = getPermission(playerName, pt, onlyInherit)) != null) {
+        if ((permValue = getPermission(player, pt, onlyInherit)) != null) {
             return permValue;
         } else if (parent != null) {
-            return parent.checkPermissionAndInherit(playerName, pt, true);
+            return parent.checkPermissionAndInherit(player, pt, true);
         }
 
-        return Factoid.getLands().getPermissionInWorld(worldName, playerName, pt, true);
+        return Factoid.getLands().getPermissionInWorld(worldName, player, pt, true);
     }
 
     protected LandFlag getLandFlagAndInherit(FlagType ft, boolean onlyInherit) {
@@ -464,26 +462,26 @@ public class Land extends DummyLand {
         return money;
     }
 
-    public void addPlayerNotify(String playerName) {
+    public void addPlayerNotify(PlayerContainerPlayer player) {
 
-        playerNotify.add(playerName.toLowerCase());
+        playerNotify.add(player);
         doSave();
     }
 
-    public boolean removePlayerNotify(String playerName) {
+    public boolean removePlayerNotify(PlayerContainerPlayer player) {
 
-        boolean ret = playerNotify.remove(playerName.toLowerCase());
+        boolean ret = playerNotify.remove(player);
         doSave();
 
         return ret;
     }
 
-    public boolean isPlayerNotify(String playerName) {
+    public boolean isPlayerNotify(PlayerContainerPlayer player) {
 
-        return playerNotify.contains(playerName.toLowerCase());
+        return playerNotify.contains(player);
     }
 
-    public Set<String> getPlayersNotify() {
+    public Set<PlayerContainerPlayer> getPlayersNotify() {
 
         return playerNotify;
     }

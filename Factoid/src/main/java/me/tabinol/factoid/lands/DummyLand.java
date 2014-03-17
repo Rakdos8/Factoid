@@ -30,6 +30,7 @@ import me.tabinol.factoid.lands.permissions.Permission;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 public class DummyLand {
 
@@ -111,28 +112,28 @@ public class DummyLand {
         return permissions.get(pc).values();
     }
 
-    public Boolean checkPermissionAndInherit(String playerName, PermissionType pt) {
+    public Boolean checkPermissionAndInherit(Player player, PermissionType pt) {
 
-        return checkPermissionAndInherit(playerName, pt, false);
+        return checkPermissionAndInherit(player, pt, false);
     }
 
-    public Boolean checkPermissionNoInherit(String playerName, PermissionType pt) {
+    public Boolean checkPermissionNoInherit(Player player, PermissionType pt) {
 
-        return getPermission(playerName, pt, false);
+        return getPermission(player, pt, false);
     }
 
-    protected Boolean checkPermissionAndInherit(String playerName, PermissionType pt, boolean onlyInherit) {
+    protected Boolean checkPermissionAndInherit(Player player, PermissionType pt, boolean onlyInherit) {
 
         if (this instanceof Land) {
-            return ((Land) this).checkLandPermissionAndInherit(playerName, pt, onlyInherit);
+            return ((Land) this).checkLandPermissionAndInherit(player, pt, onlyInherit);
         }
-        return Factoid.getLands().getPermissionInWorld(worldName, playerName, pt, onlyInherit);
+        return Factoid.getLands().getPermissionInWorld(worldName, player, pt, onlyInherit);
     }
 
-    protected Boolean getPermission(String playerName, PermissionType pt, boolean onlyInherit) {
+    protected Boolean getPermission(Player player, PermissionType pt, boolean onlyInherit) {
 
         for (Map.Entry<PlayerContainer, EnumMap<PermissionType, Permission>> permissionEntry : permissions.entrySet()) {
-            if (permissionEntry.getKey().hasAccess(playerName)) {
+            if (permissionEntry.getKey().hasAccess(player)) {
                 Permission perm = permissionEntry.getValue().get(pt);
                 if (perm != null) {
                     Factoid.getLog().write("Container: " + permissionEntry.getKey().toString() + ", PermissionType: " + perm.getPermType() + ", Value: " + perm.getValue() + ", Heritable: " + perm.isHeritable());

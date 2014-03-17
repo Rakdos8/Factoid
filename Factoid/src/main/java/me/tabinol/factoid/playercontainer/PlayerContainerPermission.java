@@ -21,47 +21,45 @@ import me.tabinol.factoid.lands.Land;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
 
-public class PlayerContainerPermission extends PlayerContainer implements PlayerContainerInterface {
+public class PlayerContainerPermission extends PlayerContainer {
+
+    private Permission perm;
     
     public PlayerContainerPermission(String bukkitPermission) {
-        
+
         super(bukkitPermission, PlayerContainerType.PERMISSION);
+        perm = new Permission(bukkitPermission);
     }
-    
+
     @Override
     public boolean equals(PlayerContainer container2) {
-        
-        return container2 instanceof PlayerContainerPermission &&
-                name.equalsIgnoreCase(container2.getName());
+
+        return container2 instanceof PlayerContainerPermission
+                && name.equalsIgnoreCase(container2.getName());
     }
 
     @Override
     public PlayerContainer copyOf() {
-        
+
         return new PlayerContainerPermission(name);
     }
 
     @Override
-    public boolean hasAccess(String playerName) {
-        
-        Player player = Bukkit.getPlayer(playerName);
-        
-        if(player != null) {
-            return player.hasPermission(name);
-        } else {
-            return false;
-        }
+    public boolean hasAccess(Player player) {
+
+        return player.hasPermission(perm);
     }
-    
+
     @Override
     public String getPrint() {
-        
+
         return ChatColor.GRAY + "B:" + ChatColor.WHITE + name;
     }
-    
+
     @Override
     public void setLand(Land land) {
-        
+
     }
 }

@@ -246,7 +246,7 @@ COMMAND:
   INFO:
     LAND:
       LISTSTART: "-Land info for '%'-"
-      NAME: "The Land selected is: % "
+      NAME: "Name: %, ID: %"
       PRIORITY: "Priority: %, "
       PARENT: "Parent: % "
       OWNER: "Owner: %"

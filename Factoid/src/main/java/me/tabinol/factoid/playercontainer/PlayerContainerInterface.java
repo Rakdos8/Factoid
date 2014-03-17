@@ -18,6 +18,7 @@
 package me.tabinol.factoid.playercontainer;
 
 import me.tabinol.factoid.lands.Land;
+import org.bukkit.entity.Player;
 
 public interface PlayerContainerInterface {
     
@@ -27,9 +28,11 @@ public interface PlayerContainerInterface {
     
     public boolean equals(PlayerContainer container2);
     
+    public int compareTo(PlayerContainer t);
+    
     public PlayerContainer copyOf();
     
-    public boolean hasAccess(String playerName);
+    public boolean hasAccess(Player player);
     
     public String getPrint();
     

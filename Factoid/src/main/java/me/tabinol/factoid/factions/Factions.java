@@ -17,30 +17,52 @@
  */
 package me.tabinol.factoid.factions;
 
+import java.util.Collection;
 import java.util.TreeMap;
+import java.util.UUID;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 
 public class Factions {
-    
-    private TreeMap<String, Faction> factionList;
-    
+
+    private final TreeMap<String, Faction> factionList;
+    private final TreeMap<UUID, Faction> factionUUIDList;
+
     public Factions() {
-        
+
         factionList = new TreeMap<String, Faction>();
+        factionUUIDList = new TreeMap<UUID, Faction>();
     }
-    
-    public boolean createFaction(Faction faction) {
-        
-        if (factionList.containsKey(faction.getName())) {
-            return false;
+
+    public Faction createFaction(String factionName) {
+
+        return createFaction(factionName, null);
+
+    }
+
+    public Faction createFaction(String factionName, UUID uuid) {
+
+        Faction faction;
+
+        if (factionList.containsKey(factionName)) {
+            return null;
         }
-        factionList.put(faction.getName(), faction);
+
+        if (uuid == null) {
+            uuid = UUID.randomUUID();
+        }
+
+        faction = new Faction(factionName, uuid);
+
+        factionList.put(factionName, faction);
+        factionUUIDList.put(uuid, faction);
         Factoid.getLog().write("add faction: " + faction.getName());
-        return true;
+
+        return faction;
     }
-    
+
     public boolean removeFaction(Faction faction) {
-        
+
         if (!factionList.containsKey(faction.getName())) {
             return false;
         }
@@ -49,9 +71,9 @@ public class Factions {
         Factoid.getLog().write("remove faction: " + faction.getName());
         return true;
     }
-    
+
     public boolean removeFaction(String factionName) {
-        
+
         String factionLower;
 
         if (factionName == null || !factionList.containsKey(factionLower = factionName.toLowerCase())) {
@@ -59,22 +81,25 @@ public class Factions {
         }
         return removeFaction(factionList.get(factionLower));
     }
-    
+
     public Faction getFaction(String factionName) {
-        
+
         return factionList.get(factionName.toLowerCase());
     }
-    
-    public Faction getPlayerFaction(String playerName) {
-        
-        String playerLower = playerName.toLowerCase();
-        
-        for(Faction faction : factionList.values()) {
-            if(faction.isPlayerInList(playerLower)) {
+
+    public Faction getPlayerFaction(PlayerContainerPlayer player) {
+
+        for (Faction faction : factionList.values()) {
+            if (faction.isPlayerInList(player)) {
                 return faction;
             }
         }
-        
+
         return null;
+    }
+
+    public Collection<Faction> getFactions() {
+
+        return factionList.values();
     }
 }

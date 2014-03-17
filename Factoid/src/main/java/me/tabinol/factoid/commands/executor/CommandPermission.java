@@ -44,7 +44,7 @@ public class CommandPermission extends CommandExec {
         if (curArg.equalsIgnoreCase("set")) {
 
             PlayerContainer pc = entity.argList.getPlayerContainerFromArg(land, null);
-            Permission perm = entity.argList.getPermissionFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.playerName));
+            Permission perm = entity.argList.getPermissionFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.player));
             if (perm.getPermType() == PermissionType.LAND_ENTER
                     && perm.getValue() != perm.getPermType().baseValue()
                     && land.isLocationInside(land.getWorld().getSpawnLocation())) {
@@ -59,7 +59,7 @@ public class CommandPermission extends CommandExec {
             // Check for kick the player if he is online and in the land
             if (perm.getPermType() == PermissionType.LAND_ENTER && perm.getValue() == false) {
                 for (Player pl : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
-                    if (land.isPlayerinLandNoVanish(pl, entity.player) && pc.hasAccess(pl.getName())) {
+                    if (land.isPlayerinLandNoVanish(pl, entity.player) && pc.hasAccess(pl)) {
                         new CommandKick(entity.player, new ArgList(new String[]{pl.getName()}, entity.player), land).commandExecute();
                     }
                 }
@@ -68,7 +68,7 @@ public class CommandPermission extends CommandExec {
         } else if (curArg.equalsIgnoreCase("unset")) {
 
             PlayerContainer pc = entity.argList.getPlayerContainerFromArg(land, null);
-            PermissionType pt = entity.argList.getPermissionTypeFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.playerName));
+            PermissionType pt = entity.argList.getPermissionTypeFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.player));
             if (!land.removePermission(pc, pt)) {
                 throw new FactoidCommandException("Permission", entity.player, "COMMAND.PERMISSION.REMOVENOTEXIST");
             }

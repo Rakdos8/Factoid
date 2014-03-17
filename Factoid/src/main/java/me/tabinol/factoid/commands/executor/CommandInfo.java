@@ -68,7 +68,7 @@ public class CommandInfo extends CommandExec {
             if (land == null) {
                 throw new FactoidCommandException("CommandInfo", player, "COMMAND.INFO.NOTEXIST");
             }
-            
+
             // If the land is in parameter, cancel Area
             area = null;
         }
@@ -82,19 +82,26 @@ public class CommandInfo extends CommandExec {
         if (land != null) {
             // Create list
             StringBuilder stList = new StringBuilder();
-            stList.append(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.NAME", ChatColor.GREEN + land.getName() + ChatColor.YELLOW) + NEWLINE);
+            stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.NAME",
+                    ChatColor.GREEN + land.getName() + ChatColor.YELLOW, ChatColor.GREEN + land.getUUID().toString() + ChatColor.YELLOW));
+            stList.append(NEWLINE);
             stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.PRIORITY", land.getPriority() + ""));
+            stList.append(NEWLINE);
             if (land.getParent() != null) {
-                stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.PARENT", land.getParent().getName()) + NEWLINE);
+                stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.PARENT", land.getParent().getName()));
+                stList.append(NEWLINE);
             }
-            stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.OWNER", land.getOwner().getPrint()) + NEWLINE);
+            stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.OWNER", land.getOwner().getPrint()));
+            stList.append(NEWLINE);
             stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.MAINPERMISSION",
                     getPermissionInColForPl(land, PermissionType.BUILD) + " "
                     + getPermissionInColForPl(land, PermissionType.USE) + " "
-                    + getPermissionInColForPl(land, PermissionType.OPEN)) + NEWLINE);
+                    + getPermissionInColForPl(land, PermissionType.OPEN)));
+            stList.append(NEWLINE);
             if (area != null) {
                 stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.ACTIVEAREA",
-                        "ID: " + area.getKey() + ", " + area.getPrint()) + NEWLINE);
+                        "ID: " + area.getKey() + ", " + area.getPrint()));
+                stList.append(NEWLINE);
             }
             // Create the multiple page
             new ChatPage("COMMAND.INFO.LAND.LISTSTART", stList.toString(), player, land.getName()).getPage(1);
@@ -106,7 +113,7 @@ public class CommandInfo extends CommandExec {
 
     private String getPermissionInColForPl(Land land, PermissionType pt) {
 
-        boolean result = land.checkPermissionAndInherit(playerName, pt);
+        boolean result = land.checkPermissionAndInherit(player, pt);
 
         if (result) {
             return ChatColor.GREEN + pt.toString();
