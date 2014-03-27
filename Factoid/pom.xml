@@ -21,7 +21,6 @@
         <factionVersion>2</factionVersion>
         <!-- *** Players UUID .conf version here here *** -->
         <playerUUIDVersion>1</playerUUIDVersion>
-        <DeployPass>null</DeployPass>
     </properties>
 
     <repositories>
@@ -141,6 +140,15 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.9.1</version>
                 <configuration>
@@ -177,6 +185,24 @@
                         </entry>
                     </entries>
                 </configuration>
+                <!-- Fix from here : http://code.google.com/p/maven-svn-revision-number-plugin/issues/detail?id=18 -->
+                <dependencies>
+                    <dependency>
+                        <groupId>org.tmatesoft.svnkit</groupId>
+                        <artifactId>svnkit</artifactId>
+                        <version>1.8.3-1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.tmatesoft.sqljet</groupId>
+                        <artifactId>sqljet</artifactId>
+                        <version>1.1.10</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>de.regnis.q.sequence</groupId>
+                        <artifactId>sequence-library</artifactId>
+                        <version>1.0.2</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>net.ju-n.maven.plugins</groupId>
