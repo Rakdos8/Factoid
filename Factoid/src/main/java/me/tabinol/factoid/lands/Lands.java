@@ -364,6 +364,8 @@ public class Lands {
         CuboidArea actualArea = null;
         Collection<CuboidArea> areas = getCuboidAreas(loc);
 
+        Factoid.getLog().write("Area check in" + loc.toString());
+        
         // Compare priorities of parents (or main)
         for (CuboidArea area : areas) {
 

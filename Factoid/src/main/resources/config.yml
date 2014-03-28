@@ -27,6 +27,8 @@ land:
                                      # or 0 for disabling
   SelectAutoCancel: 12000            # Time before auto cancel a selection
                                      # or 0 for disabling
+  MaxVisualSelect: 256               # High value = crash or severe lag
+  MaxVisualSelectFromPlayer: 128     # Same problem ;-)
   MaxLand: 1
   MinLandSize: 1
   MaxLandSize: 1

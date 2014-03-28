@@ -454,7 +454,9 @@ public class PlayerListener implements Listener {
                 // Check if the damager is a player
                 if (event.getDamager() instanceof Player) {
                     player = (Player) event.getDamager();
-                } else if (event.getDamager() instanceof Projectile) {
+                } else if (event.getDamager() instanceof Projectile 
+                        && event.getDamager().getType() != EntityType.EGG
+                        && event.getDamager().getType() != EntityType.SNOWBALL) {
                     damagerProjectile = (Projectile) event.getDamager();
                     if (damagerProjectile.getShooter() instanceof Player) {
                         player = (Player) damagerProjectile.getShooter();
