@@ -120,11 +120,11 @@ public class LandSelection extends Thread implements Listener {
     public CuboidArea toCuboidArea() {
 
         int x1 = CornerList.get("FrontCornerLeft").getBlockX();
-        int x2 = CornerList.get("BackCornerRigth").getBlockX();
+        int x2 = CornerList.get("BackCornerRight").getBlockX();
         int y1 = trueY1;
         int y2 = trueY2;
         int z1 = CornerList.get("FrontCornerLeft").getBlockZ();
-        int z2 = CornerList.get("BackCornerRigth").getBlockZ();
+        int z2 = CornerList.get("BackCornerRight").getBlockZ();
         
         return new CuboidArea(player.getWorld().getName(), x1, y1, z1, x2, y2, z2);
     }
