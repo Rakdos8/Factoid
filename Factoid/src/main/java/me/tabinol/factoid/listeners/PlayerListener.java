@@ -431,6 +431,7 @@ public class PlayerListener implements Listener {
         if (conf.getWorlds().contains(event.getEntity().getWorld().getName().toLowerCase())) {
 
             PlayerConfEntry entry;
+            PlayerConfEntry entryVictime;
 
             // Check if a player break a ItemFrame
             if (event.getDamager() instanceof Player
@@ -470,7 +471,7 @@ public class PlayerListener implements Listener {
 
                     // kill en entity (none player)
                     if (event.getDamager() instanceof Player
-                            && (entry = playerConf.get((Player) event.getDamager())) != null // Citizens bugfix
+                            && (entry = playerConf.get(player)) != null // Citizens bugfix
                             && !entry.isAdminMod()
                             && ((land instanceof Land && ((Land) land).isBanned(player))
                             || (entity instanceof Animals
@@ -491,11 +492,12 @@ public class PlayerListener implements Listener {
                         event.setCancelled(true);
 
                         // For PVP
-                    } else if (entity instanceof Player && (entry = playerConf.get((Player) entity)) != null) { // Citizens bugfix
+                    } else if (entity instanceof Player && (entryVictime = playerConf.get((Player) entity)) != null
+                            && (entry = playerConf.get(player)) != null) { // Citizens bugfix
 
                         LandFlag flag;
-                        Faction faction = Factoid.getFactions().getPlayerFaction(playerConf.get(player).getPlayerContainer());
-                        Faction factionVictime = Factoid.getFactions().getPlayerFaction(entry.getPlayerContainer());
+                        Faction faction = Factoid.getFactions().getPlayerFaction(entry.getPlayerContainer());
+                        Faction factionVictime = Factoid.getFactions().getPlayerFaction(entryVictime.getPlayerContainer());
 
                         if (faction != null && faction == factionVictime
                                 && (flag = land.getFlagAndInherit(FlagType.FACTION_PVP)) != null && flag.getValueBoolean() == false) {

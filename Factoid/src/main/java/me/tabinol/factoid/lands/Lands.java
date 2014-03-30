@@ -47,7 +47,7 @@ public class Lands {
     public final static int INDEX_X1 = 0;
     public final static int INDEX_Z1 = 1;
     public final static int INDEX_X2 = 2;
-    public final static int INDEX_Z2 = 3; 
+    public final static int INDEX_Z2 = 3;
     private final TreeMap<String, TreeSet<AreaIndex>>[] areaList; // INDEX first, Tree by worlds (then by Areas)
     private final TreeMap<UUID, Land> landUUIDList; // Lands by UUID;
     private final TreeMap<String, Land> landList; // Tree by name
@@ -65,14 +65,14 @@ public class Lands {
             areaList[t] = new TreeMap<String, TreeSet<AreaIndex>>();
         }
         WorldConfig worldConfig = new WorldConfig();
-        
+
         // Load World Config
         this.outsideArea = worldConfig.getLandOutsideArea();
         this.globalArea = outsideArea.get(Config.GLOBAL);
-        
+
         // Load Land default
         this.defaultConf = worldConfig.getLandDefaultConf();
-        
+
         landList = new TreeMap<String, Land>();
         landUUIDList = new TreeMap<UUID, Land>();
         approveList = new ApproveList();
@@ -105,10 +105,10 @@ public class Lands {
         int genealogy = 0;
         Land land;
 
-        if(uuid == null) {
+        if (uuid == null) {
             uuid = UUID.randomUUID();
         }
-        
+
         if (parent != null) {
             genealogy = parent.getGenealogy() + 1;
         }
@@ -132,10 +132,10 @@ public class Lands {
 
     public boolean removeLand(Land land) throws FactoidLandException {
 
-        if(land == null) {
+        if (land == null) {
             return false;
         }
-        
+
         LandDeleteEvent landEvent = new LandDeleteEvent(land);
 
         if (!landList.containsKey(land.getName())) {
@@ -154,7 +154,9 @@ public class Lands {
         }
 
         removeLandToList(land);
-        land.getParent().removeChild(land.getUUID());
+        if (land.getParent() != null) {
+            land.getParent().removeChild(land.getUUID());
+        }
         Factoid.getStorage().removeLand(land);
         Factoid.getLog().write("remove land: " + land);
         return true;
@@ -166,10 +168,10 @@ public class Lands {
     }
 
     public boolean removeLand(UUID uuid) throws FactoidLandException {
-        
+
         return removeLand(landUUIDList.get(uuid));
     }
-    
+
     public boolean renameLand(String oldName, String newName) throws FactoidLandException {
 
         String oldNameLower = oldName.toLowerCase();
@@ -197,10 +199,10 @@ public class Lands {
     }
 
     public Land getLand(UUID uuid) {
-        
+
         return landUUIDList.get(uuid);
     }
-    
+
     public Land getLand(Location loc) {
 
         CuboidArea ca;
@@ -365,7 +367,7 @@ public class Lands {
         Collection<CuboidArea> areas = getCuboidAreas(loc);
 
         Factoid.getLog().write("Area check in" + loc.toString());
-        
+
         // Compare priorities of parents (or main)
         for (CuboidArea area : areas) {
 
