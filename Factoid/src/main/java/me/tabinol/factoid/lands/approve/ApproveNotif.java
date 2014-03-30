@@ -26,7 +26,7 @@ import org.bukkit.permissions.Permission;
 
 public class ApproveNotif extends FactoidRunnable {
 
-    public static final Permission PERM_APPROVE = new Permission("factoid.collisionapprove");
+    public static final String PERM_APPROVE = "factoid.collisionapprove";
 
     public ApproveNotif() {
         
