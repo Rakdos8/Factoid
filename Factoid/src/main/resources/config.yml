@@ -34,6 +34,10 @@ land:
   MaxLandSize: 1
   MinLandHigh: 0
   MaxLandHigh: 255
+  DefaultXsize: 10
+  DefaultZsize: 10
+  DefaultBottom: 0
+  DefaultTop: 255
   area:
     MinAreaSize: 1
     MaxAreaSize: 1

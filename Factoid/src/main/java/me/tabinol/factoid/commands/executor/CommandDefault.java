@@ -32,7 +32,7 @@ public class CommandDefault extends CommandExec {
     @Override
     public void commandExecute() throws FactoidCommandException {
 
-        checkSelections(false, false, true, null, null);
+        checkSelections(true, null);
         checkPermission(true, true, null, null);
         
         entity.playerConf.setConfirm(new ConfirmEntry(ConfirmEntry.ConfirmType.LAND_DEFAULT, land, 0));

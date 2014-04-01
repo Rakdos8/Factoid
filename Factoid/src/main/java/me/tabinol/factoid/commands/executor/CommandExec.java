@@ -20,12 +20,11 @@ package me.tabinol.factoid.commands.executor;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.approve.Approve;
+import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions;
 import me.tabinol.factoid.lands.permissions.PermissionType;
-import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import org.bukkit.ChatColor;
 
 public abstract class CommandExec implements CommandInterface {
@@ -48,7 +47,7 @@ public abstract class CommandExec implements CommandInterface {
         } else {
 
             // get the land Selected or null
-            land = entity.playerConf.getLandSelected();
+            land = entity.playerConf.getSelection().getLand();
         }
 
         if (entity.player == null && canFromConsole) {
@@ -70,8 +69,7 @@ public abstract class CommandExec implements CommandInterface {
     }
 
     // Check for needed selection and not needed (null for no verification)
-    protected void checkSelections(Boolean mustBeExpandMode, Boolean mustBeFlagMode,
-            Boolean mustBeSelectMode, Boolean mustBeLandSelected, Boolean mustBeAreaSelected) throws FactoidCommandException {
+    protected void checkSelections(Boolean mustBeSelectMode, Boolean mustBeAreaSelected) throws FactoidCommandException {
 
         // No check if entity is null (if it is not from a command)
         if (entity == null) {
@@ -79,24 +77,22 @@ public abstract class CommandExec implements CommandInterface {
         }
 
         // "If" is not in checkSelection to save CPU
-        if (mustBeExpandMode != null) {
-            checkSelection(entity.playerConf.getExpendingLand() != null, mustBeExpandMode, "GENERAL.QUIT.EXPANDMODE", null, true);
-        }
+/*
+         if (mustBeExpandMode != null) {
+         checkSelection(entity.playerConf.getExpendingLand() != null, mustBeExpandMode, "GENERAL.QUIT.EXPANDMODE", null, true);
+         }
 
-        if (mustBeExpandMode != null) {
-            checkSelection(entity.playerConf.getSetFlagUI() != null, mustBeFlagMode, "GENERAL.QUIT.FLAGMODE", null, true);
-        }
+         if (mustBeExpandMode != null) {
+         checkSelection(entity.playerConf.getSetFlagUI() != null, mustBeFlagMode, "GENERAL.QUIT.FLAGMODE", null, true);
+         }
+         */
         if (mustBeSelectMode != null) {
             // Pasted to variable land, can take direcly
             checkSelection(land != null, mustBeSelectMode, null, "GENERAL.JOIN.SELECTMODE",
-                    entity != null && entity.playerConf.getLandSelected() != null);
+                    entity != null && entity.playerConf.getSelection().getLand() != null);
         }
-        if (mustBeLandSelected != null) {
-            checkSelection(entity.playerConf.getLandSelection() != null, mustBeLandSelected, null, "GENERAL.JOIN.SELECTLAND", true);
-        }
-        
         if (mustBeAreaSelected != null) {
-            checkSelection(entity.playerConf.getAreaSelection() != null, mustBeAreaSelected, null, "GENERAL.JOIN.SELECTAREA", true);
+            checkSelection(entity.playerConf.getSelection().getCuboidArea() != null, mustBeAreaSelected, null, "GENERAL.JOIN.SELECTAREA", true);
         }
     }
 
@@ -124,7 +120,7 @@ public abstract class CommandExec implements CommandInterface {
     protected void checkPermission(boolean mustBeAdminMod, boolean mustBeOwner,
             PermissionType neededPerm, String bukkitPermission) throws FactoidCommandException {
 
-        boolean canDo = false;
+        Boolean canDo = null;
 
         if (mustBeAdminMod && entity.playerConf.isAdminMod()) {
             canDo = true;
@@ -140,7 +136,7 @@ public abstract class CommandExec implements CommandInterface {
         }
 
         // No permission, this is an exception
-        if (canDo == false) {
+        if (canDo != null && canDo == false) {
             throw new FactoidCommandException("No permission to do this action", entity.player, "GENERAL.MISSINGPERMISSION");
         }
     }

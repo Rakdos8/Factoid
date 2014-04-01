@@ -98,6 +98,18 @@ public class Config {
     private int maxLandHigh;
     public int getMaxLandHigh() { return maxLandHigh; }
     
+    private int defaultXSize;
+    public int getDefaultXSize() { return defaultXSize; }
+  
+    private int defaultZSize;
+    public int getDefaultZSize() { return defaultZSize; }
+  
+    private int defaultBottom;
+    public int getDefaultBottom() { return defaultBottom; }
+  
+    private int defaultTop;
+    public int getDefaultTop() { return defaultTop; }
+
     private double priceByCube;
     public double getPriceByCube() { return priceByCube; }
     
@@ -165,6 +177,10 @@ public class Config {
         maxLand = config.getInt("land.MaxLand", 1);
         minLandSize = config.getInt("land.MinLandSize", 1);
         maxLandSize = config.getInt("land.MaxLandSize", 1);
+        defaultXSize = config.getInt("land.defaultXSize", 10);
+        defaultZSize = config.getInt("land.defaultZSize", 10);
+        defaultBottom = config.getInt("land.defaultBottom", 0);
+        defaultTop = config.getInt("land.defaultTop", 255);
         maxAreaPerLand = config.getInt("land.area.MaxAreaPerLand", 1);
         minAreaSize = config.getInt("land.area.MinAreaSize", 1);
         maxAreaSize = config.getInt("land.area.MaxAreaSize", 1);

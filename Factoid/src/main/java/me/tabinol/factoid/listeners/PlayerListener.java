@@ -21,7 +21,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ArgList;
-import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.commands.executor.CommandCancel;
 import me.tabinol.factoid.commands.executor.CommandInfo;
 import me.tabinol.factoid.commands.executor.CommandSelect;
@@ -29,17 +28,19 @@ import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.config.players.PlayerConfEntry;
 import me.tabinol.factoid.config.players.PlayerStaticConfig;
 import me.tabinol.factoid.event.PlayerLandChangeEvent;
+import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.PermissionType;
+import me.tabinol.factoid.selection.region.PlayerMoveListen;
+import me.tabinol.factoid.selection.region.RegionSelection;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Animals;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Hanging;
@@ -216,10 +217,7 @@ public class PlayerListener implements Listener {
             } else if (player.getItemInHand() != null
                     && action == Action.RIGHT_CLICK_BLOCK
                     && player.getItemInHand().getTypeId() == conf.getSelectItem()
-                    && ((entry = playerConf.get(player)).getLandSelection() != null
-                    || entry.getLandSelected() != null
-                    || (entry = playerConf.get(player)).getAreaSelection() != null
-                    || entry.getAreaSelected() != null)) {
+                    && (entry = playerConf.get(player)).getSelection().hasSelection()) {
 
                 try {
                     new CommandCancel(entry, false).commandExecute();
@@ -455,7 +453,7 @@ public class PlayerListener implements Listener {
                 // Check if the damager is a player
                 if (event.getDamager() instanceof Player) {
                     player = (Player) event.getDamager();
-                } else if (event.getDamager() instanceof Projectile 
+                } else if (event.getDamager() instanceof Projectile
                         && event.getDamager().getType() != EntityType.EGG
                         && event.getDamager().getType() != EntityType.SNOWBALL) {
                     damagerProjectile = (Projectile) event.getDamager();
@@ -582,7 +580,6 @@ public class PlayerListener implements Listener {
 
     private void updatePosInfo(Event event, PlayerConfEntry entry, Location loc, boolean newPlayer) {
 
-        int t;
         Land land;
         Land landOld;
         PlayerLandChangeEvent landEvent;
@@ -628,5 +625,14 @@ public class PlayerListener implements Listener {
             }
         }
         entry.setLastLoc(loc);
+
+        // Update visual selection
+        if (entry.getSelection().hasSelection()) {
+            for (RegionSelection sel : entry.getSelection().getSelections()) {
+                if (sel instanceof PlayerMoveListen) {
+                    ((PlayerMoveListen) sel).playerMove();
+                }
+            }
+        }
     }
 }

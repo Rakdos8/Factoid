@@ -40,7 +40,7 @@ public class CommandMoney extends CommandExec {
             throw new FactoidCommandException("Economy not avalaible", entity.player, "COMMAND.ECONOMY.NOTAVAILABLE");
         }
 
-        checkSelections(false, false, true, null, null);
+        checkSelections(true, null);
 
         String curArg = entity.argList.getNext();
 

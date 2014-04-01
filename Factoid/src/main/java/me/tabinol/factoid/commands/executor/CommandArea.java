@@ -39,12 +39,12 @@ public class CommandArea extends CommandExec {
         
         String curArg = entity.argList.getNext();
         
-        if (curArg.equalsIgnoreCase("create")) {
+        if (curArg.equalsIgnoreCase("add")) {
 
             checkPermission(true, true, null, null);
-            checkSelections(false, false, true, null, true);
+            checkSelections(true, null);
 
-            CuboidArea area = entity.playerConf.getAreaSelection().toCuboidArea();
+            CuboidArea area = entity.playerConf.getSelection().getCuboidArea();
 
             // Check for collision
             if (checkCollision(land.getName(), land, LandAction.AREA_ADD, 0, area, land.getParent(), true)) {
@@ -80,7 +80,7 @@ public class CommandArea extends CommandExec {
             // Only for a remove
             if (curArg.equalsIgnoreCase("remove")) {
 
-                checkSelections(false, false, true, null, true);
+                checkSelections(true, null);
 
                 // Check for collision
                 if (checkCollision(curArg, land, LandAction.AREA_REMOVE, areaNb, null, land.getParent(), true)) {
@@ -99,9 +99,9 @@ public class CommandArea extends CommandExec {
             } else {
 
                 //Only for a replace
-                checkSelections(false, false, true, true , true);
+                checkSelections(true, true);
 
-                CuboidArea area = entity.playerConf.getAreaSelection().toCuboidArea();
+                CuboidArea area = entity.playerConf.getSelection().getCuboidArea();
 
                 // Check for collision
                 if (checkCollision(land.getName(), land, LandAction.AREA_MODIFY, areaNb, area, land.getParent(), true)) {

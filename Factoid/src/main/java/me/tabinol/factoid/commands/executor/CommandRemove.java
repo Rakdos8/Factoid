@@ -33,7 +33,7 @@ public class CommandRemove extends CommandExec {
     @Override
     public void commandExecute() throws FactoidCommandException {
 
-        checkSelections(false, false, true, null, null);
+        checkSelections(true, null);
         checkPermission(true, true, null, null);
 
         // Check for collision
@@ -41,6 +41,7 @@ public class CommandRemove extends CommandExec {
             return;
         }
 
+        new CommandCancel(entity.playerConf, true).commandExecute();
         entity.playerConf.setConfirm(new ConfirmEntry(ConfirmEntry.ConfirmType.REMOVE_LAND, land, 0));
         entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CONFIRM"));
     }

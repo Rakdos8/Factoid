@@ -33,7 +33,7 @@ public class CommandPriority extends CommandExec {
     @Override
     public void commandExecute() throws FactoidCommandException {
 
-        checkSelections(false, false, true, null, null);
+        checkSelections(true, null);
         checkPermission(true, false, null, null);
         String curArg = entity.argList.getNext();
         short newPrio;

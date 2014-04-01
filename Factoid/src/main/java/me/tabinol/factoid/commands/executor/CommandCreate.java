@@ -21,15 +21,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ArgList;
-import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.config.BannedWords;
+import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.exceptions.FactoidLandException;
-import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import me.tabinol.factoid.lands.permissions.PermissionType;
-import me.tabinol.factoid.lands.selection.land.LandSelection;
-import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
+import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
+import me.tabinol.factoid.selection.region.AreaSelection;
 import org.bukkit.ChatColor;
 
 public class CommandCreate extends CommandExec {
@@ -42,17 +42,17 @@ public class CommandCreate extends CommandExec {
     @Override
     public void commandExecute() throws FactoidCommandException {
 
-        checkSelections(false, false, null, true, null);
-        checkPermission(true, false, null, null);
+        checkSelections(null, true);
+        checkPermission(false, false, null, null);
 
-        LandSelection select = entity.playerConf.getLandSelection();
+        AreaSelection select = (AreaSelection) entity.playerConf.getSelection().getSelection(SelectionType.AREA);
 
-        CuboidArea area = select.toCuboidArea();
+        CuboidArea area = select.getCuboidArea();
 
         // Quit select mod
-        entity.playerConf.setAreaSelection(null);
-        entity.playerConf.setLandSelected(null);
-        select.resetSelection();
+        // entity.playerConf.setAreaSelection(null);
+        // entity.playerConf.setLandSelected(null);
+        // select.resetSelection();
 
         String curArg = entity.argList.getNext();
 
@@ -64,7 +64,7 @@ public class CommandCreate extends CommandExec {
         Land parent;
 
         // Check for parent
-        if ((parent = entity.playerConf.getLandSelected()) == null && !entity.argList.isLast()) {
+        if ((parent = entity.playerConf.getSelection().getLand()) == null && !entity.argList.isLast()) {
 
             parent = Factoid.getLands().getLand(entity.argList.getNext());
 

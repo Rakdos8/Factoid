@@ -36,7 +36,7 @@ public class CommandWho extends CommandExec {
     public void commandExecute() throws FactoidCommandException {
 
         getLandFromCommandIfNoLandSelected();
-        checkSelections(false, false, true, null, null);
+        checkSelections(true, null);
         checkPermission(true, true, PermissionType.LAND_WHO, null);
 
         // Create list

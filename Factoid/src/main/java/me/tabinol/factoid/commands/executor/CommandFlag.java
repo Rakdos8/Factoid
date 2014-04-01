@@ -37,19 +37,21 @@ public class CommandFlag extends CommandExec {
     @Override
     public void commandExecute() throws FactoidCommandException {
 
-        checkSelections(false, false, true, null, null);
+        checkSelections(true, null);
                 String curArg = entity.argList.getNext();
 
         // Temporary desactivated
         if (entity.argList.length() < 2 && false) {
 
+            /*
             entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.JOINMODE"));
             Factoid.getLog().write("PlayerSetFlagUI for " + entity.playerName);
             entity.player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.HINT"));
             CuboidArea area = Factoid.getLands().getCuboidArea(entity.player.getLocation());
             LandSetFlag setting = new LandSetFlag(entity.player, area);
             entity.playerConf.setSetFlagUI(setting);
-        
+            */
+                    
         } else if (curArg.equalsIgnoreCase("set")) {
 
             // Permission check is on getFlagFromArg

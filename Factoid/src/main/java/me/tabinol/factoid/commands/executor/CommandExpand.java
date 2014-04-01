@@ -19,11 +19,14 @@ package me.tabinol.factoid.commands.executor;
 
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.lands.expansion.LandExpansion;
+import me.tabinol.factoid.lands.areas.CuboidArea;
+import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
+import me.tabinol.factoid.selection.region.AreaSelection;
+import me.tabinol.factoid.selection.region.ExpandAreaSelection;
 import org.bukkit.ChatColor;
 
 public class CommandExpand extends CommandExec {
-    
+
     public CommandExpand(CommandEntities entity) throws FactoidCommandException {
 
         super(entity, false, false);
@@ -32,31 +35,53 @@ public class CommandExpand extends CommandExec {
     @Override
     public void commandExecute() throws FactoidCommandException {
 
-        /**
-         * *** TO DO : COLLISIONS! ******
-         */
-        checkSelections(null, false, true, null, null);
-        checkPermission(true, true, null, null);
+        checkSelections(null, null);
+        checkPermission(false, false, null, null);
 
         // Land land = entity.playerConf.getLandSelected();
-            
         String curArg = entity.argList.getNext();
 
-        if (entity.playerConf.getExpendingLand() == null) {
+        if (curArg == null) {
+
+            if (entity.playerConf.getSelection().getSelection(SelectionType.AREA) instanceof ExpandAreaSelection) {
+                throw new FactoidCommandException("Player Expand", entity.player, "COMMAND.EXPAND.ALREADY");
+            }
+
             entity.player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.EXPAND.JOINMODE"));
             entity.player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.EXPAND.HINT", ChatColor.ITALIC.toString(), ChatColor.RESET.toString(), ChatColor.DARK_GRAY.toString()));
             Factoid.getLog().write(entity.player.getName() + " have join ExpandMode.");
-            LandExpansion expand = new LandExpansion(entity.player);
-            entity.playerConf.setExpandingLand(expand);
-        } else if (curArg != null && curArg.equalsIgnoreCase("done")) {
+
+            // Check the selection before (if exist)
+            CuboidArea area = entity.playerConf.getSelection().getCuboidArea();
+            if (area == null) {
+                entity.playerConf.getSelection().addSelection(new ExpandAreaSelection(entity.player));
+            } else {
+                entity.playerConf.getSelection().addSelection(new ExpandAreaSelection(entity.player, area));
+            }
+
+        } else if (curArg.equalsIgnoreCase("done")) {
+
+            // Expand done
             entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.EXPAND.COMPLETE"));
             entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.EXPAND.QUITMODE"));
             Factoid.getLog().write(entity.playerName + " have quit ExpandMode.");
-            LandExpansion expand = entity.playerConf.getExpendingLand();
-            expand.setDone();
-            entity.playerConf.setExpandingLand(null);
+
+            CuboidArea area = entity.playerConf.getSelection().getCuboidArea();
+            if (area != null) {
+                
+                entity.playerConf.getSelection().addSelection(new AreaSelection(entity.player, area));
+                
+                if (!((AreaSelection) entity.playerConf.getSelection().getSelection(SelectionType.AREA)).getCollision()) {
+                    entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY
+                            + Factoid.getLanguage().getMessage("COMMAND.SELECT.LAND.NOCOLLISION"));
+                } else {
+                    entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.RED
+                            + Factoid.getLanguage().getMessage("COMMAND.SELECT.LAND.COLLISION"));
+                }
+            }
+
         } else {
-            throw new FactoidCommandException("Player Expand", entity.player, "COMMAND.EXPAND.ALREADY");
+            throw new FactoidCommandException("Missing information command", entity.player, "GENERAL.MISSINGINFO");
         }
     }
 }

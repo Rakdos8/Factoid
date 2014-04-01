@@ -74,26 +74,6 @@ public class Calculate {
         return t;
     }
     
-    public static Double getDifference(Double a, Double b){
-        Double t = null;
-        if(a<0){
-            t = a-b;
-        }else{
-            t = a-b;
-        }
-        return (t < 0 ? -t : t);
-    }
-    
-    public static int getDifference(int a, int b){
-        int t = 0;
-        if(a<0){
-            t = a-b;
-        }else{
-            t = a-b;
-        }
-        return (t < 0 ? -t : t);
-    }
-    
     public static boolean getRandomYield(float yield) {
         
         return Math.random() < yield;

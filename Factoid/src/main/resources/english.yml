@@ -46,7 +46,7 @@ HELP:
   APPROVE:
     1: "/factoid approve list : List actions to approve."
     2: "/factoid approve info <land> : Information of the action."
-    3: "/factoid approve accept <land> : Approve an action."
+    3: "/factoid approve confirm <land> : Approve an action."
     4: "/factoid approve cancel <land> : Cancel an action."
   AREA:
     1: "/factoid area list : List areas."
@@ -65,6 +65,7 @@ HELP:
     1: "/factoid default : Reset land configuration to default."
   EXPAND:
     1: "/factoid expand : Expand the land selection."
+    2: "/factoid expand done : Stop the land expanding."
   FLAG:
     1: "/factoid flag list : List flags."
     2: "/factoid flag set <flag> <value> : Add a flag."
@@ -143,16 +144,16 @@ COMMAND:
     LAND:
       NOCOLLISION: "Your selection has no collision."
       COLLISION: "Your selection has a collision with an another Land."
-    AREA:
-      NOCOLLISION: "Your selection has no collision."
-      COLLISION: "Your selection has a collision with an another Area."
+#    AREA:
+#      NOCOLLISION: "Your selection has no collision."
+#      COLLISION: "Your selection has a collision with an another Area."
     CANCEL: "You have cancelled your selection."
     CANTDONE: "You cannot 'Done' a selection which's already a Land."
     CANTDONEWORLDEDIT: "You cannot 'Done' a WorldEdit selection. You can Create your land."
-    NEWLAND: "You have selected a new Land."
-    NEWAREA: "You have selected a new Area."
-    SELECTIONEDLAND: "You have selected the land '%'"
-    SELECTIONEDAREA: "You have selected the area '%'"
+#    NEWLAND: "You have selected a new Land."
+#    NEWAREA: "You have selected a new Area."
+    SELECTEDLAND: "You have selected the land '%'"
+    SELECTEDAREA: "You have selected the area '%'"
     CANNOTMPODIFY: "You cannot select the land '%' while someone is Modifying it."
     WORLDEDIT:
       NOTLOAD: " WorldEdit is not Loaded."

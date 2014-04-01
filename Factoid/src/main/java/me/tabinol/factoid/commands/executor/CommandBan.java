@@ -38,7 +38,7 @@ public class CommandBan extends CommandExec {
     @Override
     public void commandExecute() throws FactoidCommandException {
 
-        checkSelections(false, false, true, null, null);
+        checkSelections(true, null);
         checkPermission(true, true, PermissionType.LAND_BAN, null);
 
         String curArg = entity.argList.getNext();
