@@ -363,6 +363,7 @@ public class Lands {
         int actualPrio = Short.MIN_VALUE;
         int curPrio;
         int actualGen = 0;
+        int curGen;
         CuboidArea actualArea = null;
         Collection<CuboidArea> areas = getCuboidAreas(loc);
 
@@ -371,14 +372,23 @@ public class Lands {
         // Compare priorities of parents (or main)
         for (CuboidArea area : areas) {
 
-            if (actualPrio < (curPrio = area.getLand().getAncestor(area.getLand().getGenealogy()).getPriority())
-                    || (actualPrio == curPrio && actualGen <= area.getLand().getGenealogy())) {
+            Factoid.getLog().write("Check for: " + area.getLand().getName()
+                + ", area: " + area.toString());
+            
+            curPrio = area.getLand().getPriority();
+            curGen = area.getLand().getGenealogy();
+            
+            if (actualPrio < curPrio
+                    || (actualPrio == curPrio && actualGen <= curGen)) {
                 actualArea = area;
                 actualPrio = curPrio;
                 actualGen = area.getLand().getGenealogy();
+                
+                Factoid.getLog().write("Found, update:  actualPrio: " + actualPrio + ", actualGen: " + actualGen);
             }
         }
-
+        
+        /* Section not needed: the priority is inneritable
         // If we need a second pass and more (for children)
         for (int t = 1; t <= actualGen; t++) {
             actualPrio = Short.MIN_VALUE;
@@ -390,7 +400,7 @@ public class Lands {
                 }
             }
         }
-
+        */
         return actualArea;
     }
 
