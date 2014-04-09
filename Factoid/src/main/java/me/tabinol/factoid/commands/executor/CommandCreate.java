@@ -43,7 +43,7 @@ public class CommandCreate extends CommandExec {
     public void commandExecute() throws FactoidCommandException {
 
         checkSelections(null, true);
-        checkPermission(false, false, null, null);
+        // checkPermission(false, false, null, null);
 
         AreaSelection select = (AreaSelection) entity.playerConf.getSelection().getSelection(SelectionType.AREA);
 

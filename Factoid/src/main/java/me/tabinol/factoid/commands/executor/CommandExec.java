@@ -120,7 +120,7 @@ public abstract class CommandExec implements CommandInterface {
     protected void checkPermission(boolean mustBeAdminMod, boolean mustBeOwner,
             PermissionType neededPerm, String bukkitPermission) throws FactoidCommandException {
 
-        Boolean canDo = null;
+        boolean canDo = false;
 
         if (mustBeAdminMod && entity.playerConf.isAdminMod()) {
             canDo = true;
@@ -136,7 +136,7 @@ public abstract class CommandExec implements CommandInterface {
         }
 
         // No permission, this is an exception
-        if (canDo != null && canDo == false) {
+        if (canDo == false) {
             throw new FactoidCommandException("No permission to do this action", entity.player, "GENERAL.MISSINGPERMISSION");
         }
     }

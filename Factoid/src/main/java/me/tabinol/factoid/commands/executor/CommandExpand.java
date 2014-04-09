@@ -36,7 +36,7 @@ public class CommandExpand extends CommandExec {
     public void commandExecute() throws FactoidCommandException {
 
         checkSelections(null, null);
-        checkPermission(false, false, null, null);
+        // checkPermission(false, false, null, null);
 
         // Land land = entity.playerConf.getLandSelected();
         String curArg = entity.argList.getNext();
