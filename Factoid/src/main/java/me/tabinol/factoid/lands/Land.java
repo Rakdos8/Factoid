@@ -17,8 +17,9 @@
  */
 package me.tabinol.factoid.lands;
 
-import me.tabinol.factoid.lands.areas.CuboidArea;
+import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -29,6 +30,7 @@ import java.util.UUID;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.event.PlayerContainerLandBanEvent;
 import me.tabinol.factoid.factions.Faction;
+import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.Permission;
@@ -59,6 +61,17 @@ public class Land extends DummyLand {
     private double money = 0L;
     private Set<PlayerContainerPlayer> playerNotify = new TreeSet<PlayerContainerPlayer>();
     private final Set<Player> playersInLand = new HashSet<Player>();
+    // Economy
+    private boolean forSale = false;
+    private double salePrice = 0;
+    private boolean forRent = false;
+    private double rentPrice = 0;
+    private int rentRenew = 0; // How many days before renew?
+    private boolean rentAutoRenew = false;
+    private boolean rented = false;
+    private PlayerContainerPlayer tenant = null;
+    private Timestamp lastPayment = new Timestamp(0);
+    
 
     // Please use createLand in Lands class to create a Land
     protected Land(String landName, UUID uuid, PlayerContainer owner,
@@ -539,5 +552,105 @@ public class Land extends DummyLand {
         }
 
         return playerList;
+    }
+    
+    public boolean isForSale() {
+        
+        return forSale;
+    }
+    
+    public void setForSale(boolean isForSale, double salePrice) {
+        
+        forSale = isForSale;
+        if(forSale) {
+            this.salePrice = salePrice;
+        } else {
+            this.salePrice = 0;
+        }
+        doSave();
+    }
+    
+    public double getSalePrice() {
+        
+        return salePrice;
+    }
+    
+    public boolean isForRent() {
+        
+        return forRent;
+    }
+    
+    public void setForRent(double rentPrice, int rentRenew, boolean rentAutoRenew) {
+        
+        forRent = true;
+        this.rentPrice = rentPrice;
+        this.rentRenew = rentRenew;
+        this.rentAutoRenew = rentAutoRenew;
+        doSave();
+    }
+    
+    public void unSetForRent() {
+        
+        forRent = false;
+        rentPrice = 0;
+        rentRenew = 0;
+        rentAutoRenew = false;
+        doSave();
+    }
+    
+    public double getRentPrice() {
+        
+        return rentPrice;
+    }
+    
+    public int getRentRenew() {
+        
+        return rentRenew;
+    }
+    
+    public boolean getRentAutoRenew() {
+        
+        return rentAutoRenew;
+    }
+    
+    public boolean isRented() {
+        
+        return rented;
+    }
+    
+    public void setRented(PlayerContainerPlayer tenant) {
+        
+        rented = true;
+        this.tenant = tenant;
+        updateRentedPayment(); // doSave() done in this method
+    }
+    
+    public void updateRentedPayment() {
+        
+        lastPayment = new Timestamp(new Date().getTime());
+        doSave();
+    }
+    
+    public void unSetRented() {
+        
+        rented = false;
+        tenant = null;
+        lastPayment = new Timestamp(0);
+        doSave();
+    }
+    
+    public PlayerContainerPlayer getTenant() {
+        
+        return tenant;
+    }
+    
+    public boolean isTenant(Player player) {
+        
+        return tenant.hasAccess(player);
+    }
+    
+    public Timestamp getLastPaymentTime() {
+        
+        return lastPayment;
     }
 }

@@ -15,42 +15,48 @@
  You should have received a copy of the GNU General Public License
  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package me.tabinol.factoid.event;
+package me.tabinol.factoid.playercontainer;
 
 import me.tabinol.factoid.lands.Land;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.HandlerList;
+import org.bukkit.entity.Player;
 
-public class LandDeleteEvent extends LandEvent implements Cancellable {
-
-    private static final HandlerList handlers = new HandlerList();
-    protected boolean cancelled = false;
-
-    public LandDeleteEvent(final Land deletedLand) {
-
-        super(deletedLand);
-    }
-
-    @Override
-    public HandlerList getHandlers() {
-
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-
-        return handlers;
+public class PlayerContainerTenant extends PlayerContainer {
+    
+    private Land land;
+    
+    public PlayerContainerTenant(Land land) {
+        
+        super("", PlayerContainerType.RESIDENT);
+        this.land = land;
     }
     
     @Override
-    public boolean isCancelled() {
+    public boolean equals(PlayerContainer container2) {
         
-        return cancelled;
+        return container2 instanceof PlayerContainerTenant &&
+                land == ((PlayerContainerTenant)container2).land;
     }
 
     @Override
-    public void setCancelled(boolean bln) {
+    public PlayerContainer copyOf() {
         
-        cancelled = bln;
+        return new PlayerContainerTenant(land);
+    }
+
+    @Override
+    public boolean hasAccess(Player player) {
+        
+        return land.isTenant(player);
+    }
+    
+    public Land getLand() {
+        
+        return land;
+    }
+
+    @Override
+    public void setLand(Land land) {
+        
+        this.land = land;
     }
 }

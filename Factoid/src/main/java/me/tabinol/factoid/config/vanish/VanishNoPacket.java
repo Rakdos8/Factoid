@@ -19,7 +19,8 @@ package me.tabinol.factoid.config.vanish;
 
 import me.tabinol.factoid.Factoid;
 import org.bukkit.entity.Player;
-import org.kitteh.vanish.VanishPlugin;
+import org.bukkit.metadata.MetadataValue;
+// import org.kitteh.vanish.VanishPlugin;
 
 /**
  * VanishNoPacket Function
@@ -28,16 +29,21 @@ import org.kitteh.vanish.VanishPlugin;
  */
 public class VanishNoPacket implements Vanish {
 
-    private final VanishPlugin vanishNoPacket;
+    // private final VanishPlugin vanishNoPacket;
 
     public VanishNoPacket() {
 
-        vanishNoPacket = (VanishPlugin) Factoid.getDependPlugin().getVanishNoPacket();
+        // vanishNoPacket = (VanishPlugin) Factoid.getDependPlugin().getVanishNoPacket();
     }
 
     @Override
     public boolean isVanished(Player player) {
 
-        return vanishNoPacket.getManager().isVanished(player);
+        // return vanishNoPacket.getManager().isVanished(player);
+        for(MetadataValue value : player.getMetadata("vanished")) {
+            return value.asBoolean();
+        }
+        
+        return false;
     }
 }

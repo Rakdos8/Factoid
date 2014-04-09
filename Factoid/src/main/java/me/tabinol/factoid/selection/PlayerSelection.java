@@ -19,8 +19,13 @@ package me.tabinol.factoid.selection;
 
 import java.util.Collection;
 import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.areas.CuboidArea;
+import me.tabinol.factoid.lands.flags.FlagType;
+import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.selection.region.AreaSelection;
 import me.tabinol.factoid.selection.region.LandSelection;
 import me.tabinol.factoid.selection.region.RegionSelection;
@@ -44,47 +49,129 @@ public class PlayerSelection {
     }
 
     public boolean hasSelection() {
-        
+
         return !selectionList.isEmpty();
     }
-    
+
     public Collection<RegionSelection> getSelections() {
-        
+
         return selectionList.values();
     }
-    
+
     public void addSelection(RegionSelection sel) {
-        
+
         selectionList.put(sel.getSelectionType(), sel);
     }
-    
+
     public RegionSelection getSelection(SelectionType type) {
-        
+
         return selectionList.get(type);
     }
-    
+
     public RegionSelection removeSelection(SelectionType type) {
-        
+
         return selectionList.remove(type);
     }
-    
+
     public Land getLand() {
-        
+
         LandSelection sel = (LandSelection) selectionList.get(SelectionType.LAND);
-        if(sel != null) {
+        if (sel != null) {
             return sel.getLand();
         } else {
             return null;
         }
     }
-    
+
     public CuboidArea getCuboidArea() {
-        
+
         AreaSelection sel = (AreaSelection) selectionList.get(SelectionType.AREA);
-        if(sel != null) {
+        if (sel != null) {
             return sel.getCuboidArea();
         } else {
             return null;
         }
+    }
+
+    public double getLandCreatePrice() {
+
+        if (Factoid.getPlayerMoney() == null) {
+            return 0;
+        }
+
+        Land land = getLand();
+        CuboidArea area = getCuboidArea();
+        LandFlag priceFlag;
+
+        // Get land price
+        if (land == null) {
+            priceFlag = Factoid.getLands().getOutsideArea(area.getWorldName()).getFlagAndInherit(FlagType.ECO_BLOCK_PRICE);
+        } else {
+            priceFlag = land.getFlagAndInherit(FlagType.ECO_BLOCK_PRICE);
+        }
+
+        // Not set, return 0
+        if (priceFlag == null) {
+            return 0;
+        }
+
+        return priceFlag.getValueDouble() * area.getTotalBlock();
+    }
+
+    public double getAreaAddPrice() {
+
+        if (Factoid.getPlayerMoney() == null) {
+            return 0;
+        }
+
+        Land land = getLand();
+        CuboidArea area = getCuboidArea();
+        LandFlag priceFlag;
+
+        // The area is from parent ask parent
+        if (land.getParent() == null) {
+            priceFlag = Factoid.getLands().getOutsideArea(area.getWorldName()).getFlagAndInherit(FlagType.ECO_BLOCK_PRICE);
+        } else {
+            priceFlag = land.getParent().getFlagAndInherit(FlagType.ECO_BLOCK_PRICE);
+        }
+
+        // Not set, return 0
+        if (priceFlag == null) {
+            return 0;
+        }
+
+        // Remove already here area
+        Collection<CuboidArea> areas = new HashSet<CuboidArea>();
+        areas.add(area);
+        Iterator<CuboidArea> iterator = land.getAreas().iterator();
+
+        while (iterator.hasNext()) {
+            CuboidArea parentArea = iterator.next();
+            Collection<CuboidArea> areasNew = new HashSet<CuboidArea>();
+            for (CuboidArea areaC : areas) {
+                areasNew.addAll(parentArea.getOutside(areaC));
+            }
+
+            // Exit if no areas is returned (the child area is inside)
+            if (areasNew.isEmpty()) {
+                return 0;
+            }
+
+            areas = areasNew;
+        }
+
+        // get total areas cube
+        long nbCube = 0;
+        for(CuboidArea areaRes : areas) {
+            nbCube += areaRes.getTotalBlock();
+        }
+        
+        return priceFlag.getValueDouble() * nbCube;
+    }
+
+    public double getAreaReplacePrice(int areaId) {
+
+        // Check only with Area add. No refound for reduced area.
+        return getAreaAddPrice();
     }
 }

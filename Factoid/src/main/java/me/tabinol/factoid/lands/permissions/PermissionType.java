@@ -69,7 +69,11 @@ public enum PermissionType {
     LAND_NOTIFY(false),
     MONEY_DEPOSIT(false),
     MONEY_WITHDRAW(false),
-    MONEY_BALANCE(false);
+    MONEY_BALANCE(false),
+    ECO_LAND_FOR_SALE(false),
+    ECO_LAND_BUY(false),
+    ECO_LAND_FOR_RENT(false),
+    ECO_LAND_RENT(false);
     
     private final boolean baseValue;
     

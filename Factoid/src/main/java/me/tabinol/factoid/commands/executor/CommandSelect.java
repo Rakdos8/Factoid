@@ -183,6 +183,10 @@ public class CommandSelect extends CommandExec {
                 doSelectAreaDone();
             }
 
+        } else if (curArg != null && curArg.equalsIgnoreCase("info")) {
+            
+            doSelectAreaInfo();
+            
         } else {
             throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.ALREADY");
         }
@@ -205,5 +209,15 @@ public class CommandSelect extends CommandExec {
                     + Factoid.getLanguage().getMessage("COMMAND.SELECT.LAND.COLLISION"));
         }
     }
+    
+    private void doSelectAreaInfo() throws FactoidCommandException {
 
+        checkSelections(true, null);
+        
+        AreaSelection select = (AreaSelection)playerConf.getSelection().getSelection(SelectionType.AREA);
+        CuboidArea area = select.getCuboidArea();
+
+        // prendre pour l'impression
+        area.getPrint();
+    }
 }

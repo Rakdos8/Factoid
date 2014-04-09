@@ -25,6 +25,7 @@ public class LandFlag {
     
     private FlagType flagType;
     private boolean valueBoolean = false;
+    private double valueDouble = 0;
     private String valueString = null;
     private String[] valueStringList = null;
     private boolean heritable;
@@ -36,11 +37,20 @@ public class LandFlag {
         this.heritable = heritable;
     }
 
+    public LandFlag(final FlagType flagType, final double valueDouble, final boolean heritable) {
+        
+        this.flagType = flagType;
+        this.valueDouble = valueDouble;
+        this.heritable = heritable;
+    }
+
     public LandFlag(final FlagType flagType, final String valueString, final boolean heritable) {
         
         this.flagType = flagType;
         if(flagType.getFlagValueType() == FlagValueType.BOOLEAN) {
             this.valueBoolean = Boolean.parseBoolean(valueString);
+        } else if(flagType.getFlagValueType() == FlagValueType.DOUBLE) {
+            this.valueDouble = Double.parseDouble(valueString);
         } else if(flagType.getFlagValueType() == FlagValueType.STRING) {
             this.valueString = StringChanges.fromQuote(valueString);
         } else if(flagType.getFlagValueType() == FlagValueType.STRING_LIST) {
@@ -74,6 +84,11 @@ public class LandFlag {
     public final boolean getValueBoolean() {
         
         return valueBoolean;
+    }
+
+    public final double getValueDouble() {
+        
+        return valueDouble;
     }
 
     public final String getValueString() {
@@ -122,6 +137,9 @@ public class LandFlag {
         
         if(flagType.getFlagValueType() == FlagValueType.BOOLEAN) {
             return flagType.toString() + ":" + valueBoolean + ":" + heritable;
+        }
+        if(flagType.getFlagValueType() == FlagValueType.DOUBLE) {
+            return flagType.toString() + ":" + valueDouble + ":" + heritable;
         }
         if(flagType.getFlagValueType() == FlagValueType.STRING) {
             return flagType.toString() + ":" + StringChanges.toQuote(valueString) + ":" + heritable;

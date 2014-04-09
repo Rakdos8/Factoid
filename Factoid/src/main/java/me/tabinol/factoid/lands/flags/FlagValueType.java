@@ -21,6 +21,7 @@ public enum FlagValueType {
     
     UNDEFINED(),
     BOOLEAN(),
+    DOUBLE(),
     STRING(),
     STRING_LIST();
     

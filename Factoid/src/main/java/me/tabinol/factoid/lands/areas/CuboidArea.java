@@ -120,6 +120,11 @@ public class CuboidArea implements Comparable<CuboidArea> {
         return null;
     }
 
+    public long getTotalBlock() {
+        
+        return (x2 - x1) * (y2 - y1) * (z2 - z1);
+    }
+    
     public boolean isCollision(CuboidArea area2) {
 
         return (worldName.equalsIgnoreCase(area2.worldName)

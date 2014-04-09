@@ -24,13 +24,14 @@ public enum PlayerContainerType {
     OWNER(1,"Owner", false),
     PLAYER(2,"Player", true),
     RESIDENT(3,"Resident", false),
-    VISITOR(4, "Visitor", false),
-    GROUP(5,"Group", true),
-    PERMISSION(6, "Permission", true),
-    FACTION(7,"Faction", true),
-    FACTION_TERRITORY(8, "FactionTerritory", false),
-    EVERYBODY(9,"Everybody", false),
-    NOBODY(10,"Nobody", false);
+    TENANT(4, "Tenant", false),
+    VISITOR(5, "Visitor", false),
+    GROUP(6,"Group", true),
+    PERMISSION(7, "Permission", true),
+    FACTION(8,"Faction", true),
+    FACTION_TERRITORY(9, "FactionTerritory", false),
+    EVERYBODY(10,"Everybody", false),
+    NOBODY(11,"Nobody", false);
     
     private final int value;
     private final String pcName;
