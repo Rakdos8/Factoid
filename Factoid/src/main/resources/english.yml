@@ -37,6 +37,7 @@ HELP:
     2: "/factoid select : Start the visal selection."
     3: "/factoid select done : Set a visual selection done."
     4: "/factoid select worldedit : Select the WorldEdit selection."
+    5: "/factoid select info : Informations about the selection."
   INFO:
     1: "/factoid INFO [land] : Show global informations of the curent land."
   ADMINMOD:
@@ -160,6 +161,11 @@ COMMAND:
       SELECTIONNED: " you have selectioned your land with WorldEdit!"
       NOSELECTIONNED: " No WorldEdit selection or not a cuboid region!"
       SELECTIONINCOMPLET: " The WorldEdit selection is incomplete!"
+    INFO:
+      INFO1: "Selection: %"
+      INFO2: "Number of blocks: %"
+      INFO3: "Price for create land: %"
+      INFO4: "Price for area add: %"
   EXPAND:
     JOINMODE: "You are now in Expand Mode."
     QUITMODE: "You are no longer in Expand Mode."

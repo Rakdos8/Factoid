@@ -36,9 +36,9 @@ public class CommandArea extends CommandExec {
 
     @Override
     public void commandExecute() throws FactoidCommandException {
-        
+
         String curArg = entity.argList.getNext();
-        
+
         if (curArg.equalsIgnoreCase("add")) {
 
             checkPermission(true, true, null, null);
@@ -63,18 +63,27 @@ public class CommandArea extends CommandExec {
             checkPermission(true, true, null, null);
 
             String areaNbStr = entity.argList.getNext();
-            int areaNb;
+            int areaNb = 0;
 
-            if (areaNbStr == null) {
-                throw new FactoidCommandException("Area", entity.player, "COMMAND.REMOVE.AREA.EMPTY");
+            // check here if there is an area to replace
+            CuboidArea areaToReplace = entity.playerConf.getSelection().getAreaToReplace();
+            if (areaToReplace != null) {
+                areaNb = areaToReplace.getKey();
             }
-            try {
-                areaNb = Integer.parseInt(areaNbStr);
-            } catch (NumberFormatException ex) {
-                throw new FactoidCommandException("Area", entity.player, "COMMAND.REMOVE.AREA.INVALID");
-            }
-            if (land.getArea(areaNb) == null) {
-                throw new FactoidCommandException("Area", entity.player, "COMMAND.REMOVE.AREA.INVALID");
+
+            // 0 is same has not set
+            if (areaNb == 0) {
+                if (areaNbStr == null) {
+                    throw new FactoidCommandException("Area", entity.player, "COMMAND.REMOVE.AREA.EMPTY");
+                }
+                try {
+                    areaNb = Integer.parseInt(areaNbStr);
+                } catch (NumberFormatException ex) {
+                    throw new FactoidCommandException("Area", entity.player, "COMMAND.REMOVE.AREA.INVALID");
+                }
+                if (land.getArea(areaNb) == null) {
+                    throw new FactoidCommandException("Area", entity.player, "COMMAND.REMOVE.AREA.INVALID");
+                }
             }
 
             // Only for a remove

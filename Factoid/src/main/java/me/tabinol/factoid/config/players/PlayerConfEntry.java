@@ -50,7 +50,7 @@ public class PlayerConfEntry {
             player = (Player) sender;
             playerContainer = Factoid.getPlayerUUID().getPCPFromString(player.getName(), player.getUniqueId(), player);
             playerContainer.setPlayer(player);
-            playerSelection = new PlayerSelection();
+            playerSelection = new PlayerSelection(this);
         } else {
             player = null;
             playerSelection = null;

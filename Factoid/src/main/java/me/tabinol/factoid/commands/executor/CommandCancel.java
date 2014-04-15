@@ -20,9 +20,7 @@ package me.tabinol.factoid.commands.executor;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.players.PlayerConfEntry;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.selection.PlayerSelection;
 import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
-import me.tabinol.factoid.selection.region.AreaSelection;
 import me.tabinol.factoid.selection.region.RegionSelection;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -67,7 +65,6 @@ public class CommandCancel extends CommandExec {
         
         if ((sel = playerConf.getSelection().getSelection(SelectionType.AREA)) != null) {
 
-            sel.removeSelection();
             playerConf.getSelection().removeSelection(SelectionType.AREA);
             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.CANCEL"));
             Factoid.getLog().write(player.getName() + ": Select cancel");
@@ -91,7 +88,6 @@ public class CommandCancel extends CommandExec {
 */
         if ((sel = playerConf.getSelection().getSelection(SelectionType.LAND)) != null) {
 
-            sel.removeSelection();
             playerConf.getSelection().removeSelection(SelectionType.LAND);
             player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CANCEL.SELECT"));
 

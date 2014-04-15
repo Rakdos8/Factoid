@@ -104,7 +104,7 @@ public class PlayerContainerPlayer extends PlayerContainer {
         return playerName;
     }
     
-    public void setPlayerNmae(String playerName) {
+    public void setPlayerName(String playerName) {
         
         this.playerName = playerName.toLowerCase();
     }

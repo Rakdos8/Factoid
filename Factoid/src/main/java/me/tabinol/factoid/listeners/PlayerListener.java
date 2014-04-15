@@ -227,7 +227,8 @@ public class PlayerListener implements Listener {
 
                 event.setCancelled(true);
 
-            } else if (!playerConf.get(player).isAdminMod()) {
+                // Citizen bug, check if entry exist before
+            } else if ((entry = playerConf.get(player)) != null && !entry.isAdminMod()) {
                 land = Factoid.getLands().getLandOrOutsideArea(event.getClickedBlock().getLocation());
                 if ((land instanceof Land && ((Land) land).isBanned(player))
                         || (((action == Action.RIGHT_CLICK_BLOCK // BEGIN of USE

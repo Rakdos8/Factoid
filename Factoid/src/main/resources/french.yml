@@ -37,6 +37,7 @@ HELP:
     2: "/factoid select : Démarrer la sélection visuelle."
     3: "/factoid select done : Conclure une sélection visuelle."
     4: "/factoid select worldedit : Prendre une sélection WorldEdit."
+    5: "/factoid select info : Informations à propos de la sélection."
   INFO:
     1: "/factoid info [terrain] : Affiche les informations générales du terrain."
   ADMINMOD:
@@ -159,6 +160,11 @@ COMMAND:
       SELECTIONNED: " Vous avez sélectionné un terrain avec WorldEdit!"
       NOSELECTIONNED: " Pas de sélection WorldEdit ou pas de type cuboïd!"
       SELECTIONINCOMPLET: " La sélection WorldEdit est incomplète!"
+    INFO:
+      INFO1: "Sélection: %"
+      INFO2: "Nombre de blocs: %"
+      INFO3: "Prix pour la création d'un terrain: %"
+      INFO4: "Prix pour l'ajout d'une étendue: %"
   EXPAND:
     JOINMODE: "Vous êtes en mode Expansion."
     QUITMODE: "Vous n'êtes plus en mode Expansion."

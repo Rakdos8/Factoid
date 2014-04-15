@@ -172,20 +172,38 @@ public class Lands {
         return removeLand(landUUIDList.get(uuid));
     }
 
-    public boolean renameLand(String oldName, String newName) throws FactoidLandException {
+    public boolean renameLand(String landName, String newName) throws FactoidLandException {
 
-        String oldNameLower = oldName.toLowerCase();
+        Land land = getLand(landName);
+
+        if (land != null) {
+            return renameLand(land, newName);
+        } else {
+            return false;
+        }
+    }
+
+    public boolean renameLand(UUID uuid, String newName) throws FactoidLandException {
+
+        Land land = getLand(uuid);
+
+        if (land != null) {
+            return renameLand(land, newName);
+        } else {
+            return false;
+        }
+    }
+
+    public boolean renameLand(Land land, String newName) throws FactoidLandException {
+
+        String oldNameLower = land.getName();
         String newNameLower = newName.toLowerCase();
 
         if (isNameExist(newNameLower)) {
             throw new FactoidLandException(newNameLower, null, LandAction.LAND_RENAME, LandError.NAME_IN_USE);
         }
 
-        Land land = landList.remove(oldNameLower);
-
-        if (land == null) {
-            return false;
-        }
+        landList.remove(oldNameLower);
 
         land.setName(newNameLower);
         landList.put(newNameLower, land);
@@ -373,34 +391,34 @@ public class Lands {
         for (CuboidArea area : areas) {
 
             Factoid.getLog().write("Check for: " + area.getLand().getName()
-                + ", area: " + area.toString());
-            
+                    + ", area: " + area.toString());
+
             curPrio = area.getLand().getPriority();
             curGen = area.getLand().getGenealogy();
-            
+
             if (actualPrio < curPrio
                     || (actualPrio == curPrio && actualGen <= curGen)) {
                 actualArea = area;
                 actualPrio = curPrio;
                 actualGen = area.getLand().getGenealogy();
-                
+
                 Factoid.getLog().write("Found, update:  actualPrio: " + actualPrio + ", actualGen: " + actualGen);
             }
         }
-        
+
         /* Section not needed: the priority is inneritable
-        // If we need a second pass and more (for children)
-        for (int t = 1; t <= actualGen; t++) {
-            actualPrio = Short.MIN_VALUE;
-            for (CuboidArea area : areas) {
-                if (area.getLand() == actualArea.getLand().getAncestor(actualGen - t)
-                        && actualPrio < (curPrio = area.getLand().getPriority())) {
-                    actualArea = area;
-                    actualPrio = curPrio;
-                }
-            }
-        }
-        */
+         // If we need a second pass and more (for children)
+         for (int t = 1; t <= actualGen; t++) {
+         actualPrio = Short.MIN_VALUE;
+         for (CuboidArea area : areas) {
+         if (area.getLand() == actualArea.getLand().getAncestor(actualGen - t)
+         && actualPrio < (curPrio = area.getLand().getPriority())) {
+         actualArea = area;
+         actualPrio = curPrio;
+         }
+         }
+         }
+         */
         return actualArea;
     }
 

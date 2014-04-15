@@ -22,6 +22,7 @@ import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.config.players.PlayerConfEntry;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.flags.FlagType;
@@ -41,11 +42,15 @@ public class PlayerSelection {
         AREA;
     }
 
+    private final PlayerConfEntry playerConfEntry;
     private final EnumMap<SelectionType, RegionSelection> selectionList; // SelectionList for the player
+    CuboidArea areaToReplace; // If it is an areaToReplace with an expand
 
-    public PlayerSelection() {
+    public PlayerSelection(PlayerConfEntry playerConfEntry) {
 
+        this.playerConfEntry = playerConfEntry;
         selectionList = new EnumMap<SelectionType, RegionSelection>(SelectionType.class);
+        areaToReplace = null;
     }
 
     public boolean hasSelection() {
@@ -70,7 +75,17 @@ public class PlayerSelection {
 
     public RegionSelection removeSelection(SelectionType type) {
 
-        return selectionList.remove(type);
+        RegionSelection select = selectionList.remove(type);
+
+        if (select != null) {
+
+            // reset AreaToReplace if exist
+            areaToReplace = null;
+
+            select.removeSelection();
+        }
+
+        return select;
     }
 
     public Land getLand() {
@@ -93,9 +108,19 @@ public class PlayerSelection {
         }
     }
 
+    public void setAreaToReplace(CuboidArea areaToReplace) {
+
+        this.areaToReplace = areaToReplace;
+    }
+
+    public CuboidArea getAreaToReplace() {
+
+        return areaToReplace;
+    }
+
     public double getLandCreatePrice() {
 
-        if (Factoid.getPlayerMoney() == null) {
+        if(!isPlayerMustPay()) {
             return 0;
         }
 
@@ -120,13 +145,17 @@ public class PlayerSelection {
 
     public double getAreaAddPrice() {
 
-        if (Factoid.getPlayerMoney() == null) {
+        if(!isPlayerMustPay()) {
             return 0;
         }
 
         Land land = getLand();
         CuboidArea area = getCuboidArea();
         LandFlag priceFlag;
+
+        if(land == null) {
+            return 0;
+        }
 
         // The area is from parent ask parent
         if (land.getParent() == null) {
@@ -162,16 +191,35 @@ public class PlayerSelection {
 
         // get total areas cube
         long nbCube = 0;
-        for(CuboidArea areaRes : areas) {
+        for (CuboidArea areaRes : areas) {
             nbCube += areaRes.getTotalBlock();
         }
-        
+
         return priceFlag.getValueDouble() * nbCube;
     }
 
     public double getAreaReplacePrice(int areaId) {
 
+        if(!isPlayerMustPay()) {
+            return 0;
+        }
+
         // Check only with Area add. No refound for reduced area.
         return getAreaAddPrice();
+    }
+    
+    private boolean isPlayerMustPay() {
+        
+        // Is Economy?
+        if (Factoid.getPlayerMoney() == null) {
+            return false;
+        }
+
+        // Free for AdminMod
+        if(playerConfEntry.isAdminMod()) {
+            return false;
+        }
+        
+        return true;
     }
 }

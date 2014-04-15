@@ -16,6 +16,9 @@ _Global_:                           # _Global_ for all worlds
     CREEPER_DAMAGE:
       Value: true
       Heritable: false
+    ECO_BLOCK_PRICE:
+      Value: 0.01
+      Heritable: true
 #world1:
 #  ContainerPermissions:
 #    Group:

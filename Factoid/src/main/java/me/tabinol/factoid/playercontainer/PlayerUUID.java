@@ -211,7 +211,7 @@ public class PlayerUUID {
 
                 String oldName = pcp.getPlayerName();
                 playersName.remove(oldName);
-                pcp.setPlayerNmae(stLower);
+                pcp.setPlayerName(stLower);
                 playersName.put(stLower, pcp);
                 saveAll();
             }

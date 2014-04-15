@@ -19,6 +19,7 @@ package me.tabinol.factoid.commands.executor;
 
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
+import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
 import me.tabinol.factoid.selection.region.AreaSelection;
@@ -38,7 +39,7 @@ public class CommandExpand extends CommandExec {
         checkSelections(null, null);
         // checkPermission(false, false, null, null);
 
-        // Land land = entity.playerConf.getLandSelected();
+        Land land = entity.playerConf.getSelection().getLand();
         String curArg = entity.argList.getNext();
 
         if (curArg == null) {
@@ -53,6 +54,13 @@ public class CommandExpand extends CommandExec {
 
             // Check the selection before (if exist)
             CuboidArea area = entity.playerConf.getSelection().getCuboidArea();
+
+            if (area == null && land != null && (area = land.getArea(1)) != null) {
+
+                // Expand an existing area?
+                entity.playerConf.getSelection().setAreaToReplace(area);
+            }
+
             if (area == null) {
                 entity.playerConf.getSelection().addSelection(new ExpandAreaSelection(entity.player));
             } else {
@@ -68,9 +76,9 @@ public class CommandExpand extends CommandExec {
 
             CuboidArea area = entity.playerConf.getSelection().getCuboidArea();
             if (area != null) {
-                
+
                 entity.playerConf.getSelection().addSelection(new AreaSelection(entity.player, area));
-                
+
                 if (!((AreaSelection) entity.playerConf.getSelection().getSelection(SelectionType.AREA)).getCollision()) {
                     entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY
                             + Factoid.getLanguage().getMessage("COMMAND.SELECT.LAND.NOCOLLISION"));
