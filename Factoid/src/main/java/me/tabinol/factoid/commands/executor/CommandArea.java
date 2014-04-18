@@ -45,14 +45,15 @@ public class CommandArea extends CommandExec {
             checkSelections(true, null);
 
             CuboidArea area = entity.playerConf.getSelection().getCuboidArea();
+            double price = entity.playerConf.getSelection().getAreaAddPrice();
 
             // Check for collision
-            if (checkCollision(land.getName(), land, LandAction.AREA_ADD, 0, area, land.getParent(), true)) {
+            if (checkCollision(land.getName(), land, LandAction.AREA_ADD, 0, area, land.getParent(), price, true)) {
                 return;
             }
 
             // Add Area
-            land.addArea(area);
+            land.addArea(area, price);
 
             entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.AREA.ISDONE", land.getName()));
             Factoid.getLog().write(entity.playerName + " have create an area named " + land.getName() + " at position " + land.getAreas().toString());
@@ -92,7 +93,7 @@ public class CommandArea extends CommandExec {
                 checkSelections(true, null);
 
                 // Check for collision
-                if (checkCollision(curArg, land, LandAction.AREA_REMOVE, areaNb, null, land.getParent(), true)) {
+                if (checkCollision(curArg, land, LandAction.AREA_REMOVE, areaNb, null, land.getParent(), 0, true)) {
                     return;
                 }
 
@@ -111,9 +112,10 @@ public class CommandArea extends CommandExec {
                 checkSelections(true, true);
 
                 CuboidArea area = entity.playerConf.getSelection().getCuboidArea();
+                double price = entity.playerConf.getSelection().getAreaReplacePrice(areaNb);
 
                 // Check for collision
-                if (checkCollision(land.getName(), land, LandAction.AREA_MODIFY, areaNb, area, land.getParent(), true)) {
+                if (checkCollision(land.getName(), land, LandAction.AREA_MODIFY, areaNb, area, land.getParent(), price, true)) {
                     return;
                 }
 

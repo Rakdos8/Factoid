@@ -18,6 +18,7 @@
 package me.tabinol.factoid.lands;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.EnumMap;
@@ -71,7 +72,6 @@ public class Land extends DummyLand {
     private boolean rented = false;
     private PlayerContainerPlayer tenant = null;
     private Timestamp lastPayment = new Timestamp(0);
-    
 
     // Please use createLand in Lands class to create a Land
     protected Land(String landName, UUID uuid, PlayerContainer owner,
@@ -133,6 +133,12 @@ public class Land extends DummyLand {
         addArea(area, nextKey);
     }
 
+    public void addArea(CuboidArea area, double price) {
+
+        Factoid.getLands().getPriceFromPlayer(worldName, owner, price);
+        addArea(area);
+    }
+
     public void addArea(CuboidArea area, int key) {
 
         area.setLand(this);
@@ -146,7 +152,7 @@ public class Land extends DummyLand {
         CuboidArea area;
 
         if ((area = areas.remove(key)) != null) {
-            Factoid.getLands().removeAreaToList(area);
+            Factoid.getLands().removeAreaFromList(area);
             doSave();
             return true;
         }
@@ -165,12 +171,19 @@ public class Land extends DummyLand {
         return false;
     }
 
+    public boolean replaceArea(int key, CuboidArea newArea, double price) {
+
+        Factoid.getLands().getPriceFromPlayer(worldName, owner, price);
+
+        return replaceArea(key, newArea);
+    }
+
     public boolean replaceArea(int key, CuboidArea newArea) {
 
         CuboidArea area;
 
         if ((area = areas.remove(key)) != null) {
-            Factoid.getLands().removeAreaToList(area);
+            Factoid.getLands().removeAreaFromList(area);
             newArea.setLand(this);
             areas.put(key, newArea);
             Factoid.getLands().addAreaToList(newArea);
@@ -223,13 +236,40 @@ public class Land extends DummyLand {
         return false;
     }
 
+    public long getNbBlocksOutside(CuboidArea areaComp) {
+
+        long volume = areaComp.getTotalBlock();
+        ArrayList<CuboidArea> precAreas = new ArrayList<CuboidArea>();
+
+        for (CuboidArea area : areas.values()) {
+
+            CuboidArea colArea = area.getCollisionArea(areaComp);
+
+            if (colArea != null) {
+                volume -= colArea.getTotalBlock();
+
+                for (CuboidArea precArea : precAreas) {
+                    CuboidArea colPrecArea = colArea.getCollisionArea(precArea);
+
+                    if (colPrecArea != null) {
+                        volume += colPrecArea.getTotalBlock();
+                    }
+                }
+            }
+
+            precAreas.add(area);
+        }
+
+        return volume;
+    }
+
     public String getName() {
 
         return name;
     }
-    
+
     public UUID getUUID() {
-        
+
         return uuid;
     }
 
@@ -553,104 +593,104 @@ public class Land extends DummyLand {
 
         return playerList;
     }
-    
+
     public boolean isForSale() {
-        
+
         return forSale;
     }
-    
+
     public void setForSale(boolean isForSale, double salePrice) {
-        
+
         forSale = isForSale;
-        if(forSale) {
+        if (forSale) {
             this.salePrice = salePrice;
         } else {
             this.salePrice = 0;
         }
         doSave();
     }
-    
+
     public double getSalePrice() {
-        
+
         return salePrice;
     }
-    
+
     public boolean isForRent() {
-        
+
         return forRent;
     }
-    
+
     public void setForRent(double rentPrice, int rentRenew, boolean rentAutoRenew) {
-        
+
         forRent = true;
         this.rentPrice = rentPrice;
         this.rentRenew = rentRenew;
         this.rentAutoRenew = rentAutoRenew;
         doSave();
     }
-    
+
     public void unSetForRent() {
-        
+
         forRent = false;
         rentPrice = 0;
         rentRenew = 0;
         rentAutoRenew = false;
         doSave();
     }
-    
+
     public double getRentPrice() {
-        
+
         return rentPrice;
     }
-    
+
     public int getRentRenew() {
-        
+
         return rentRenew;
     }
-    
+
     public boolean getRentAutoRenew() {
-        
+
         return rentAutoRenew;
     }
-    
+
     public boolean isRented() {
-        
+
         return rented;
     }
-    
+
     public void setRented(PlayerContainerPlayer tenant) {
-        
+
         rented = true;
         this.tenant = tenant;
         updateRentedPayment(); // doSave() done in this method
     }
-    
+
     public void updateRentedPayment() {
-        
+
         lastPayment = new Timestamp(new Date().getTime());
         doSave();
     }
-    
+
     public void unSetRented() {
-        
+
         rented = false;
         tenant = null;
         lastPayment = new Timestamp(0);
         doSave();
     }
-    
+
     public PlayerContainerPlayer getTenant() {
-        
+
         return tenant;
     }
-    
+
     public boolean isTenant(Player player) {
-        
+
         return tenant.hasAccess(player);
     }
-    
+
     public Timestamp getLastPaymentTime() {
-        
+
         return lastPayment;
     }
 }

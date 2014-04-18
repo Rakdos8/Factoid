@@ -1,17 +1,31 @@
+# Configuration for worlds
+# Important: For Permission keys, replace "." by "_".
+# Example: "group.newbies" will become "group_newbies"
+
 _Global_:                           # _Global_ for all worlds
   ContainerPermissions:
-    Group:
-      Newbies:
+    Permission:
+      group_newbies:
         BUILD:
           Value: false
           Heritable: true
-    Everybody:
-      LAND_CREATE:
-        Value: true
-        Heritable: false
-      BUILD:
-        Value: true
-        Heritable: false
+        OPEN:
+          Value: false
+          Heritable: true
+        BUCKET_WATER:
+          Value: false
+          Heritable: true
+        BUCKET_LAVA:
+          Value: false
+          Heritable: true
+    Permission:
+      group_users:
+        LAND_CREATE:
+          Value: true
+          Heritable: false
+        BUILD:
+          Value: true
+          Heritable: false
   ContainerFlags:
     CREEPER_DAMAGE:
       Value: true

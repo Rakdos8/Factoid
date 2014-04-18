@@ -40,11 +40,11 @@ public class WorldConfig {
     private final Factoid thisPlugin;
     private final FileConfiguration landDefault;
     private final FileConfiguration worldConfig;
-    
+
     public WorldConfig() {
 
         thisPlugin = Factoid.getThisPlugin();
-        
+
         // Create files (if not exist) and load
         if (!new File(thisPlugin.getDataFolder(), "landdefault.yml").exists()) {
             thisPlugin.saveResource("landdefault.yml", false);
@@ -83,49 +83,40 @@ public class WorldConfig {
         ConfigurationSection csPerm = fc.getConfigurationSection(perms);
         ConfigurationSection csFlags = fc.getConfigurationSection(flags);
 
-        Factoid.getLog().write("Adding default for world: " + worldName);
-        
         // Add permissions
         if (csPerm != null) {
             for (String container : csPerm.getKeys(false)) {
-                PlayerContainerType containerType = PlayerContainerType.getFromString(container);
-                ConfigurationSection sect1 = csPerm.getConfigurationSection(container);
-                for (String ifContainer : sect1.getKeys(false)) {
-
-                    String containerName;
-                    ConfigurationSection sect2;
-
-                    if (containerType.hasParameter()) {
-
-                        // If there is a parameter and bug resolve for permission (xxx.yyy.zzz)
-                        StringBuilder strb = new StringBuilder();
-                        sect2 = sect1;
-                        
-                        // Check if the subsection is only one but subsubsection has not 2 (value + inherit = 2)
-                        while(sect2.getKeys(false).size() == 1 &&
-                                sect2.getConfigurationSection(sect2.getKeys(false).iterator().next()).getKeys(false).size() != 2) {
-                            if(strb.length() != 0) {
-                                strb.append(".");
+                
+                PlayerContainerType pcType = PlayerContainerType.getFromString(container);
+                
+                if (pcType.hasParameter()) {
+                    for (String containerName : fc.getConfigurationSection(perms + "." + container).getKeys(false)) {
+                        for (String perm : fc.getConfigurationSection(perms + "." + container + "." + containerName).getKeys(false)) {
+                            Factoid.getLog().write("Container: " + container + ":" + containerName + ", " + perm);
+                            
+                            // Remove _ if it is a Bukkit Permission
+                            String containerNameLower;
+                            if(pcType == PlayerContainerType.PERMISSION) {
+                                containerNameLower = containerName.toLowerCase().replaceAll("_", ".");
+                            } else {
+                                containerNameLower = containerName.toLowerCase();
                             }
-                            strb.append(sect2.getKeys(false).iterator().next());
-                            sect2 = sect1.getConfigurationSection(strb.toString());
-                         }
-                        containerName = strb.toString();
-                    
-                    } else {
-
-                        // If no parameter, stay in the same section
-                        containerName = "";
-                        sect2 = sect1;
+                            
+                            dl.addPermission(
+                                    PlayerContainer.create(null, pcType, containerNameLower),
+                                    new Permission(PermissionType.valueOf(perm.toUpperCase()),
+                                            fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Value"),
+                                            fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Heritable")));
+                        }
                     }
-
-                    for (String perm : sect2.getKeys(false)) {
-                        Factoid.getLog().write("Container: " + container + ":" + containerName + ", " + perm);
+                } else {
+                    for (String perm : fc.getConfigurationSection(perms + "." + container).getKeys(false)) {
+                        Factoid.getLog().write("Container: " + container + ", " + perm);
                         dl.addPermission(
-                                PlayerContainer.create(null, containerType, containerName.toLowerCase()),
+                                PlayerContainer.create(null, pcType, null),
                                 new Permission(PermissionType.valueOf(perm.toUpperCase()),
-                                        fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Value"),
-                                        fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Heritable")));
+                                        fc.getBoolean(perms + "." + container + "." + perm + ".Value"),
+                                        fc.getBoolean(perms + "." + container + "." + perm + ".Heritable")));
                     }
                 }
             }
@@ -142,5 +133,4 @@ public class WorldConfig {
 
         return dl;
     }
-
 }

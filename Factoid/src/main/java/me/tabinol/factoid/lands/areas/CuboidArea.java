@@ -122,7 +122,7 @@ public class CuboidArea implements Comparable<CuboidArea> {
 
     public long getTotalBlock() {
         
-        return (x2 - x1) * (y2 - y1) * (z2 - z1);
+        return (x2 - x1 + 1) * (y2 - y1 + 1) * (z2 - z1 + 1);
     }
     
     public boolean isCollision(CuboidArea area2) {
@@ -143,8 +143,88 @@ public class CuboidArea implements Comparable<CuboidArea> {
                 && Calculate.isInInterval(loc.getBlockY(), y1, y2)
                 && Calculate.isInInterval(loc.getBlockZ(), z1, z2);
     }
+    
+    /**
+     * Check if there is a collision and create an area of the collision.
+     * @param area2 The second area to compare
+     * @return the CuboidArea collision or null if there is no collision
+     */
+    public CuboidArea getCollisionArea(CuboidArea area2) {
+        
+        // Return null if the world is not the same
+        if (!worldName.equalsIgnoreCase(area2.worldName)) {
+            return null;
+        }
+        
+        // -1 before, 0 inside, +1 after
+        int x1pos = Calculate.comparePosition(area2.x1, x1, x2);
+        int y1pos = Calculate.comparePosition(area2.y1, y1, y2);
+        int z1pos = Calculate.comparePosition(area2.z1, z1, z2);
+        int x2pos = Calculate.comparePosition(area2.x2, x1, x2);
+        int y2pos = Calculate.comparePosition(area2.y2, y1, y2);
+        int z2pos = Calculate.comparePosition(area2.z2, z1, z2);
+        
+        // first check if both points are before or after
+        if ((x1pos == -1 && x2pos == -1) || (x1pos == 1 && x2pos == 1)) {
+            return null;
+        }
+        if ((y1pos == -1 && y2pos == -1) || (y1pos == 1 && y2pos == 1)) {
+            return null;
+        }
+        if ((z1pos == -1 && z2pos == -1) || (z1pos == 1 && z2pos == 1)) {
+            return null;
+        }
+        
+        // At this point, there is a collision
+        
+        int cx1;
+        int cx2;
+        int cy1;
+        int cy2;
+        int cz1;
+        int cz2;
 
-    // Return and create outise area(s) if the area is outside
+        // Create points
+        if(x1pos == -1) {
+            cx1 = x1;
+        } else {
+            cx1 = area2.x1;
+        }
+        if(y1pos == -1) {
+            cy1 = y1;
+        } else {
+            cy1 = area2.y1;
+        }
+        if(z1pos == -1) {
+            cz1 = z1;
+        } else {
+            cz1 = area2.z1;
+        }
+        if(x2pos == 1) {
+            cx2 = x2;
+        } else {
+            cx2 = area2.x2;
+        }
+        if(y2pos == 1) {
+            cy2 = y2;
+        } else {
+            cy2 = area2.y2;
+        }
+        if(z2pos == 1) {
+            cz2 = z2;
+        } else {
+            cz2 = area2.z2;
+        }
+        
+        // Return collision area
+        return new CuboidArea(worldName, cx1, cy1, cz1, cx2, cy2, cz2);
+    }
+    
+    /**
+     * Create a collection of outside areas. DO NOT USE TO GET THE AREA PRICE
+     * @param area2 Area to compare
+     * @return A collection of outside areas
+     */
     public Collection<CuboidArea> getOutside(CuboidArea area2) {
 
         HashSet<CuboidArea> areaList = new HashSet<CuboidArea>();
@@ -188,29 +268,29 @@ public class CuboidArea implements Comparable<CuboidArea> {
             areaList.add(area2);
             return areaList;
         }
-
+        
         // Check positions before
         if (x1pos == -1) {
             ax1 = area2.x1;
             ax2 = x1;
         }
-        if (x1pos == 1) {
+        if (x2pos == 1) {
             bx1 = x2;
             bx2 = area2.x2;
         }
-        if (x1pos == -1) {
+        if (y1pos == -1) {
             ay1 = area2.y1;
             ay2 = y1;
         }
-        if (x1pos == 1) {
+        if (y2pos == 1) {
             by1 = y2;
             by2 = area2.y2;
         }
-        if (x1pos == -1) {
+        if (z1pos == -1) {
             az1 = area2.z1;
             az2 = z1;
         }
-        if (x1pos == 1) {
+        if (z2pos == 1) {
             bz1 = z2;
             bz2 = area2.z2;
         }
@@ -218,38 +298,38 @@ public class CuboidArea implements Comparable<CuboidArea> {
         // Create areas
         if (ax1 != null) {
             areaList.add(new CuboidArea(worldName,
-                    ax1, ay1 != null ? ay1 : y2, az1 != null ? az1 : z2,
-                    ax2, ay2 != null ? ay2 : y1, az2 != null ? az2 : z1));
+                    ax1, ay1 != null ? ay1 : area2.y2, az1 != null ? az1 : area2.z2,
+                    ax2, ay2 != null ? ay2 : area2.y1, az2 != null ? az2 : area2.z1));
         }
         if (bx1 != null) {
             areaList.add(new CuboidArea(worldName,
-                    bx1, by1 != null ? by1 : y2, bz1 != null ? bz1 : z2,
-                    bx2, by2 != null ? by2 : y1, bz2 != null ? bz2 : z1));
+                    bx1, by1 != null ? by1 : area2.y2, bz1 != null ? bz1 : area2.z2,
+                    bx2, by2 != null ? by2 : area2.y1, bz2 != null ? bz2 : area2.z1));
         }
         if (ay1 != null) {
             areaList.add(new CuboidArea(worldName,
-                    ax1 != null ? ax1 : x2, ay1, az1 != null ? az1 : z2,
-                    ax2 != null ? ax2 : x1, ay2, az2 != null ? az2 : z1));
+                    ax1 != null ? ax1 : area2.x2, ay1, az1 != null ? az1 : area2.z2,
+                    ax2 != null ? ax2 : area2.x1, ay2, az2 != null ? az2 : area2.z1));
         }
         if (by1 != null) {
             areaList.add(new CuboidArea(worldName,
-                    bx1 != null ? bx1 : x2, by1, bz1 != null ? bz1 : z2,
-                    bx2 != null ? bx2 : x1, by2, bz2 != null ? bz2 : z1));
+                    bx1 != null ? bx1 : area2.x2, by1, bz1 != null ? bz1 : area2.z2,
+                    bx2 != null ? bx2 : area2.x1, by2, bz2 != null ? bz2 : area2.z1));
         }
         if (az1 != null) {
             areaList.add(new CuboidArea(worldName,
-                    ax1 != null ? ax1 : x2, ay1 != null ? ay1 : y2, az1,
-                    ax2 != null ? ax2 : x1, ay2 != null ? ay2 : y1, az2));
+                    ax1 != null ? ax1 : area2.x2, ay1 != null ? ay1 : area2.y2, az1,
+                    ax2 != null ? ax2 : area2.x1, ay2 != null ? ay2 : area2.y1, az2));
         }
         if (bz1 != null) {
             areaList.add(new CuboidArea(worldName,
-                    bx1 != null ? bx1 : x2, by1 != null ? by1 : y2, bz1,
-                    bx2 != null ? bx2 : x1, by2 != null ? by2 : y1, bz2));
+                    bx1 != null ? bx1 : area2.x2, by1 != null ? by1 : area2.y2, bz1,
+                    bx2 != null ? bx2 : area2.x1, by2 != null ? by2 : area2.y1, bz2));
         }
 
         return areaList;
     }
-
+    
     public final void setLand(Land land) {
 
         this.land = land;

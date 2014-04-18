@@ -44,7 +44,7 @@ public class PlayerMoney {
         return economy.depositPlayer(playerName, worldName, amount).transactionSuccess();
     }
 
-    public boolean getFromToPlayer(String playerName, String worldName, Double amount) {
+    public boolean getFromPlayer(String playerName, String worldName, Double amount) {
         
         return economy.withdrawPlayer(playerName, worldName, amount).transactionSuccess();
     }

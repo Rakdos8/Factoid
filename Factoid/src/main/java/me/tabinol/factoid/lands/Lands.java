@@ -38,6 +38,8 @@ import me.tabinol.factoid.lands.flags.FlagType;
 import me.tabinol.factoid.lands.flags.LandFlag;
 import me.tabinol.factoid.lands.permissions.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
+import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
+import me.tabinol.factoid.playercontainer.PlayerContainerType;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -97,6 +99,15 @@ public class Lands {
         return createLand(landName, owner, area, parent, 1, null);
     }
 
+    // For Land with parent and price
+    public Land createLand(String landName, PlayerContainer owner, CuboidArea area, Land parent, double price)
+            throws FactoidLandException {
+        
+        getPriceFromPlayer(area.getWorldName(), owner, price);
+
+        return createLand(landName, owner, area, parent, 1, null);
+    }
+
     // Only for Land load at start
     public Land createLand(String landName, PlayerContainer owner, CuboidArea area, Land parent, int areaId, UUID uuid)
             throws FactoidLandException {
@@ -104,9 +115,12 @@ public class Lands {
         String landNameLower = landName.toLowerCase();
         int genealogy = 0;
         Land land;
-
+        UUID landUUID;
+        
         if (uuid == null) {
-            uuid = UUID.randomUUID();
+            landUUID = UUID.randomUUID();
+        } else {
+            landUUID = uuid;
         }
 
         if (parent != null) {
@@ -117,7 +131,7 @@ public class Lands {
             throw new FactoidLandException(landName, area, LandAction.LAND_ADD, LandError.NAME_IN_USE);
         }
 
-        land = new Land(landNameLower, uuid, owner, area, genealogy, parent, areaId);
+        land = new Land(landNameLower, landUUID, owner, area, genealogy, parent, areaId);
 
         addLandToList(land);
         Factoid.getLog().write("add land: " + landNameLower);
@@ -153,7 +167,7 @@ public class Lands {
             return false;
         }
 
-        removeLandToList(land);
+        removeLandFromList(land);
         if (land.getParent() != null) {
             land.getParent().removeChild(land.getUUID());
         }
@@ -289,6 +303,15 @@ public class Lands {
         return lands;
     }
 
+    protected boolean getPriceFromPlayer(String worldName, PlayerContainer pc, double price) {
+        
+        if(pc.getContainerType() == PlayerContainerType.PLAYER && price > 0) {
+            return Factoid.getPlayerMoney().getFromPlayer(((PlayerContainerPlayer)pc).getPlayerName(), worldName, price);
+        }
+    
+    return true;
+    }
+    
     protected boolean getPermissionInWorld(String worldName, Player player, PermissionType pt, boolean onlyInherit) {
 
         Boolean result;
@@ -464,7 +487,7 @@ public class Lands {
         areaList[INDEX_Z2].get(area.getWorldName()).add(new AreaIndex(area.getZ2(), area));
     }
 
-    protected void removeAreaToList(CuboidArea area) {
+    protected void removeAreaFromList(CuboidArea area) {
 
         areaList[INDEX_X1].get(area.getWorldName()).remove(new AreaIndex(area.getX1(), area));
         areaList[INDEX_Z1].get(area.getWorldName()).remove(new AreaIndex(area.getZ1(), area));
@@ -478,12 +501,12 @@ public class Lands {
         landUUIDList.put(land.getUUID(), land);
     }
 
-    private void removeLandToList(Land land) {
+    private void removeLandFromList(Land land) {
 
         landList.remove(land.getName());
         landUUIDList.remove(land.getUUID());
         for (CuboidArea area : land.getAreas()) {
-            removeAreaToList(area);
+            removeAreaFromList(area);
         }
     }
 }

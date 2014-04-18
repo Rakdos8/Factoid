@@ -19,8 +19,6 @@ package me.tabinol.factoid.selection;
 
 import java.util.Collection;
 import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.players.PlayerConfEntry;
 import me.tabinol.factoid.lands.Land;
@@ -169,31 +167,8 @@ public class PlayerSelection {
             return 0;
         }
 
-        // Remove already here area
-        Collection<CuboidArea> areas = new HashSet<CuboidArea>();
-        areas.add(area);
-        Iterator<CuboidArea> iterator = land.getAreas().iterator();
-
-        while (iterator.hasNext()) {
-            CuboidArea parentArea = iterator.next();
-            Collection<CuboidArea> areasNew = new HashSet<CuboidArea>();
-            for (CuboidArea areaC : areas) {
-                areasNew.addAll(parentArea.getOutside(areaC));
-            }
-
-            // Exit if no areas is returned (the child area is inside)
-            if (areasNew.isEmpty()) {
-                return 0;
-            }
-
-            areas = areasNew;
-        }
-
         // get total areas cube
-        long nbCube = 0;
-        for (CuboidArea areaRes : areas) {
-            nbCube += areaRes.getTotalBlock();
-        }
+        long nbCube = land.getNbBlocksOutside(area);
 
         return priceFlag.getValueDouble() * nbCube;
     }

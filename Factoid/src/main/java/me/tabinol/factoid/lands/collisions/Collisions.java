@@ -24,9 +24,12 @@ import java.util.Iterator;
 import java.util.List;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
-import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.Lands;
+import me.tabinol.factoid.lands.areas.CuboidArea;
+import me.tabinol.factoid.playercontainer.PlayerContainer;
+import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
+import me.tabinol.factoid.playercontainer.PlayerContainerType;
 
 public class Collisions {
 
@@ -47,9 +50,10 @@ public class Collisions {
         HAS_CHILDREN(false),
         CHILD_OUT_OF_BORDER(true),
         OUT_OF_PARENT(true),
-        IN_APPROVE_LIST(false);
+        IN_APPROVE_LIST(false),
+        NOT_ENOUGH_MONEY(false);
 
-        public final boolean canBeApproved;
+        public final boolean canBeApproved; // False = No approve is possible
 
         private LandError(boolean canBeApproved) {
             this.canBeApproved = canBeApproved;
@@ -64,10 +68,12 @@ public class Collisions {
     private final int removedAreaId;
     private final CuboidArea newArea;
     private final Land parent;
+    private final double price;
+    private final PlayerContainer owner;
     private boolean allowApprove;
 
     public Collisions(String landName, Land land, LandAction action, int removedAreaId, CuboidArea newArea, Land parent,
-            boolean checkApproveList) {
+            PlayerContainer owner, double price, boolean checkApproveList) {
 
         coll = new ArrayList<CollisionsEntry>();
         lands = Factoid.getLands();
@@ -77,6 +83,8 @@ public class Collisions {
         this.removedAreaId = removedAreaId;
         this.newArea = newArea;
         this.parent = parent;
+        this.owner = owner;
+        this.price = price;
 
         // Pass 1 check if there is a collision
         if (action == LandAction.LAND_ADD || action == LandAction.AREA_ADD || action == LandAction.AREA_MODIFY) {
@@ -107,6 +115,15 @@ public class Collisions {
         // Pass 6 check if the name is allready in Approve List
         if (!checkApproveList && lands.getApproveList().isInApprove(landName)) {
             coll.add(new CollisionsEntry(LandError.IN_APPROVE_LIST, null, 0));
+        }
+        
+        // Pass 7 check if the player has enough money
+        if(price > 0 && owner.getContainerType() == PlayerContainerType.PLAYER && newArea != null) {
+            double playerBalance = Factoid.getPlayerMoney().getPlayerBalance(
+                    ((PlayerContainerPlayer)owner).getPlayerName(), newArea.getWorldName());
+            if(playerBalance < price) {
+                coll.add(new CollisionsEntry(LandError.NOT_ENOUGH_MONEY, null, 0));
+            }
         }
 
         // End check if the action can be done or approve

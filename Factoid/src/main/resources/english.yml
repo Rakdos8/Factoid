@@ -118,6 +118,7 @@ COLLISION:
     HAS_CHILDREN: "This land is parent of '%'."
     NAME_IN_USE: "This name is allready in use."
     IN_APPROVE_LIST: "This land is allready in approve list."
+    NOT_ENOUGH_MONEY: "You have not enough money."
     LISTSTART: "-Action(s) to be approved-"
     LIST: "Land: %, requester: %, action: %."
     LISTROWNULL: "No action in list to be approved."

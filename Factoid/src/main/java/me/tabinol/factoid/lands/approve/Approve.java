@@ -34,9 +34,10 @@ public class Approve {
     private final CuboidArea newArea;
     private final PlayerContainer owner;
     private final Land parent;
+    private final double price;
     
     public Approve(String landName, LandAction action, int removedAreaId, 
-            CuboidArea newArea, PlayerContainer owner, Land parent) {
+            CuboidArea newArea, PlayerContainer owner, Land parent, double price) {
         
         this.action = action;
         this.landName = landName.toLowerCase();
@@ -44,6 +45,7 @@ public class Approve {
         this.newArea = newArea;
         this.owner = owner;
         this.parent = parent;
+        this.price = price;
     }
 
     public LandAction getAction() {
@@ -76,17 +78,22 @@ public class Approve {
         return parent;
     }
     
+    public double getPrice() {
+        
+        return price;
+    }
+    
     public void createAction() {
         
         if(action == LandAction.AREA_ADD) {
-            Factoid.getLands().getLand(landName).addArea(newArea);
+            Factoid.getLands().getLand(landName).addArea(newArea, price);
         } else if(action == LandAction.AREA_REMOVE) {
             Factoid.getLands().getLand(landName).removeArea(removedAreaId);
         } else if(action == LandAction.AREA_MODIFY) {
-            Factoid.getLands().getLand(landName).replaceArea(removedAreaId, newArea);
+            Factoid.getLands().getLand(landName).replaceArea(removedAreaId, newArea, price);
         } else if(action == LandAction.LAND_ADD) {
             try {
-                Factoid.getLands().createLand(landName, owner, newArea, parent);
+                Factoid.getLands().createLand(landName, owner, newArea, parent, price);
             } catch (FactoidLandException ex) {
                 Logger.getLogger(Approve.class.getName()).log(Level.SEVERE, "On land create", ex);
             }

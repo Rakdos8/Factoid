@@ -63,6 +63,7 @@ import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -351,6 +352,23 @@ public class PlayerListener implements Listener {
                 && !playerConf.get(event.getPlayer()).isAdminMod()) {
 
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
+
+            if ((land instanceof Land && ((Land) land).isBanned(event.getPlayer()))
+                    || !checkPermission(land, event.getPlayer(), PermissionType.BUILD)
+                    || !checkPermission(land, event.getPlayer(), PermissionType.BUILD_DESTROY)) {
+                MessagePermission(event.getPlayer());
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onPlayerBucketFill(PlayerBucketFillEvent event) {
+
+        if (conf.getWorlds().contains(event.getPlayer().getWorld().getName().toLowerCase())
+                && !playerConf.get(event.getPlayer()).isAdminMod()) {
+
+            DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlockClicked().getLocation());
 
             if ((land instanceof Land && ((Land) land).isBanned(event.getPlayer()))
                     || !checkPermission(land, event.getPlayer(), PermissionType.BUILD)

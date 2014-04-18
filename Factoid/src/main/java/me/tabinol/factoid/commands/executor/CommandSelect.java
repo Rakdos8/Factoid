@@ -131,13 +131,13 @@ public class CommandSelect extends CommandExec {
             }
         } else if ((curArg = argList.getNext()) != null && curArg.equalsIgnoreCase("done")) {
 
-            if (playerConf.getSelection().getLand() != null) {
-                throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.CANTDONE");
-            }
+            //if (playerConf.getSelection().getLand() != null) {
+            //    throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.CANTDONE");
+            //}
 
-            if (playerConf.getSelection().getCuboidArea() != null) {
+            //if (playerConf.getSelection().getCuboidArea() != null) {
                 doSelectAreaDone();
-            }
+            //}
 
         } else if (curArg != null && curArg.equalsIgnoreCase("info")) {
 
@@ -150,7 +150,7 @@ public class CommandSelect extends CommandExec {
 
     private void doSelectAreaDone() throws FactoidCommandException {
 
-        checkSelections(true, null);
+        checkSelections(null, true);
 
         AreaSelection select = (AreaSelection) playerConf.getSelection().getSelection(SelectionType.AREA);
         playerConf.getSelection().addSelection(new AreaSelection(player, select.getCuboidArea()));
@@ -175,20 +175,20 @@ public class CommandSelect extends CommandExec {
         AreaSelection select = (AreaSelection) playerConf.getSelection().getSelection(SelectionType.AREA);
         CuboidArea area = select.getCuboidArea();
 
-        player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.INFO.INFO1",
+        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.INFO.INFO1",
                 area.getPrint()));
-        player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.INFO.INFO2",
+        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.INFO.INFO2",
                 area.getTotalBlock() + ""));
 
         // Price (economy)
         price = playerConf.getSelection().getLandCreatePrice();
         if (price != 0L) {
-            player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.INFO.INFO3",
+            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.INFO.INFO3",
                     Factoid.getPlayerMoney().toFormat(price)));
         }
         price = playerConf.getSelection().getAreaAddPrice();
         if (price != 0L) {
-            player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.INFO.INFO4",
+            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.INFO.INFO4",
                     Factoid.getPlayerMoney().toFormat(price)));
         }
     }

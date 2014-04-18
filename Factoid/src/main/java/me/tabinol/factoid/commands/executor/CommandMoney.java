@@ -74,7 +74,7 @@ public class CommandMoney extends CommandExec {
         }
 
         // Land Deposit
-        playerMoney.getFromToPlayer(entity.playerName, land.getWorldName(), amount);
+        playerMoney.getFromPlayer(entity.playerName, land.getWorldName(), amount);
         land.addMoney(amount);
         entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ECONOMY.LANDDEPOSIT",
                 playerMoney.toFormat(land.getMoney()), land.getName()));

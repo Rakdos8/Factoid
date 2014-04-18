@@ -226,17 +226,17 @@ public class StorageFlat extends Storage implements StorageInt {
             landName = cf.getName();
             cf.readParam();
             String ownerS = cf.getValueString();
+
+            // create owner (PlayerContainer)
+            owner = PlayerContainer.getFromString(ownerS);
+            if (owner == null) {
+                throw new FileLoadException(file.getName(), cf.getLine(), cf.getLineNb(), "Invalid owner.");
+            }
+           
             cf.readParam();
             parentName = cf.getValueString();
             cf.readParam();
             factionTerritory = cf.getValueString();
-
-            // create owner (PlayerContainer)
-            owner = PlayerContainer.getFromString(ownerS);
-
-            if (owner == null) {
-                throw new FileLoadException(file.getName(), cf.getLine(), cf.getLineNb(), "Invalid owner.");
-            }
 
             cf.readParam();
 

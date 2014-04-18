@@ -69,6 +69,9 @@ public class CollisionsEntry {
         if (error == LandError.IN_APPROVE_LIST) {
             return Factoid.getLanguage().getMessage("COLLISION.SHOW.IN_APPROVE_LIST");
         }
+        if (error == LandError.NOT_ENOUGH_MONEY) {
+            return Factoid.getLanguage().getMessage("COLLISION.SHOW.NOT_ENOUGH_MONEY");
+        }
 
         return null;
     }

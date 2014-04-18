@@ -143,10 +143,11 @@ public abstract class CommandExec implements CommandInterface {
 
     // Why Land paramater? The land can be an other land, not the land stored here.
     protected boolean checkCollision(String landName, Land land, Collisions.LandAction action,
-            int removeId, CuboidArea newArea, Land parent, boolean addForApprove) throws FactoidCommandException {
+            int removeId, CuboidArea newArea, Land parent, double price, boolean addForApprove) throws FactoidCommandException {
 
         // allowApprove: false: The command can absolutely not be done if there is error!
-        Collisions coll = new Collisions(landName, land, action, removeId, newArea, parent, !addForApprove);
+        Collisions coll = new Collisions(landName, land, action, removeId, newArea, parent,
+                entity.playerConf.getPlayerContainer(), price, !addForApprove);
         boolean allowApprove = coll.getAllowApprove();
 
         if (coll.hasCollisions()) {
@@ -157,7 +158,7 @@ public abstract class CommandExec implements CommandInterface {
                     entity.sender.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COLLISION.GENERAL.NEEDAPPROVE", landName));
                     Factoid.getLog().write("land " + landName + " has collision and needs approval.");
                     Factoid.getLands().getApproveList().addApprove(new Approve(landName, action, removeId, newArea,
-                            entity.playerConf.getPlayerContainer(), parent));
+                            entity.playerConf.getPlayerContainer(), parent, price));
                     return true;
                 } else if (Factoid.getConf().getAllowCollision() == Config.AllowCollisionType.FALSE || allowApprove == false) {
                     throw new FactoidCommandException("Land collision", entity.sender, "COLLISION.GENERAL.CANNOTDONE");

@@ -60,6 +60,7 @@ public class ApproveList {
         if (approve.getParent() != null) {
             section.set("Parent", approve.getParent().getName());
         }
+        section.set("Price", approve.getPrice() + "");
         saveFile();
         Factoid.getApproveNotif().notifyForApprove(approve.getLandName(), approve.getOwner().getPrint());
     }
@@ -97,7 +98,8 @@ public class ApproveList {
 
         return new Approve(landName, LandAction.valueOf(section.getString("Action")),
                 section.getInt("RemovedAreaId"),
-                CuboidArea.getFromString(section.getString("NewArea")), pc, parent);
+                CuboidArea.getFromString(section.getString("NewArea")), pc, 
+                parent, section.getDouble("Price"));
     }
 
     public void removeApprove(Approve approve) {
@@ -117,15 +119,15 @@ public class ApproveList {
             try {
                 approveFile.createNewFile();
             } catch (IOException ex) {
-                Logger.getLogger(ApproveList.class.getName()).log(Level.SEVERE, "On approve file creation", ex);
+                Logger.getLogger(ApproveList.class.getName()).log(Level.SEVERE, "Error on approve file creation", ex);
             }
         }
         try {
             approveConfig.load(approveFile);
         } catch (IOException ex) {
-            Logger.getLogger(ApproveList.class.getName()).log(Level.SEVERE, "On approve file load", ex);
+            Logger.getLogger(ApproveList.class.getName()).log(Level.SEVERE, "Error on approve file load", ex);
         } catch (InvalidConfigurationException ex) {
-            Logger.getLogger(ApproveList.class.getName()).log(Level.SEVERE, "On approve file load", ex);
+            Logger.getLogger(ApproveList.class.getName()).log(Level.SEVERE, "Error on approve file load", ex);
         }
 
         // add land names to list
@@ -141,7 +143,7 @@ public class ApproveList {
         try {
             approveConfig.save(approveFile);
         } catch (IOException ex) {
-            Logger.getLogger(ApproveList.class.getName()).log(Level.SEVERE, "On approve file save", ex);
+            Logger.getLogger(ApproveList.class.getName()).log(Level.SEVERE, "Error on approve file save", ex);
         }
     }
 }

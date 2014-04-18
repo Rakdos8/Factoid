@@ -89,11 +89,12 @@ public class CommandApprove extends CommandExec {
             int removeId = approve.getRemovedAreaId();
             CuboidArea newArea = approve.getNewArea();
             Land parent = approve.getParent();
+            Double price = approve.getPrice();
 
             if (curArg.equalsIgnoreCase("info") || curArg.equalsIgnoreCase("confirm")) {
 
                 // Info on the specified land (Collision)
-                checkCollision(param, land, action, removeId, newArea, parent, false);
+                checkCollision(param, land, action, removeId, newArea, parent, price, false);
 
                 if (curArg.equalsIgnoreCase("confirm")) {
 
