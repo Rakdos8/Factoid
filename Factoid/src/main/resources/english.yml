@@ -296,3 +296,10 @@ ACTION:
   NOENTRY: "You can not enter in the land %!"
   PLAYERENTER: "% is entering the land %."
   PLAYEREXIT: "% is exiting the land %."
+SIGN:
+  SALE:
+    FORSALE: "-For sale-"
+  RENT:
+    FORRENT: "-For rent-"
+    RENTED: "-Rented-"
+    AUTORENEW: "Auto renew"

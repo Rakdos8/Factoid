@@ -295,3 +295,10 @@ ACTION:
   NOENTRY: "Vous ne pouvez pas entrez sur le terrain %!"
   PLAYERENTER: "% entre sur le terrain %."
   PLAYEREXIT: "% quitte le terrain %."
+SIGN:
+  SALE:
+    FORSALE: "-À vendre-"
+  RENT:
+    FORRENT: "-À louer-"
+    RENTED: "-Loué-"
+    AUTORENEW: "Auto renouv."

@@ -238,26 +238,33 @@ public class Land extends DummyLand {
 
     public long getNbBlocksOutside(CuboidArea areaComp) {
 
+        // Get the Volume of the area
         long volume = areaComp.getTotalBlock();
-        ArrayList<CuboidArea> precAreas = new ArrayList<CuboidArea>();
+        
+        // Put the list of areas in the land to an array
+        CuboidArea[] areaAr = areas.values().toArray(new CuboidArea[0]);
+        
+        for (int t = 0; t < areaAr.length ; t ++) {
 
-        for (CuboidArea area : areas.values()) {
-
-            CuboidArea colArea = area.getCollisionArea(areaComp);
+            // Get the result collision cuboid
+            CuboidArea colArea = areaAr[t].getCollisionArea(areaComp);
 
             if (colArea != null) {
+                
+                // Substract the volume of collision
                 volume -= colArea.getTotalBlock();
 
-                for (CuboidArea precArea : precAreas) {
-                    CuboidArea colPrecArea = colArea.getCollisionArea(precArea);
+                // Compare each next areas to the colision area and add
+                // the colision of the collision to cancel mulitple substract
+                for (int a = t + 1; a < areaAr.length ; a ++) {
+                    
+                    CuboidArea colAreaToNextArea = areaAr[a].getCollisionArea(colArea);
 
-                    if (colPrecArea != null) {
-                        volume += colPrecArea.getTotalBlock();
+                    if (colAreaToNextArea != null) {
+                        volume += colAreaToNextArea.getTotalBlock();
                     }
                 }
             }
-
-            precAreas.add(area);
         }
 
         return volume;
