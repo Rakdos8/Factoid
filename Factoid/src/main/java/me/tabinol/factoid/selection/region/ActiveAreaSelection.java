@@ -30,9 +30,17 @@ public class ActiveAreaSelection extends AreaSelection implements PlayerMoveList
         setActiveSelection();
     }
 
+    public ActiveAreaSelection(Player player, CuboidArea area) {
+
+        super(player);
+        this.area = area;
+        makeVisualSelection();
+    }
+
     public final void setActiveSelection() {
 
         isCollision = false;
+
         Location loc = player.getLocation();
         int landXr = Factoid.getConf().getDefaultXSize() / 2;
         int landZr = Factoid.getConf().getDefaultZSize() / 2;

@@ -93,8 +93,8 @@ HELP:
     1: "/factoid rename <new name> : Rename a land."
   RESIDENT:
     1: "/factoid resident list : List residents."
-    2: "/factoid area add <player container> : Add a resident."
-    3: "/factoid area remove <player container> : Remove a resident."
+    2: "/factoid resident add <player container> : Add a resident."
+    3: "/factoid resident remove <player container> : Remove a resident."
   WHO:
     1: "/factoid who [land] : Show players on a land."
 

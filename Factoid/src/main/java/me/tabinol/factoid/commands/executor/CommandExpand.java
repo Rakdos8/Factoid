@@ -64,7 +64,7 @@ public class CommandExpand extends CommandExec {
             if (area == null) {
                 entity.playerConf.getSelection().addSelection(new ExpandAreaSelection(entity.player));
             } else {
-                entity.playerConf.getSelection().addSelection(new ExpandAreaSelection(entity.player, area));
+                entity.playerConf.getSelection().addSelection(new ExpandAreaSelection(entity.player, area.copyOf()));
             }
 
         } else if (curArg.equalsIgnoreCase("done")) {

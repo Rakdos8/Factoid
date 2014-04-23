@@ -254,8 +254,8 @@ public class Land extends DummyLand {
                 // Substract the volume of collision
                 volume -= colArea.getTotalBlock();
 
-                // Compare each next areas to the colision area and add
-                // the colision of the collision to cancel mulitple substract
+                // Compare each next areas to the collision area and add
+                // the collision of the collision to cancel multiple subtracts
                 for (int a = t + 1; a < areaAr.length ; a ++) {
                     
                     CuboidArea colAreaToNextArea = areaAr[a].getCollisionArea(colArea);

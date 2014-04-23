@@ -26,19 +26,12 @@ public class ExpandAreaSelection extends ActiveAreaSelection implements PlayerMo
     public ExpandAreaSelection(Player player) {
 
         super(player);
-        
-        // Take first active selection from parent
-        setActiveSelection();
     }
 
     // When we know the area
     public ExpandAreaSelection(Player player, CuboidArea area) {
 
-        super(player);
-        
-        // Take first active selection from parent
-        this.area = area;
-        makeVisualSelection();
+        super(player, area);
     }
 
     // Called from player listenner

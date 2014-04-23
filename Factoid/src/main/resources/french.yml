@@ -93,8 +93,8 @@ HELP:
     1: "/factoid rename <nouveau nom> : Renomme un terrain."
   RESIDENT:
     1: "/factoid resident list : Affiche les résidents."
-    2: "/factoid area add <contenant joueur> : Ajoute un résident."
-    3: "/factoid area remove <contenant joueur> : Enlève un résident."
+    2: "/factoid resident add <contenant joueur> : Ajoute un résident."
+    3: "/factoid resident remove <contenant joueur> : Enlève un résident."
   WHO:
     1: "/factoid who [terrain] : Lister les joueurs sur un terrain."
 SCOREBOARD:
