@@ -17,6 +17,7 @@
  */
 package me.tabinol.factoid.playercontainer;
 
+import java.util.UUID;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.Land;
@@ -65,7 +66,13 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
             return new PlayerContainerNobody();
         }
         if (pct == PlayerContainerType.PLAYER) {
-            return Factoid.getPlayerUUID().getPCPFromString(name);
+            // TEMP for switch from FactoidID to MinecraftID
+            if(name.startsWith("ID-")) {
+                UUID playerUUID = UUID.fromString(name.replaceFirst("ID-", ""));
+                return Factoid.getPlayerUUID().getPCPFromMinecraftUUID(playerUUID);
+            } else {
+                return Factoid.getPlayerUUID().getPCPFromString(name);
+            }
         }
         if (pct == PlayerContainerType.PERMISSION) {
             return new PlayerContainerPermission(name);

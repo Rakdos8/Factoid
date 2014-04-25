@@ -16,9 +16,9 @@
         <!-- *** Change Language version here here *** -->
         <langVersion>10</langVersion>
         <!-- *** Change land .conf version here here *** -->
-        <landVersion>2</landVersion>
+        <landVersion>3</landVersion>
         <!-- *** Change faction .conf version here here *** -->
-        <factionVersion>2</factionVersion>
+        <factionVersion>3</factionVersion>
         <!-- *** Players UUID .conf version here here *** -->
         <playerUUIDVersion>1</playerUUIDVersion>
     </properties>
@@ -46,7 +46,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.7.2-R0.3</version>
+            <version>1.7.9-R0.1-SNAPSHOT</version>
         </dependency>    
         <dependency>
             <groupId>net.milkbowl.vault</groupId>

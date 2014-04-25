@@ -163,7 +163,7 @@ public class StorageFlat extends Storage implements StorageInt {
             String str;
             int version = cf.getVersion();
             uuid = cf.getUUID();
-            if (uuid == null) {
+            if (version < 3) {
                 toResave = true;
             }
             cf.readParam();
@@ -220,7 +220,7 @@ public class StorageFlat extends Storage implements StorageInt {
             String str;
             version = cf.getVersion();
             uuid = cf.getUUID();
-            if (uuid == null) {
+            if (version < 3) {
                 toResave = true;
             }
             landName = cf.getName();

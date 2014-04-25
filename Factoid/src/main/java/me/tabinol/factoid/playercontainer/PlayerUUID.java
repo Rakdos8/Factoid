@@ -31,6 +31,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.utilities.StringChanges;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public class PlayerUUID {
@@ -168,6 +170,11 @@ public class PlayerUUID {
         return uuid;
     }
 
+    public PlayerContainerPlayer getPCPFromMinecraftUUID(UUID minecraftUUID) {
+        
+        return playersMinecraftUUID.get(minecraftUUID);
+    }
+    
     public PlayerContainerPlayer getPCPFromString(String string) {
 
         return getPCPFromString(string, null, null);
@@ -225,7 +232,19 @@ public class PlayerUUID {
             factoidUUID = UUID.fromString(string);
 
             // Is a UUID
-            return playersFactoidUUID.get(factoidUUID);
+            PlayerContainerPlayer pcp2 = playersFactoidUUID.get(factoidUUID);
+            
+            // TEMP add the MinecraftID to list
+            if(!playersMinecraftUUID.containsValue(pcp2)) {
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(pcp2.getPlayerName());
+                if(offlinePlayer != null) {
+                    playersMinecraftUUID.put(offlinePlayer.getUniqueId(), pcp2);
+                    pcp2.setMinecraftUUID(offlinePlayer.getUniqueId());
+                }
+            }
+                
+            return pcp2;
+            
         } catch (IllegalArgumentException ex) {
 
             // Is a PlayerName

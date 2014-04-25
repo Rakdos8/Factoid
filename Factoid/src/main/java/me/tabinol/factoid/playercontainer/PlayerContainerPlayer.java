@@ -30,11 +30,11 @@ public class PlayerContainerPlayer extends PlayerContainer {
     private Player player; // Is player id the player is online
     
     // Compare before create
-    protected PlayerContainerPlayer(UUID factoidUUID, String playerName, UUID MinecraftUUID) {
+    protected PlayerContainerPlayer(UUID factoidUUID, String playerName, UUID minecraftUUID) {
 
         super("", PlayerContainerType.PLAYER);
         this.factoidUUID = factoidUUID;
-        this.minecraftUUID = MinecraftUUID;
+        this.minecraftUUID = minecraftUUID;
         name = factoidUUID.toString(); // Change the name to the Factoid UUID
         this.playerName = playerName.toLowerCase();
         player = null;
@@ -63,6 +63,18 @@ public class PlayerContainerPlayer extends PlayerContainer {
         }
     }
 
+    @Override
+    public String toString() {
+
+        // Temp for upgrade to v3 .conf
+        
+        if(minecraftUUID != null) {
+            return containerType.toString() + ":ID-" + minecraftUUID.toString();
+        }
+        
+        return new PlayerContainerNobody().toString();
+    }
+    
     @Override
     public String getPrint() {
 
