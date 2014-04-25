@@ -100,10 +100,6 @@ public class StorageFlat extends Storage implements StorageInt {
         if (toResave) {
             saveAll();
         }
-        
-        // If there is modification in UUID
-        // And the file must be created because it is now a backup
-        Factoid.getPlayerUUID().saveAll();
     }
 
     private void loadFactions() {
@@ -163,9 +159,6 @@ public class StorageFlat extends Storage implements StorageInt {
             String str;
             int version = cf.getVersion();
             uuid = cf.getUUID();
-            if (version < 3) {
-                toResave = true;
-            }
             cf.readParam();
             while ((str = cf.getNextString()) != null) {
                 playerNames.add((PlayerContainerPlayer) PlayerContainer.getFromString(str));
@@ -220,9 +213,6 @@ public class StorageFlat extends Storage implements StorageInt {
             String str;
             version = cf.getVersion();
             uuid = cf.getUUID();
-            if (version < 3) {
-                toResave = true;
-            }
             landName = cf.getName();
             cf.readParam();
             String ownerS = cf.getValueString();
@@ -232,7 +222,7 @@ public class StorageFlat extends Storage implements StorageInt {
             if (owner == null) {
                 throw new FileLoadException(file.getName(), cf.getLine(), cf.getLineNb(), "Invalid owner.");
             }
-           
+
             cf.readParam();
             parentName = cf.getValueString();
             cf.readParam();
@@ -317,14 +307,9 @@ public class StorageFlat extends Storage implements StorageInt {
         for (Map.Entry<Integer, CuboidArea> entry : areas.entrySet()) {
             if (!isLandCreated) {
                 if (parentName != null) {
-                    
-                    // Version 2 is UUID, not land name
-                    if (version >= 2) {
-                        parent = Factoid.getLands().getLand(UUID.fromString(parentName));
-                    } else {
-                        parent = Factoid.getLands().getLand(parentName);
-                    }
-                    
+
+                    parent = Factoid.getLands().getLand(UUID.fromString(parentName));
+
                     try {
                         land = Factoid.getLands().createLand(landName, owner, entry.getValue(), parent,
                                 entry.getKey(), uuid);

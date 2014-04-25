@@ -25,7 +25,6 @@ import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.config.DependPlugin;
 import me.tabinol.factoid.config.players.PlayerStaticConfig;
-import me.tabinol.factoid.playercontainer.PlayerUUID;
 import me.tabinol.factoid.economy.PlayerMoney;
 import me.tabinol.factoid.factions.Factions;
 import me.tabinol.factoid.lands.Lands;
@@ -58,8 +57,7 @@ public class Factoid extends JavaPlugin {
     private static DependPlugin dependPlugin;
     private static PlayerMoney playerMoney;
     private static ScoreBoard Scoreboard;
-    private static PlayerUUID playerUUID;
-
+    
     @Override
     public void onEnable() {
 
@@ -70,8 +68,6 @@ public class Factoid extends JavaPlugin {
         version = this.getDescription().getVersion();
         conf = new Config();
         log = new Log();
-        playerUUID = new PlayerUUID();
-        playerUUID.loadAll();
         dependPlugin = new DependPlugin();
         if (conf.useEconomy() == true && dependPlugin.getEconomy() != null) {
             playerMoney = new PlayerMoney();
@@ -120,7 +116,6 @@ public class Factoid extends JavaPlugin {
     public void onDisable() {
 
         log.write(Factoid.getLanguage().getMessage("DISABLE"));
-        playerUUID.saveAll();
         approveNotif.stopNextRun();
         playerConf.removeAll();
         log.interrupt();
@@ -195,10 +190,5 @@ public class Factoid extends JavaPlugin {
     public static PlayerMoney getPlayerMoney() {
 
         return playerMoney;
-    }
-    
-    public static PlayerUUID getPlayerUUID() {
-        
-        return playerUUID;
     }
 }

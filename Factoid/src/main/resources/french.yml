@@ -204,6 +204,7 @@ COMMAND:
     NOTPERMITTED: "Ce contenant joueur n'est pas permit ici."
   CONTAINER:
     CONTAINERNULL: "Ce contenant joueur nécessite un nom."
+    PLAYERNOTEXIST: "Ce joueur n'existe pas."
   PERMISSIONTYPE:
     TYPENULL: "Entrez un type de permission."
     INVALID: "Ce type de permission est invalide."

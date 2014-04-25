@@ -25,6 +25,7 @@ import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.selection.PlayerSelection;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -41,27 +42,27 @@ public class PlayerConfEntry {
     private Location lastLoc = null; // Present location
     private boolean tpCancel = false; // If the player has a teleportation cacelled
     private PlayerAutoCancelSelect cancelSelect = null; // Auto cancel selection system
-    private PlayerContainerPlayer playerContainer; // PlayerContainer represent the player
+    private PlayerContainerPlayer pcp; // PlayerContainerPlayer for this player
 
     PlayerConfEntry(CommandSender sender) {
 
         this.sender = sender;
         if (sender instanceof Player) {
             player = (Player) sender;
-            playerContainer = Factoid.getPlayerUUID().getPCPFromString(player.getName(), player.getUniqueId(), player);
-            playerContainer.setPlayer(player);
             playerSelection = new PlayerSelection(this);
+            pcp = new PlayerContainerPlayer((OfflinePlayer) player);
         } else {
             player = null;
             playerSelection = null;
+            pcp = null;
         }
     }
 
     public PlayerContainerPlayer getPlayerContainer() {
-
-        return playerContainer;
+        
+        return pcp;
     }
-
+    
     public CommandSender getSender() {
 
         return sender;

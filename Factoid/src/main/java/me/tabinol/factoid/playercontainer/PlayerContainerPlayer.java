@@ -20,73 +20,51 @@ package me.tabinol.factoid.playercontainer;
 import java.util.UUID;
 import me.tabinol.factoid.lands.Land;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public class PlayerContainerPlayer extends PlayerContainer {
 
-    private UUID minecraftUUID; // UUID of player in Minecraft (Change only form null to UUID?)
-    private final UUID factoidUUID; // Never Changed
-    private String playerName;
-    private Player player; // Is player id the player is online
+    private final OfflinePlayer offlinePlayer;
     
     // Compare before create
-    protected PlayerContainerPlayer(UUID factoidUUID, String playerName, UUID minecraftUUID) {
+    public PlayerContainerPlayer(OfflinePlayer offlinePlayer) {
 
         super("", PlayerContainerType.PLAYER);
-        this.factoidUUID = factoidUUID;
-        this.minecraftUUID = minecraftUUID;
-        name = factoidUUID.toString(); // Change the name to the Factoid UUID
-        this.playerName = playerName.toLowerCase();
-        player = null;
+        name = "ID-" + offlinePlayer.getUniqueId().toString(); // Ignore case change
+        this.offlinePlayer = offlinePlayer;
     }
 
     @Override
     public boolean equals(PlayerContainer container2) {
         
         return container2 instanceof PlayerContainerPlayer &&
-                factoidUUID.equals(((PlayerContainerPlayer) container2).factoidUUID);
+                offlinePlayer == ((PlayerContainerPlayer) container2).offlinePlayer;
     }
 
     @Override
     public PlayerContainer copyOf() {
         
-        return new PlayerContainerPlayer(factoidUUID, name, minecraftUUID);
+        return new PlayerContainerPlayer(offlinePlayer);
     }
 
     @Override
     public boolean hasAccess(Player player) {
         
         if(player != null) {
-            return player.getUniqueId().equals(minecraftUUID);
+            return offlinePlayer.getPlayer() == player;
         } else {
             return false;
         }
     }
 
     @Override
-    public String toString() {
-
-        // Temp for upgrade to v3 .conf
-        
-        if(minecraftUUID != null) {
-            return containerType.toString() + ":ID-" + minecraftUUID.toString();
-        }
-        
-        return new PlayerContainerNobody().toString();
-    }
-    
-    @Override
     public String getPrint() {
 
         StringBuilder sb = new StringBuilder();
         
-        // If the name is not complete, add (*)
-        if(minecraftUUID == null) {
-            sb.append(ChatColor.WHITE).append("(*)");
-        }
-        
         sb.append(ChatColor.DARK_RED).append("P:");
-        sb.append(ChatColor.WHITE).append(playerName);
+        sb.append(ChatColor.WHITE).append(offlinePlayer.getName());
         
         return sb.toString();
     }
@@ -96,43 +74,23 @@ public class PlayerContainerPlayer extends PlayerContainer {
 
     }
     
-    public UUID getFactoidUUID() {
-        
-        return factoidUUID;
-    }
-    
     public UUID getMinecraftUUID() {
         
-        return minecraftUUID;
-    }
-    
-    public void setMinecraftUUID(UUID minecraftUUID) {
-        
-        this.minecraftUUID = minecraftUUID;
+        return offlinePlayer.getUniqueId();
     }
     
     public String getPlayerName() {
         
-        return playerName;
-    }
-    
-    public void setPlayerName(String playerName) {
-        
-        this.playerName = playerName.toLowerCase();
+        return offlinePlayer.getName();
     }
     
     public boolean isOnline() {
         
-        return player != null;
-    }
-    
-    public void setPlayer(Player player) {
-        
-        this.player = player;
+        return offlinePlayer.isOnline();
     }
     
     public Player getPlayer() {
         
-        return player;
+        return offlinePlayer.getPlayer();
     }
 }

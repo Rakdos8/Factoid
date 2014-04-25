@@ -21,7 +21,10 @@ import java.util.UUID;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.utilities.BukkitUtils;
 import me.tabinol.factoid.utilities.StringChanges;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 
 public abstract class PlayerContainer implements PlayerContainerInterface, Comparable<PlayerContainer> {
 
@@ -66,13 +69,27 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
             return new PlayerContainerNobody();
         }
         if (pct == PlayerContainerType.PLAYER) {
-            // TEMP for switch from FactoidID to MinecraftID
-            if(name.startsWith("ID-")) {
-                UUID playerUUID = UUID.fromString(name.replaceFirst("ID-", ""));
-                return Factoid.getPlayerUUID().getPCPFromMinecraftUUID(playerUUID);
-            } else {
-                return Factoid.getPlayerUUID().getPCPFromString(name);
+            UUID minecraftUUID;
+            OfflinePlayer offlinePlayer;
+            
+            // First check if the ID is valid or whas connected to the server
+            try {
+                minecraftUUID = UUID.fromString(name.replaceFirst("ID-", ""));
+                offlinePlayer = Bukkit.getOfflinePlayer(minecraftUUID);
+            } catch (IllegalArgumentException ex) {
+                
+                // Is not an ID. We will try to get the name of the player
+                // Note : This method is only what I found in Bukkt
+                offlinePlayer = BukkitUtils.getOfflinePlayer(name);
             }
+            
+            // If not null, assign the value to a new PlayerContainer
+            if(offlinePlayer != null) {
+                return new PlayerContainerPlayer(offlinePlayer);
+            }
+            
+            // Not found, return null
+            return null;
         }
         if (pct == PlayerContainerType.PERMISSION) {
             return new PlayerContainerPermission(name);
@@ -85,7 +102,7 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
 
         return name;
     }
-    
+
     @Override
     public PlayerContainerType getContainerType() {
 
@@ -120,16 +137,8 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
 
     public static PlayerContainer getFromString(String string) {
 
-        if (!string.contains(":")) {
-
-            // It is a player
-            return Factoid.getPlayerUUID().getPCPFromString(string);
-        } else {
-            
-            // We don't know
-            String strs[] = StringChanges.splitAddVoid(string, ":");
-            PlayerContainerType type = PlayerContainerType.getFromString(strs[0]);
-            return create(null, type, strs[1]);
-        }
+        String strs[] = StringChanges.splitAddVoid(string, ":");
+        PlayerContainerType type = PlayerContainerType.getFromString(strs[0]);
+        return create(null, type, strs[1]);
     }
 }

@@ -189,6 +189,12 @@ public class ArgList {
         } else {
             pc = PlayerContainer.create(land, pcType, "");
         }
+        
+        if(pcType == PlayerContainerType.PLAYER && pc == null) {
+            
+            // this player doesn't exist
+            throw new FactoidCommandException("Player not exist Error", player, "COMMAND.CONTAINER.PLAYERNOTEXIST");
+        } 
 
         return pc;
     }

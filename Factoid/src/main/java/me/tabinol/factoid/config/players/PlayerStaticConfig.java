@@ -67,9 +67,6 @@ public class PlayerStaticConfig {
         // First, remove AutoCancelSelect
         entry.setAutoCancelSelect(false);
 
-        // Change player is offline
-        entry.getPlayerContainer().setPlayer(null);
-        
         playerConfList.remove(sender);
     }
 
