@@ -31,9 +31,13 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
     protected String name;
     protected PlayerContainerType containerType;
 
-    protected PlayerContainer(String name, PlayerContainerType containerType) {
+    protected PlayerContainer(String name, PlayerContainerType containerType, boolean toLowerCase) {
 
-        this.name = name.toLowerCase();
+        if (toLowerCase) {
+            this.name = name.toLowerCase();
+        } else {
+            this.name = name;
+        }
         this.containerType = containerType;
     }
 
@@ -71,23 +75,23 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
         if (pct == PlayerContainerType.PLAYER) {
             UUID minecraftUUID;
             OfflinePlayer offlinePlayer;
-            
+
             // First check if the ID is valid or whas connected to the server
             try {
                 minecraftUUID = UUID.fromString(name.replaceFirst("ID-", ""));
                 offlinePlayer = Bukkit.getOfflinePlayer(minecraftUUID);
             } catch (IllegalArgumentException ex) {
-                
+
                 // Is not an ID. We will try to get the name of the player
                 // Note : This method is only what I found in Bukkt
                 offlinePlayer = BukkitUtils.getOfflinePlayer(name);
             }
-            
+
             // If not null, assign the value to a new PlayerContainer
-            if(offlinePlayer != null) {
-                return new PlayerContainerPlayer(offlinePlayer);
+            if (offlinePlayer != null) {
+                return new PlayerContainerPlayer(offlinePlayer.getUniqueId());
             }
-            
+
             // Not found, return null
             return null;
         }

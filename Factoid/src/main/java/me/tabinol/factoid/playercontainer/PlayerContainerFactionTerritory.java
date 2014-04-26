@@ -27,7 +27,7 @@ public class PlayerContainerFactionTerritory extends PlayerContainer {
     
     public PlayerContainerFactionTerritory(Land land) {
         
-        super("", PlayerContainerType.FACTION_TERRITORY);
+        super("", PlayerContainerType.FACTION_TERRITORY, false);
         this.land = land;
     }
     

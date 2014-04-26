@@ -26,7 +26,7 @@ public class PlayerContainerVisitor extends PlayerContainer {
     
     public PlayerContainerVisitor(Land land) {
         
-        super("", PlayerContainerType.VISITOR);
+        super("", PlayerContainerType.VISITOR, false);
         this.land = land;
     }
     

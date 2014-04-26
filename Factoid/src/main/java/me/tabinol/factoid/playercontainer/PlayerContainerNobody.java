@@ -24,7 +24,7 @@ public class PlayerContainerNobody extends PlayerContainer {
 
     public PlayerContainerNobody() {
         
-        super("", PlayerContainerType.NOBODY);
+        super("", PlayerContainerType.NOBODY, false);
     }
     
     @Override

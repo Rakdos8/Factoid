@@ -27,7 +27,7 @@ public class PlayerContainerGroup extends PlayerContainer {
     
     public PlayerContainerGroup(String groupName) {
         
-        super(groupName, PlayerContainerType.GROUP);
+        super(groupName, PlayerContainerType.GROUP, true);
     }
     
     @Override

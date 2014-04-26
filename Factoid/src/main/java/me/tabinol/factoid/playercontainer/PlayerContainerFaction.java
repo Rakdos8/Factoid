@@ -29,7 +29,7 @@ public class PlayerContainerFaction extends PlayerContainer {
 
     public PlayerContainerFaction(Faction faction) {
 
-        super(faction.getName(), PlayerContainerType.FACTION);
+        super(faction.getName(), PlayerContainerType.FACTION, true);
         this.faction = faction;
     }
 

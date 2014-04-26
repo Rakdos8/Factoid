@@ -26,7 +26,7 @@ public class PlayerContainerOwner extends PlayerContainer {
     
     public PlayerContainerOwner(Land land) {
         
-        super("", PlayerContainerType.OWNER);
+        super("", PlayerContainerType.OWNER, false);
         this.land = land;
     }
     

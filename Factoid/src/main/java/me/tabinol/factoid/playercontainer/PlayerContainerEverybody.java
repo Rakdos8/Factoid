@@ -24,7 +24,7 @@ public class PlayerContainerEverybody extends PlayerContainer {
 
     public PlayerContainerEverybody() {
         
-        super("", PlayerContainerType.EVERYBODY);
+        super("", PlayerContainerType.EVERYBODY, false);
     }
     
     @Override

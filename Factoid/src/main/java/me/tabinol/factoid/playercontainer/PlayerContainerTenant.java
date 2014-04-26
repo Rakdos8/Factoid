@@ -26,7 +26,7 @@ public class PlayerContainerTenant extends PlayerContainer {
     
     public PlayerContainerTenant(Land land) {
         
-        super("", PlayerContainerType.RESIDENT);
+        super("", PlayerContainerType.RESIDENT, false);
         this.land = land;
     }
     

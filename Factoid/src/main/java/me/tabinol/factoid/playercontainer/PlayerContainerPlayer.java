@@ -19,40 +19,39 @@ package me.tabinol.factoid.playercontainer;
 
 import java.util.UUID;
 import me.tabinol.factoid.lands.Land;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public class PlayerContainerPlayer extends PlayerContainer {
 
-    private final OfflinePlayer offlinePlayer;
+    private final UUID minecraftUUID;
     
     // Compare before create
-    public PlayerContainerPlayer(OfflinePlayer offlinePlayer) {
+    public PlayerContainerPlayer(UUID minecraftUUID) {
 
-        super("", PlayerContainerType.PLAYER);
-        name = "ID-" + offlinePlayer.getUniqueId().toString(); // Ignore case change
-        this.offlinePlayer = offlinePlayer;
+        super("ID-" + minecraftUUID.toString(), PlayerContainerType.PLAYER, false);
+        this.minecraftUUID = minecraftUUID;
     }
 
     @Override
     public boolean equals(PlayerContainer container2) {
         
         return container2 instanceof PlayerContainerPlayer &&
-                offlinePlayer == ((PlayerContainerPlayer) container2).offlinePlayer;
+                minecraftUUID.equals(((PlayerContainerPlayer) container2).minecraftUUID);
     }
 
     @Override
     public PlayerContainer copyOf() {
         
-        return new PlayerContainerPlayer(offlinePlayer);
+        return new PlayerContainerPlayer(minecraftUUID);
     }
 
     @Override
     public boolean hasAccess(Player player) {
         
         if(player != null) {
-            return offlinePlayer.getPlayer() == player;
+            return minecraftUUID.equals(player.getUniqueId());
         } else {
             return false;
         }
@@ -64,7 +63,7 @@ public class PlayerContainerPlayer extends PlayerContainer {
         StringBuilder sb = new StringBuilder();
         
         sb.append(ChatColor.DARK_RED).append("P:");
-        sb.append(ChatColor.WHITE).append(offlinePlayer.getName());
+        sb.append(ChatColor.WHITE).append(Bukkit.getOfflinePlayer(minecraftUUID).getName());
         
         return sb.toString();
     }
@@ -76,21 +75,21 @@ public class PlayerContainerPlayer extends PlayerContainer {
     
     public UUID getMinecraftUUID() {
         
-        return offlinePlayer.getUniqueId();
+        return minecraftUUID;
     }
     
     public String getPlayerName() {
         
-        return offlinePlayer.getName();
+        return Bukkit.getOfflinePlayer(minecraftUUID).getName();
     }
     
     public boolean isOnline() {
         
-        return offlinePlayer.isOnline();
+        return Bukkit.getOfflinePlayer(minecraftUUID).isOnline();
     }
     
     public Player getPlayer() {
         
-        return offlinePlayer.getPlayer();
+        return Bukkit.getPlayer(minecraftUUID);
     }
 }

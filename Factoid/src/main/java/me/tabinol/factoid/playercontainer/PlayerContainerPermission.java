@@ -28,7 +28,7 @@ public class PlayerContainerPermission extends PlayerContainer {
     
     public PlayerContainerPermission(String bukkitPermission) {
 
-        super(bukkitPermission, PlayerContainerType.PERMISSION);
+        super(bukkitPermission, PlayerContainerType.PERMISSION, true);
         perm = new Permission(bukkitPermission);
     }
 

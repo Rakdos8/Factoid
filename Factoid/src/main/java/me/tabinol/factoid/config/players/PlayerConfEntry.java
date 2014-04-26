@@ -50,7 +50,7 @@ public class PlayerConfEntry {
         if (sender instanceof Player) {
             player = (Player) sender;
             playerSelection = new PlayerSelection(this);
-            pcp = new PlayerContainerPlayer((OfflinePlayer) player);
+            pcp = new PlayerContainerPlayer(player.getUniqueId());
         } else {
             player = null;
             playerSelection = null;
