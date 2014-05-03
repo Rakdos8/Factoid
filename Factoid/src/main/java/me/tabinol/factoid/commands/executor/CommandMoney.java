@@ -20,7 +20,7 @@ package me.tabinol.factoid.commands.executor;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.economy.PlayerMoney;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.lands.permissions.PermissionType;
+import me.tabinol.factoid.parameters.PermissionType;
 import org.bukkit.ChatColor;
 
 public class CommandMoney extends CommandExec {
@@ -57,14 +57,14 @@ public class CommandMoney extends CommandExec {
 
     private void balance() throws FactoidCommandException {
 
-        checkPermission(true, false, PermissionType.MONEY_BALANCE, null);
+        checkPermission(true, false, Factoid.getParameters().getPermissionType("MONEY_BALANCE"), null);
         entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ECONOMY.LANDBALANCE",
                 land.getName(), playerMoney.toFormat(land.getMoney())));
     }
 
     private void deposit() throws FactoidCommandException {
 
-        checkPermission(true, false, PermissionType.MONEY_DEPOSIT, null);
+        checkPermission(true, false, Factoid.getParameters().getPermissionType("MONEY_DEPOSIT"), null);
 
         double amount = getAmountFromCommandLine();
 
@@ -82,7 +82,7 @@ public class CommandMoney extends CommandExec {
 
     private void withdraw() throws FactoidCommandException {
 
-        checkPermission(true, false, PermissionType.MONEY_WITHDRAW, null);
+        checkPermission(true, false, Factoid.getParameters().getPermissionType("MONEY_WITHDRAW"), null);
 
         double amount = getAmountFromCommandLine();
 

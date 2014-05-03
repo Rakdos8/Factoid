@@ -22,8 +22,8 @@ import java.util.List;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.lands.DummyLand;
-import me.tabinol.factoid.lands.flags.FlagType;
-import me.tabinol.factoid.lands.flags.LandFlag;
+import me.tabinol.factoid.parameters.FlagType;
+import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.utilities.Calculate;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -78,12 +78,12 @@ public class WorldListener implements Listener {
 
             // Check for Explosion cancel 
             if ((entityType == EntityType.CREEPER
-                    && (flag = land.getFlagAndInherit(FlagType.CREEPER_EXPLOSION)) != null
+                    && (flag = land.getFlagAndInherit(Factoid.getParameters().getFlagType("CREEPER_EXPLOSION"))) != null
                     && flag.getValueBoolean() == false)
                     || (entityType == EntityType.PRIMED_TNT
-                    && (flag = land.getFlagAndInherit(FlagType.TNT_EXPLOSION)) != null
+                    && (flag = land.getFlagAndInherit(Factoid.getParameters().getFlagType("TNT_EXPLOSION"))) != null
                     && flag.getValueBoolean() == false)
-                    || ((flag = land.getFlagAndInherit(FlagType.EXPLOSION)) != null
+                    || ((flag = land.getFlagAndInherit(Factoid.getParameters().getFlagType("EXPLOSION"))) != null
                     && flag.getValueBoolean() == false)) {
                 event.setCancelled(true);
                 if (entityType == EntityType.CREEPER) {
@@ -113,34 +113,34 @@ public class WorldListener implements Listener {
                     power = 3L;
                 }
                 event.setCancelled(true);
-                ExplodeBlocks(event.blockList(), FlagType.CREEPER_DAMAGE, event.getLocation(),
+                ExplodeBlocks(event.blockList(), Factoid.getParameters().getFlagType("CREEPER_DAMAGE"), event.getLocation(),
                         event.getYield(), power, false, true);
 
                 //  Wither
             } else if (event.getEntityType() == EntityType.WITHER_SKULL) {
                 event.setCancelled(true);
-                ExplodeBlocks(event.blockList(), FlagType.WITHER_DAMAGE, event.getLocation(),
+                ExplodeBlocks(event.blockList(), Factoid.getParameters().getFlagType("WITHER_DAMAGE"), event.getLocation(),
                         event.getYield(), 1L, false, true);
             } else if (event.getEntityType() == EntityType.WITHER) {
                 event.setCancelled(true);
-                ExplodeBlocks(event.blockList(), FlagType.WITHER_DAMAGE, event.getLocation(),
+                ExplodeBlocks(event.blockList(), Factoid.getParameters().getFlagType("WITHER_DAMAGE"), event.getLocation(),
                         event.getYield(), 7L, false, true);
 
                 // Ghast
             } else if (event.getEntityType() == EntityType.FIREBALL) {
                 event.setCancelled(true);
-                ExplodeBlocks(event.blockList(), FlagType.GHAST_DAMAGE, event.getLocation(),
+                ExplodeBlocks(event.blockList(), Factoid.getParameters().getFlagType("GHAST_DAMAGE"), event.getLocation(),
                         event.getYield(), 1L, true, true);
 
                 // TNT
             } else if (event.getEntityType() == EntityType.MINECART_TNT
                     || event.getEntityType() == EntityType.PRIMED_TNT) {
                 event.setCancelled(true);
-                ExplodeBlocks(event.blockList(), FlagType.TNT_DAMAGE, event.getLocation(),
+                ExplodeBlocks(event.blockList(), Factoid.getParameters().getFlagType("TNT_DAMAGE"), event.getLocation(),
                         event.getYield(), 4L, false, true);
             } else if (event.getEntityType() == EntityType.ENDER_DRAGON) {
                 event.setCancelled(true);
-                ExplodeBlocks(event.blockList(), FlagType.ENDERDRAGON_DAMAGE, event.getLocation(),
+                ExplodeBlocks(event.blockList(), Factoid.getParameters().getFlagType("ENDERDRAGON_DAMAGE"), event.getLocation(),
                         event.getYield(), 4L, false, false);
             }
         }
@@ -206,10 +206,10 @@ public class WorldListener implements Listener {
 
             // Enderman removeblock
             if ((event.getEntityType() == EntityType.ENDERMAN
-                    && (flag = land.getFlagAndInherit(FlagType.ENDERMAN_DAMAGE)) != null
+                    && (flag = land.getFlagAndInherit(Factoid.getParameters().getFlagType("ENDERMAN_DAMAGE"))) != null
                     && flag.getValueBoolean() == false)
                     || (event.getEntityType() == EntityType.WITHER
-                    && (flag = land.getFlagAndInherit(FlagType.WITHER_DAMAGE)) != null
+                    && (flag = land.getFlagAndInherit(Factoid.getParameters().getFlagType("WITHER_DAMAGE"))) != null
                     && flag.getValueBoolean() == false)) {
                 event.setCancelled(true);
             }
@@ -224,9 +224,9 @@ public class WorldListener implements Listener {
             LandFlag flag;
 
             if (((event.getCause() == IgniteCause.SPREAD || event.getCause() == IgniteCause.LAVA)
-                    && (flag = land.getFlagAndInherit(FlagType.FIRESPREAD)) != null
+                    && (flag = land.getFlagAndInherit(Factoid.getParameters().getFlagType("FIRESPREAD"))) != null
                     && flag.getValueBoolean() == false)
-                    || ((flag = land.getFlagAndInherit(FlagType.FIRE)) != null
+                    || ((flag = land.getFlagAndInherit(Factoid.getParameters().getFlagType("FIRE"))) != null
                     && flag.getValueBoolean() == false)) {
                 event.setCancelled(true);
             }
@@ -240,9 +240,9 @@ public class WorldListener implements Listener {
             DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
             LandFlag flag;
 
-            if (((flag = land.getFlagAndInherit(FlagType.FIRESPREAD)) != null
+            if (((flag = land.getFlagAndInherit(Factoid.getParameters().getFlagType("FIRESPREAD"))) != null
                     && flag.getValueBoolean() == false)
-                    || ((flag = land.getFlagAndInherit(FlagType.FIRE)) != null
+                    || ((flag = land.getFlagAndInherit(Factoid.getParameters().getFlagType("FIRE"))) != null
                     && flag.getValueBoolean() == false)) {
                 event.setCancelled(true);
             }
@@ -257,12 +257,12 @@ public class WorldListener implements Listener {
             LandFlag flag;
 
             if ((event.getEntity() instanceof Animals
-                    && (flag = land.getFlagAndInherit(FlagType.ANIMAL_SPAWN)) != null
+                    && (flag = land.getFlagAndInherit(Factoid.getParameters().getFlagType("ANIMAL_SPAWN"))) != null
                     && flag.getValueBoolean() == false)
                     || ((event.getEntity() instanceof Monster
                     || event.getEntity() instanceof Slime
                     || event.getEntity() instanceof Flying)
-                    && (flag = land.getFlagAndInherit(FlagType.MOB_SPAWN)) != null
+                    && (flag = land.getFlagAndInherit(Factoid.getParameters().getFlagType("MOB_SPAWN"))) != null
                     && flag.getValueBoolean() == false)) {
                 event.setCancelled(true);
             }

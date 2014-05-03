@@ -22,9 +22,9 @@ import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.lands.areas.CuboidArea;
-import me.tabinol.factoid.lands.flags.FlagType;
-import me.tabinol.factoid.lands.flags.LandFlag;
-import me.tabinol.factoid.lands.flags.LandSetFlag;
+import me.tabinol.factoid.parameters.FlagType;
+import me.tabinol.factoid.parameters.LandFlag;
+import me.tabinol.factoid.parameters.LandSetFlag;
 import org.bukkit.ChatColor;
 
 public class CommandFlag extends CommandExec {
@@ -79,7 +79,7 @@ public class CommandFlag extends CommandExec {
                     if (stList.length() != 0) {
                         stList.append(" ");
                     }
-                    stList.append(ChatColor.YELLOW).append(flag.getFlagType().toString()).append(":").append(flag.getValuePrint());
+                    stList.append(flag.getFlagType().getPrint()).append(":").append(flag.getValuePrint());
                 }
                 stList.append(Config.NEWLINE);
             } else {

@@ -18,10 +18,8 @@
 package me.tabinol.factoid.lands;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -32,10 +30,10 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.event.PlayerContainerLandBanEvent;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.areas.CuboidArea;
-import me.tabinol.factoid.lands.flags.FlagType;
-import me.tabinol.factoid.lands.flags.LandFlag;
-import me.tabinol.factoid.lands.permissions.Permission;
-import me.tabinol.factoid.lands.permissions.PermissionType;
+import me.tabinol.factoid.parameters.FlagType;
+import me.tabinol.factoid.parameters.LandFlag;
+import me.tabinol.factoid.parameters.Permission;
+import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerNobody;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
@@ -89,7 +87,7 @@ public class Land extends DummyLand {
         this.genealogy = genealogy;
         if (!Factoid.getStorage().isInLoad()) {
             if (!Factoid.getLands().defaultConf.flags.isEmpty()) {
-                flags = Factoid.getLands().defaultConf.flags.clone();
+                flags = (TreeMap<FlagType, LandFlag>) Factoid.getLands().defaultConf.flags.clone();
             }
             copyPerms();
         }
@@ -100,8 +98,8 @@ public class Land extends DummyLand {
         owner = new PlayerContainerNobody();
         residents = new TreeSet<PlayerContainer>();
         playerNotify = new TreeSet<PlayerContainerPlayer>();
-        permissions = new TreeMap<PlayerContainer, EnumMap<PermissionType, Permission>>();
-        flags = Factoid.getLands().defaultConf.flags.clone();
+        permissions = new TreeMap<PlayerContainer, TreeMap<PermissionType, Permission>>();
+        flags = (TreeMap<FlagType, LandFlag>) Factoid.getLands().defaultConf.flags.clone();
         copyPerms();
         doSave();
     }
@@ -110,7 +108,7 @@ public class Land extends DummyLand {
 
         for (PlayerContainer pc : Factoid.getLands().defaultConf.permissions.keySet()) {
             permissions.put(PlayerContainer.create(this, pc.getContainerType(), pc.getName()),
-                    Factoid.getLands().defaultConf.permissions.get(pc).clone());
+                    (TreeMap<PermissionType, Permission>) Factoid.getLands().defaultConf.permissions.get(pc).clone());
         }
     }
 
@@ -240,24 +238,24 @@ public class Land extends DummyLand {
 
         // Get the Volume of the area
         long volume = areaComp.getTotalBlock();
-        
+
         // Put the list of areas in the land to an array
         CuboidArea[] areaAr = areas.values().toArray(new CuboidArea[0]);
-        
-        for (int t = 0; t < areaAr.length ; t ++) {
+
+        for (int t = 0; t < areaAr.length; t++) {
 
             // Get the result collision cuboid
             CuboidArea colArea = areaAr[t].getCollisionArea(areaComp);
 
             if (colArea != null) {
-                
+
                 // Substract the volume of collision
                 volume -= colArea.getTotalBlock();
 
                 // Compare each next areas to the collision area and add
                 // the collision of the collision to cancel multiple subtracts
-                for (int a = t + 1; a < areaAr.length ; a ++) {
-                    
+                for (int a = t + 1; a < areaAr.length; a++) {
+
                     CuboidArea colAreaToNextArea = areaAr[a].getCollisionArea(colArea);
 
                     if (colAreaToNextArea != null) {

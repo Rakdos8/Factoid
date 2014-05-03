@@ -22,8 +22,8 @@ import me.tabinol.factoid.commands.ArgList;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.lands.permissions.Permission;
-import me.tabinol.factoid.lands.permissions.PermissionType;
+import me.tabinol.factoid.parameters.Permission;
+import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -45,8 +45,8 @@ public class CommandPermission extends CommandExec {
 
             PlayerContainer pc = entity.argList.getPlayerContainerFromArg(land, null);
             Permission perm = entity.argList.getPermissionFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.player));
-            if (perm.getPermType() == PermissionType.LAND_ENTER
-                    && perm.getValue() != perm.getPermType().baseValue()
+            if (perm.getPermType() == Factoid.getParameters().getPermissionType("LAND_ENTER")
+                    && perm.getValue() != perm.getPermType().getDefaultValue()
                     && land.isLocationInside(land.getWorld().getSpawnLocation())) {
                 throw new FactoidCommandException("Permission", entity.player, "COMMAND.PERMISSION.NOENTERNOTINSPAWN");
             }
@@ -57,7 +57,7 @@ public class CommandPermission extends CommandExec {
 
             // NO_ENTER CASE (kick players)
             // Check for kick the player if he is online and in the land
-            if (perm.getPermType() == PermissionType.LAND_ENTER && perm.getValue() == false) {
+            if (perm.getPermType() == Factoid.getParameters().getPermissionType("LAND_ENTER") && perm.getValue() == false) {
                 for (Player pl : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
                     if (land.isPlayerinLandNoVanish(pl, entity.player) && pc.hasAccess(pl)) {
                         new CommandKick(entity.player, new ArgList(new String[]{pl.getName()}, entity.player), land).commandExecute();
@@ -82,7 +82,7 @@ public class CommandPermission extends CommandExec {
                 for (PlayerContainer pc : land.getSetPCHavePermission()) {
                     stList.append(ChatColor.WHITE).append(pc.getPrint()).append(":");
                     for (Permission perm : land.getPermissionsForPC(pc)) {
-                        stList.append(" ").append(ChatColor.YELLOW).append(perm.getPermType().toString()).append(":").append(perm.getValuePrint());
+                        stList.append(" ").append(ChatColor.YELLOW).append(perm.getPermType().getPrint()).append(":").append(perm.getValuePrint());
                     }
                     stList.append(Config.NEWLINE);
                 }

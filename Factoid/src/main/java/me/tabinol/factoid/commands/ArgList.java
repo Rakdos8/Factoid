@@ -22,11 +22,11 @@ import me.tabinol.factoid.exceptions.FactoidCommandException;
 import java.util.ArrayList;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.Land;
-import me.tabinol.factoid.lands.flags.FlagType;
-import me.tabinol.factoid.lands.flags.FlagValueType;
-import me.tabinol.factoid.lands.flags.LandFlag;
-import me.tabinol.factoid.lands.permissions.Permission;
-import me.tabinol.factoid.lands.permissions.PermissionType;
+import me.tabinol.factoid.parameters.FlagType;
+import me.tabinol.factoid.parameters.FlagValueType;
+import me.tabinol.factoid.parameters.LandFlag;
+import me.tabinol.factoid.parameters.Permission;
+import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
 import me.tabinol.factoid.utilities.StringChanges;
@@ -107,9 +107,8 @@ public class ArgList {
             throw new FactoidCommandException("Flag error", player, "COMMAND.FLAGS.FLAGNULL");
         }
 
-        try {
-            flagType = FlagType.valueOf(curArg.toUpperCase());
-        } catch (IllegalArgumentException ex) {
+        flagType = Factoid.getParameters().getFlagType(curArg.toUpperCase());
+        if (flagType == null) {
             throw new FactoidCommandException("Flag error", player, "COMMAND.FLAGS.FLAGNULL");
         }
 
@@ -189,12 +188,12 @@ public class ArgList {
         } else {
             pc = PlayerContainer.create(land, pcType, "");
         }
-        
-        if(pcType == PlayerContainerType.PLAYER && pc == null) {
-            
+
+        if (pcType == PlayerContainerType.PLAYER && pc == null) {
+
             // this player doesn't exist
             throw new FactoidCommandException("Player not exist Error", player, "COMMAND.CONTAINER.PLAYERNOTEXIST");
-        } 
+        }
 
         return pc;
     }
@@ -208,9 +207,8 @@ public class ArgList {
             throw new FactoidCommandException("Permission Error", player, "COMMAND.PERMISSIONTYPE.TYPENULL");
         }
 
-        try {
-            pt = PermissionType.valueOf(curArg.toUpperCase());
-        } catch (IllegalArgumentException ex) {
+        pt = Factoid.getParameters().getPermissionType(curArg.toUpperCase());
+        if (pt == null) {
             throw new FactoidCommandException("Permission Error", player, "COMMAND.PERMISSIONTYPE.INVALID");
         }
 

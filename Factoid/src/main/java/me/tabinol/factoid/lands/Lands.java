@@ -34,9 +34,9 @@ import me.tabinol.factoid.exceptions.FactoidLandException;
 import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import me.tabinol.factoid.lands.collisions.Collisions.LandError;
 import me.tabinol.factoid.lands.approve.ApproveList;
-import me.tabinol.factoid.lands.flags.FlagType;
-import me.tabinol.factoid.lands.flags.LandFlag;
-import me.tabinol.factoid.lands.permissions.PermissionType;
+import me.tabinol.factoid.parameters.FlagType;
+import me.tabinol.factoid.parameters.LandFlag;
+import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
@@ -324,7 +324,7 @@ public class Lands {
             return result;
         }
 
-        return pt.baseValue();
+        return pt.getDefaultValue();
     }
 
     protected LandFlag getFlagInWorld(String worldName, FlagType ft, boolean onlyInherit) {

@@ -24,7 +24,7 @@ import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.approve.Approve;
 import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions;
-import me.tabinol.factoid.lands.permissions.PermissionType;
+import me.tabinol.factoid.parameters.PermissionType;
 import org.bukkit.ChatColor;
 
 public abstract class CommandExec implements CommandInterface {

@@ -23,10 +23,8 @@ import java.util.TreeMap;
 import me.tabinol.factoid.Factoid;
 import static me.tabinol.factoid.config.Config.GLOBAL;
 import me.tabinol.factoid.lands.DummyLand;
-import me.tabinol.factoid.lands.flags.FlagType;
-import me.tabinol.factoid.lands.flags.LandFlag;
-import me.tabinol.factoid.lands.permissions.Permission;
-import me.tabinol.factoid.lands.permissions.PermissionType;
+import me.tabinol.factoid.parameters.LandFlag;
+import me.tabinol.factoid.parameters.Permission;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
 import org.bukkit.configuration.ConfigurationSection;
@@ -104,7 +102,7 @@ public class WorldConfig {
                             
                             dl.addPermission(
                                     PlayerContainer.create(null, pcType, containerNameLower),
-                                    new Permission(PermissionType.valueOf(perm.toUpperCase()),
+                                    new Permission(Factoid.getParameters().getPermissionTypeNoValid(perm.toUpperCase()),
                                             fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Value"),
                                             fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Heritable")));
                         }
@@ -114,7 +112,7 @@ public class WorldConfig {
                         Factoid.getLog().write("Container: " + container + ", " + perm);
                         dl.addPermission(
                                 PlayerContainer.create(null, pcType, null),
-                                new Permission(PermissionType.valueOf(perm.toUpperCase()),
+                                new Permission(Factoid.getParameters().getPermissionTypeNoValid(perm.toUpperCase()),
                                         fc.getBoolean(perms + "." + container + "." + perm + ".Value"),
                                         fc.getBoolean(perms + "." + container + "." + perm + ".Heritable")));
                     }
@@ -126,7 +124,7 @@ public class WorldConfig {
         if (csFlags != null) {
             for (String flag : csFlags.getKeys(false)) {
                 Factoid.getLog().write("Flag: " + flag);
-                dl.addFlag(new LandFlag(FlagType.valueOf(flag.toUpperCase()),
+                dl.addFlag(new LandFlag(Factoid.getParameters().getFlagTypeNoValid(flag.toUpperCase()),
                         fc.getString(flags + "." + flag + ".Value"), fc.getBoolean(flags + "." + flag + ".Heritable")));
             }
         }

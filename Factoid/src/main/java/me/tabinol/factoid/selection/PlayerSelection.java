@@ -23,8 +23,8 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.players.PlayerConfEntry;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.areas.CuboidArea;
-import me.tabinol.factoid.lands.flags.FlagType;
-import me.tabinol.factoid.lands.flags.LandFlag;
+import me.tabinol.factoid.parameters.FlagType;
+import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.selection.region.AreaSelection;
 import me.tabinol.factoid.selection.region.LandSelection;
 import me.tabinol.factoid.selection.region.RegionSelection;
@@ -125,12 +125,14 @@ public class PlayerSelection {
         Land land = getLand();
         CuboidArea area = getCuboidArea();
         LandFlag priceFlag;
-
+        FlagType flagType = Factoid.getParameters().getFlagType("ECO_BLOCK_PRICE");
+        
         // Get land price
         if (land == null) {
-            priceFlag = Factoid.getLands().getOutsideArea(area.getWorldName()).getFlagAndInherit(FlagType.ECO_BLOCK_PRICE);
+            priceFlag = Factoid.getLands().getOutsideArea(area.getWorldName()).getFlagAndInherit(flagType);
+                    
         } else {
-            priceFlag = land.getFlagAndInherit(FlagType.ECO_BLOCK_PRICE);
+            priceFlag = land.getFlagAndInherit(flagType);
         }
 
         // Not set, return 0
@@ -150,6 +152,7 @@ public class PlayerSelection {
         Land land = getLand();
         CuboidArea area = getCuboidArea();
         LandFlag priceFlag;
+        FlagType flagType = Factoid.getParameters().getFlagType("ECO_BLOCK_PRICE");
 
         if(land == null) {
             return 0;
@@ -157,9 +160,9 @@ public class PlayerSelection {
 
         // The area is from parent ask parent
         if (land.getParent() == null) {
-            priceFlag = Factoid.getLands().getOutsideArea(area.getWorldName()).getFlagAndInherit(FlagType.ECO_BLOCK_PRICE);
+            priceFlag = Factoid.getLands().getOutsideArea(area.getWorldName()).getFlagAndInherit(flagType);
         } else {
-            priceFlag = land.getParent().getFlagAndInherit(FlagType.ECO_BLOCK_PRICE);
+            priceFlag = land.getParent().getFlagAndInherit(flagType);
         }
 
         // Not set, return 0

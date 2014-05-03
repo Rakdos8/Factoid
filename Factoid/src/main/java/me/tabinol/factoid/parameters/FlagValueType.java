@@ -15,29 +15,16 @@
  You should have received a copy of the GNU General Public License
  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package me.tabinol.factoid.lands;
+package me.tabinol.factoid.parameters;
 
-import me.tabinol.factoid.parameters.LandFlag;
-import java.util.HashSet;
-import me.tabinol.factoid.playercontainer.PlayerContainer;
-
-public class ContainerFlag {
+public enum FlagValueType {
     
-    PlayerContainer pc;
-    HashSet <LandFlag> flags;
+    UNDEFINED(),
+    BOOLEAN(),
+    DOUBLE(),
+    STRING(),
+    STRING_LIST();
     
-    public ContainerFlag(PlayerContainer pc, HashSet <LandFlag> flags) {
-        
-        this.pc = pc;
-        if(flags == null) {
-            this.flags = new HashSet<LandFlag>();
-        } else {
-            this.flags = flags;
-        }
-    }
-    
-    public boolean equals(ContainerFlag cf2) {
-        
-        return pc.equals(cf2.pc);
+    private FlagValueType() {
     }
 }

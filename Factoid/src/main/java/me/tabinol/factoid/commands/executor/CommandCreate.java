@@ -27,7 +27,7 @@ import me.tabinol.factoid.exceptions.FactoidLandException;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
-import me.tabinol.factoid.lands.permissions.PermissionType;
+import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerNobody;
 import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
@@ -79,8 +79,8 @@ public class CommandCreate extends CommandExec {
         // Not complicated! The player must be AdminMod, or access to create (in world) 
         // or access to create in parent if it is a subland.
         if (!entity.playerConf.isAdminMod()
-                && ((parent == null && !Factoid.getLands().getOutsideArea(area.getWorldName()).checkPermissionAndInherit(entity.player, PermissionType.LAND_CREATE))
-                || (parent != null && !parent.checkPermissionAndInherit(entity.player, PermissionType.LAND_CREATE)))) {
+                && ((parent == null && !Factoid.getLands().getOutsideArea(area.getWorldName()).checkPermissionAndInherit(entity.player, Factoid.getParameters().getPermissionType("LAND_CREATE")))
+                || (parent != null && !parent.checkPermissionAndInherit(entity.player, Factoid.getParameters().getPermissionType("LAND_CREATE"))))) {
             throw new FactoidCommandException("CommandCreate", entity.player, "GENERAL.MISSINGPERMISSION");
         }
 

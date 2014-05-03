@@ -21,7 +21,7 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.lands.permissions.PermissionType;
+import me.tabinol.factoid.parameters.PermissionType;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -37,7 +37,7 @@ public class CommandWho extends CommandExec {
 
         getLandFromCommandIfNoLandSelected();
         checkSelections(true, null);
-        checkPermission(true, true, PermissionType.LAND_WHO, null);
+        checkPermission(true, true, Factoid.getParameters().getPermissionType("LAND_WHO"), null);
 
         // Create list
         StringBuilder stList = new StringBuilder();

@@ -20,7 +20,6 @@ package me.tabinol.factoid.storage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -36,10 +35,10 @@ import me.tabinol.factoid.exceptions.FileLoadException;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.Land;
-import me.tabinol.factoid.lands.flags.FlagType;
-import me.tabinol.factoid.lands.flags.LandFlag;
-import me.tabinol.factoid.lands.permissions.Permission;
-import me.tabinol.factoid.lands.permissions.PermissionType;
+import me.tabinol.factoid.parameters.FlagType;
+import me.tabinol.factoid.parameters.LandFlag;
+import me.tabinol.factoid.parameters.Permission;
+import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.utilities.StringChanges;
@@ -200,8 +199,8 @@ public class StorageFlat extends Storage implements StorageInt {
         String factionTerritory;
         Set<PlayerContainer> residents = new TreeSet<PlayerContainer>();
         Set<PlayerContainer> banneds = new TreeSet<PlayerContainer>();
-        Map<PlayerContainer, EnumMap<PermissionType, Permission>> permissions
-                = new TreeMap<PlayerContainer, EnumMap<PermissionType, Permission>>();
+        Map<PlayerContainer, TreeMap<PermissionType, Permission>> permissions
+                = new TreeMap<PlayerContainer, TreeMap<PermissionType, Permission>>();
         Set<LandFlag> flags = new HashSet<LandFlag>();
         short priority;
         double money;
@@ -253,11 +252,11 @@ public class StorageFlat extends Storage implements StorageInt {
             //Create permissions
             while ((str = cf.getNextString()) != null) {
                 String[] multiStr = str.split(":");
-                EnumMap<PermissionType, Permission> permPlayer;
+                TreeMap<PermissionType, Permission> permPlayer;
                 PlayerContainer pc = PlayerContainer.getFromString(multiStr[0] + ":" + multiStr[1]);
-                PermissionType permType = PermissionType.valueOf(multiStr[2]);
+                PermissionType permType = Factoid.getParameters().getPermissionTypeNoValid(multiStr[2]);
                 if (!permissions.containsKey(pc)) {
-                    permPlayer = new EnumMap<PermissionType, Permission>(PermissionType.class);
+                    permPlayer = new TreeMap<PermissionType, Permission>();
                     permissions.put(pc, permPlayer);
                 } else {
                     permPlayer = permissions.get(pc);
@@ -270,7 +269,7 @@ public class StorageFlat extends Storage implements StorageInt {
             //Create flags
             while ((str = cf.getNextString()) != null) {
                 String[] multiStr = StringChanges.splitKeepQuote(str, ":");
-                FlagType ft = FlagType.valueOf(multiStr[0]);
+                FlagType ft = Factoid.getParameters().getFlagTypeNoValid(multiStr[0]);
                 flags.add(new LandFlag(ft, multiStr[1], Boolean.parseBoolean(multiStr[2])));
             }
             cf.readParam();
@@ -339,8 +338,8 @@ public class StorageFlat extends Storage implements StorageInt {
         for (PlayerContainer banned : banneds) {
             land.addResident(banned);
         }
-        for (Map.Entry<PlayerContainer, EnumMap<PermissionType, Permission>> entry : permissions.entrySet()) {
-            for (EnumMap.Entry<PermissionType, Permission> entryP : entry.getValue().entrySet()) {
+        for (Map.Entry<PlayerContainer, TreeMap<PermissionType, Permission>> entry : permissions.entrySet()) {
+            for (Map.Entry<PermissionType, Permission> entryP : entry.getValue().entrySet()) {
                 land.addPermission(entry.getKey(), entryP.getValue());
             }
         }

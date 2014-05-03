@@ -17,13 +17,11 @@
  */
 package me.tabinol.factoid.config;
 
-import java.util.Collections;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.Set;
+import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.lands.flags.FlagType;
-import me.tabinol.factoid.lands.permissions.PermissionType;
+import me.tabinol.factoid.parameters.FlagType;
+import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.utilities.StringChanges;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -131,11 +129,11 @@ public class Config {
     private boolean overrideExplosions;
     public boolean isOverrideExplosions() { return overrideExplosions; }
     
-    private Set<FlagType> ownerConfigFlag; // Flags a owner can set
-    public Set<FlagType> getOwnerConfigFlag() { return ownerConfigFlag; }
+    private TreeSet<FlagType> ownerConfigFlag; // Flags a owner can set
+    public TreeSet<FlagType> getOwnerConfigFlag() { return ownerConfigFlag; }
     
-    private Set<PermissionType> ownerConfigPerm; // Permissions a owner can set
-    public Set<PermissionType> getOwnerConfigPerm() { return ownerConfigPerm; }
+    private TreeSet<PermissionType> ownerConfigPerm; // Permissions a owner can set
+    public TreeSet<PermissionType> getOwnerConfigPerm() { return ownerConfigPerm; }
 
     public Config() {
 
@@ -198,14 +196,14 @@ public class Config {
         }
 
         config.addDefault("land.OwnerCanSet.Flags", new String[] {"MESSAGE_JOIN", "MESSAGE_QUIT"});
-        ownerConfigFlag = Collections.synchronizedSet(EnumSet.noneOf(FlagType.class));
+        ownerConfigFlag = new TreeSet<FlagType>();
         for (String value : config.getStringList("land.OwnerCanSet.Flags")) {
-            ownerConfigFlag.add(FlagType.valueOf(value.toUpperCase()));
+            ownerConfigFlag.add(Factoid.getParameters().getFlagTypeNoValid(value.toUpperCase()));
         }
         config.addDefault("land.OwnerCanSet.Permissions", new String[] {"BUILD", "OPEN", "USE"});
-        ownerConfigPerm = Collections.synchronizedSet(EnumSet.noneOf(PermissionType.class));
+        ownerConfigPerm = new TreeSet<PermissionType>();
         for (String value : config.getStringList("land.OwnerCanSet.Permissions")) {
-            ownerConfigPerm.add(PermissionType.valueOf(value.toUpperCase()));
+            ownerConfigPerm.add(Factoid.getParameters().getPermissionTypeNoValid(value.toUpperCase()));
         }
     }
 }

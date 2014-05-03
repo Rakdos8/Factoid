@@ -23,7 +23,7 @@ import me.tabinol.factoid.config.players.PlayerConfEntry;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.areas.CuboidArea;
-import me.tabinol.factoid.lands.permissions.PermissionType;
+import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
 import me.tabinol.factoid.selection.region.ActiveAreaSelection;
@@ -97,7 +97,7 @@ public class CommandSelect extends CommandExec {
 
                     } else {
 
-                        landtest = Factoid.getLands().getLand(curArg.toString());
+                        landtest = Factoid.getLands().getLand(curArg);
                     }
 
                     if (landtest == null) {
@@ -107,7 +107,7 @@ public class CommandSelect extends CommandExec {
                     PlayerContainer owner = landtest.getOwner();
 
                     if (!owner.hasAccess(player) && !playerConf.isAdminMod()
-                            && !landtest.checkPermissionAndInherit(player, PermissionType.RESIDENT_MANAGER)) {
+                            && !landtest.checkPermissionAndInherit(player, Factoid.getParameters().getPermissionType("RESIDENT_MANAGER"))) {
                         throw new FactoidCommandException("CommandSelect", player, "GENERAL.MISSINGPERMISSION");
                     }
                     if (playerConf.getSelection().getLand() == null) {

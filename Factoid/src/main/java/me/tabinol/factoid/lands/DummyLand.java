@@ -18,30 +18,29 @@
 package me.tabinol.factoid.lands;
 
 import java.util.Collection;
-import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.event.PlayerContainerAddNoEnterEvent;
-import me.tabinol.factoid.lands.flags.FlagType;
-import me.tabinol.factoid.lands.flags.LandFlag;
-import me.tabinol.factoid.lands.permissions.Permission;
-import me.tabinol.factoid.lands.permissions.PermissionType;
+import me.tabinol.factoid.parameters.FlagType;
+import me.tabinol.factoid.parameters.LandFlag;
+import me.tabinol.factoid.parameters.Permission;
+import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 public class DummyLand {
 
-    protected TreeMap<PlayerContainer, EnumMap<PermissionType, Permission>> permissions; // String for playerName
-    protected EnumMap<FlagType, LandFlag> flags;
+    protected TreeMap<PlayerContainer, TreeMap<PermissionType, Permission>> permissions; // String for playerName
+    protected TreeMap<FlagType, LandFlag> flags;
     protected String worldName;
 
     public DummyLand(String worldName) {
 
-        permissions = new TreeMap<PlayerContainer, EnumMap<PermissionType, Permission>>();
-        flags = new EnumMap<FlagType, LandFlag>(FlagType.class);
+        permissions = new TreeMap<PlayerContainer, TreeMap<PermissionType, Permission>>();
+        flags = new TreeMap<FlagType, LandFlag>();
         this.worldName = worldName;
     }
 
@@ -57,14 +56,14 @@ public class DummyLand {
 
     public void addPermission(PlayerContainer pc, Permission perm) {
 
-        EnumMap<PermissionType, Permission> permPlayer;
+        TreeMap<PermissionType, Permission> permPlayer;
 
         if (this instanceof Land) {
             pc.setLand((Land) this);
         }
         
         if (!permissions.containsKey(pc)) {
-            permPlayer = new EnumMap<PermissionType, Permission>(PermissionType.class);
+            permPlayer = new TreeMap<PermissionType, Permission>();
             permissions.put(pc, permPlayer);
         } else {
             permPlayer = permissions.get(pc);
@@ -73,8 +72,8 @@ public class DummyLand {
         doSave();
 
         // Start Event
-        if (this instanceof Land && perm.getPermType() == PermissionType.LAND_ENTER
-                && perm.getValue() != PermissionType.LAND_ENTER.baseValue()) {
+        if (this instanceof Land && perm.getPermType() == Factoid.getParameters().getPermissionType("LAND_ENTER")
+                && perm.getValue() != perm.getPermType().getDefaultValue()) {
             Factoid.getThisPlugin().getServer().getPluginManager().callEvent(
                     new PlayerContainerAddNoEnterEvent((Land) this, pc));
         }
@@ -83,7 +82,7 @@ public class DummyLand {
 
     public boolean removePermission(PlayerContainer pc, PermissionType permType) {
 
-        EnumMap<PermissionType, Permission> permPlayer;
+        TreeMap<PermissionType, Permission> permPlayer;
 
         if (!permissions.containsKey(pc)) {
             return false;
@@ -132,7 +131,7 @@ public class DummyLand {
 
     protected Boolean getPermission(Player player, PermissionType pt, boolean onlyInherit) {
 
-        for (Map.Entry<PlayerContainer, EnumMap<PermissionType, Permission>> permissionEntry : permissions.entrySet()) {
+        for (Map.Entry<PlayerContainer, TreeMap<PermissionType, Permission>> permissionEntry : permissions.entrySet()) {
             if (permissionEntry.getKey().hasAccess(player)) {
                 Permission perm = permissionEntry.getValue().get(pt);
                 if (perm != null) {

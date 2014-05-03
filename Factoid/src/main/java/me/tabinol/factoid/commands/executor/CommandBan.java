@@ -22,7 +22,7 @@ import me.tabinol.factoid.commands.ArgList;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.lands.permissions.PermissionType;
+import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
 import org.bukkit.ChatColor;
@@ -39,7 +39,7 @@ public class CommandBan extends CommandExec {
     public void commandExecute() throws FactoidCommandException {
 
         checkSelections(true, null);
-        checkPermission(true, true, PermissionType.LAND_BAN, null);
+        checkPermission(true, true, Factoid.getParameters().getPermissionType("LAND_BAN"), null);
 
         String curArg = entity.argList.getNext();
 

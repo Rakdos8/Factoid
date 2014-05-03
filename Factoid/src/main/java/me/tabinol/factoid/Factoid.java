@@ -17,10 +17,6 @@
  */ 
 package me.tabinol.factoid;
 
-import org.bukkit.plugin.java.JavaPlugin;
-
-import me.tabinol.factoid.utilities.Lang;
-import me.tabinol.factoid.utilities.Log;
 import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.config.DependPlugin;
@@ -32,10 +28,14 @@ import me.tabinol.factoid.lands.approve.ApproveNotif;
 import me.tabinol.factoid.listeners.LandListener;
 import me.tabinol.factoid.listeners.PlayerListener;
 import me.tabinol.factoid.listeners.WorldListener;
+import me.tabinol.factoid.parameters.Parameters;
+import me.tabinol.factoid.scoreboard.ScoreBoard;
 import me.tabinol.factoid.storage.Storage;
 import me.tabinol.factoid.storage.StorageFlat;
-import me.tabinol.factoid.scoreboard.ScoreBoard;
+import me.tabinol.factoid.utilities.Lang;
+import me.tabinol.factoid.utilities.Log;
 import me.tabinol.factoid.utilities.MavenAppProperties;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class Factoid extends JavaPlugin {
 
@@ -52,6 +52,7 @@ public class Factoid extends JavaPlugin {
     private static PlayerStaticConfig playerConf;
     private static Lang language;
     private static Factions factions;
+    private static Parameters parameters;
     private static Lands lands;
     private static String version;
     private static DependPlugin dependPlugin;
@@ -66,6 +67,7 @@ public class Factoid extends JavaPlugin {
         // Static access to «this» Factoid
         thisPlugin = this;
         version = this.getDescription().getVersion();
+        parameters = new Parameters();
         conf = new Config();
         log = new Log();
         dependPlugin = new DependPlugin();
@@ -97,6 +99,7 @@ public class Factoid extends JavaPlugin {
 
     public void reload() {
 
+        parameters = new Parameters();
         conf.reloadConfig();
         if (conf.useEconomy() == true && dependPlugin.getEconomy() != null) {
             playerMoney = new PlayerMoney();
@@ -155,6 +158,11 @@ public class Factoid extends JavaPlugin {
     public static Factions getFactions() {
 
         return factions;
+    }
+    
+    public static Parameters getParameters() {
+        
+        return parameters;
     }
 
     public static Lands getLands() {
