@@ -21,6 +21,7 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ArgList;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoid.parameters.PermissionType;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -57,7 +58,7 @@ public class CommandKick extends CommandExec {
         // Only if it is from Kick command
         if (entity != null) {
             checkSelections(true, null);
-            checkPermission(true, true, Factoid.getParameters().getPermissionType("LAND_KICK"), null);
+            checkPermission(true, true, PermissionList.LAND_KICK.getPermissonType(), null);
         }
 
         // No player name?

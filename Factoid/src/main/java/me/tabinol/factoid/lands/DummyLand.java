@@ -26,6 +26,7 @@ import me.tabinol.factoid.event.PlayerContainerAddNoEnterEvent;
 import me.tabinol.factoid.parameters.FlagType;
 import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.parameters.Permission;
+import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import org.bukkit.World;
@@ -72,7 +73,7 @@ public class DummyLand {
         doSave();
 
         // Start Event
-        if (this instanceof Land && perm.getPermType() == Factoid.getParameters().getPermissionType("LAND_ENTER")
+        if (this instanceof Land && perm.getPermType() == PermissionList.LAND_ENTER.getPermissonType()
                 && perm.getValue() != perm.getPermType().getDefaultValue()) {
             Factoid.getThisPlugin().getServer().getPluginManager().callEvent(
                     new PlayerContainerAddNoEnterEvent((Land) this, pc));

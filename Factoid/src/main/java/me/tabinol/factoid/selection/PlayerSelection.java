@@ -23,6 +23,7 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.players.PlayerConfEntry;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.areas.CuboidArea;
+import me.tabinol.factoid.parameters.FlagList;
 import me.tabinol.factoid.parameters.FlagType;
 import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.selection.region.AreaSelection;
@@ -125,7 +126,7 @@ public class PlayerSelection {
         Land land = getLand();
         CuboidArea area = getCuboidArea();
         LandFlag priceFlag;
-        FlagType flagType = Factoid.getParameters().getFlagType("ECO_BLOCK_PRICE");
+        FlagType flagType = FlagList.ECO_BLOCK_PRICE.getFlagType();
         
         // Get land price
         if (land == null) {
@@ -152,7 +153,7 @@ public class PlayerSelection {
         Land land = getLand();
         CuboidArea area = getCuboidArea();
         LandFlag priceFlag;
-        FlagType flagType = Factoid.getParameters().getFlagType("ECO_BLOCK_PRICE");
+        FlagType flagType = FlagList.ECO_BLOCK_PRICE.getFlagType();
 
         if(land == null) {
             return 0;

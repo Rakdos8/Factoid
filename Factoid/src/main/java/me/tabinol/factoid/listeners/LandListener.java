@@ -25,7 +25,9 @@ import me.tabinol.factoid.event.PlayerContainerLandBanEvent;
 import me.tabinol.factoid.event.PlayerLandChangeEvent;
 import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.parameters.FlagList;
 import me.tabinol.factoid.parameters.LandFlag;
+import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
@@ -123,7 +125,7 @@ public class LandListener implements Listener {
                 notifyPlayers(lastLand, "ACTION.PLAYEREXIT", player);
 
                 // Message quit
-                if ((flag = lastLand.getFlagNoInherit(Factoid.getParameters().getFlagType("MESSAGE_QUIT"))) != null
+                if ((flag = lastLand.getFlagNoInherit(FlagList.MESSAGE_QUIT.getFlagType())) != null
                         && (value = flag.getValueString()) != null) {
                     player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + lastLand.getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
                 }
@@ -139,7 +141,7 @@ public class LandListener implements Listener {
 
             if (!playerConf.get(player).isAdminMod()) {
                 // is banned or can enter
-                PermissionType permissionType = Factoid.getParameters().getPermissionType("LAND_ENTER");
+                PermissionType permissionType = PermissionList.LAND_ENTER.getPermissonType();
                 if ((land.isBanned(player)
                         || land.checkPermissionAndInherit(player, permissionType) != permissionType.getDefaultValue())
                         && !land.isOwner(player)) {
@@ -169,7 +171,7 @@ public class LandListener implements Listener {
                     landTest = landTest.getParent();
                 }
                 // Message join
-                if ((flag = land.getFlagNoInherit(Factoid.getParameters().getFlagType("MESSAGE_JOIN"))) != null
+                if ((flag = land.getFlagNoInherit(FlagList.MESSAGE_JOIN.getFlagType())) != null
                         && (value = flag.getValueString()) != null) {
                     player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + land.getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
                 }
@@ -186,7 +188,7 @@ public class LandListener implements Listener {
         }
 
         //Check for Healing
-        PermissionType permissionType = Factoid.getParameters().getPermissionType("AUTO_HEAL");
+        PermissionType permissionType = PermissionList.AUTO_HEAL.getPermissonType();
         
         if (dummyLand.checkPermissionAndInherit(player, permissionType) != permissionType.getDefaultValue()) {
             if (!playerHeal.contains(player)) {

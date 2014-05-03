@@ -23,6 +23,7 @@ import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.parameters.Permission;
+import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import org.bukkit.ChatColor;
@@ -45,7 +46,7 @@ public class CommandPermission extends CommandExec {
 
             PlayerContainer pc = entity.argList.getPlayerContainerFromArg(land, null);
             Permission perm = entity.argList.getPermissionFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.player));
-            if (perm.getPermType() == Factoid.getParameters().getPermissionType("LAND_ENTER")
+            if (perm.getPermType() == PermissionList.LAND_ENTER.getPermissonType()
                     && perm.getValue() != perm.getPermType().getDefaultValue()
                     && land.isLocationInside(land.getWorld().getSpawnLocation())) {
                 throw new FactoidCommandException("Permission", entity.player, "COMMAND.PERMISSION.NOENTERNOTINSPAWN");
@@ -57,7 +58,7 @@ public class CommandPermission extends CommandExec {
 
             // NO_ENTER CASE (kick players)
             // Check for kick the player if he is online and in the land
-            if (perm.getPermType() == Factoid.getParameters().getPermissionType("LAND_ENTER") && perm.getValue() == false) {
+            if (perm.getPermType() == PermissionList.LAND_ENTER.getPermissonType() && perm.getValue() == false) {
                 for (Player pl : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
                     if (land.isPlayerinLandNoVanish(pl, entity.player) && pc.hasAccess(pl)) {
                         new CommandKick(entity.player, new ArgList(new String[]{pl.getName()}, entity.player), land).commandExecute();

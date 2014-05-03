@@ -21,6 +21,7 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
+import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
@@ -37,7 +38,7 @@ public class CommandResident extends CommandExec {
     public void commandExecute() throws FactoidCommandException {
 
         checkSelections(true, null);
-        checkPermission(true, true, Factoid.getParameters().getPermissionType("RESIDENT_MANAGER"), null);
+        checkPermission(true, true, PermissionList.RESIDENT_MANAGER.getPermissonType(), null);
         
         String curArg = entity.argList.getNext();
 

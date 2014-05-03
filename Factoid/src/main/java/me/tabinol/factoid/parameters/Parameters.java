@@ -35,27 +35,31 @@ public class Parameters {
 
         // Add flags and permissions
         for (PermissionList permissionList : PermissionList.values()) {
-            registerPermissionType(permissionList.name(), permissionList.baseValue);
+            permissionList.setPermissionType(registerPermissionType(permissionList.name(), permissionList.baseValue));
         }
         for (FlagList flagList : FlagList.values()) {
-            registerFlagType(flagList.name(), flagList.valueType);
+            flagList.setFlagType(registerFlagType(flagList.name(), flagList.valueType));
         }
     }
 
-    public final void registerPermissionType(String permissionName, boolean defaultValue) {
+    public final PermissionType registerPermissionType(String permissionName, boolean defaultValue) {
 
         String permissionNameUpper = permissionName.toUpperCase();
         PermissionType permissionType = new PermissionType(permissionNameUpper, defaultValue);
         permissionType.setRegistered();
         permissions.put(permissionNameUpper, permissionType);
+        
+        return permissionType;
     }
 
-    public final void registerFlagType(String flagName, FlagValueType flagValueType) {
+    public final FlagType registerFlagType(String flagName, FlagValueType flagValueType) {
 
         String flagNameUpper = flagName.toUpperCase();
         FlagType flagType = new FlagType(flagNameUpper, flagValueType);
         flagType.setRegistered();
         flags.put(flagNameUpper, flagType);
+        
+        return flagType;
     }
 
     public final PermissionType getPermissionType(String permissionName) {

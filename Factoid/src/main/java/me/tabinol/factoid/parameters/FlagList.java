@@ -21,7 +21,7 @@ package me.tabinol.factoid.parameters;
  *
  * @author Tabinol
  */
-enum FlagList {
+public enum FlagList {
     
     UNDEFINED(FlagValueType.UNDEFINED),
     FIRESPREAD(FlagValueType.BOOLEAN),
@@ -48,9 +48,20 @@ enum FlagList {
     ECO_BLOCK_PRICE(FlagValueType.DOUBLE);
 
     FlagValueType valueType;
+    FlagType flagType;
     
     private FlagList(final FlagValueType valueType) {
 
         this.valueType = valueType;
+    }
+    
+    void setFlagType(FlagType flagType) {
+        
+        this.flagType = flagType;
+    }
+
+    public FlagType getFlagType() {
+        
+        return flagType;
     }
 }

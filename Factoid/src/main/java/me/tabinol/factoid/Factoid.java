@@ -99,7 +99,7 @@ public class Factoid extends JavaPlugin {
 
     public void reload() {
 
-        parameters = new Parameters();
+        // No reload of Parameters to avoid Deregistering external parameters
         conf.reloadConfig();
         if (conf.useEconomy() == true && dependPlugin.getEconomy() != null) {
             playerMoney = new PlayerMoney();

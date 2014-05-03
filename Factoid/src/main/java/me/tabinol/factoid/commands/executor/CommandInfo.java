@@ -22,8 +22,9 @@ import me.tabinol.factoid.commands.ArgList;
 import me.tabinol.factoid.commands.ChatPage;
 import static me.tabinol.factoid.config.Config.NEWLINE;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.lands.areas.CuboidArea;
+import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoid.parameters.PermissionType;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -94,9 +95,9 @@ public class CommandInfo extends CommandExec {
             stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.OWNER", land.getOwner().getPrint()));
             stList.append(NEWLINE);
             stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.MAINPERMISSION",
-                    getPermissionInColForPl(land, Factoid.getParameters().getPermissionType("BUILD")) + " "
-                    + getPermissionInColForPl(land, Factoid.getParameters().getPermissionType("USE")) + " "
-                    + getPermissionInColForPl(land, Factoid.getParameters().getPermissionType("OPEN"))));
+                    getPermissionInColForPl(land, PermissionList.BUILD.getPermissonType()) + " "
+                    + getPermissionInColForPl(land, PermissionList.USE.getPermissonType()) + " "
+                    + getPermissionInColForPl(land, PermissionList.OPEN.getPermissonType())));
             stList.append(NEWLINE);
             if (area != null) {
                 stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.ACTIVEAREA",

@@ -19,6 +19,7 @@ package me.tabinol.factoid.commands.executor;
 
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
+import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoid.parameters.PermissionType;
 import org.bukkit.ChatColor;
 
@@ -34,7 +35,7 @@ public class CommandNotify extends CommandExec {
 
         getLandFromCommandIfNoLandSelected();
         checkSelections(true, null);
-        checkPermission(true, true, Factoid.getParameters().getPermissionType("LAND_NOTIFY"), null);
+        checkPermission(true, true, PermissionList.LAND_NOTIFY.getPermissonType(), null);
 
         
         if (land.isPlayerNotify(entity.playerConf.getPlayerContainer())) {

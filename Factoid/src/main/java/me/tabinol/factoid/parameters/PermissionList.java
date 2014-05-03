@@ -21,7 +21,7 @@ package me.tabinol.factoid.parameters;
  *
  * @author Tabinol
  */
-enum PermissionList {
+public enum PermissionList {
 
     UNDEFINED(false),
     BUILD(true),
@@ -80,9 +80,20 @@ enum PermissionList {
     ECO_LAND_RENT(false);
 
     final boolean baseValue;
+    PermissionType PermissionType;
 
     private PermissionList(boolean baseValue) {
 
         this.baseValue = baseValue;
+    }
+    
+    void setPermissionType(PermissionType PermissionType) {
+        
+        this.PermissionType = PermissionType;
+    }
+
+    public PermissionType getPermissonType() {
+        
+        return PermissionType;
     }
 }
