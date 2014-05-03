@@ -25,7 +25,6 @@ import me.tabinol.factoid.event.PlayerContainerLandBanEvent;
 import me.tabinol.factoid.event.PlayerLandChangeEvent;
 import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.Land;
-import me.tabinol.factoid.parameters.FlagType;
 import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
@@ -94,12 +93,12 @@ public class LandListener implements Listener {
 
         Player player = event.getPlayer();
 
-        Land land = playerConf.get(player).getLastLand();
+        DummyLand land = playerConf.get(player).getLastLand();
 
         // Notify for quit
-        while (land != null) {
-            notifyPlayers(land, "ACTION.PLAYEREXIT", player);
-            land = land.getParent();
+        while (land instanceof Land) {
+            notifyPlayers((Land)land, "ACTION.PLAYEREXIT", player);
+            land = ((Land)land).getParent();
         }
 
         if (playerHeal.contains(player)) {

@@ -17,6 +17,7 @@
  */
 package me.tabinol.factoid.event;
 
+import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.Land;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -24,11 +25,18 @@ import org.bukkit.event.HandlerList;
 public class LandEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
+    private DummyLand dummyLand;
     private Land land;
 
-    public LandEvent(Land land) {
+    public LandEvent(DummyLand dummyLand) {
 
-        this.land = land;
+        this.dummyLand = dummyLand;
+        
+        if(dummyLand instanceof Land) {
+            land = (Land) dummyLand;
+        } else {
+            land = null;
+        }
     }
 
     @Override
@@ -45,5 +53,10 @@ public class LandEvent extends Event {
     public Land getLand() {
 
         return land;
+    }
+    
+    public DummyLand getLandOrOutside() {
+        
+        return dummyLand;
     }
 }

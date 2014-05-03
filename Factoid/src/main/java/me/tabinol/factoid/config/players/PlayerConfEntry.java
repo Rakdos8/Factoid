@@ -21,11 +21,11 @@ package me.tabinol.factoid.config.players;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.commands.ConfirmEntry;
+import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.selection.PlayerSelection;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -38,7 +38,7 @@ public class PlayerConfEntry {
     private ConfirmEntry confirm = null; // "/factoid confirm" command
     private ChatPage chatPage = null; // pages for "/factoid page" command
     private long lastMoveUpdate = 0; // Time of lastupdate for PlayerEvents
-    private Land lastLand = null; // Last Land for player
+    private DummyLand lastLand = null; // Last Land for player
     private Location lastLoc = null; // Present location
     private boolean tpCancel = false; // If the player has a teleportation cacelled
     private PlayerAutoCancelSelect cancelSelect = null; // Auto cancel selection system
@@ -124,12 +124,12 @@ public class PlayerConfEntry {
         lastMoveUpdate = lastMove;
     }
 
-    public Land getLastLand() {
+    public DummyLand getLastLand() {
 
         return lastLand;
     }
 
-    public void setLastLand(Land land) {
+    public void setLastLand(DummyLand land) {
 
         lastLand = land;
     }

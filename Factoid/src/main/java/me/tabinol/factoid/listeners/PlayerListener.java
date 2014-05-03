@@ -32,7 +32,6 @@ import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.Land;
-import me.tabinol.factoid.parameters.FlagType;
 import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.selection.region.PlayerMoveListen;
@@ -126,9 +125,9 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
 
         // Remove player from the land
-        Land land = playerConf.get(player).getLastLand();
-        if (land != null) {
-            land.removePlayerInLand(player);
+        DummyLand land = playerConf.get(player).getLastLand();
+        if (land instanceof Land) {
+            ((Land) land).removePlayerInLand(player);
         }
 
         // Remove player from Static Config
@@ -599,8 +598,8 @@ public class PlayerListener implements Listener {
 
     private void updatePosInfo(Event event, PlayerConfEntry entry, Location loc, boolean newPlayer) {
 
-        Land land;
-        Land landOld;
+        DummyLand land;
+        DummyLand landOld;
         PlayerLandChangeEvent landEvent;
         Boolean isTp;
         Player player = entry.getPlayer();
@@ -636,11 +635,11 @@ public class PlayerListener implements Listener {
             entry.setLastLand(land);
 
             // Update player in the lands
-            if (landOld != null && landOld != land) {
-                landOld.removePlayerInLand(player);
+            if (landOld instanceof Land && landOld != land) {
+                ((Land) landOld).removePlayerInLand(player);
             }
-            if (land != null) {
-                land.addPlayerInLand(player);
+            if (land instanceof Land) {
+                ((Land) land).addPlayerInLand(player);
             }
         }
         entry.setLastLoc(loc);
