@@ -160,11 +160,11 @@ public class AreaSelection extends RegionSelection implements Listener {
 
         if (loc.getBlock().getType() == Material.AIR) {
             while (loc.getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR
-                    && loc.getBlockY() != 1) {
+                    && loc.getBlockY() > 1) {
                 loc.subtract(0, 1, 0);
             }
         } else {
-            while (loc.getBlock().getType() != Material.AIR && loc.getBlockY() != player.getWorld().getMaxHeight()) {
+            while (loc.getBlock().getType() != Material.AIR && loc.getBlockY() < player.getWorld().getMaxHeight()) {
                 loc.add(0, 1, 0);
             }
         }
