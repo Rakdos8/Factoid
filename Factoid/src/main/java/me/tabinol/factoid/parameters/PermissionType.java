@@ -19,11 +19,16 @@ package me.tabinol.factoid.parameters;
 
 public class PermissionType extends ParameterType {
     
-    private final boolean defaultValue;
+    private boolean defaultValue;
     
     PermissionType(String permissionName, boolean defaultValue) {
         
         super(permissionName);
+        this.defaultValue = defaultValue;
+    }
+    
+    void setDefaultValue(boolean defaultValue) {
+        
         this.defaultValue = defaultValue;
     }
     

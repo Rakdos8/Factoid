@@ -45,9 +45,9 @@ public class Parameters {
     public final PermissionType registerPermissionType(String permissionName, boolean defaultValue) {
 
         String permissionNameUpper = permissionName.toUpperCase();
-        PermissionType permissionType = new PermissionType(permissionNameUpper, defaultValue);
+        PermissionType permissionType = getPermissionTypeNoValid(permissionNameUpper);
+        permissionType.setDefaultValue(defaultValue);
         permissionType.setRegistered();
-        permissions.put(permissionNameUpper, permissionType);
         
         return permissionType;
     }
@@ -55,9 +55,9 @@ public class Parameters {
     public final FlagType registerFlagType(String flagName, FlagValueType flagValueType) {
 
         String flagNameUpper = flagName.toUpperCase();
-        FlagType flagType = new FlagType(flagNameUpper, flagValueType);
+        FlagType flagType = getFlagTypeNoValid(flagNameUpper);
+        flagType.setFlagValueType(flagValueType);
         flagType.setRegistered();
-        flags.put(flagNameUpper, flagType);
         
         return flagType;
     }
@@ -89,7 +89,8 @@ public class Parameters {
         PermissionType pt = permissions.get(permissionName);
         
         if(pt == null) {
-            pt = permissions.put(permissionName, new PermissionType(permissionName, false));
+            pt = new PermissionType(permissionName, false);
+            permissions.put(permissionName, pt);
         }
         
         return pt;
@@ -100,7 +101,8 @@ public class Parameters {
         FlagType ft = flags.get(flagName);
         
         if(ft == null) {
-            ft = flags.put(flagName, new FlagType(flagName, FlagValueType.UNDEFINED));
+            ft = new FlagType(flagName, FlagValueType.UNDEFINED);
+            flags.put(flagName, ft);
         }
         
         return ft;

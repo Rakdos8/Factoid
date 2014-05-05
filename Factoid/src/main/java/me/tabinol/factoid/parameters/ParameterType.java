@@ -28,6 +28,11 @@ public class ParameterType implements Comparable<ParameterType> {
     private final String name;
     private boolean isRegistered = false;
     
+    ParameterType(String name) {
+        
+        this.name = name;
+    }
+    
     @Override
     public int compareTo(ParameterType t) {
         
@@ -39,12 +44,13 @@ public class ParameterType implements Comparable<ParameterType> {
         return name.equals(t.name);
     }
     
-    ParameterType(String name) {
+    public String getName() {
         
-        this.name = name;
+        return name;
     }
     
-    public String getName() {
+    @Override
+    public String toString() {
         
         return name;
     }

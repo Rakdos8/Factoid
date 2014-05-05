@@ -606,7 +606,7 @@ public class PlayerListener implements Listener {
         Boolean isTp;
         Player player = entry.getPlayer();
 
-        land = Factoid.getLands().getLand(loc);
+        land = Factoid.getLands().getLandOrOutsideArea(loc);
 
         if (newPlayer) {
             entry.setLastLand(landOld = land);

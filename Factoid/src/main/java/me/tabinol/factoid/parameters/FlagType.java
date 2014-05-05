@@ -19,11 +19,16 @@ package me.tabinol.factoid.parameters;
 
 public class FlagType extends ParameterType {
 
-    private final FlagValueType valueType;
+    private FlagValueType valueType;
 
     FlagType(String flagName, FlagValueType valueType) {
 
         super(flagName);
+        this.valueType = valueType;
+    }
+    
+    void setFlagValueType(FlagValueType valueType) {
+        
         this.valueType = valueType;
     }
     
