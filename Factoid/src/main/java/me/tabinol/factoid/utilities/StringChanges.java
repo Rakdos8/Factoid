@@ -94,7 +94,7 @@ public class StringChanges {
 
     private static boolean isEndQuote(String str) {
 
-        if (str.endsWith("'") || str.endsWith("\"")) {
+        if (str.endsWith("'") || str.endsWith("\"") || str.endsWith(";") /* Fix String list */) {
             return true;
         }
         return false;

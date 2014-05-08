@@ -65,6 +65,7 @@ import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -553,16 +554,15 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockIgnite(BlockIgniteEvent event) {
 
-        if (event.getPlayer() != null && conf.getWorlds().contains(event.getPlayer().getWorld().getName().toLowerCase())) {
-            if (event.getPlayer() != null && !playerConf.get(event.getPlayer()).isAdminMod()) {
+        if (event.getPlayer() != null && conf.getWorlds().contains(event.getPlayer().getWorld().getName().toLowerCase())
+                && event.getPlayer() != null && !playerConf.get(event.getPlayer()).isAdminMod()) {
 
-                DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
+            DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
 
-                if ((land instanceof Land && ((Land) land).isBanned(event.getPlayer()))
-                        || (!checkPermission(land, event.getPlayer(), PermissionList.FIRE.getPermissonType()))) {
-                    MessagePermission(event.getPlayer());
-                    event.setCancelled(true);
-                }
+            if ((land instanceof Land && ((Land) land).isBanned(event.getPlayer()))
+                    || (!checkPermission(land, event.getPlayer(), PermissionList.FIRE.getPermissonType()))) {
+                MessagePermission(event.getPlayer());
+                event.setCancelled(true);
             }
         }
     }
@@ -583,6 +583,31 @@ public class PlayerListener implements Listener {
                         MessagePermission(player);
                     }
                     event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+
+        Player player = event.getPlayer();
+
+        if (conf.getWorlds().contains(player.getWorld().getName().toLowerCase())
+                && !playerConf.get(event.getPlayer()).isAdminMod()) {
+
+            DummyLand land = Factoid.getLands().getLandOrOutsideArea(player.getLocation());
+            LandFlag flagAndInherit = land.getFlagAndInherit(FlagList.EXCLUDE_COMMANDS.getFlagType());
+
+            if (flagAndInherit != null && flagAndInherit.getValueStringList().length > 0) {
+                String commandTyped = event.getMessage().substring(1).split(" ")[0];
+
+                for (String commandTest : flagAndInherit.getValueStringList()) {
+                    
+                    if (commandTest.equalsIgnoreCase(commandTyped)) {
+                        event.setCancelled(true);
+                        return;
+                    }
                 }
             }
         }

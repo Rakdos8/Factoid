@@ -45,7 +45,8 @@ public enum FlagList {
     MESSAGE_JOIN(FlagValueType.STRING),
     MESSAGE_QUIT(FlagValueType.STRING),
     KEEP_INVENTORY(FlagValueType.BOOLEAN),
-    ECO_BLOCK_PRICE(FlagValueType.DOUBLE);
+    ECO_BLOCK_PRICE(FlagValueType.DOUBLE),
+    EXCLUDE_COMMANDS(FlagValueType.STRING_LIST);
 
     FlagValueType valueType;
     FlagType flagType;
