@@ -70,28 +70,24 @@ public class WorldListener implements Listener {
             return;
         }
 
-        if (conf.getWorlds().contains(event.getEntity().getWorld().getName().toLowerCase())) {
+        Location loc = event.getEntity().getLocation();
+        DummyLand land = Factoid.getLands().getLandOrOutsideArea(loc);
+        LandFlag flag;
+        EntityType entityType = event.getEntityType();
 
-            Location loc = event.getEntity().getLocation();
-            DummyLand land = Factoid.getLands().getLandOrOutsideArea(loc);
-            LandFlag flag;
-            EntityType entityType = event.getEntityType();
-
-            // Check for Explosion cancel 
-            if ((entityType == EntityType.CREEPER
-                    && (flag = land.getFlagAndInherit(FlagList.CREEPER_EXPLOSION.getFlagType())) != null
-                    && flag.getValueBoolean() == false)
-                    || (entityType == EntityType.PRIMED_TNT
-                    && (flag = land.getFlagAndInherit(FlagList.TNT_EXPLOSION.getFlagType())) != null
-                    && flag.getValueBoolean() == false)
-                    || ((flag = land.getFlagAndInherit(FlagList.EXPLOSION.getFlagType())) != null
-                    && flag.getValueBoolean() == false)) {
-                event.setCancelled(true);
-                if (entityType == EntityType.CREEPER) {
-                    event.getEntity().remove();
-                }
+        // Check for Explosion cancel 
+        if ((entityType == EntityType.CREEPER
+                && (flag = land.getFlagAndInherit(FlagList.CREEPER_EXPLOSION.getFlagType())) != null
+                && flag.getValueBoolean() == false)
+                || (entityType == EntityType.PRIMED_TNT
+                && (flag = land.getFlagAndInherit(FlagList.TNT_EXPLOSION.getFlagType())) != null
+                && flag.getValueBoolean() == false)
+                || ((flag = land.getFlagAndInherit(FlagList.EXPLOSION.getFlagType())) != null
+                && flag.getValueBoolean() == false)) {
+            event.setCancelled(true);
+            if (entityType == EntityType.CREEPER) {
+                event.getEntity().remove();
             }
-
         }
     }
 
@@ -150,7 +146,7 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onHangingBreak(HangingBreakEvent event) {
 
-        if (conf.isOverrideExplosions() && conf.getWorlds().contains(event.getEntity().getWorld().getName().toLowerCase())) {
+        if (conf.isOverrideExplosions()) {
             // Check for painting
             if (event.getCause() == RemoveCause.EXPLOSION) {
                 Factoid.getLog().write("Cancel HangingBreak : " + event.getEntity() + ", Cause: " + event.getCause());
@@ -201,79 +197,71 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
 
-        if (conf.getWorlds().contains(event.getEntity().getWorld().getName().toLowerCase())) {
-            DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
-            LandFlag flag;
+        DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
+        LandFlag flag;
 
-            // Enderman removeblock
-            if ((event.getEntityType() == EntityType.ENDERMAN
-                    && (flag = land.getFlagAndInherit(FlagList.ENDERMAN_DAMAGE.getFlagType())) != null
-                    && flag.getValueBoolean() == false)
-                    || (event.getEntityType() == EntityType.WITHER
-                    && (flag = land.getFlagAndInherit(FlagList.WITHER_DAMAGE.getFlagType())) != null
-                    && flag.getValueBoolean() == false)) {
-                event.setCancelled(true);
-            }
+        // Enderman removeblock
+        if ((event.getEntityType() == EntityType.ENDERMAN
+                && (flag = land.getFlagAndInherit(FlagList.ENDERMAN_DAMAGE.getFlagType())) != null
+                && flag.getValueBoolean() == false)
+                || (event.getEntityType() == EntityType.WITHER
+                && (flag = land.getFlagAndInherit(FlagList.WITHER_DAMAGE.getFlagType())) != null
+                && flag.getValueBoolean() == false)) {
+            event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockIgnite(BlockIgniteEvent event) {
 
-        if (conf.getWorlds().contains(event.getBlock().getWorld().getName().toLowerCase())) {
-            DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
-            LandFlag flag;
+        DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
+        LandFlag flag;
 
-            if (((event.getCause() == IgniteCause.SPREAD || event.getCause() == IgniteCause.LAVA)
-                    && (flag = land.getFlagAndInherit(FlagList.FIRESPREAD.getFlagType())) != null
-                    && flag.getValueBoolean() == false)
-                    || ((flag = land.getFlagAndInherit(FlagList.FIRE.getFlagType())) != null
-                    && flag.getValueBoolean() == false)) {
-                event.setCancelled(true);
-            }
+        if (((event.getCause() == IgniteCause.SPREAD || event.getCause() == IgniteCause.LAVA)
+                && (flag = land.getFlagAndInherit(FlagList.FIRESPREAD.getFlagType())) != null
+                && flag.getValueBoolean() == false)
+                || ((flag = land.getFlagAndInherit(FlagList.FIRE.getFlagType())) != null
+                && flag.getValueBoolean() == false)) {
+            event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBurn(BlockBurnEvent event) {
 
-        if (conf.getWorlds().contains(event.getBlock().getWorld().getName().toLowerCase())) {
-            DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
-            LandFlag flag;
+        DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
+        LandFlag flag;
 
-            if (((flag = land.getFlagAndInherit(FlagList.FIRESPREAD.getFlagType())) != null
-                    && flag.getValueBoolean() == false)
-                    || ((flag = land.getFlagAndInherit(FlagList.FIRE.getFlagType())) != null
-                    && flag.getValueBoolean() == false)) {
-                event.setCancelled(true);
-            }
+        if (((flag = land.getFlagAndInherit(FlagList.FIRESPREAD.getFlagType())) != null
+                && flag.getValueBoolean() == false)
+                || ((flag = land.getFlagAndInherit(FlagList.FIRE.getFlagType())) != null
+                && flag.getValueBoolean() == false)) {
+            event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
 
-        if (conf.getWorlds().contains(event.getEntity().getWorld().getName().toLowerCase())) {
-            DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getEntity().getLocation());
-            LandFlag flag;
+        DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getEntity().getLocation());
+        LandFlag flag;
 
-            if ((event.getEntity() instanceof Animals
-                    && (flag = land.getFlagAndInherit(FlagList.ANIMAL_SPAWN.getFlagType())) != null
-                    && flag.getValueBoolean() == false)
-                    || ((event.getEntity() instanceof Monster
-                    || event.getEntity() instanceof Slime
-                    || event.getEntity() instanceof Flying)
-                    && (flag = land.getFlagAndInherit(FlagList.MOB_SPAWN.getFlagType())) != null
-                    && flag.getValueBoolean() == false)) {
-                event.setCancelled(true);
-            }
+        if ((event.getEntity() instanceof Animals
+                && (flag = land.getFlagAndInherit(FlagList.ANIMAL_SPAWN.getFlagType())) != null
+                && flag.getValueBoolean() == false)
+                || ((event.getEntity() instanceof Monster
+                || event.getEntity() instanceof Slime
+                || event.getEntity() instanceof Flying)
+                && (flag = land.getFlagAndInherit(FlagList.MOB_SPAWN.getFlagType())) != null
+                && flag.getValueBoolean() == false)) {
+            event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
 
-        if (conf.isOverrideExplosions() && conf.getWorlds().contains(event.getEntity().getWorld().getName().toLowerCase())
+        if (conf.isOverrideExplosions()
                 && event.getEntity() instanceof Hanging
                 && (event.getCause() == DamageCause.BLOCK_EXPLOSION || event.getCause() == DamageCause.ENTITY_EXPLOSION
                 || event.getCause() == DamageCause.PROJECTILE)) {

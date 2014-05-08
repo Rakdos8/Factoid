@@ -36,9 +36,6 @@ public class Config {
     private boolean debug;
     public boolean isDebug() { return debug; }
     
-    private List<String> worlds;
-    public List<String> getWorlds() { return worlds; }
-    
     private String lang;
     public String getLang() { return lang; }
     
@@ -157,7 +154,6 @@ public class Config {
 
         debug = config.getBoolean("general.debug", false);
         config.addDefault("general.worlds", new String[] {"world", "world_nether", "world_the_end"});
-        worlds = StringChanges.toLower(config.getStringList("general.worlds"));
         lang = config.getString("general.lang", "english");
         useEconomy = config.getBoolean("general.UseEconomy", false);
         infoItem = config.getInt("general.InfoItem", 352);
