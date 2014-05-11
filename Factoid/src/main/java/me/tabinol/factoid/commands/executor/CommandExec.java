@@ -44,14 +44,14 @@ public abstract class CommandExec implements CommandInterface {
         if (entity == null) {
             land = null;
             return;
+        }
 
-        } else {
-
+        if (entity.player != null) {
             // get the land Selected or null
             land = entity.playerConf.getSelection().getLand();
         }
 
-        if (entity.player == null && canFromConsole) {
+        if (entity.player == null && !canFromConsole) {
 
             // Send a message if this command is player only
             throw new FactoidCommandException("Impossible to do from console", entity.sender, "CONSOLE");

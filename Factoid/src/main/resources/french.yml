@@ -50,6 +50,7 @@ HELP:
     2: "/factoid approve info <terrain> : Information sur une action."
     3: "/factoid approve confirm <terrain> : Approuve une action."
     4: "/factoid approve cancel <terrain> : Annule und action."
+    5: "/factoid approve clear : Efface la liste des actions à approver."
   AREA:
     1: "/factoid area list : Affiche les étendues."
     2: "/factoid area add : Ajoute une étendue."
@@ -134,6 +135,7 @@ COLLISION:
     CANNOTDONE: "Problème de collision! Votre action ne peut être complétée."
     DONE: "Cette action est approuvée."
     REMOVE: "Cette action est enlevé de la liste."
+    CLEAR: "La liste est maintenant détruite."
 COMMAND:
   NOTEXIST: "Cette commande n'éxiste pas. Vous pouvez faire \"/factoid help\""
   CONFIRM: "Pour confirmer votre choix, tapez \"/factoid confirm\" ou pour annuler, tapez \"/factoid cancel\"."

@@ -39,7 +39,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public class ApproveList {
 
     final private File approveFile;
-    final private FileConfiguration approveConfig;
+    private FileConfiguration approveConfig;
     final private TreeSet<String> landNames;
 
     public ApproveList() {
@@ -97,13 +97,13 @@ public class ApproveList {
                 return null;
             }
         }
-        
+
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(section.getLong("DateTime"));
-        
+
         return new Approve(landName, LandAction.valueOf(section.getString("Action")),
                 section.getInt("RemovedAreaId"),
-                CuboidArea.getFromString(section.getString("NewArea")), pc, 
+                CuboidArea.getFromString(section.getString("NewArea")), pc,
                 parent, section.getDouble("Price"), cal);
     }
 
@@ -114,6 +114,23 @@ public class ApproveList {
         approveConfig.set(approve.getLandName(), null);
         landNames.remove(approve.getLandName());
         saveFile();
+    }
+
+    public void removeAll() {
+
+        Factoid.getLog().write("Remove all Approves from list.");
+
+        // Delete file
+        if (approveFile.exists()) {
+            approveFile.delete();
+        }
+        
+        // Delete list
+        landNames.clear();
+        approveConfig = new YamlConfiguration();
+        
+        // Reload file
+        loadFile();
     }
 
     private void loadFile() {

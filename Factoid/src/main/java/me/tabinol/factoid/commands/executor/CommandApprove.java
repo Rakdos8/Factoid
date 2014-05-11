@@ -18,7 +18,6 @@
 package me.tabinol.factoid.commands.executor;
 
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.config.Config;
@@ -45,7 +44,13 @@ public class CommandApprove extends CommandExec {
         boolean isApprover = entity.sender.hasPermission("factoid.collisionapprove");
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-        if (curArg.equalsIgnoreCase("list")) {
+        if (curArg.equalsIgnoreCase("clear")) {
+            
+            checkPermission(true, false, null, null);
+            approveList.removeAll();
+            entity.sender.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COLLISION.GENERAL.CLEAR"));
+            
+        } else if (curArg.equalsIgnoreCase("list")) {
 
             // List of Approve
             StringBuilder stList = new StringBuilder();
