@@ -19,13 +19,14 @@ package me.tabinol.factoid.lands.approve;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
@@ -61,6 +62,7 @@ public class ApproveList {
             section.set("Parent", approve.getParent().getName());
         }
         section.set("Price", approve.getPrice() + "");
+        section.set("DateTime", approve.getDateTime().getTimeInMillis());
         saveFile();
         Factoid.getApproveNotif().notifyForApprove(approve.getLandName(), approve.getOwner().getPrint());
     }
@@ -95,11 +97,14 @@ public class ApproveList {
                 return null;
             }
         }
-
+        
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(section.getLong("DateTime"));
+        
         return new Approve(landName, LandAction.valueOf(section.getString("Action")),
                 section.getInt("RemovedAreaId"),
                 CuboidArea.getFromString(section.getString("NewArea")), pc, 
-                parent, section.getDouble("Price"));
+                parent, section.getDouble("Price"), cal);
     }
 
     public void removeApprove(Approve approve) {

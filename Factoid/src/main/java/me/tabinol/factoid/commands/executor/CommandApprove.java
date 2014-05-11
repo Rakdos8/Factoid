@@ -17,14 +17,16 @@
  */
 package me.tabinol.factoid.commands.executor;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.approve.Approve;
 import me.tabinol.factoid.lands.approve.ApproveList;
+import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions;
 import org.bukkit.ChatColor;
 
@@ -41,6 +43,7 @@ public class CommandApprove extends CommandExec {
         String curArg = entity.argList.getNext();
         ApproveList approveList = Factoid.getLands().getApproveList();
         boolean isApprover = entity.sender.hasPermission("factoid.collisionapprove");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         if (curArg.equalsIgnoreCase("list")) {
 
@@ -49,8 +52,9 @@ public class CommandApprove extends CommandExec {
             int t = 0;
             for (String approveName : approveList.getApproveList()) {
                 Approve app = approveList.getApprove(approveName);
-                if (isApprover || app.getOwner().hasAccess(entity.player)) {
+                if (app != null && (isApprover || app.getOwner().hasAccess(entity.player))) {
                     stList.append(ChatColor.WHITE + Factoid.getLanguage().getMessage("COLLISION.SHOW.LIST",
+                            ChatColor.BLUE + df.format(app.getDateTime().getTime()) + ChatColor.WHITE,
                             ChatColor.BLUE + app.getLandName() + ChatColor.WHITE,
                             app.getOwner().getPrint() + ChatColor.WHITE,
                             ChatColor.BLUE + app.getAction().toString() + ChatColor.WHITE));
@@ -93,6 +97,11 @@ public class CommandApprove extends CommandExec {
 
             if (curArg.equalsIgnoreCase("info") || curArg.equalsIgnoreCase("confirm")) {
 
+                // Print area
+                if(newArea != null) {
+                    entity.sender.sendMessage(newArea.getWorldName() + ":" + newArea.getPrint());
+                }
+                
                 // Info on the specified land (Collision)
                 checkCollision(param, land, action, removeId, newArea, parent, price, false);
 

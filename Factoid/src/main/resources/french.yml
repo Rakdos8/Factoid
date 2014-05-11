@@ -122,7 +122,7 @@ COLLISION:
     IN_APPROVE_LIST: "Ce terrain est déjà dans la liste d'approbation."
     NOT_ENOUGH_MONEY: "Vous n'avez pas assez d'argent."
     LISTSTART: "-Action(s) à approuver-"
-    LIST: "Terrain: %, demandeur: %, action: %."
+    LIST: "% Terrain: %, demandeur: %, action: %."
     LISTROWNULL: "Pas d'action à approuver."
     PARAMNULL: "Vous devez préciser un nom de la liste."
     NOTIFYLAND: "Le terrain '%' est ajouté pour une approbation par %."

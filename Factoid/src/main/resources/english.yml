@@ -123,7 +123,7 @@ COLLISION:
     IN_APPROVE_LIST: "This land is allready in approve list."
     NOT_ENOUGH_MONEY: "You have not enough money."
     LISTSTART: "-Action(s) to be approved-"
-    LIST: "Land: %, requester: %, action: %."
+    LIST: "% Land: %, requester: %, action: %."
     LISTROWNULL: "No action in list to be approved."
     PARAMNULL: "You must specify a land name from the list."
     NOTIFYLAND: "The land '%' is added for approval by %."

@@ -17,12 +17,13 @@
  */
 package me.tabinol.factoid.lands.approve;
 
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.FactoidLandException;
-import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 
@@ -35,9 +36,11 @@ public class Approve {
     private final PlayerContainer owner;
     private final Land parent;
     private final double price;
+    private final Calendar dateTime;
     
     public Approve(String landName, LandAction action, int removedAreaId, 
-            CuboidArea newArea, PlayerContainer owner, Land parent, double price) {
+            CuboidArea newArea, PlayerContainer owner, Land parent, double price,
+            Calendar dateTime) {
         
         this.action = action;
         this.landName = landName.toLowerCase();
@@ -46,6 +49,8 @@ public class Approve {
         this.owner = owner;
         this.parent = parent;
         this.price = price;
+        this.dateTime = dateTime;
+        
     }
 
     public LandAction getAction() {
@@ -81,6 +86,11 @@ public class Approve {
     public double getPrice() {
         
         return price;
+    }
+    
+    public Calendar getDateTime() {
+        
+        return dateTime;
     }
     
     public void createAction() {
