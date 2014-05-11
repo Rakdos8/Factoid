@@ -53,25 +53,24 @@ public class CollisionsEntry {
 
         if (error == LandError.COLLISION) {
             return Factoid.getLanguage().getMessage("COLLISION.SHOW.COLLISION", land.getName(), areaId + "");
-        }
-        if (error == LandError.OUT_OF_PARENT) {
+        } else if (error == LandError.OUT_OF_PARENT) {
             return Factoid.getLanguage().getMessage("COLLISION.SHOW.OUT_OF_PARENT", land.getName());
-        }
-        if (error == LandError.CHILD_OUT_OF_BORDER) {
+        } else if (error == LandError.CHILD_OUT_OF_BORDER) {
             return Factoid.getLanguage().getMessage("COLLISION.SHOW.CHILD_OUT_OF_BORDER", land.getName());
-        }
-        if (error == LandError.HAS_CHILDREN) {
+        } else if (error == LandError.HAS_CHILDREN) {
             return Factoid.getLanguage().getMessage("COLLISION.SHOW.HAS_CHILDREN", land.getName());
-        }
-        if (error == LandError.NAME_IN_USE) {
+        } else if (error == LandError.NAME_IN_USE) {
             return Factoid.getLanguage().getMessage("COLLISION.SHOW.NAME_IN_USE");
-        }
-        if (error == LandError.IN_APPROVE_LIST) {
+        } else if (error == LandError.IN_APPROVE_LIST) {
             return Factoid.getLanguage().getMessage("COLLISION.SHOW.IN_APPROVE_LIST");
-        }
-        if (error == LandError.NOT_ENOUGH_MONEY) {
+        } else if (error == LandError.NOT_ENOUGH_MONEY) {
             return Factoid.getLanguage().getMessage("COLLISION.SHOW.NOT_ENOUGH_MONEY");
+        } else if (error == LandError.MAX_AREA_FOR_LAND) {
+            return Factoid.getLanguage().getMessage("COLLISION.SHOW.MAX_AREA_FOR_LAND", land.getName());
+        } else if (error == LandError.MAX_LAND_FOR_PLAYER) {
+            return Factoid.getLanguage().getMessage("COLLISION.SHOW.MAX_LAND_FOR_PLAYER");
         }
+        
 
         return null;
     }

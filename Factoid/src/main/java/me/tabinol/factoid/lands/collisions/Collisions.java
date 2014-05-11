@@ -51,7 +51,9 @@ public class Collisions {
         CHILD_OUT_OF_BORDER(true),
         OUT_OF_PARENT(true),
         IN_APPROVE_LIST(false),
-        NOT_ENOUGH_MONEY(false);
+        NOT_ENOUGH_MONEY(false),
+        MAX_AREA_FOR_LAND(true),
+        MAX_LAND_FOR_PLAYER(true);
 
         public final boolean canBeApproved; // False = No approve is possible
 
@@ -124,6 +126,17 @@ public class Collisions {
             if(playerBalance < price) {
                 coll.add(new CollisionsEntry(LandError.NOT_ENOUGH_MONEY, null, 0));
             }
+        }
+        
+        // Pass 8 check if the land has more than the maximum number of areas
+        if(action == LandAction.AREA_ADD && land.getAreas().size() >= Factoid.getConf().getMaxAreaPerLand()) {
+            coll.add(new CollisionsEntry(LandError.MAX_AREA_FOR_LAND, land, 0));
+        }
+        
+        // Pass 9 check if the player has more than the maximum number of land
+        if(action == LandAction.LAND_ADD && owner != null 
+                && Factoid.getLands().getLands(owner).size() >= Factoid.getConf().getMaxLandPerPlayer()) {
+            coll.add(new CollisionsEntry(LandError.MAX_LAND_FOR_PLAYER, null, 0));
         }
 
         // End check if the action can be done or approve

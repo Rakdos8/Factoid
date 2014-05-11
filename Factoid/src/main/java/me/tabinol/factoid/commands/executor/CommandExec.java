@@ -156,10 +156,11 @@ public abstract class CommandExec implements CommandInterface {
 
             if (addForApprove) {
                 if (Factoid.getConf().getAllowCollision() == Config.AllowCollisionType.APPROVE && allowApprove == true) {
-                    entity.sender.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COLLISION.GENERAL.NEEDAPPROVE", landName));
+                    entity.sender.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COLLISION.GENERAL.NEEDAPPROVE", landName));
                     Factoid.getLog().write("land " + landName + " has collision and needs approval.");
                     Factoid.getLands().getApproveList().addApprove(new Approve(landName, action, removeId, newArea,
                             entity.playerConf.getPlayerContainer(), parent, price, Calendar.getInstance()));
+                    new CommandCancel(entity.playerConf, true).commandExecute();
                     return true;
                 } else if (Factoid.getConf().getAllowCollision() == Config.AllowCollisionType.FALSE || allowApprove == false) {
                     throw new FactoidCommandException("Land collision", entity.sender, "COLLISION.GENERAL.CANNOTDONE");

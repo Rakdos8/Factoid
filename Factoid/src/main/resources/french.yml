@@ -121,6 +121,8 @@ COLLISION:
     NAME_IN_USE: "Ce nom est déjà utilisé."
     IN_APPROVE_LIST: "Ce terrain est déjà dans la liste d'approbation."
     NOT_ENOUGH_MONEY: "Vous n'avez pas assez d'argent."
+    MAX_AREA_FOR_LAND: "Plus que le nombre maximum d'étendus pour le terrain '%'."
+    MAX_LAND_FOR_PLAYER: "Plus que le nombre maximum de terrains pour le joueur."
     LISTSTART: "-Action(s) à approuver-"
     LIST: "% Terrain: %, demandeur: %, action: %."
     LISTROWNULL: "Pas d'action à approuver."

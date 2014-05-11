@@ -17,12 +17,10 @@
  */
 package me.tabinol.factoid.config;
 
-import java.util.List;
 import java.util.TreeSet;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.parameters.FlagType;
 import me.tabinol.factoid.parameters.PermissionType;
-import me.tabinol.factoid.utilities.StringChanges;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class Config {
@@ -80,6 +78,9 @@ public class Config {
     
     private int maxAreaPerLand;
     public int getMaxAreaPerLand() { return maxAreaPerLand; }
+    
+    private int maxLandPerPlayer;
+    public int getMaxLandPerPlayer() { return maxLandPerPlayer; }
     
     private int minAreaSize;
     public int getMinAreaSize() { return minAreaSize; }
@@ -175,7 +176,8 @@ public class Config {
         defaultZSize = config.getInt("land.defaultZSize", 10);
         defaultBottom = config.getInt("land.defaultBottom", 0);
         defaultTop = config.getInt("land.defaultTop", 255);
-        maxAreaPerLand = config.getInt("land.area.MaxAreaPerLand", 1);
+        maxAreaPerLand = config.getInt("land.area.MaxAreaPerLand", 3);
+        maxLandPerPlayer = config.getInt("land.area.MaxLandPerPlayer", 5);
         minAreaSize = config.getInt("land.area.MinAreaSize", 1);
         maxAreaSize = config.getInt("land.area.MaxAreaSize", 1);
         minLandHigh = config.getInt("land.area.MinLandHigh", 0);
