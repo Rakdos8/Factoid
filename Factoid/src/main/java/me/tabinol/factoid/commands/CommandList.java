@@ -43,7 +43,8 @@ public enum CommandList {
     KICK,
     WHO,
     NOTIFY,
-    MONEY;
+    MONEY,
+    LIST;
 
     // If a command has a second name
     public enum SecondName {

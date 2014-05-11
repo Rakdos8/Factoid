@@ -17,11 +17,10 @@
  */
 package me.tabinol.factoid.lands;
 
-import me.tabinol.factoid.lands.areas.CuboidArea;
-import me.tabinol.factoid.lands.areas.AreaIndex;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -31,9 +30,11 @@ import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.config.WorldConfig;
 import me.tabinol.factoid.event.LandDeleteEvent;
 import me.tabinol.factoid.exceptions.FactoidLandException;
+import me.tabinol.factoid.lands.approve.ApproveList;
+import me.tabinol.factoid.lands.areas.AreaIndex;
+import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import me.tabinol.factoid.lands.collisions.Collisions.LandError;
-import me.tabinol.factoid.lands.approve.ApproveList;
 import me.tabinol.factoid.parameters.FlagType;
 import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.parameters.PermissionType;
@@ -278,7 +279,7 @@ public class Lands {
         return dummyLand;
     }
 
-    public Collection getLands(Location loc) {
+    public Collection<Land> getLands(Location loc) {
 
         Collection<CuboidArea> areas = getCuboidAreas(loc);
         HashMap<String, Land> lands = new HashMap<String, Land>();
@@ -290,9 +291,9 @@ public class Lands {
         return lands.values();
     }
 
-    public Collection getLands(PlayerContainer owner) {
+    public Collection<Land> getLands(PlayerContainer owner) {
 
-        Collection<Land> lands = new TreeSet<Land>();
+        Collection<Land> lands = new HashSet<Land>();
 
         for (Land land : landList.values()) {
             if (land.getOwner().equals(owner)) {
