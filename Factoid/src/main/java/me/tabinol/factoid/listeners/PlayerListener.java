@@ -587,6 +587,7 @@ public class PlayerListener implements Listener {
 
                     if (commandTest.equalsIgnoreCase(commandTyped)) {
                         event.setCancelled(true);
+                        player.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("GENERAL.MISSINGPERMISSIONHERE"));
                         return;
                     }
                 }

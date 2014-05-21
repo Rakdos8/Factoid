@@ -18,6 +18,9 @@
 package me.tabinol.factoid.commands.executor;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+import java.util.TreeMap;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.config.Config;
@@ -55,8 +58,17 @@ public class CommandApprove extends CommandExec {
             // List of Approve
             StringBuilder stList = new StringBuilder();
             int t = 0;
+            TreeMap<Date,Approve> approveTree = new TreeMap<Date,Approve>();
+            
+            //create list (short by date/time)
             for (String approveName : approveList.getApproveList()) {
                 Approve app = approveList.getApprove(approveName);
+                approveTree.put(app.getDateTime().getTime(), app);
+            }
+            
+            // show Approve List
+            for(Map.Entry<Date,Approve> approveEntry : approveTree.descendingMap().entrySet()) {
+                Approve app = approveEntry.getValue();
                 if (app != null && (isApprover || app.getOwner().hasAccess(entity.player))) {
                     stList.append(ChatColor.WHITE + Factoid.getLanguage().getMessage("COLLISION.SHOW.LIST",
                             ChatColor.BLUE + df.format(app.getDateTime().getTime()) + ChatColor.WHITE,
@@ -86,11 +98,15 @@ public class CommandApprove extends CommandExec {
 
             Approve approve = approveList.getApprove(param);
 
+            if (approve == null) {
+                throw new FactoidCommandException("Approve", entity.sender, "COLLISION.SHOW.PARAMNULL");
+            }
+
             // Check permission
-            if (approve == null || (curArg.equalsIgnoreCase("confirm") && !isApprover)
+            if ((curArg.equalsIgnoreCase("confirm") && !isApprover)
                     || ((curArg.equalsIgnoreCase("cancel") || curArg.equalsIgnoreCase("info"))
                     && !(isApprover || approve.getOwner().hasAccess(entity.player)))) {
-                throw new FactoidCommandException("Approve", entity.sender, "COLLISION.SHOW.PARAMNULL");
+                throw new FactoidCommandException("Approve", entity.sender, "GENERAL.MISSINGPERMISSION");
             }
 
             Land land = Factoid.getLands().getLand(param);

@@ -106,6 +106,7 @@ SCOREBOARD:
   LANDINFO: "Players List"
 GENERAL:
   MISSINGPERMISSION: "Sorry, you don't have the permission."
+  MISSINGPERMISSIONHERE: "Sorry, you don't have the permission here."
   ERROR: "An Error Occur Please contact an Administrator."
   MISSINGINFO: "Some information is missing. Check your command again."
   QUIT:
@@ -165,7 +166,6 @@ COMMAND:
 #    NEWAREA: "You have selected a new Area."
     SELECTEDLAND: "You have selected the land '%'"
     SELECTEDAREA: "You have selected the area '%'"
-    CANNOTMPODIFY: "You cannot select the land '%' while someone is Modifying it."
     WORLDEDIT:
       NOTLOAD: " WorldEdit is not Loaded."
       SELECTIONNED: " you have selectioned your land with WorldEdit!"
