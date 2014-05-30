@@ -31,49 +31,127 @@ import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Collisions.
+ */
 public class Collisions {
 
+    /**
+     * The Enum LandAction.
+     */
     public enum LandAction {
 
+        /** The land add. */
         LAND_ADD,
+        
+        /** The land rename. */
         LAND_RENAME,
+        
+        /** The land remove. */
         LAND_REMOVE,
+        
+        /** The area add. */
         AREA_ADD,
+        
+        /** The area remove. */
         AREA_REMOVE,
+        
+        /** The area modify. */
         AREA_MODIFY;
     }
 
+    /**
+     * The Enum LandError.
+     */
     public enum LandError {
 
+        /** The collision. */
         COLLISION(true),
+        
+        /** The name in use. */
         NAME_IN_USE(false),
+        
+        /** The has children. */
         HAS_CHILDREN(false),
+        
+        /** The child out of border. */
         CHILD_OUT_OF_BORDER(true),
+        
+        /** The out of parent. */
         OUT_OF_PARENT(true),
+        
+        /** The in approve list. */
         IN_APPROVE_LIST(false),
+        
+        /** The not enough money. */
         NOT_ENOUGH_MONEY(false),
+        
+        /** The max area for land. */
         MAX_AREA_FOR_LAND(true),
+        
+        /** The max land for player. */
         MAX_LAND_FOR_PLAYER(true);
 
+        /** The can be approved. */
         public final boolean canBeApproved; // False = No approve is possible
 
+        /**
+         * Instantiates a new land error.
+         *
+         * @param canBeApproved the can be approved
+         */
         private LandError(boolean canBeApproved) {
             this.canBeApproved = canBeApproved;
         }
     }
 
+    /** The coll. */
     private final List<CollisionsEntry> coll;
+    
+    /** The lands. */
     private final Lands lands;
+    
+    /** The land name. */
     private final String landName;
+    
+    /** The land. */
     private final Land land;
+    
+    /** The action. */
     private final LandAction action;
+    
+    /** The removed area id. */
     private final int removedAreaId;
+    
+    /** The new area. */
     private final CuboidArea newArea;
+    
+    /** The parent. */
     private final Land parent;
+    
+    /** The price. */
     private final double price;
+    
+    /** The owner. */
     private final PlayerContainer owner;
+    
+    /** The allow approve. */
     private boolean allowApprove;
 
+    /**
+     * Instantiates a new collisions.
+     *
+     * @param landName the land name
+     * @param land the land
+     * @param action the action
+     * @param removedAreaId the removed area id
+     * @param newArea the new area
+     * @param parent the parent
+     * @param owner the owner
+     * @param price the price
+     * @param checkApproveList the check approve list
+     */
     public Collisions(String landName, Land land, LandAction action, int removedAreaId, CuboidArea newArea, Land parent,
             PlayerContainer owner, double price, boolean checkApproveList) {
 
@@ -109,34 +187,37 @@ public class Collisions {
             checkIfLandHasChildren();
         }
 
-        // Pass 5 check if the name is allready existing
+        // Pass 5 check if the name is already existing
         if (action == LandAction.LAND_ADD || action == LandAction.LAND_RENAME) {
             checkIfNameExist();
         }
 
-        // Pass 6 check if the name is allready in Approve List
+        // Pass 6 check if the name is already in Approve List
         if (!checkApproveList && lands.getApproveList().isInApprove(landName)) {
             coll.add(new CollisionsEntry(LandError.IN_APPROVE_LIST, null, 0));
         }
         
-        // Pass 7 check if the player has enough money
-        if(price > 0 && owner.getContainerType() == PlayerContainerType.PLAYER && newArea != null) {
-            double playerBalance = Factoid.getPlayerMoney().getPlayerBalance(
-                    ((PlayerContainerPlayer)owner).getPlayerName(), newArea.getWorldName());
-            if(playerBalance < price) {
-                coll.add(new CollisionsEntry(LandError.NOT_ENOUGH_MONEY, null, 0));
-            }
-        }
+        if(owner.getContainerType() == PlayerContainerType.PLAYER) {
+        	
+        	// Pass 7 check if the player has enough money
+        	if(price > 0 && newArea != null) {
+        		double playerBalance = Factoid.getPlayerMoney().getPlayerBalance(
+        				((PlayerContainerPlayer)owner).getOfflinePlayer(), newArea.getWorldName());
+        		if(playerBalance < price) {
+        			coll.add(new CollisionsEntry(LandError.NOT_ENOUGH_MONEY, null, 0));
+        		}
+        	}
         
-        // Pass 8 check if the land has more than the maximum number of areas
-        if(action == LandAction.AREA_ADD && land.getAreas().size() >= Factoid.getConf().getMaxAreaPerLand()) {
-            coll.add(new CollisionsEntry(LandError.MAX_AREA_FOR_LAND, land, 0));
-        }
+        	// Pass 8 check if the land has more than the maximum number of areas
+        	if(action == LandAction.AREA_ADD && land.getAreas().size() >= Factoid.getConf().getMaxAreaPerLand()) {
+        		coll.add(new CollisionsEntry(LandError.MAX_AREA_FOR_LAND, land, 0));
+        	}
         
-        // Pass 9 check if the player has more than the maximum number of land
-        if(action == LandAction.LAND_ADD && owner != null 
-                && Factoid.getLands().getLands(owner).size() >= Factoid.getConf().getMaxLandPerPlayer()) {
-            coll.add(new CollisionsEntry(LandError.MAX_LAND_FOR_PLAYER, null, 0));
+        	// Pass 9 check if the player has more than the maximum number of land
+        	if(action == LandAction.LAND_ADD && owner != null 
+        			&& Factoid.getLands().getLands(owner).size() >= Factoid.getConf().getMaxLandPerPlayer()) {
+        		coll.add(new CollisionsEntry(LandError.MAX_LAND_FOR_PLAYER, null, 0));
+        	}
         }
 
         // End check if the action can be done or approve
@@ -149,6 +230,9 @@ public class Collisions {
         }
     }
 
+    /**
+     * Check collisions.
+     */
     private void checkCollisions() {
 
         for (Land land2 : lands.getLands()) {
@@ -162,6 +246,13 @@ public class Collisions {
         }
     }
 
+    /**
+     * Checks if is descendants.
+     *
+     * @param land1 the land1
+     * @param land2 the land2
+     * @return true, if is descendants
+     */
     private boolean isDescendants(Land land1, Land land2) {
         
         if(land1 == null || land2 == null) {
@@ -174,6 +265,9 @@ public class Collisions {
         return false;
     }
     
+    /**
+     * Check if inside parent.
+     */
     private void checkIfInsideParent() {
 
         if (checkIfAreaOutsideParent(newArea, parent.getAreas())) {
@@ -182,6 +276,9 @@ public class Collisions {
 
     }
 
+    /**
+     * Check if children outside.
+     */
     private void checkIfChildrenOutside() {
 
         HashSet<CuboidArea> areaList = new HashSet<CuboidArea>();
@@ -204,6 +301,9 @@ public class Collisions {
         }
     }
 
+    /**
+     * Check if land has children.
+     */
     private void checkIfLandHasChildren() {
 
         for (Land child : land.getChildren()) {
@@ -211,6 +311,9 @@ public class Collisions {
         }
     }
 
+    /**
+     * Check if name exist.
+     */
     private void checkIfNameExist() {
 
         if (lands.isNameExist(landName)) {
@@ -219,6 +322,13 @@ public class Collisions {
     }
 
     // Called from checkIfInsideParent and checkIfChildrenOutside
+    /**
+     * Check if area outside parent.
+     *
+     * @param childArea the child area
+     * @param parentAreas the parent areas
+     * @return true, if successful
+     */
     private boolean checkIfAreaOutsideParent(CuboidArea childArea, Collection parentAreas) {
 
         // area = this new area, areas2 = areas of parents
@@ -244,6 +354,11 @@ public class Collisions {
         return true;
     }
 
+    /**
+     * Gets the prints.
+     *
+     * @return the prints
+     */
     public String getPrints() {
 
         StringBuilder str = new StringBuilder();
@@ -255,16 +370,31 @@ public class Collisions {
         return str.toString();
     }
 
+    /**
+     * Checks for collisions.
+     *
+     * @return true, if successful
+     */
     public boolean hasCollisions() {
 
         return coll.size() > 0;
     }
 
+    /**
+     * Gets the entries.
+     *
+     * @return the entries
+     */
     public Collection<CollisionsEntry> getEntries() {
 
         return coll;
     }
 
+    /**
+     * Gets the allow approve.
+     *
+     * @return the allow approve
+     */
     public boolean getAllowApprove() {
 
         return allowApprove;

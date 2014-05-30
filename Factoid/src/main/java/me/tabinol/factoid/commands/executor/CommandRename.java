@@ -26,13 +26,26 @@ import me.tabinol.factoid.exceptions.FactoidLandException;
 import me.tabinol.factoid.lands.collisions.Collisions;
 import org.bukkit.ChatColor;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommandRename.
+ */
 public class CommandRename extends CommandExec {
 
+    /**
+     * Instantiates a new command rename.
+     *
+     * @param entity the entity
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandRename(CommandEntities entity) throws FactoidCommandException {
 
         super(entity, false, true);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+     */
     @Override
     public void commandExecute() throws FactoidCommandException {
 
@@ -46,7 +59,7 @@ public class CommandRename extends CommandExec {
 
         // Check for collision
         if (checkCollision(curArg, land, Collisions.LandAction.LAND_RENAME, 0, 
-                null, land.getParent(), 0, true)) {
+                null, land.getParent(), land.getOwner(), 0, true)) {
             return;
         }
 

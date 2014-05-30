@@ -23,23 +23,46 @@ import java.util.UUID;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Factions.
+ */
 public class Factions {
 
+    /** The faction list. */
     private final TreeMap<String, Faction> factionList;
+    
+    /** The faction uuid list. */
     private final TreeMap<UUID, Faction> factionUUIDList;
 
+    /**
+     * Instantiates a new factions.
+     */
     public Factions() {
 
         factionList = new TreeMap<String, Faction>();
         factionUUIDList = new TreeMap<UUID, Faction>();
     }
 
+    /**
+     * Creates the faction.
+     *
+     * @param factionName the faction name
+     * @return the faction
+     */
     public Faction createFaction(String factionName) {
 
         return createFaction(factionName, null);
 
     }
 
+    /**
+     * Creates the faction.
+     *
+     * @param factionName the faction name
+     * @param uuid the uuid
+     * @return the faction
+     */
     public Faction createFaction(String factionName, UUID uuid) {
 
         Faction faction;
@@ -61,6 +84,12 @@ public class Factions {
         return faction;
     }
 
+    /**
+     * Removes the faction.
+     *
+     * @param faction the faction
+     * @return true, if successful
+     */
     public boolean removeFaction(Faction faction) {
 
         if (!factionList.containsKey(faction.getName())) {
@@ -72,6 +101,12 @@ public class Factions {
         return true;
     }
 
+    /**
+     * Removes the faction.
+     *
+     * @param factionName the faction name
+     * @return true, if successful
+     */
     public boolean removeFaction(String factionName) {
 
         String factionLower;
@@ -82,11 +117,23 @@ public class Factions {
         return removeFaction(factionList.get(factionLower));
     }
 
+    /**
+     * Gets the faction.
+     *
+     * @param factionName the faction name
+     * @return the faction
+     */
     public Faction getFaction(String factionName) {
 
         return factionList.get(factionName.toLowerCase());
     }
 
+    /**
+     * Gets the player faction.
+     *
+     * @param player the player
+     * @return the player faction
+     */
     public Faction getPlayerFaction(PlayerContainerPlayer player) {
 
         for (Faction faction : factionList.values()) {
@@ -98,6 +145,11 @@ public class Factions {
         return null;
     }
 
+    /**
+     * Gets the factions.
+     *
+     * @return the factions
+     */
     public Collection<Faction> getFactions() {
 
         return factionList.values();

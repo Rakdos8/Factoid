@@ -32,12 +32,26 @@ import me.tabinol.factoid.playercontainer.PlayerContainer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DummyLand.
+ */
 public class DummyLand {
 
+    /** The permissions. */
     protected TreeMap<PlayerContainer, TreeMap<PermissionType, Permission>> permissions; // String for playerName
+    
+    /** The flags. */
     protected TreeMap<FlagType, LandFlag> flags;
+    
+    /** The world name. */
     protected String worldName;
 
+    /**
+     * Instantiates a new dummy land.
+     *
+     * @param worldName the world name
+     */
     public DummyLand(String worldName) {
 
         permissions = new TreeMap<PlayerContainer, TreeMap<PermissionType, Permission>>();
@@ -45,16 +59,32 @@ public class DummyLand {
         this.worldName = worldName;
     }
 
+    /**
+     * Gets the world name.
+     *
+     * @return the world name
+     */
     public String getWorldName() {
 
         return worldName;
     }
 
+    /**
+     * Gets the world.
+     *
+     * @return the world
+     */
     public World getWorld() {
 
         return Factoid.getThisPlugin().getServer().getWorld(worldName);
     }
 
+    /**
+     * Adds the permission.
+     *
+     * @param pc the pc
+     * @param perm the perm
+     */
     public void addPermission(PlayerContainer pc, Permission perm) {
 
         TreeMap<PermissionType, Permission> permPlayer;
@@ -81,6 +111,13 @@ public class DummyLand {
 
     }
 
+    /**
+     * Removes the permission.
+     *
+     * @param pc the pc
+     * @param permType the perm type
+     * @return true, if successful
+     */
     public boolean removePermission(PlayerContainer pc, PermissionType permType) {
 
         TreeMap<PermissionType, Permission> permPlayer;
@@ -102,26 +139,59 @@ public class DummyLand {
         return true;
     }
 
+    /**
+     * Gets the sets the pc have permission.
+     *
+     * @return the sets the pc have permission
+     */
     public final Set<PlayerContainer> getSetPCHavePermission() {
 
         return permissions.keySet();
     }
 
+    /**
+     * Gets the permissions for pc.
+     *
+     * @param pc the pc
+     * @return the permissions for pc
+     */
     public final Collection<Permission> getPermissionsForPC(PlayerContainer pc) {
 
         return permissions.get(pc).values();
     }
 
+    /**
+     * Check permission and inherit.
+     *
+     * @param player the player
+     * @param pt the pt
+     * @return the boolean
+     */
     public Boolean checkPermissionAndInherit(Player player, PermissionType pt) {
 
         return checkPermissionAndInherit(player, pt, false);
     }
 
+    /**
+     * Check permission no inherit.
+     *
+     * @param player the player
+     * @param pt the pt
+     * @return the boolean
+     */
     public Boolean checkPermissionNoInherit(Player player, PermissionType pt) {
 
         return getPermission(player, pt, false);
     }
 
+    /**
+     * Check permission and inherit.
+     *
+     * @param player the player
+     * @param pt the pt
+     * @param onlyInherit the only inherit
+     * @return the boolean
+     */
     protected Boolean checkPermissionAndInherit(Player player, PermissionType pt, boolean onlyInherit) {
 
         if (this instanceof Land) {
@@ -130,6 +200,14 @@ public class DummyLand {
         return Factoid.getLands().getPermissionInWorld(worldName, player, pt, onlyInherit);
     }
 
+    /**
+     * Gets the permission.
+     *
+     * @param player the player
+     * @param pt the pt
+     * @param onlyInherit the only inherit
+     * @return the permission
+     */
     protected Boolean getPermission(Player player, PermissionType pt, boolean onlyInherit) {
 
         for (Map.Entry<PlayerContainer, TreeMap<PermissionType, Permission>> permissionEntry : permissions.entrySet()) {
@@ -147,12 +225,23 @@ public class DummyLand {
         return null;
     }
 
+    /**
+     * Adds the flag.
+     *
+     * @param flag the flag
+     */
     public void addFlag(LandFlag flag) {
 
         flags.put(flag.getFlagType(), flag);
         doSave();
     }
 
+    /**
+     * Removes the flag.
+     *
+     * @param flagType the flag type
+     * @return true, if successful
+     */
     public boolean removeFlag(FlagType flagType) {
 
         if (flags.remove(flagType) == null) {
@@ -162,21 +251,45 @@ public class DummyLand {
         return true;
     }
 
+    /**
+     * Gets the flags.
+     *
+     * @return the flags
+     */
     public Collection<LandFlag> getFlags() {
 
         return flags.values();
     }
 
+    /**
+     * Gets the flag and inherit.
+     *
+     * @param ft the ft
+     * @return the flag and inherit
+     */
     public LandFlag getFlagAndInherit(FlagType ft) {
 
         return getFlagAndInherit(ft, false);
     }
 
+    /**
+     * Gets the flag no inherit.
+     *
+     * @param ft the ft
+     * @return the flag no inherit
+     */
     public LandFlag getFlagNoInherit(FlagType ft) {
 
         return getFlag(ft, false);
     }
 
+    /**
+     * Gets the flag and inherit.
+     *
+     * @param ft the ft
+     * @param onlyInherit the only inherit
+     * @return the flag and inherit
+     */
     protected LandFlag getFlagAndInherit(FlagType ft, boolean onlyInherit) {
 
         if (this instanceof Land) {
@@ -185,6 +298,13 @@ public class DummyLand {
         return Factoid.getLands().getFlagInWorld(worldName, ft, onlyInherit);
     }
 
+    /**
+     * Gets the flag.
+     *
+     * @param ft the ft
+     * @param onlyInherit the only inherit
+     * @return the flag
+     */
     protected LandFlag getFlag(FlagType ft, boolean onlyInherit) {
 
         LandFlag flag = flags.get(ft);
@@ -199,6 +319,9 @@ public class DummyLand {
         return null;
     }
 
+    /**
+     * Do save.
+     */
     protected void doSave() {
 
         if (this instanceof Land) {

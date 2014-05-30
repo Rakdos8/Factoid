@@ -20,17 +20,35 @@ package me.tabinol.factoid.selection.region;
 import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class RegionSelection.
+ */
 public abstract class RegionSelection {
 
+    /** The selection type. */
     final SelectionType selectionType;
+    
+    /** The player. */
     final Player player;
 
+    /**
+     * Instantiates a new region selection.
+     *
+     * @param selectionType the selection type
+     * @param player the player
+     */
     RegionSelection(SelectionType selectionType, Player player) {
 
         this.selectionType = selectionType;
         this.player = player;
     }
 
+    /**
+     * Gets the selection type.
+     *
+     * @return the selection type
+     */
     public SelectionType getSelectionType() {
 
         return selectionType;

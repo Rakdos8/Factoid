@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.config.Config;
@@ -30,15 +31,30 @@ import me.tabinol.factoid.lands.approve.Approve;
 import me.tabinol.factoid.lands.approve.ApproveList;
 import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions;
+import me.tabinol.factoid.playercontainer.PlayerContainer;
+
 import org.bukkit.ChatColor;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommandApprove.
+ */
 public class CommandApprove extends CommandExec {
 
+    /**
+     * Instantiates a new command approve.
+     *
+     * @param entity the entity
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandApprove(CommandEntities entity) throws FactoidCommandException {
 
         super(entity, true, true);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+     */
     @Override
     public void commandExecute() throws FactoidCommandException {
 
@@ -49,7 +65,9 @@ public class CommandApprove extends CommandExec {
 
         if (curArg.equalsIgnoreCase("clear")) {
             
-            checkPermission(true, false, null, null);
+            if(!isApprover) {
+            	throw new FactoidCommandException("Approve", entity.sender, "GENERAL.MISSINGPERMISSION");
+            }
             approveList.removeAll();
             entity.sender.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COLLISION.GENERAL.CLEAR"));
             
@@ -115,16 +133,17 @@ public class CommandApprove extends CommandExec {
             CuboidArea newArea = approve.getNewArea();
             Land parent = approve.getParent();
             Double price = approve.getPrice();
+            PlayerContainer owner = approve.getOwner();
 
             if (curArg.equalsIgnoreCase("info") || curArg.equalsIgnoreCase("confirm")) {
 
                 // Print area
                 if(newArea != null) {
-                    entity.sender.sendMessage(newArea.getWorldName() + ":" + newArea.getPrint());
+                    entity.sender.sendMessage(newArea.getPrint());
                 }
                 
                 // Info on the specified land (Collision)
-                checkCollision(param, land, action, removeId, newArea, parent, price, false);
+                checkCollision(param, land, action, removeId, newArea, parent, owner, price, false);
 
                 if (curArg.equalsIgnoreCase("confirm")) {
 

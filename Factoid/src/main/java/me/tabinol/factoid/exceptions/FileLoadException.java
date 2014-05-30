@@ -20,8 +20,20 @@ package me.tabinol.factoid.exceptions;
 import java.util.logging.Level;
 import me.tabinol.factoid.Factoid;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class FileLoadException.
+ */
 public class FileLoadException extends Exception {
 
+    /**
+     * Instantiates a new file load exception.
+     *
+     * @param FileName the file name
+     * @param Line the line
+     * @param LineNum the line num
+     * @param message the message
+     */
     public FileLoadException(String FileName, String Line, Integer LineNum, String message) {
 
         super("File Load Exception in:" + FileName);

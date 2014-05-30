@@ -21,8 +21,20 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class FactoidLandException.
+ */
 public class FactoidLandException extends Exception {
     
+    /**
+     * Instantiates a new factoid land exception.
+     *
+     * @param landName the land name
+     * @param area the area
+     * @param action the action
+     * @param error the error
+     */
     public FactoidLandException(String landName, CuboidArea area, Collisions.LandAction action, Collisions.LandError error) {
         
         super("Factoid Land Exception");

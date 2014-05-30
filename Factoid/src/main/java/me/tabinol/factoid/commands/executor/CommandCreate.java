@@ -35,13 +35,26 @@ import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
 import me.tabinol.factoid.selection.region.AreaSelection;
 import org.bukkit.ChatColor;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommandCreate.
+ */
 public class CommandCreate extends CommandExec {
 
+    /**
+     * Instantiates a new command create.
+     *
+     * @param entity the entity
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandCreate(CommandEntities entity) throws FactoidCommandException {
 
         super(entity, false, true);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+     */
     @Override
     public void commandExecute() throws FactoidCommandException {
 
@@ -85,15 +98,6 @@ public class CommandCreate extends CommandExec {
             throw new FactoidCommandException("CommandCreate", entity.player, "GENERAL.MISSINGPERMISSION");
         }
 
-        // Check for collision
-        if (checkCollision(curArg, null, LandAction.LAND_ADD, 0, area, parent, price, true)) {
-            new CommandCancel(entity.playerConf, true).commandExecute();
-            return;
-        }
-
-        // Create Land
-        Land land = null;
-        
         // If the player is adminmod, the owner is nobody
         PlayerContainer owner;
         if(entity.playerConf.isAdminMod()) {
@@ -101,6 +105,15 @@ public class CommandCreate extends CommandExec {
         } else {
             owner = entity.playerConf.getPlayerContainer();
         }
+
+        // Check for collision
+        if (checkCollision(curArg, null, LandAction.LAND_ADD, 0, area, parent, owner, price, true)) {
+            new CommandCancel(entity.playerConf, true).commandExecute();
+            return;
+        }
+
+        // Create Land
+        Land land = null;
         
         try {
             land = Factoid.getLands().createLand(curArg, owner, area, parent, price);
@@ -111,7 +124,7 @@ public class CommandCreate extends CommandExec {
         entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.DONE"));
         Factoid.getLog().write(entity.playerName + " have create a land named " + land.getName() + " at position " + land.getAreas().toString());
         
-        // Cancel et select the land
+        // Cancel and select the land
         new CommandCancel(entity.playerConf, true).commandExecute();
         new CommandSelect(entity.player, new ArgList(new String[] {land.getName()}, 
                 entity.player), null).commandExecute();

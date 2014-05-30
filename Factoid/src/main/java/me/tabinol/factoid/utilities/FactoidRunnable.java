@@ -22,21 +22,32 @@ import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+// TODO: Auto-generated Javadoc
 /**
- * Schedule task in Factoid
+ * Schedule task in Factoid.
  *
  * @author Tabinol
  */
 public abstract class FactoidRunnable extends BukkitRunnable {
 
+    /** The task id. */
     private BukkitTask taskId = null;
 
+    /**
+     * Instantiates a new factoid runnable.
+     */
     public FactoidRunnable() {
 
         super();
         taskId = null;
     }
 
+    /**
+     * Run later.
+     *
+     * @param tick the tick
+     * @param multiple the multiple
+     */
     public void runLater(Long tick, boolean multiple) {
 
         stopNextRun();
@@ -49,17 +60,28 @@ public abstract class FactoidRunnable extends BukkitRunnable {
         }
     }
 
+    /**
+     * Checks if is active.
+     *
+     * @return true, if is active
+     */
     public boolean isActive() {
 
         return taskId != null;
     }
 
     // *** IF IT IS NOT MULTIPLE RUN, YOU NEED TO SET DONE IN RUN() METHOD ***
+    /**
+     * Sets the one time done.
+     */
     public void setOneTimeDone() {
 
         taskId = null;
     }
 
+    /**
+     * Stop next run.
+     */
     public void stopNextRun() {
 
         if (taskId != null) {

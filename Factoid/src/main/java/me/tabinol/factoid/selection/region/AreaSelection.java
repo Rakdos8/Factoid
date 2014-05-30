@@ -30,14 +30,33 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AreaSelection.
+ */
 public class AreaSelection extends RegionSelection implements Listener {
 
+    /** The area. */
     CuboidArea area;
+    
+    /** The is collision. */
     boolean isCollision = false;
+    
+    /** The by. */
     private final byte by = 0;
+    
+    /** The block list. */
     private final Map<Location, Material> blockList = new HashMap<Location, Material>();
+    
+    /** The is from land. */
     private boolean isFromLand = false;
 
+    /**
+     * Instantiates a new area selection.
+     *
+     * @param player the player
+     * @param area the area
+     */
     public AreaSelection(Player player, CuboidArea area) {
 
         super(SelectionType.AREA, player);
@@ -47,6 +66,13 @@ public class AreaSelection extends RegionSelection implements Listener {
     }
 
     // Called from Land Selection list
+    /**
+     * Instantiates a new area selection.
+     *
+     * @param player the player
+     * @param area the area
+     * @param isFromLand the is from land
+     */
     public AreaSelection(Player player, CuboidArea area, boolean isFromLand) {
 
         super(SelectionType.AREA, player);
@@ -57,11 +83,19 @@ public class AreaSelection extends RegionSelection implements Listener {
     }
 
     // Called from ActiveAreaSelection
+    /**
+     * Instantiates a new area selection.
+     *
+     * @param player the player
+     */
     AreaSelection(Player player) {
 
         super(SelectionType.AREA, player);
     }
 
+    /**
+     * Make visual selection.
+     */
     final void makeVisualSelection() {
 
         // Get the size (x and z) no abs (already ajusted)
@@ -133,6 +167,9 @@ public class AreaSelection extends RegionSelection implements Listener {
         }
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.selection.region.RegionSelection#removeSelection()
+     */
     @Override
     public void removeSelection() {
 
@@ -143,18 +180,35 @@ public class AreaSelection extends RegionSelection implements Listener {
         blockList.clear();
     }
 
+    /**
+     * Gets the cuboid area.
+     *
+     * @return the cuboid area
+     */
     public CuboidArea getCuboidArea() {
         
         return area;
     }
     
+    /**
+     * Gets the collision.
+     *
+     * @return the collision
+     */
     public boolean getCollision() {
         
         return isCollision;
     }
     
      // Get the nearest block from player before air
-    private int getYNearPlayer(int x, int z) {
+    /**
+      * Gets the y near player.
+      *
+      * @param x the x
+      * @param z the z
+      * @return the y near player
+      */
+     private int getYNearPlayer(int x, int z) {
 
         Location loc = new Location(player.getWorld(), x, player.getLocation().getY() - 1, z);
 

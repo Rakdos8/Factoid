@@ -17,81 +17,194 @@
  */
 package me.tabinol.factoid.parameters;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Enum PermissionList.
  *
  * @author Tabinol
  */
 public enum PermissionList {
 
+    /** The undefined. */
     UNDEFINED(false),
+    
+    /** The build. */
     BUILD(true),
+    
+    /** The build place. */
     BUILD_PLACE(true),
+    
+    /** The build destroy. */
     BUILD_DESTROY(true),
+    
+    /** The drop. */
     DROP(true),
+    
+    /** The picketup. */
     PICKETUP(true),
+    
+    /** The sleep. */
     SLEEP(true),
+    
+    /** The open. */
     OPEN(true),
+    
+    /** The open craft. */
     OPEN_CRAFT(true),
+    
+    /** The open brew. */
     OPEN_BREW(true),
+    
+    /** The open furnace. */
     OPEN_FURNACE(true),
+    
+    /** The open chest. */
     OPEN_CHEST(true),
+    
+    /** The open enderchest. */
     OPEN_ENDERCHEST(true),
+    
+    /** The open beacon. */
     OPEN_BEACON(true),
+    
+    /** The open hopper. */
     OPEN_HOPPER(true),
+    
+    /** The open dropper. */
     OPEN_DROPPER(true),
+    
+    /** The use. */
     USE(true),
+    
+    /** The use door. */
     USE_DOOR(true),
+    
+    /** The use button. */
     USE_BUTTON(true),
+    
+    /** The use lever. */
     USE_LEVER(true),
+    
+    /** The use pressureplate. */
     USE_PRESSUREPLATE(true),
+    
+    /** The use trappedchest. */
     USE_TRAPPEDCHEST(true),
+    
+    /** The use string. */
     USE_STRING(true),
+    
+    /** The animal kill. */
     ANIMAL_KILL(true),
     //ANIMAL_FEED(true),
     //ANIMAL_ACCOUPLE(true),
+    /** The tamed kill. */
     TAMED_KILL(true),
+    
+    /** The mob kill. */
     MOB_KILL(true),
     //MOB_HEAL(true),
+    /** The villager kill. */
     VILLAGER_KILL(true),
+    
+    /** The villager golem kill. */
     VILLAGER_GOLEM_KILL(true),
+    
+    /** The horse kill. */
     HORSE_KILL(true),
     //HORSE_EQUIP(true),
     //HORSE_CLIMB(true),
+    /** The bucket water. */
     BUCKET_WATER(true),
+    
+    /** The bucket lava. */
     BUCKET_LAVA(true),
+    
+    /** The fire. */
     FIRE(true),
     //TNT(true),
+    /** The auto heal. */
     AUTO_HEAL(false),
+    
+    /** The potion splash. */
     POTION_SPLASH(true),
+    
+    /** The resident manager. */
     RESIDENT_MANAGER(false),
+    
+    /** The land create. */
     LAND_CREATE(false),
+    
+    /** The land enter. */
     LAND_ENTER(true),
+    
+    /** The land remove. */
     LAND_REMOVE(false),
+    
+    /** The land kick. */
     LAND_KICK(false),
+    
+    /** The land ban. */
     LAND_BAN(false),
+    
+    /** The land who. */
     LAND_WHO(false),
+    
+    /** The land notify. */
     LAND_NOTIFY(false),
+    
+    /** The money deposit. */
     MONEY_DEPOSIT(false),
+    
+    /** The money withdraw. */
     MONEY_WITHDRAW(false),
+    
+    /** The money balance. */
     MONEY_BALANCE(false),
+    
+    /** The eco land for sale. */
     ECO_LAND_FOR_SALE(false),
+    
+    /** The eco land buy. */
     ECO_LAND_BUY(false),
+    
+    /** The eco land for rent. */
     ECO_LAND_FOR_RENT(false),
+    
+    /** The eco land rent. */
     ECO_LAND_RENT(false);
 
+    /** The base value. */
     final boolean baseValue;
+    
+    /** The Permission type. */
     PermissionType PermissionType;
 
+    /**
+     * Instantiates a new permission list.
+     *
+     * @param baseValue the base value
+     */
     private PermissionList(boolean baseValue) {
 
         this.baseValue = baseValue;
     }
     
+    /**
+     * Sets the permission type.
+     *
+     * @param PermissionType the new permission type
+     */
     void setPermissionType(PermissionType PermissionType) {
         
         this.PermissionType = PermissionType;
     }
 
+    /**
+     * Gets the permisson type.
+     *
+     * @return the permisson type
+     */
     public PermissionType getPermissonType() {
         
         return PermissionType;

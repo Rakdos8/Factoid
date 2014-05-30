@@ -26,11 +26,24 @@ import me.tabinol.factoid.parameters.PermissionType;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommandKick.
+ */
 public class CommandKick extends CommandExec {
 
+    /** The arg list. */
     private final ArgList argList;
+    
+    /** The player. */
     private final Player player;
 
+    /**
+     * Instantiates a new command kick.
+     *
+     * @param entity the entity
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandKick(CommandEntities entity) throws FactoidCommandException {
 
         super(entity, false, true);
@@ -40,6 +53,14 @@ public class CommandKick extends CommandExec {
     }
     
     // From other command
+    /**
+     * Instantiates a new command kick.
+     *
+     * @param player the player
+     * @param argList the arg list
+     * @param land the land
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandKick(Player player, ArgList argList, Land land) throws FactoidCommandException {
         
         super(null, false, false);
@@ -48,6 +69,9 @@ public class CommandKick extends CommandExec {
         this.land = land;
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+     */
     @Override
     public void commandExecute() throws FactoidCommandException {
 

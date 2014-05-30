@@ -17,13 +17,26 @@
  */
 package me.tabinol.factoid.storage;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Storage.
+ */
 public abstract class Storage implements StorageInt {
 
+    /** The in load. */
     protected boolean inLoad = true; // True if the Database is in Loaded
 
+    /**
+     * Instantiates a new storage.
+     */
     public Storage() {
     }
     
+    /**
+     * Checks if is in load.
+     *
+     * @return true, if is in load
+     */
     public boolean isInLoad() {
         
         return inLoad;

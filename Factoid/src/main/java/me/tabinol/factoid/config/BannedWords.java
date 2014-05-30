@@ -17,33 +17,86 @@
  */
 package me.tabinol.factoid.config;
 
+// TODO: Auto-generated Javadoc
 // Banned words for land creation
+/**
+ * The Enum BannedWords.
+ */
 public enum BannedWords {
 
+    /** The done. */
     DONE,
+    
+    /** The worldedit. */
     WORLDEDIT,
+    
+    /** The expand. */
     EXPAND,
+    
+    /** The select. */
     SELECT,
+    
+    /** The remove. */
     REMOVE,
+    
+    /** The here. */
     HERE,
+    
+    /** The current. */
     CURRENT,
+    
+    /** The adminmod. */
     ADMINMOD,
+    
+    /** The factoid. */
     FACTOID,
+    
+    /** The console. */
     CONSOLE,
+    
+    /** The claim. */
     CLAIM,
+    
+    /** The page. */
     PAGE,
+    
+    /** The config. */
     CONFIG,
+    
+    /** The area. */
     AREA,
+    
+    /** The set. */
     SET,
+    
+    /** The unset. */
     UNSET,
+    
+    /** The list. */
     LIST,
+    
+    /** The default. */
     DEFAULT,
+    
+    /** The priority. */
     PRIORITY,
+    
+    /** The null. */
     NULL,
+    
+    /** The approve. */
     APPROVE,
+    
+    /** The rename. */
     RENAME;
 
     // Check if it is a banned word
+    /**
+     * Checks if is banned word.
+     *
+     * @param bannedWord the banned word
+     * @return true, if is banned word
+     */
     public static boolean isBannedWord(String bannedWord) {
 
         try {

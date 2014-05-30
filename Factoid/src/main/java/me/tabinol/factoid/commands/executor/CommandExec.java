@@ -18,6 +18,7 @@
 package me.tabinol.factoid.commands.executor;
 
 import java.util.Calendar;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
@@ -26,15 +27,36 @@ import me.tabinol.factoid.lands.approve.Approve;
 import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions;
 import me.tabinol.factoid.parameters.PermissionType;
+import me.tabinol.factoid.playercontainer.PlayerContainer;
+
 import org.bukkit.ChatColor;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommandExec.
+ */
 public abstract class CommandExec implements CommandInterface {
 
+    /** The entity. */
     protected final CommandEntities entity;
+    
+    /** The land. */
     protected Land land;
+    
+    /** The is executable. */
     private boolean isExecutable = true;
+    
+    /** The reset select cancel. */
     public boolean resetSelectCancel = false; // If reset select cancel is done (1 time only)
 
+    /**
+     * Instantiates a new command exec.
+     *
+     * @param entity the entity
+     * @param canFromConsole the can from console
+     * @param needsMoreParameter the needs more parameter
+     * @throws FactoidCommandException the factoid command exception
+     */
     protected CommandExec(CommandEntities entity,
             boolean canFromConsole, boolean needsMoreParameter) throws FactoidCommandException {
 
@@ -64,12 +86,24 @@ public abstract class CommandExec implements CommandInterface {
         }
     }
 
+    /**
+     * Checks if is executable.
+     *
+     * @return true, if is executable
+     */
     public boolean isExecutable() {
 
         return isExecutable;
     }
 
     // Check for needed selection and not needed (null for no verification)
+    /**
+     * Check selections.
+     *
+     * @param mustBeSelectMode the must be select mode
+     * @param mustBeAreaSelected the must be area selected
+     * @throws FactoidCommandException the factoid command exception
+     */
     protected void checkSelections(Boolean mustBeSelectMode, Boolean mustBeAreaSelected) throws FactoidCommandException {
 
         // No check if entity is null (if it is not from a command)
@@ -98,6 +132,16 @@ public abstract class CommandExec implements CommandInterface {
     }
 
     // Check selection for per type
+    /**
+     * Check selection.
+     *
+     * @param result the result
+     * @param neededResult the needed result
+     * @param messageTrue the message true
+     * @param messageFalse the message false
+     * @param startSelectCancel the start select cancel
+     * @throws FactoidCommandException the factoid command exception
+     */
     private void checkSelection(boolean result, boolean neededResult, String messageTrue, String messageFalse,
             boolean startSelectCancel) throws FactoidCommandException {
 
@@ -118,6 +162,15 @@ public abstract class CommandExec implements CommandInterface {
     }
 
     // Check if the player has permission
+    /**
+     * Check permission.
+     *
+     * @param mustBeAdminMod the must be admin mod
+     * @param mustBeOwner the must be owner
+     * @param neededPerm the needed perm
+     * @param bukkitPermission the bukkit permission
+     * @throws FactoidCommandException the factoid command exception
+     */
     protected void checkPermission(boolean mustBeAdminMod, boolean mustBeOwner,
             PermissionType neededPerm, String bukkitPermission) throws FactoidCommandException {
 
@@ -126,7 +179,7 @@ public abstract class CommandExec implements CommandInterface {
         if (mustBeAdminMod && entity.playerConf.isAdminMod()) {
             canDo = true;
         }
-        if (mustBeOwner && land.getOwner().hasAccess(entity.player)) {
+        if (mustBeOwner && (land == null || (land !=null && land.getOwner().hasAccess(entity.player)))) {
             canDo = true;
         }
         if (neededPerm != null && land.checkPermissionAndInherit(entity.player, neededPerm)) {
@@ -143,12 +196,28 @@ public abstract class CommandExec implements CommandInterface {
     }
 
     // Why Land paramater? The land can be an other land, not the land stored here.
+    /**
+     * Check collision.
+     *
+     * @param landName the land name
+     * @param land the land
+     * @param action the action
+     * @param removeId the remove id
+     * @param newArea the new area
+     * @param parent the parent
+     * @param owner the owner of the land (PlayerContainer)
+     * @param price the price
+     * @param addForApprove the add for approve
+     * @return true, if successful
+     * @throws FactoidCommandException the factoid command exception
+     */
     protected boolean checkCollision(String landName, Land land, Collisions.LandAction action,
-            int removeId, CuboidArea newArea, Land parent, double price, boolean addForApprove) throws FactoidCommandException {
+            int removeId, CuboidArea newArea, Land parent, PlayerContainer owner, 
+            double price, boolean addForApprove) throws FactoidCommandException {
 
         // allowApprove: false: The command can absolutely not be done if there is error!
         Collisions coll = new Collisions(landName, land, action, removeId, newArea, parent,
-                entity.playerConf.getPlayerContainer(), price, !addForApprove);
+                owner, price, !addForApprove);
         boolean allowApprove = coll.getAllowApprove();
 
         if (coll.hasCollisions()) {
@@ -159,7 +228,7 @@ public abstract class CommandExec implements CommandInterface {
                     entity.sender.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COLLISION.GENERAL.NEEDAPPROVE", landName));
                     Factoid.getLog().write("land " + landName + " has collision and needs approval.");
                     Factoid.getLands().getApproveList().addApprove(new Approve(landName, action, removeId, newArea,
-                            entity.playerConf.getPlayerContainer(), parent, price, Calendar.getInstance()));
+                            owner, parent, price, Calendar.getInstance()));
                     new CommandCancel(entity.playerConf, true).commandExecute();
                     return true;
                 } else if (Factoid.getConf().getAllowCollision() == Config.AllowCollisionType.FALSE || allowApprove == false) {
@@ -171,6 +240,11 @@ public abstract class CommandExec implements CommandInterface {
     }
 
     // The name says what it does!!!
+    /**
+     * Gets the land from command if no land selected.
+     *
+     * @return the land from command if no land selected
+     */
     protected void getLandFromCommandIfNoLandSelected() {
 
         if (land == null && !entity.argList.isLast()) {

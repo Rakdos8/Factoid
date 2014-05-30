@@ -30,21 +30,38 @@ import me.tabinol.factoid.selection.region.AreaSelection;
 import me.tabinol.factoid.selection.region.LandSelection;
 import me.tabinol.factoid.selection.region.RegionSelection;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PlayerSelection.
+ */
 public class PlayerSelection {
 
     /**
-     * Selection Type
+     * Selection Type.
      */
     public enum SelectionType { // ACTIVE = move with the player, PASSIVE = fixed
 
-        LAND,
+        /** The land. */
+ LAND,
+        
+        /** The area. */
         AREA;
     }
 
+    /** The player conf entry. */
     private final PlayerConfEntry playerConfEntry;
+    
+    /** The selection list. */
     private final EnumMap<SelectionType, RegionSelection> selectionList; // SelectionList for the player
+    
+    /** The area to replace. */
     CuboidArea areaToReplace; // If it is an areaToReplace with an expand
 
+    /**
+     * Instantiates a new player selection.
+     *
+     * @param playerConfEntry the player conf entry
+     */
     public PlayerSelection(PlayerConfEntry playerConfEntry) {
 
         this.playerConfEntry = playerConfEntry;
@@ -52,26 +69,53 @@ public class PlayerSelection {
         areaToReplace = null;
     }
 
+    /**
+     * Checks for selection.
+     *
+     * @return true, if successful
+     */
     public boolean hasSelection() {
 
         return !selectionList.isEmpty();
     }
 
+    /**
+     * Gets the selections.
+     *
+     * @return the selections
+     */
     public Collection<RegionSelection> getSelections() {
 
         return selectionList.values();
     }
 
+    /**
+     * Adds the selection.
+     *
+     * @param sel the sel
+     */
     public void addSelection(RegionSelection sel) {
 
         selectionList.put(sel.getSelectionType(), sel);
     }
 
+    /**
+     * Gets the selection.
+     *
+     * @param type the type
+     * @return the selection
+     */
     public RegionSelection getSelection(SelectionType type) {
 
         return selectionList.get(type);
     }
 
+    /**
+     * Removes the selection.
+     *
+     * @param type the type
+     * @return the region selection
+     */
     public RegionSelection removeSelection(SelectionType type) {
 
         RegionSelection select = selectionList.remove(type);
@@ -87,6 +131,11 @@ public class PlayerSelection {
         return select;
     }
 
+    /**
+     * Gets the land.
+     *
+     * @return the land
+     */
     public Land getLand() {
 
         LandSelection sel = (LandSelection) selectionList.get(SelectionType.LAND);
@@ -97,6 +146,11 @@ public class PlayerSelection {
         }
     }
 
+    /**
+     * Gets the cuboid area.
+     *
+     * @return the cuboid area
+     */
     public CuboidArea getCuboidArea() {
 
         AreaSelection sel = (AreaSelection) selectionList.get(SelectionType.AREA);
@@ -107,16 +161,31 @@ public class PlayerSelection {
         }
     }
 
+    /**
+     * Sets the area to replace.
+     *
+     * @param areaToReplace the new area to replace
+     */
     public void setAreaToReplace(CuboidArea areaToReplace) {
 
         this.areaToReplace = areaToReplace;
     }
 
+    /**
+     * Gets the area to replace.
+     *
+     * @return the area to replace
+     */
     public CuboidArea getAreaToReplace() {
 
         return areaToReplace;
     }
 
+    /**
+     * Gets the land create price.
+     *
+     * @return the land create price
+     */
     public double getLandCreatePrice() {
 
         if(!isPlayerMustPay()) {
@@ -144,6 +213,11 @@ public class PlayerSelection {
         return priceFlag.getValueDouble() * area.getTotalBlock();
     }
 
+    /**
+     * Gets the area add price.
+     *
+     * @return the area add price
+     */
     public double getAreaAddPrice() {
 
         if(!isPlayerMustPay()) {
@@ -177,6 +251,12 @@ public class PlayerSelection {
         return priceFlag.getValueDouble() * nbCube;
     }
 
+    /**
+     * Gets the area replace price.
+     *
+     * @param areaId the area id
+     * @return the area replace price
+     */
     public double getAreaReplacePrice(int areaId) {
 
         if(!isPlayerMustPay()) {
@@ -187,6 +267,11 @@ public class PlayerSelection {
         return getAreaAddPrice();
     }
     
+    /**
+     * Checks if is player must pay.
+     *
+     * @return true, if is player must pay
+     */
     private boolean isPlayerMustPay() {
         
         // Is Economy?
@@ -194,11 +279,6 @@ public class PlayerSelection {
             return false;
         }
 
-        // Free for AdminMod
-        if(playerConfEntry.isAdminMod()) {
-            return false;
-        }
-        
         return true;
     }
 }

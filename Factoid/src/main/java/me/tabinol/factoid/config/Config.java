@@ -23,116 +23,363 @@ import me.tabinol.factoid.parameters.FlagType;
 import me.tabinol.factoid.parameters.PermissionType;
 import org.bukkit.configuration.file.FileConfiguration;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Config.
+ */
 public class Config {
 
     // Global
+    /** The Constant NEWLINE. */
     public static final String NEWLINE = System.getProperty("line.separator");
+    
+    /** The Constant GLOBAL. */
     public static final String GLOBAL = "_global_";
+    
+    /** The this plugin. */
     private final Factoid thisPlugin;
+    
+    /** The config. */
     private FileConfiguration config;
     // Configuration
+    /** The debug. */
     private boolean debug;
+    
+    /**
+     * Checks if is debug.
+     *
+     * @return true, if is debug
+     */
     public boolean isDebug() { return debug; }
     
+    /** The lang. */
     private String lang;
+    
+    /**
+     * Gets the lang.
+     *
+     * @return the lang
+     */
     public String getLang() { return lang; }
     
+    /** The use economy. */
     private boolean useEconomy;
+    
+    /**
+     * Use economy.
+     *
+     * @return true, if successful
+     */
     public boolean useEconomy() { return useEconomy; }
     
+    /** The info item. */
     private int infoItem;
+    
+    /**
+     * Gets the info item.
+     *
+     * @return the info item
+     */
     public int getInfoItem() { return infoItem; }
     
+    /** The select item. */
     private int selectItem;
+    
+    /**
+     * Gets the select item.
+     *
+     * @return the select item
+     */
     public int getSelectItem() { return selectItem; }
     
+    /**
+     * The Enum AllowCollisionType.
+     */
     public enum AllowCollisionType {
 
+        /** The true. */
         TRUE,
+        
+        /** The approve. */
         APPROVE,
+        
+        /** The false. */
         FALSE;
     }
+    
+    /** The allow collision. */
     private AllowCollisionType allowCollision;
+    
+    /**
+     * Gets the allow collision.
+     *
+     * @return the allow collision
+     */
     public AllowCollisionType getAllowCollision() { return allowCollision; }
     
+    /** The approve notify time. */
     private long approveNotifyTime;
+    
+    /**
+     * Gets the approve notify time.
+     *
+     * @return the approve notify time
+     */
     public long getApproveNotifyTime() { return approveNotifyTime; }
     
+    /** The select auto cancel. */
     private long selectAutoCancel;
+    
+    /**
+     * Gets the select auto cancel.
+     *
+     * @return the select auto cancel
+     */
     public long getSelectAutoCancel() { return selectAutoCancel; }
     
+    /** The max visual select. */
     private int maxVisualSelect;
+    
+    /**
+     * Gets the max visual select.
+     *
+     * @return the max visual select
+     */
     public int getMaxVisualSelect() { return maxVisualSelect; }
     
+    /** The max visual select from player. */
     private int maxVisualSelectFromPlayer;
+    
+    /**
+     * Gets the max visual select from player.
+     *
+     * @return the max visual select from player
+     */
     public int getMaxVisualSelectFromPlayer() { return maxVisualSelectFromPlayer; }
 
+    /** The max land. */
     private int maxLand;
+    
+    /**
+     * Gets the max land.
+     *
+     * @return the max land
+     */
     public int getMaxLand() { return maxLand; } 
     
+    /** The min land size. */
     private int minLandSize;
+    
+    /**
+     * Gets the min land size.
+     *
+     * @return the min land size
+     */
     public int getMinLandSize() { return minLandSize; }
     
+    /** The max land size. */
     private int maxLandSize;
+    
+    /**
+     * Gets the max land size.
+     *
+     * @return the max land size
+     */
     public int getMaxLandSize() { return maxLandSize; }
     
+    /** The max area per land. */
     private int maxAreaPerLand;
+    
+    /**
+     * Gets the max area per land.
+     *
+     * @return the max area per land
+     */
     public int getMaxAreaPerLand() { return maxAreaPerLand; }
     
+    /** The max land per player. */
     private int maxLandPerPlayer;
+    
+    /**
+     * Gets the max land per player.
+     *
+     * @return the max land per player
+     */
     public int getMaxLandPerPlayer() { return maxLandPerPlayer; }
     
+    /** The min area size. */
     private int minAreaSize;
+    
+    /**
+     * Gets the min area size.
+     *
+     * @return the min area size
+     */
     public int getMinAreaSize() { return minAreaSize; }
     
+    /** The max area size. */
     private int maxAreaSize;
+    
+    /**
+     * Gets the max area size.
+     *
+     * @return the max area size
+     */
     public int getMaxAreaSize() { return maxAreaSize; }
     
+    /** The min land high. */
     private int minLandHigh;
+    
+    /**
+     * Gets the min land high.
+     *
+     * @return the min land high
+     */
     public int getMinLandHigh() { return minLandHigh; }
     
+    /** The max land high. */
     private int maxLandHigh;
+    
+    /**
+     * Gets the max land high.
+     *
+     * @return the max land high
+     */
     public int getMaxLandHigh() { return maxLandHigh; }
     
+    /** The default x size. */
     private int defaultXSize;
+    
+    /**
+     * Gets the default x size.
+     *
+     * @return the default x size
+     */
     public int getDefaultXSize() { return defaultXSize; }
   
+    /** The default z size. */
     private int defaultZSize;
+    
+    /**
+     * Gets the default z size.
+     *
+     * @return the default z size
+     */
     public int getDefaultZSize() { return defaultZSize; }
   
+    /** The default bottom. */
     private int defaultBottom;
+    
+    /**
+     * Gets the default bottom.
+     *
+     * @return the default bottom
+     */
     public int getDefaultBottom() { return defaultBottom; }
   
+    /** The default top. */
     private int defaultTop;
+    
+    /**
+     * Gets the default top.
+     *
+     * @return the default top
+     */
     public int getDefaultTop() { return defaultTop; }
 
+    /** The price by cube. */
     private double priceByCube;
+    
+    /**
+     * Gets the price by cube.
+     *
+     * @return the price by cube
+     */
     public double getPriceByCube() { return priceByCube; }
     
+    /** The min price location. */
     private double minPriceLocation;
+    
+    /**
+     * Gets the min price location.
+     *
+     * @return the min price location
+     */
     public double getMinPriceLocation() { return minPriceLocation; }
     
+    /** The max price location. */
     private double maxPriceLocation;
+    
+    /**
+     * Gets the max price location.
+     *
+     * @return the max price location
+     */
     public double getMaxPriceLocation() { return maxPriceLocation; }
     
+    /** The min price sell. */
     private double minPriceSell;
+    
+    /**
+     * Gets the min price sell.
+     *
+     * @return the min price sell
+     */
     public double getMinPriceSell() { return minPriceSell; }
     
+    /** The max price sell. */
     private double maxPriceSell;
+    
+    /**
+     * Max price sell.
+     *
+     * @return the double
+     */
     public double maxPriceSell() { return maxPriceSell; }
     
+    /** The beacon light. */
     private boolean beaconLight;
+    
+    /**
+     * Checks if is beacon light.
+     *
+     * @return true, if is beacon light
+     */
     public boolean isBeaconLight() { return beaconLight; }
     
+    /** The override explosions. */
     private boolean overrideExplosions;
+    
+    /**
+     * Checks if is override explosions.
+     *
+     * @return true, if is override explosions
+     */
     public boolean isOverrideExplosions() { return overrideExplosions; }
     
+    /** The owner config flag. */
     private TreeSet<FlagType> ownerConfigFlag; // Flags a owner can set
+    
+    /**
+     * Gets the owner config flag.
+     *
+     * @return the owner config flag
+     */
     public TreeSet<FlagType> getOwnerConfigFlag() { return ownerConfigFlag; }
     
+    /** The owner config perm. */
     private TreeSet<PermissionType> ownerConfigPerm; // Permissions a owner can set
+    
+    /**
+     * Gets the owner config perm.
+     *
+     * @return the owner config perm
+     */
     public TreeSet<PermissionType> getOwnerConfigPerm() { return ownerConfigPerm; }
 
+    /**
+     * Instantiates a new config.
+     */
     public Config() {
 
         thisPlugin = Factoid.getThisPlugin();
@@ -144,6 +391,9 @@ public class Config {
         reloadConfig();
     }
 
+    /**
+     * Reload config.
+     */
     public final void reloadConfig() {
 
         thisPlugin.reloadConfig();
@@ -151,6 +401,11 @@ public class Config {
         getConfig();
     }
 
+    /**
+     * Gets the config.
+     *
+     * @return the config
+     */
     private void getConfig() {
 
         debug = config.getBoolean("general.debug", false);
@@ -177,7 +432,7 @@ public class Config {
         defaultBottom = config.getInt("land.defaultBottom", 0);
         defaultTop = config.getInt("land.defaultTop", 255);
         maxAreaPerLand = config.getInt("land.area.MaxAreaPerLand", 3);
-        maxLandPerPlayer = config.getInt("land.area.MaxLandPerPlayer", 5);
+        maxLandPerPlayer = config.getInt("land.MaxLandPerPlayer", 5);
         minAreaSize = config.getInt("land.area.MinAreaSize", 1);
         maxAreaSize = config.getInt("land.area.MaxAreaSize", 1);
         minLandHigh = config.getInt("land.area.MinLandHigh", 0);

@@ -19,20 +19,44 @@ package me.tabinol.factoid.commands;
 
 import me.tabinol.factoid.lands.Land;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ConfirmEntry.
+ */
 public class ConfirmEntry {
 
     // Represent a Entry for a "/factoid confirm"
+    /**
+     * The Enum ConfirmType.
+     */
     public enum ConfirmType {
 
+        /** The remove land. */
         REMOVE_LAND,
+        
+        /** The remove area. */
         REMOVE_AREA,
+        
+        /** The land default. */
         LAND_DEFAULT;
     }
 
+    /** The confirm type. */
     public final ConfirmType confirmType;
+    
+    /** The land. */
     public final Land land;
+    
+    /** The area nb. */
     public final int areaNb;
 
+    /**
+     * Instantiates a new confirm entry.
+     *
+     * @param confirmType the confirm type
+     * @param land the land
+     * @param areaNb the area nb
+     */
     public ConfirmEntry(ConfirmType confirmType, Land land, int areaNb) {
 
         this.confirmType = confirmType;

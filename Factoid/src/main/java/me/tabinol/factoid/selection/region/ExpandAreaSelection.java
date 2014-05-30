@@ -21,20 +21,38 @@ import me.tabinol.factoid.lands.areas.CuboidArea;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ExpandAreaSelection.
+ */
 public class ExpandAreaSelection extends ActiveAreaSelection implements PlayerMoveListen {
 
+    /**
+     * Instantiates a new expand area selection.
+     *
+     * @param player the player
+     */
     public ExpandAreaSelection(Player player) {
 
         super(player);
     }
 
     // When we know the area
+    /**
+     * Instantiates a new expand area selection.
+     *
+     * @param player the player
+     * @param area the area
+     */
     public ExpandAreaSelection(Player player, CuboidArea area) {
 
         super(player, area);
     }
 
     // Called from player listenner
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.selection.region.ActiveAreaSelection#playerMove()
+     */
     @Override
     public void playerMove() {
 

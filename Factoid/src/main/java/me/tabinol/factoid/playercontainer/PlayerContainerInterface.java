@@ -20,22 +20,69 @@ package me.tabinol.factoid.playercontainer;
 import me.tabinol.factoid.lands.Land;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface PlayerContainerInterface.
+ */
 public interface PlayerContainerInterface {
     
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     public String getName();
     
+    /**
+     * Gets the container type.
+     *
+     * @return the container type
+     */
     public PlayerContainerType getContainerType();
     
+    /**
+     * Equals.
+     *
+     * @param container2 the container2
+     * @return true, if successful
+     */
     public boolean equals(PlayerContainer container2);
     
+    /**
+     * Compare to.
+     *
+     * @param t the t
+     * @return the int
+     */
     public int compareTo(PlayerContainer t);
     
+    /**
+     * Copy of.
+     *
+     * @return the player container
+     */
     public PlayerContainer copyOf();
     
+    /**
+     * Checks for access.
+     *
+     * @param player the player
+     * @return true, if successful
+     */
     public boolean hasAccess(Player player);
     
+    /**
+     * Gets the prints the.
+     *
+     * @return the prints the
+     */
     public String getPrint();
     
+    /**
+     * Sets the land.
+     *
+     * @param land the new land
+     */
     public void setLand(Land land);
             
 }

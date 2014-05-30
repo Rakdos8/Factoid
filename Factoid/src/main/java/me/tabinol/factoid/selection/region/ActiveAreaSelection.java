@@ -22,14 +22,29 @@ import me.tabinol.factoid.lands.areas.CuboidArea;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ActiveAreaSelection.
+ */
 public class ActiveAreaSelection extends AreaSelection implements PlayerMoveListen {
 
+    /**
+     * Instantiates a new active area selection.
+     *
+     * @param player the player
+     */
     public ActiveAreaSelection(Player player) {
 
         super(player);
         setActiveSelection();
     }
 
+    /**
+     * Instantiates a new active area selection.
+     *
+     * @param player the player
+     * @param area the area
+     */
     public ActiveAreaSelection(Player player, CuboidArea area) {
 
         super(player);
@@ -37,6 +52,9 @@ public class ActiveAreaSelection extends AreaSelection implements PlayerMoveList
         makeVisualSelection();
     }
 
+    /**
+     * Sets the active selection.
+     */
     public final void setActiveSelection() {
 
         isCollision = false;
@@ -52,6 +70,9 @@ public class ActiveAreaSelection extends AreaSelection implements PlayerMoveList
     }
 
     // Called from player listenner
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.selection.region.PlayerMoveListen#playerMove()
+     */
     @Override
     public void playerMove() {
 

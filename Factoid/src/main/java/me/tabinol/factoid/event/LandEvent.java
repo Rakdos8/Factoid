@@ -22,12 +22,26 @@ import me.tabinol.factoid.lands.Land;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LandEvent.
+ */
 public class LandEvent extends Event {
 
+    /** The Constant handlers. */
     private static final HandlerList handlers = new HandlerList();
+    
+    /** The dummy land. */
     private DummyLand dummyLand;
+    
+    /** The land. */
     private Land land;
 
+    /**
+     * Instantiates a new land event.
+     *
+     * @param dummyLand the dummy land
+     */
     public LandEvent(DummyLand dummyLand) {
 
         this.dummyLand = dummyLand;
@@ -39,22 +53,40 @@ public class LandEvent extends Event {
         }
     }
 
+    /* (non-Javadoc)
+     * @see org.bukkit.event.Event#getHandlers()
+     */
     @Override
     public HandlerList getHandlers() {
 
         return handlers;
     }
 
+    /**
+     * Gets the handler list.
+     *
+     * @return the handler list
+     */
     public static HandlerList getHandlerList() {
 
         return handlers;
     }
 
+    /**
+     * Gets the land.
+     *
+     * @return the land
+     */
     public Land getLand() {
 
         return land;
     }
     
+    /**
+     * Gets the land or outside.
+     *
+     * @return the land or outside
+     */
     public DummyLand getLandOrOutside() {
         
         return dummyLand;

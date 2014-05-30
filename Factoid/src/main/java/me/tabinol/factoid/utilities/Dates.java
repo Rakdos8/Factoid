@@ -21,17 +21,37 @@ import java.util.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Dates.
+ */
 public class Dates {
+	
+	/** The locale. */
 	static Locale locale = Locale.getDefault();
+	
+	/** The actuelle. */
 	static Date actuelle = new Date();
+	
+	/** The date format. */
 	static DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
+	/**
+	 * Date.
+	 *
+	 * @return the string
+	 */
 	public static String date()
 	{
             String dat = dateFormat.format(actuelle);
             return dat;
 	}
 	
+	/**
+	 * Time.
+	 *
+	 * @return the string
+	 */
 	public static String time()
 	{
             Calendar cal = Calendar.getInstance();

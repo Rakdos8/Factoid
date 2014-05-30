@@ -40,38 +40,105 @@ import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Land.
+ */
 public class Land extends DummyLand {
 
+    /** The Constant DEFAULT_PRIORITY. */
     public static final short DEFAULT_PRIORITY = 10;
+    
+    /** The Constant MINIM_PRIORITY. */
     public static final short MINIM_PRIORITY = 0;
+    
+    /** The Constant MAXIM_PRIORITY. */
     public static final short MAXIM_PRIORITY = 100;
+    
+    /** The uuid. */
     private final UUID uuid;
+    
+    /** The name. */
     private String name;
+    
+    /** The areas. */
     private Map<Integer, CuboidArea> areas = new TreeMap<Integer, CuboidArea>();
+    
+    /** The children. */
     private Map<UUID, Land> children = new TreeMap<UUID, Land>();
+    
+    /** The priority. */
     private short priority = DEFAULT_PRIORITY; // Do not put more then 100000!!!!
+    
+    /** The genealogy. */
     private int genealogy = 0; // 0 = first, 1 = child, 2 = child of child, ...
+    
+    /** The parent. */
     private Land parent = null;
+    
+    /** The owner. */
     private PlayerContainer owner;
+    
+    /** The residents. */
     private Set<PlayerContainer> residents = new TreeSet<PlayerContainer>();
+    
+    /** The banneds. */
     private Set<PlayerContainer> banneds = new TreeSet<PlayerContainer>();
+    
+    /** The auto save. */
     private boolean autoSave = true;
+    
+    /** The faction territory. */
     private Faction factionTerritory = null;
+    
+    /** The money. */
     private double money = 0L;
+    
+    /** The player notify. */
     private Set<PlayerContainerPlayer> playerNotify = new TreeSet<PlayerContainerPlayer>();
+    
+    /** The players in land. */
     private final Set<Player> playersInLand = new HashSet<Player>();
     // Economy
+    /** The for sale. */
     private boolean forSale = false;
+    
+    /** The sale price. */
     private double salePrice = 0;
+    
+    /** The for rent. */
     private boolean forRent = false;
+    
+    /** The rent price. */
     private double rentPrice = 0;
+    
+    /** The rent renew. */
     private int rentRenew = 0; // How many days before renew?
+    
+    /** The rent auto renew. */
     private boolean rentAutoRenew = false;
+    
+    /** The rented. */
     private boolean rented = false;
+    
+    /** The tenant. */
     private PlayerContainerPlayer tenant = null;
+    
+    /** The last payment. */
     private Timestamp lastPayment = new Timestamp(0);
 
     // Please use createLand in Lands class to create a Land
+    /**
+     * Instantiates a new land.
+     *
+     * @param landName the land name
+     * @param uuid the uuid
+     * @param owner the owner
+     * @param area the area
+     * @param genealogy the genealogy
+     * @param parent the parent
+     * @param areaId the area id
+     */
     protected Land(String landName, UUID uuid, PlayerContainer owner,
             CuboidArea area, int genealogy, Land parent, int areaId) {
 
@@ -94,6 +161,9 @@ public class Land extends DummyLand {
         addArea(area, areaId);
     }
 
+    /**
+     * Sets the default.
+     */
     public void setDefault() {
         owner = new PlayerContainerNobody();
         residents = new TreeSet<PlayerContainer>();
@@ -104,6 +174,9 @@ public class Land extends DummyLand {
         doSave();
     }
 
+    /**
+     * Copy perms.
+     */
     private void copyPerms() {
 
         for (PlayerContainer pc : Factoid.getLands().defaultConf.permissions.keySet()) {
@@ -112,6 +185,11 @@ public class Land extends DummyLand {
         }
     }
 
+    /**
+     * Adds the area.
+     *
+     * @param area the area
+     */
     public void addArea(CuboidArea area) {
 
         int nextKey = 0;
@@ -131,12 +209,24 @@ public class Land extends DummyLand {
         addArea(area, nextKey);
     }
 
+    /**
+     * Adds the area.
+     *
+     * @param area the area
+     * @param price the price
+     */
     public void addArea(CuboidArea area, double price) {
 
         Factoid.getLands().getPriceFromPlayer(worldName, owner, price);
         addArea(area);
     }
 
+    /**
+     * Adds the area.
+     *
+     * @param area the area
+     * @param key the key
+     */
     public void addArea(CuboidArea area, int key) {
 
         area.setLand(this);
@@ -145,6 +235,12 @@ public class Land extends DummyLand {
         doSave();
     }
 
+    /**
+     * Removes the area.
+     *
+     * @param key the key
+     * @return true, if successful
+     */
     public boolean removeArea(int key) {
 
         CuboidArea area;
@@ -158,6 +254,12 @@ public class Land extends DummyLand {
         return false;
     }
 
+    /**
+     * Removes the area.
+     *
+     * @param area the area
+     * @return true, if successful
+     */
     public boolean removeArea(CuboidArea area) {
 
         Integer key = getAreaKey(area);
@@ -169,6 +271,14 @@ public class Land extends DummyLand {
         return false;
     }
 
+    /**
+     * Replace area.
+     *
+     * @param key the key
+     * @param newArea the new area
+     * @param price the price
+     * @return true, if successful
+     */
     public boolean replaceArea(int key, CuboidArea newArea, double price) {
 
         Factoid.getLands().getPriceFromPlayer(worldName, owner, price);
@@ -176,6 +286,13 @@ public class Land extends DummyLand {
         return replaceArea(key, newArea);
     }
 
+    /**
+     * Replace area.
+     *
+     * @param key the key
+     * @param newArea the new area
+     * @return true, if successful
+     */
     public boolean replaceArea(int key, CuboidArea newArea) {
 
         CuboidArea area;
@@ -192,11 +309,23 @@ public class Land extends DummyLand {
         return false;
     }
 
+    /**
+     * Gets the area.
+     *
+     * @param key the key
+     * @return the area
+     */
     public CuboidArea getArea(int key) {
 
         return areas.get(key);
     }
 
+    /**
+     * Gets the area key.
+     *
+     * @param area the area
+     * @return the area key
+     */
     public Integer getAreaKey(CuboidArea area) {
 
         for (Map.Entry<Integer, CuboidArea> entry : areas.entrySet()) {
@@ -208,21 +337,42 @@ public class Land extends DummyLand {
         return null;
     }
 
+    /**
+     * Gets the areas key.
+     *
+     * @return the areas key
+     */
     public Set<Integer> getAreasKey() {
 
         return areas.keySet();
     }
 
+    /**
+     * Gets the ids and areas.
+     *
+     * @return the ids and areas
+     */
     public Map<Integer, CuboidArea> getIdsAndAreas() {
 
         return areas;
     }
 
+    /**
+     * Gets the areas.
+     *
+     * @return the areas
+     */
     public Collection<CuboidArea> getAreas() {
 
         return areas.values();
     }
 
+    /**
+     * Checks if is location inside.
+     *
+     * @param loc the loc
+     * @return true, if is location inside
+     */
     public boolean isLocationInside(Location loc) {
 
         for (CuboidArea area1 : areas.values()) {
@@ -234,6 +384,12 @@ public class Land extends DummyLand {
         return false;
     }
 
+    /**
+     * Gets the nb blocks outside.
+     *
+     * @param areaComp the area comp
+     * @return the nb blocks outside
+     */
     public long getNbBlocksOutside(CuboidArea areaComp) {
 
         // Get the Volume of the area
@@ -268,16 +424,31 @@ public class Land extends DummyLand {
         return volume;
     }
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     public String getName() {
 
         return name;
     }
 
+    /**
+     * Gets the uuid.
+     *
+     * @return the uuid
+     */
     public UUID getUUID() {
 
         return uuid;
     }
 
+    /**
+     * Sets the name.
+     *
+     * @param newName the new name
+     */
     protected void setName(String newName) {
 
         setAutoSave(false);
@@ -287,21 +458,42 @@ public class Land extends DummyLand {
         doSave();
     }
 
+    /**
+     * Gets the owner.
+     *
+     * @return the owner
+     */
     public PlayerContainer getOwner() {
 
         return owner;
     }
 
+    /**
+     * Checks if is owner.
+     *
+     * @param player the player
+     * @return true, if is owner
+     */
     public boolean isOwner(Player player) {
 
         return owner.hasAccess(player);
     }
 
+    /**
+     * Gets the faction territory.
+     *
+     * @return the faction territory
+     */
     public Faction getFactionTerritory() {
 
         return factionTerritory;
     }
 
+    /**
+     * Sets the faction territory.
+     *
+     * @param faction the new faction territory
+     */
     public void setFactionTerritory(Faction faction) {
 
         this.factionTerritory = faction;
@@ -311,12 +503,22 @@ public class Land extends DummyLand {
         doSave();
     }
 
+    /**
+     * Sets the owner.
+     *
+     * @param owner the new owner
+     */
     public void setOwner(PlayerContainer owner) {
 
         this.owner = owner;
         doSave();
     }
 
+    /**
+     * Adds the resident.
+     *
+     * @param resident the resident
+     */
     public void addResident(PlayerContainer resident) {
 
         resident.setLand(this);
@@ -324,6 +526,12 @@ public class Land extends DummyLand {
         doSave();
     }
 
+    /**
+     * Removes the resident.
+     *
+     * @param resident the resident
+     * @return true, if successful
+     */
     public boolean removeResident(PlayerContainer resident) {
 
         if (residents.remove(resident)) {
@@ -334,11 +542,22 @@ public class Land extends DummyLand {
         return false;
     }
 
+    /**
+     * Gets the residents.
+     *
+     * @return the residents
+     */
     public final Set<PlayerContainer> getResidents() {
 
         return residents;
     }
 
+    /**
+     * Checks if is resident.
+     *
+     * @param player the player
+     * @return true, if is resident
+     */
     public boolean isResident(Player player) {
 
         for (PlayerContainer resident : residents) {
@@ -349,6 +568,11 @@ public class Land extends DummyLand {
         return false;
     }
 
+    /**
+     * Adds the banned.
+     *
+     * @param banned the banned
+     */
     public void addBanned(PlayerContainer banned) {
 
         banned.setLand(this);
@@ -360,6 +584,12 @@ public class Land extends DummyLand {
                 new PlayerContainerLandBanEvent(this, banned));
     }
 
+    /**
+     * Removes the banned.
+     *
+     * @param banned the banned
+     * @return true, if successful
+     */
     public boolean removeBanned(PlayerContainer banned) {
 
         if (banneds.remove(banned)) {
@@ -370,11 +600,22 @@ public class Land extends DummyLand {
         return false;
     }
 
+    /**
+     * Gets the banneds.
+     *
+     * @return the banneds
+     */
     public final Set<PlayerContainer> getBanneds() {
 
         return banneds;
     }
 
+    /**
+     * Checks if is banned.
+     *
+     * @param player the player
+     * @return true, if is banned
+     */
     public boolean isBanned(Player player) {
 
         for (PlayerContainer banned : banneds) {
@@ -386,6 +627,11 @@ public class Land extends DummyLand {
     }
 
     // Note : a child get the parent priority
+    /**
+     * Gets the priority.
+     *
+     * @return the priority
+     */
     public short getPriority() {
 
         if (parent != null) {
@@ -395,22 +641,43 @@ public class Land extends DummyLand {
         return priority;
     }
 
+    /**
+     * Gets the genealogy.
+     *
+     * @return the genealogy
+     */
     public int getGenealogy() {
 
         return genealogy;
     }
 
+    /**
+     * Sets the priority.
+     *
+     * @param priority the new priority
+     */
     public void setPriority(short priority) {
 
         this.priority = priority;
         doSave();
     }
 
+    /**
+     * Gets the parent.
+     *
+     * @return the parent
+     */
     public Land getParent() {
 
         return parent;
     }
 
+    /**
+     * Gets the ancestor.
+     *
+     * @param gen the gen
+     * @return the ancestor
+     */
     public Land getAncestor(int gen) { // 1 parent, 2 grand-parent, 3 ...
 
         Land ancestor = this;
@@ -422,6 +689,12 @@ public class Land extends DummyLand {
         return ancestor;
     }
 
+    /**
+     * Checks if is descendants.
+     *
+     * @param land the land
+     * @return true, if is descendants
+     */
     public boolean isDescendants(Land land) {
 
         if (land == this) {
@@ -437,38 +710,70 @@ public class Land extends DummyLand {
         return false;
     }
 
+    /**
+     * Adds the child.
+     *
+     * @param land the land
+     */
     private void addChild(Land land) {
 
         children.put(land.uuid, land);
         doSave();
     }
 
+    /**
+     * Removes the child.
+     *
+     * @param uuid the uuid
+     */
     protected void removeChild(UUID uuid) {
 
         children.remove(uuid);
         doSave();
     }
 
+    /**
+     * Gets the child.
+     *
+     * @param uuid the uuid
+     * @return the child
+     */
     public Land getChild(UUID uuid) {
 
         return children.get(uuid);
     }
 
+    /**
+     * Gets the children.
+     *
+     * @return the children
+     */
     public Collection<Land> getChildren() {
 
         return children.values();
     }
 
+    /**
+     * Sets the auto save.
+     *
+     * @param autoSave the new auto save
+     */
     public void setAutoSave(boolean autoSave) {
 
         this.autoSave = autoSave;
     }
 
+    /**
+     * Force save.
+     */
     public void forceSave() {
 
         Factoid.getStorage().saveLand(this);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.lands.DummyLand#doSave()
+     */
     @Override
     protected void doSave() {
 
@@ -477,6 +782,14 @@ public class Land extends DummyLand {
         }
     }
 
+    /**
+     * Check land permission and inherit.
+     *
+     * @param player the player
+     * @param pt the pt
+     * @param onlyInherit the only inherit
+     * @return the boolean
+     */
     protected Boolean checkLandPermissionAndInherit(Player player, PermissionType pt, boolean onlyInherit) {
 
         Boolean permValue;
@@ -490,6 +803,13 @@ public class Land extends DummyLand {
         return Factoid.getLands().getPermissionInWorld(worldName, player, pt, true);
     }
 
+    /**
+     * Gets the land flag and inherit.
+     *
+     * @param ft the ft
+     * @param onlyInherit the only inherit
+     * @return the land flag and inherit
+     */
     protected LandFlag getLandFlagAndInherit(FlagType ft, boolean onlyInherit) {
 
         LandFlag flag;
@@ -503,29 +823,55 @@ public class Land extends DummyLand {
         return Factoid.getLands().getFlagInWorld(worldName, ft, true);
     }
 
+    /**
+     * Adds the money.
+     *
+     * @param money the money
+     */
     public void addMoney(double money) {
 
         this.money += money;
         doSave();
     }
 
+    /**
+     * Substract money.
+     *
+     * @param money the money
+     */
     public void substractMoney(double money) {
 
         this.money -= money;
         doSave();
     }
 
+    /**
+     * Gets the money.
+     *
+     * @return the money
+     */
     public double getMoney() {
 
         return money;
     }
 
+    /**
+     * Adds the player notify.
+     *
+     * @param player the player
+     */
     public void addPlayerNotify(PlayerContainerPlayer player) {
 
         playerNotify.add(player);
         doSave();
     }
 
+    /**
+     * Removes the player notify.
+     *
+     * @param player the player
+     * @return true, if successful
+     */
     public boolean removePlayerNotify(PlayerContainerPlayer player) {
 
         boolean ret = playerNotify.remove(player);
@@ -534,32 +880,67 @@ public class Land extends DummyLand {
         return ret;
     }
 
+    /**
+     * Checks if is player notify.
+     *
+     * @param player the player
+     * @return true, if is player notify
+     */
     public boolean isPlayerNotify(PlayerContainerPlayer player) {
 
         return playerNotify.contains(player);
     }
 
+    /**
+     * Gets the players notify.
+     *
+     * @return the players notify
+     */
     public Set<PlayerContainerPlayer> getPlayersNotify() {
 
         return playerNotify;
     }
 
+    /**
+     * Adds the player in land.
+     *
+     * @param player the player
+     */
     public void addPlayerInLand(Player player) {
 
         playersInLand.add(player);
     }
 
+    /**
+     * Removes the player in land.
+     *
+     * @param player the player
+     * @return true, if successful
+     */
     public boolean removePlayerInLand(Player player) {
 
         return playersInLand.remove(player);
     }
 
     // No parent verify
+    /**
+     * Checks if is player in land.
+     *
+     * @param player the player
+     * @return true, if is player in land
+     */
     public boolean isPlayerInLand(Player player) {
 
         return playersInLand.contains(player);
     }
 
+    /**
+     * Checks if is playerin land no vanish.
+     *
+     * @param player the player
+     * @param fromPlayer the from player
+     * @return true, if is playerin land no vanish
+     */
     public boolean isPlayerinLandNoVanish(Player player, Player fromPlayer) {
 
         if (playersInLand.contains(player)
@@ -578,11 +959,22 @@ public class Land extends DummyLand {
     }
 
     // No parent verify
+    /**
+     * Gets the players in land.
+     *
+     * @return the players in land
+     */
     public Set<Player> getPlayersInLand() {
 
         return playersInLand;
     }
 
+    /**
+     * Gets the players in land no vanish.
+     *
+     * @param fromPlayer the from player
+     * @return the players in land no vanish
+     */
     public Set<Player> getPlayersInLandNoVanish(Player fromPlayer) {
 
         Set<Player> playerList = new HashSet<Player>();
@@ -599,11 +991,22 @@ public class Land extends DummyLand {
         return playerList;
     }
 
+    /**
+     * Checks if is for sale.
+     *
+     * @return true, if is for sale
+     */
     public boolean isForSale() {
 
         return forSale;
     }
 
+    /**
+     * Sets the for sale.
+     *
+     * @param isForSale the is for sale
+     * @param salePrice the sale price
+     */
     public void setForSale(boolean isForSale, double salePrice) {
 
         forSale = isForSale;
@@ -615,16 +1018,33 @@ public class Land extends DummyLand {
         doSave();
     }
 
+    /**
+     * Gets the sale price.
+     *
+     * @return the sale price
+     */
     public double getSalePrice() {
 
         return salePrice;
     }
 
+    /**
+     * Checks if is for rent.
+     *
+     * @return true, if is for rent
+     */
     public boolean isForRent() {
 
         return forRent;
     }
 
+    /**
+     * Sets the for rent.
+     *
+     * @param rentPrice the rent price
+     * @param rentRenew the rent renew
+     * @param rentAutoRenew the rent auto renew
+     */
     public void setForRent(double rentPrice, int rentRenew, boolean rentAutoRenew) {
 
         forRent = true;
@@ -634,6 +1054,9 @@ public class Land extends DummyLand {
         doSave();
     }
 
+    /**
+     * Un set for rent.
+     */
     public void unSetForRent() {
 
         forRent = false;
@@ -643,26 +1066,51 @@ public class Land extends DummyLand {
         doSave();
     }
 
+    /**
+     * Gets the rent price.
+     *
+     * @return the rent price
+     */
     public double getRentPrice() {
 
         return rentPrice;
     }
 
+    /**
+     * Gets the rent renew.
+     *
+     * @return the rent renew
+     */
     public int getRentRenew() {
 
         return rentRenew;
     }
 
+    /**
+     * Gets the rent auto renew.
+     *
+     * @return the rent auto renew
+     */
     public boolean getRentAutoRenew() {
 
         return rentAutoRenew;
     }
 
+    /**
+     * Checks if is rented.
+     *
+     * @return true, if is rented
+     */
     public boolean isRented() {
 
         return rented;
     }
 
+    /**
+     * Sets the rented.
+     *
+     * @param tenant the new rented
+     */
     public void setRented(PlayerContainerPlayer tenant) {
 
         rented = true;
@@ -670,12 +1118,18 @@ public class Land extends DummyLand {
         updateRentedPayment(); // doSave() done in this method
     }
 
+    /**
+     * Update rented payment.
+     */
     public void updateRentedPayment() {
 
         lastPayment = new Timestamp(new Date().getTime());
         doSave();
     }
 
+    /**
+     * Un set rented.
+     */
     public void unSetRented() {
 
         rented = false;
@@ -684,16 +1138,32 @@ public class Land extends DummyLand {
         doSave();
     }
 
+    /**
+     * Gets the tenant.
+     *
+     * @return the tenant
+     */
     public PlayerContainerPlayer getTenant() {
 
         return tenant;
     }
 
+    /**
+     * Checks if is tenant.
+     *
+     * @param player the player
+     * @return true, if is tenant
+     */
     public boolean isTenant(Player player) {
 
         return tenant.hasAccess(player);
     }
 
+    /**
+     * Gets the last payment time.
+     *
+     * @return the last payment time
+     */
     public Timestamp getLastPaymentTime() {
 
         return lastPayment;

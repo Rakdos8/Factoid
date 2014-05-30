@@ -19,15 +19,23 @@ package me.tabinol.factoid.parameters;
 
 import java.util.TreeMap;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class Parameters.
  *
  * @author Tabinol
  */
 public class Parameters {
 
+    /** The permissions. */
     private final TreeMap<String, PermissionType> permissions;
+    
+    /** The flags. */
     private final TreeMap<String, FlagType> flags;
 
+    /**
+     * Instantiates a new parameters.
+     */
     public Parameters() {
 
         permissions = new TreeMap<String, PermissionType>();
@@ -42,6 +50,13 @@ public class Parameters {
         }
     }
 
+    /**
+     * Register permission type.
+     *
+     * @param permissionName the permission name
+     * @param defaultValue the default value
+     * @return the permission type
+     */
     public final PermissionType registerPermissionType(String permissionName, boolean defaultValue) {
 
         String permissionNameUpper = permissionName.toUpperCase();
@@ -52,6 +67,13 @@ public class Parameters {
         return permissionType;
     }
 
+    /**
+     * Register flag type.
+     *
+     * @param flagName the flag name
+     * @param flagValueType the flag value type
+     * @return the flag type
+     */
     public final FlagType registerFlagType(String flagName, FlagValueType flagValueType) {
 
         String flagNameUpper = flagName.toUpperCase();
@@ -62,6 +84,12 @@ public class Parameters {
         return flagType;
     }
 
+    /**
+     * Gets the permission type.
+     *
+     * @param permissionName the permission name
+     * @return the permission type
+     */
     public final PermissionType getPermissionType(String permissionName) {
 
         PermissionType pt = permissions.get(permissionName);
@@ -73,6 +101,12 @@ public class Parameters {
         }
     }
 
+    /**
+     * Gets the flag type.
+     *
+     * @param flagName the flag name
+     * @return the flag type
+     */
     public final FlagType getFlagType(String flagName) {
 
         FlagType ft = flags.get(flagName);
@@ -84,6 +118,12 @@ public class Parameters {
         }
     }
 
+    /**
+     * Gets the permission type no valid.
+     *
+     * @param permissionName the permission name
+     * @return the permission type no valid
+     */
     public final PermissionType getPermissionTypeNoValid(String permissionName) {
 
         PermissionType pt = permissions.get(permissionName);
@@ -96,6 +136,12 @@ public class Parameters {
         return pt;
     }
 
+    /**
+     * Gets the flag type no valid.
+     *
+     * @param flagName the flag name
+     * @return the flag type no valid
+     */
     public final FlagType getFlagTypeNoValid(String flagName) {
 
         FlagType ft = flags.get(flagName);

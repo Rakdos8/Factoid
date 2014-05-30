@@ -37,28 +37,72 @@ import me.tabinol.factoid.utilities.Log;
 import me.tabinol.factoid.utilities.MavenAppProperties;
 import org.bukkit.plugin.java.JavaPlugin;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Factoid.
+ */
 public class Factoid extends JavaPlugin {
 
+    /** The Command listener. */
     private OnCommand CommandListener;
+    
+    /** The player listener. */
     private PlayerListener playerListener;
+    
+    /** The world listener. */
     private WorldListener worldListener;
+    
+    /** The land listener. */
     private LandListener landListener;
+    
+    /** The maven app properties. */
     private static MavenAppProperties mavenAppProperties;
+    
+    /** The approve notif. */
     private static ApproveNotif approveNotif;
+    
+    /** The storage. */
     private static Storage storage = null;
+    
+    /** The log. */
     private static Log log;
+    
+    /** The this plugin. */
     private static Factoid thisPlugin;
+    
+    /** The conf. */
     private static Config conf;
+    
+    /** The player conf. */
     private static PlayerStaticConfig playerConf;
+    
+    /** The language. */
     private static Lang language;
+    
+    /** The factions. */
     private static Factions factions;
+    
+    /** The parameters. */
     private static Parameters parameters;
+    
+    /** The lands. */
     private static Lands lands;
+    
+    /** The version. */
     private static String version;
+    
+    /** The depend plugin. */
     private static DependPlugin dependPlugin;
+    
+    /** The player money. */
     private static PlayerMoney playerMoney;
+    
+    /** The Scoreboard. */
     private static ScoreBoard Scoreboard;
     
+    /* (non-Javadoc)
+     * @see org.bukkit.plugin.java.JavaPlugin#onEnable()
+     */
     @Override
     public void onEnable() {
 
@@ -97,6 +141,9 @@ public class Factoid extends JavaPlugin {
         log.write(Factoid.getLanguage().getMessage("ENABLE"));
     }
 
+    /**
+     * Reload.
+     */
     public void reload() {
 
         // No reload of Parameters to avoid Deregistering external parameters
@@ -115,6 +162,9 @@ public class Factoid extends JavaPlugin {
         approveNotif.runApproveNotifLater();
     }
 
+    /* (non-Javadoc)
+     * @see org.bukkit.plugin.java.JavaPlugin#onDisable()
+     */
     @Override
     public void onDisable() {
 
@@ -125,76 +175,151 @@ public class Factoid extends JavaPlugin {
         language.interrupt();
     }
 
+    /**
+     * Gets the this plugin.
+     *
+     * @return the this plugin
+     */
     public static Factoid getThisPlugin() {
 
         return thisPlugin;
     }
 
+    /**
+     * Gets the conf.
+     *
+     * @return the conf
+     */
     public static Config getConf() {
 
         return conf;
     }
 
+    /**
+     * Gets the player conf.
+     *
+     * @return the player conf
+     */
     public static PlayerStaticConfig getPlayerConf() {
 
         return playerConf;
     }
 
+    /**
+     * Gets the language.
+     *
+     * @return the language
+     */
     public static Lang getLanguage() {
 
         return language;
     }
 
+    /**
+     * Gets the scoreboard.
+     *
+     * @return the scoreboard
+     */
     public static ScoreBoard getScoreboard() {
 
         return Scoreboard;
     }
 
+    /**
+     * Gets the log.
+     *
+     * @return the log
+     */
     public static Log getLog() {
 
         return log;
     }
 
+    /**
+     * Gets the factions.
+     *
+     * @return the factions
+     */
     public static Factions getFactions() {
 
         return factions;
     }
     
+    /**
+     * Gets the parameters.
+     *
+     * @return the parameters
+     */
     public static Parameters getParameters() {
         
         return parameters;
     }
 
+    /**
+     * Gets the lands.
+     *
+     * @return the lands
+     */
     public static Lands getLands() {
 
         return lands;
     }
 
+    /**
+     * Gets the storage.
+     *
+     * @return the storage
+     */
     public static Storage getStorage() {
 
         return storage;
     }
 
+    /**
+     * Gets the version.
+     *
+     * @return the version
+     */
     public static String getVersion() {
 
         return version;
     }
 
+    /**
+     * Gets the depend plugin.
+     *
+     * @return the depend plugin
+     */
     public static DependPlugin getDependPlugin() {
 
         return dependPlugin;
     }
 
+    /**
+     * Gets the approve notif.
+     *
+     * @return the approve notif
+     */
     public static ApproveNotif getApproveNotif() {
 
         return approveNotif;
     }
 
+    /**
+     * Gets the maven app properties.
+     *
+     * @return the maven app properties
+     */
     public static MavenAppProperties getMavenAppProperties() {
 
         return mavenAppProperties;
     }
 
+    /**
+     * Gets the player money.
+     *
+     * @return the player money
+     */
     public static PlayerMoney getPlayerMoney() {
 
         return playerMoney;

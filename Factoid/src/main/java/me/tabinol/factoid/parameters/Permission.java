@@ -19,12 +19,28 @@ package me.tabinol.factoid.parameters;
 
 import org.bukkit.ChatColor;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Permission.
+ */
 public class Permission {
 
+    /** The perm type. */
     PermissionType permType;
+    
+    /** The value. */
     boolean value;
+    
+    /** The heritable. */
     boolean heritable;
 
+    /**
+     * Instantiates a new permission.
+     *
+     * @param permType the perm type
+     * @param value the value
+     * @param heritable the heritable
+     */
     public Permission(final PermissionType permType, final boolean value, final boolean heritable) {
 
         this.permType = permType;
@@ -32,16 +48,31 @@ public class Permission {
         this.heritable = heritable;
     }
 
+    /**
+     * Gets the perm type.
+     *
+     * @return the perm type
+     */
     public PermissionType getPermType() {
 
         return permType;
     }
 
+    /**
+     * Gets the value.
+     *
+     * @return the value
+     */
     public boolean getValue() {
 
         return value;
     }
 
+    /**
+     * Gets the value print.
+     *
+     * @return the value print
+     */
     public final String getValuePrint() {
 
         if (value) {
@@ -51,11 +82,19 @@ public class Permission {
         }
     }
 
+    /**
+     * Checks if is heritable.
+     *
+     * @return true, if is heritable
+     */
     public boolean isHeritable() {
 
         return heritable;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
 

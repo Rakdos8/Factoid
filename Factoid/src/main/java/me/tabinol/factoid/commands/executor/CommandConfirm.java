@@ -25,13 +25,26 @@ import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.exceptions.FactoidLandException;
 import org.bukkit.ChatColor;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommandConfirm.
+ */
 public class CommandConfirm extends CommandExec {
 
+    /**
+     * Instantiates a new command confirm.
+     *
+     * @param entity the entity
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandConfirm(CommandEntities entity) throws FactoidCommandException {
 
         super(entity, false, false);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+     */
     @Override
     public void commandExecute() throws FactoidCommandException {
 

@@ -25,12 +25,32 @@ import me.tabinol.factoid.utilities.Calculate;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CuboidArea.
+ */
 public class CuboidArea implements Comparable<CuboidArea> {
 
+    /** The world name. */
     private String worldName;
+    
+    /** The z2. */
     private int x1, y1, z1, x2, y2, z2;
+    
+    /** The land. */
     private Land land = null;
 
+    /**
+     * Instantiates a new cuboid area.
+     *
+     * @param worldName the world name
+     * @param x1 the x1
+     * @param y1 the y1
+     * @param z1 the z1
+     * @param x2 the x2
+     * @param y2 the y2
+     * @param z2 the z2
+     */
     public CuboidArea(String worldName, int x1, int y1, int z1, int x2, int y2, int z2) {
 
         this.worldName = worldName.toLowerCase();
@@ -42,6 +62,12 @@ public class CuboidArea implements Comparable<CuboidArea> {
         this.z2 = Calculate.greaterInt(z1, z2);
     }
 
+    /**
+     * Equals.
+     *
+     * @param area2 the area2
+     * @return true, if successful
+     */
     public boolean equals(CuboidArea area2) {
 
         return worldName.equalsIgnoreCase(area2.worldName)
@@ -49,11 +75,19 @@ public class CuboidArea implements Comparable<CuboidArea> {
                 && x2 == area2.x2 && y2 == area2.y2 && z2 == area2.z2;
     }
 
+    /**
+     * Copy of.
+     *
+     * @return the cuboid area
+     */
     public CuboidArea copyOf() {
 
         return new CuboidArea(worldName, x1, y1, z1, x2, y2, z2);
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
     @Override
     public int compareTo(CuboidArea t) {
 
@@ -100,17 +134,30 @@ public class CuboidArea implements Comparable<CuboidArea> {
         return 0;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
 
         return worldName + ":" + x1 + ":" + y1 + ":" + z1 + ":" + x2 + ":" + y2 + ":" + z2;
     }
 
+    /**
+     * Gets the prints the.
+     *
+     * @return the prints the
+     */
     public String getPrint() {
 
-        return "(" + x1 + ", " + y1 + ", " + z1 + ")-(" + x2 + ", " + y2 + ", " + z2 + ")";
+        return worldName + ":(" + x1 + ", " + y1 + ", " + z1 + ")-(" + x2 + ", " + y2 + ", " + z2 + ")";
     }
 
+    /**
+     * Gets the key.
+     *
+     * @return the key
+     */
     public Integer getKey() {
 
         if (land != null) {
@@ -120,11 +167,22 @@ public class CuboidArea implements Comparable<CuboidArea> {
         return null;
     }
 
+    /**
+     * Gets the total block.
+     *
+     * @return the total block
+     */
     public long getTotalBlock() {
         
         return (x2 - x1 + 1) * (y2 - y1 + 1) * (z2 - z1 + 1);
     }
     
+    /**
+     * Checks if is collision.
+     *
+     * @param area2 the area2
+     * @return true, if is collision
+     */
     public boolean isCollision(CuboidArea area2) {
 
         return (worldName.equalsIgnoreCase(area2.worldName)
@@ -136,6 +194,12 @@ public class CuboidArea implements Comparable<CuboidArea> {
                 || Calculate.isInInterval(area2.z1, z1, z2)));
     }
 
+    /**
+     * Checks if is location inside.
+     *
+     * @param loc the loc
+     * @return true, if is location inside
+     */
     public boolean isLocationInside(Location loc) {
 
         return loc.getWorld().getName().equalsIgnoreCase(worldName)
@@ -330,91 +394,182 @@ public class CuboidArea implements Comparable<CuboidArea> {
         return areaList;
     }
     
+    /**
+     * Sets the land.
+     *
+     * @param land the new land
+     */
     public final void setLand(Land land) {
 
         this.land = land;
     }
 
+    /**
+     * Sets the world name.
+     *
+     * @param worldName the new world name
+     */
     public void setWorldName(String worldName) {
 
         this.worldName = worldName.toLowerCase();
     }
 
+    /**
+     * Sets the x1.
+     *
+     * @param x1 the new x1
+     */
     public void setX1(int x1) {
 
         this.x1 = x1;
     }
 
+    /**
+     * Sets the y1.
+     *
+     * @param y1 the new y1
+     */
     public void setY1(int y1) {
 
         this.y1 = y1;
     }
 
+    /**
+     * Sets the z1.
+     *
+     * @param z1 the new z1
+     */
     public void setZ1(int z1) {
 
         this.z1 = z1;
     }
 
+    /**
+     * Sets the x2.
+     *
+     * @param x2 the new x2
+     */
     public void setX2(int x2) {
 
         this.x2 = x2;
     }
 
+    /**
+     * Sets the y2.
+     *
+     * @param y2 the new y2
+     */
     public void setY2(int y2) {
 
         this.y2 = y2;
     }
 
+    /**
+     * Sets the z2.
+     *
+     * @param z2 the new z2
+     */
     public void setZ2(int z2) {
 
         this.z2 = z2;
     }
 
+    /**
+     * Gets the land.
+     *
+     * @return the land
+     */
     public Land getLand() {
 
         return land;
     }
 
+    /**
+     * Gets the world name.
+     *
+     * @return the world name
+     */
     public String getWorldName() {
 
         return worldName;
     }
 
+    /**
+     * Gets the word.
+     *
+     * @return the word
+     */
     public World getWord() {
 
         return Factoid.getThisPlugin().getServer().getWorld(worldName);
     }
 
+    /**
+     * Gets the x1.
+     *
+     * @return the x1
+     */
     public int getX1() {
 
         return x1;
     }
 
+    /**
+     * Gets the y1.
+     *
+     * @return the y1
+     */
     public int getY1() {
 
         return y1;
     }
 
+    /**
+     * Gets the z1.
+     *
+     * @return the z1
+     */
     public int getZ1() {
 
         return z1;
     }
 
+    /**
+     * Gets the x2.
+     *
+     * @return the x2
+     */
     public int getX2() {
 
         return x2;
     }
 
+    /**
+     * Gets the y2.
+     *
+     * @return the y2
+     */
     public int getY2() {
 
         return y2;
     }
 
+    /**
+     * Gets the z2.
+     *
+     * @return the z2
+     */
     public int getZ2() {
 
         return z2;
     }
 
+    /**
+     * Gets the from string.
+     *
+     * @param str the str
+     * @return the from string
+     */
     public static CuboidArea getFromString(String str) {
 
         String[] multiStr = str.split(":");

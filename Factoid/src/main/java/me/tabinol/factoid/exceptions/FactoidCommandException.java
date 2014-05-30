@@ -21,8 +21,20 @@ import me.tabinol.factoid.Factoid;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class FactoidCommandException.
+ */
 public class FactoidCommandException extends Exception {
     
+    /**
+     * Instantiates a new factoid command exception.
+     *
+     * @param logMsg the log msg
+     * @param sender the sender
+     * @param langMsg the lang msg
+     * @param param the param
+     */
     public FactoidCommandException(String logMsg, CommandSender sender, String langMsg, String... param) {
         
         super(logMsg);

@@ -17,10 +17,14 @@
  */
 package me.tabinol.factoid.selection.region;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface PlayerMoveListen.
+ */
 public interface PlayerMoveListen {
     
     /**
-     * Move the visual selection
+     * Move the visual selection.
      */
     public void playerMove();
 }

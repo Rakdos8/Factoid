@@ -21,15 +21,37 @@ import java.util.ArrayList;
 import me.tabinol.factoid.utilities.StringChanges;
 import org.bukkit.ChatColor;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LandFlag.
+ */
 public class LandFlag {
     
+    /** The flag type. */
     private FlagType flagType;
+    
+    /** The value boolean. */
     private boolean valueBoolean = false;
+    
+    /** The value double. */
     private double valueDouble = 0;
+    
+    /** The value string. */
     private String valueString = null;
+    
+    /** The value string list. */
     private String[] valueStringList = null;
+    
+    /** The heritable. */
     private boolean heritable;
     
+    /**
+     * Instantiates a new land flag.
+     *
+     * @param flagType the flag type
+     * @param valueBoolean the value boolean
+     * @param heritable the heritable
+     */
     public LandFlag(final FlagType flagType, final boolean valueBoolean, final boolean heritable) {
         
         this.flagType = flagType;
@@ -37,6 +59,13 @@ public class LandFlag {
         this.heritable = heritable;
     }
 
+    /**
+     * Instantiates a new land flag.
+     *
+     * @param flagType the flag type
+     * @param valueDouble the value double
+     * @param heritable the heritable
+     */
     public LandFlag(final FlagType flagType, final double valueDouble, final boolean heritable) {
         
         this.flagType = flagType;
@@ -44,6 +73,13 @@ public class LandFlag {
         this.heritable = heritable;
     }
 
+    /**
+     * Instantiates a new land flag.
+     *
+     * @param flagType the flag type
+     * @param valueString the value string
+     * @param heritable the heritable
+     */
     public LandFlag(final FlagType flagType, final String valueString, final boolean heritable) {
         
         this.flagType = flagType;
@@ -79,6 +115,13 @@ public class LandFlag {
         this.heritable = heritable;
     }
 
+    /**
+     * Instantiates a new land flag.
+     *
+     * @param flagType the flag type
+     * @param valueStringList the value string list
+     * @param heritable the heritable
+     */
     public LandFlag(final FlagType flagType, final String[] valueStringList, final boolean heritable) {
         
         this.flagType = flagType;
@@ -86,31 +129,62 @@ public class LandFlag {
         this.heritable = heritable;
     }
 
+    /**
+     * Equals.
+     *
+     * @param lf2 the lf2
+     * @return true, if successful
+     */
     public boolean equals(LandFlag lf2) {
         
         return flagType == lf2.flagType;
     }
     
+    /**
+     * Gets the flag type.
+     *
+     * @return the flag type
+     */
     public final FlagType getFlagType() {
         
         return flagType;
     }
     
+    /**
+     * Gets the value boolean.
+     *
+     * @return the value boolean
+     */
     public final boolean getValueBoolean() {
         
         return valueBoolean;
     }
 
+    /**
+     * Gets the value double.
+     *
+     * @return the value double
+     */
     public final double getValueDouble() {
         
         return valueDouble;
     }
 
+    /**
+     * Gets the value string.
+     *
+     * @return the value string
+     */
     public final String getValueString() {
         
         return valueString;
     }
     
+    /**
+     * Gets the value print.
+     *
+     * @return the value print
+     */
     public final String getValuePrint() {
 
         if(flagType.getFlagValueType() == FlagValueType.BOOLEAN) {
@@ -137,16 +211,29 @@ public class LandFlag {
         return null;
     }
     
+    /**
+     * Gets the value string list.
+     *
+     * @return the value string list
+     */
     public final String[] getValueStringList() {
         
         return valueStringList;
     }
     
+    /**
+     * Checks if is heritable.
+     *
+     * @return true, if is heritable
+     */
     public boolean isHeritable() {
         
         return heritable;
     }
     
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
         

@@ -21,20 +21,28 @@ import com.earth2me.essentials.Essentials;
 import me.tabinol.factoid.Factoid;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
 /**
- * Essentials Functions
- * 
+ * Essentials Functions.
+ *
  * @author Tabinol
  */
 public class VanishEssentials implements Vanish {
     
+    /** The essentials. */
     private final Essentials essentials;
     
+    /**
+     * Instantiates a new vanish essentials.
+     */
     public VanishEssentials() {
         
         essentials = (Essentials)Factoid.getDependPlugin().getEssentials();
     }
     
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.config.vanish.Vanish#isVanished(org.bukkit.entity.Player)
+     */
     @Override
     public boolean isVanished(Player player) {
         

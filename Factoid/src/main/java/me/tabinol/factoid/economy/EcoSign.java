@@ -28,19 +28,33 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
 /**
- * Represent the economy sign
+ * Represent the economy sign.
  *
  * @author Tabinol
  */
 public class EcoSign {
 
+    /** The land. */
     Land land;
+    
+    /** The location. */
     Location location;
+    
+    /** The facing. */
     BlockFace facing;
+    
+    /** The is wall sign. */
     boolean isWallSign;
 
     // Create from player position
+    /**
+     * Instantiates a new eco sign.
+     *
+     * @param land the land
+     * @param player the player
+     */
     public EcoSign(Land land, Player player) {
 
         // ************* TO DO ***************
@@ -49,6 +63,14 @@ public class EcoSign {
     
     
     // Create from configuration
+    /**
+     * Instantiates a new eco sign.
+     *
+     * @param land the land
+     * @param location the location
+     * @param facing the facing
+     * @param isWallSign the is wall sign
+     */
     public EcoSign(Land land, Location location, BlockFace facing, boolean isWallSign) {
 
         this.location = location;
@@ -56,36 +78,72 @@ public class EcoSign {
         this.isWallSign = isWallSign;
     }
 
+    /**
+     * Gets the location.
+     *
+     * @return the location
+     */
     public Location getLocation() {
 
         return location;
     }
 
+    /**
+     * Sets the location.
+     *
+     * @param location the new location
+     */
     public void setLocation(Location location) {
 
         this.location = location;
     }
 
+    /**
+     * Gets the facing.
+     *
+     * @return the facing
+     */
     public BlockFace getFacing() {
 
         return facing;
     }
 
+    /**
+     * Sets the facing.
+     *
+     * @param facing the new facing
+     */
     public void setFacing(BlockFace facing) {
 
         this.facing = facing;
     }
 
+    /**
+     * Checks if is wall sign.
+     *
+     * @return true, if is wall sign
+     */
     public boolean isWallSign() {
 
         return isWallSign;
     }
 
+    /**
+     * Sets the checks if is wall sign.
+     *
+     * @param isWallSign the new checks if is wall sign
+     */
     public void setIsWallSign(boolean isWallSign) {
 
         this.isWallSign = isWallSign;
     }
 
+    /**
+     * Creates the sign for sale.
+     *
+     * @param price the price
+     * @return true, if successful
+     */
     public boolean createSignForSale(double price) {
 
         String[] lines = new String[4];
@@ -97,6 +155,15 @@ public class EcoSign {
         return createSign(lines);
     }
 
+    /**
+     * Creates the sign for rent.
+     *
+     * @param price the price
+     * @param renew the renew
+     * @param autoRenew the auto renew
+     * @param tenantName the tenant name
+     * @return true, if successful
+     */
     public boolean createSignForRent(double price, int renew, boolean autoRenew, String tenantName) {
 
         String[] lines = new String[4];
@@ -120,6 +187,12 @@ public class EcoSign {
         return createSign(lines);
     }
 
+    /**
+     * Creates the sign.
+     *
+     * @param lines the lines
+     * @return true, if successful
+     */
     public boolean createSign(String[] lines) {
 
         World world = land.getWorld();
@@ -154,6 +227,9 @@ public class EcoSign {
         return true;
     }
 
+    /**
+     * Removes the sign.
+     */
     public void removeSign() {
 
         Block block = land.getWorld().getBlockAt(location);

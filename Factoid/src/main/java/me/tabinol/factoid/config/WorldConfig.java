@@ -31,14 +31,26 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+// TODO: Auto-generated Javadoc
 // Started by Lands.Class
 // Load world config and lands default
+/**
+ * The Class WorldConfig.
+ */
 public class WorldConfig {
 
+    /** The this plugin. */
     private final Factoid thisPlugin;
+    
+    /** The land default. */
     private final FileConfiguration landDefault;
+    
+    /** The world config. */
     private final FileConfiguration worldConfig;
 
+    /**
+     * Instantiates a new world config.
+     */
     public WorldConfig() {
 
         thisPlugin = Factoid.getThisPlugin();
@@ -54,6 +66,11 @@ public class WorldConfig {
         worldConfig = YamlConfiguration.loadConfiguration(new File(thisPlugin.getDataFolder(), "worldconfig.yml"));
     }
 
+    /**
+     * Gets the land outside area.
+     *
+     * @return the land outside area
+     */
     public TreeMap<String, DummyLand> getLandOutsideArea() {
 
         TreeMap<String, DummyLand> landList = new TreeMap<String, DummyLand>();
@@ -69,12 +86,26 @@ public class WorldConfig {
         return landList;
     }
 
+    /**
+     * Gets the land default conf.
+     *
+     * @return the land default conf
+     */
     public DummyLand getLandDefaultConf() {
 
         Factoid.getLog().write("Create default conf for lands");
         return landCreate(GLOBAL, landDefault, "ContainerPermissions", "ContainerFlags");
     }
 
+    /**
+     * Land create.
+     *
+     * @param worldName the world name
+     * @param fc the fc
+     * @param perms the perms
+     * @param flags the flags
+     * @return the dummy land
+     */
     private DummyLand landCreate(String worldName, FileConfiguration fc, String perms, String flags) {
 
         DummyLand dl = new DummyLand(worldName);

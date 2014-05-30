@@ -23,13 +23,30 @@ import java.util.UUID;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Faction.
+ */
 public class Faction {
 
+    /** The name. */
     private String name;
+    
+    /** The uuid. */
     private final UUID uuid;
+    
+    /** The players. */
     private TreeSet<PlayerContainerPlayer> players;
+    
+    /** The auto save. */
     private boolean autoSave = true;
 
+    /**
+     * Instantiates a new faction.
+     *
+     * @param name the name
+     * @param uuid the uuid
+     */
     public Faction(String name, UUID uuid) {
 
         this.name = name.toLowerCase();
@@ -38,16 +55,31 @@ public class Faction {
         doSave();
     }
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     public String getName() {
 
         return name;
     }
     
+    /**
+     * Gets the uuid.
+     *
+     * @return the uuid
+     */
     public UUID getUUID() {
         
         return uuid;
     }
 
+    /**
+     * Adds the player.
+     *
+     * @param player the player
+     */
     public void addPlayer(PlayerContainerPlayer player) {
 
         players.add(player);
@@ -55,6 +87,12 @@ public class Faction {
         Factoid.getLog().write(player.toString() + " is added in faction " + name);
     }
 
+    /**
+     * Removes the player.
+     *
+     * @param player the player
+     * @return true, if successful
+     */
     public boolean removePlayer(PlayerContainerPlayer player) {
 
         if (players.remove(player)) {
@@ -66,27 +104,49 @@ public class Faction {
         return false;
     }
 
+    /**
+     * Checks if is player in list.
+     *
+     * @param player the player
+     * @return true, if is player in list
+     */
     public boolean isPlayerInList(PlayerContainerPlayer player) {
 
         return players.contains(player);
     }
 
+    /**
+     * Gets the players.
+     *
+     * @return the players
+     */
     public Collection<PlayerContainerPlayer> getPlayers() {
 
         return players;
     }
 
+    /**
+     * Sets the auto save.
+     *
+     * @param autoSave the new auto save
+     */
     public void setAutoSave(boolean autoSave) {
         
         this.autoSave = autoSave;
     }
     
+    /**
+     * Force save.
+     */
     public void forceSave() {
         
         Factoid.getStorage().saveFaction(this);
         Factoid.getLog().write("Faction " + name + " is saved.");
     }
     
+    /**
+     * Do save.
+     */
     private void doSave() {
         
         if(autoSave) {

@@ -26,18 +26,45 @@ import java.util.UUID;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.FileLoadException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ConfLoader.
+ */
 public class ConfLoader {
 
+    /** The version. */
     private int version;
+    
+    /** The uuid. */
     private UUID uuid;
+    
+    /** The name. */
     private String name;
+    
+    /** The param. */
     private String param = null;
+    
+    /** The value. */
     private String value = null;
+    
+    /** The file. */
     private final File file;
+    
+    /** The br. */
     private final BufferedReader br;
+    
+    /** The act line. */
     private String actLine = null; // Line read
+    
+    /** The act line nb. */
     private int actLineNb = 0; // Line nb
 
+    /**
+     * Instantiates a new conf loader.
+     *
+     * @param file the file
+     * @throws FileLoadException the file load exception
+     */
     public ConfLoader(File file) throws FileLoadException {
 
         this.file = file;
@@ -57,12 +84,22 @@ public class ConfLoader {
         readName();
     }
 
+    /**
+     * Read version.
+     *
+     * @throws FileLoadException the file load exception
+     */
     private void readVersion() throws FileLoadException {
 
         readParam();
         version = getValueInt();
     }
     
+    /**
+     * Read uuid.
+     *
+     * @throws FileLoadException the file load exception
+     */
     private void readUUID() throws FileLoadException {
         
         readParam();
@@ -73,6 +110,11 @@ public class ConfLoader {
         }
     }
 
+    /**
+     * Read name.
+     *
+     * @throws FileLoadException the file load exception
+     */
     private void readName() throws FileLoadException {
 
         readParam();
@@ -80,6 +122,12 @@ public class ConfLoader {
 
     }
 
+    /**
+     * Readln.
+     *
+     * @return the string
+     * @throws FileLoadException the file load exception
+     */
     public String readln() throws FileLoadException {
 
         String lrt;
@@ -103,6 +151,12 @@ public class ConfLoader {
         return lrt;
     }
 
+    /**
+     * Read param.
+     *
+     * @return true, if successful
+     * @throws FileLoadException the file load exception
+     */
     public boolean readParam() throws FileLoadException {
 
         String str = readln();
@@ -126,16 +180,32 @@ public class ConfLoader {
         return true;
     }
 
+    /**
+     * Gets the param name.
+     *
+     * @return the param name
+     */
     public String getParamName() {
 
         return param;
     }
 
+    /**
+     * Gets the value string.
+     *
+     * @return the value string
+     */
     public String getValueString() {
 
         return value;
     }
 
+    /**
+     * Gets the value int.
+     *
+     * @return the value int
+     * @throws FileLoadException the file load exception
+     */
     public int getValueInt() throws FileLoadException {
 
         try {
@@ -145,6 +215,12 @@ public class ConfLoader {
         }
     }
 
+    /**
+     * Gets the value short.
+     *
+     * @return the value short
+     * @throws FileLoadException the file load exception
+     */
     public short getValueShort() throws FileLoadException {
 
         try {
@@ -154,6 +230,12 @@ public class ConfLoader {
         }
     }
 
+    /**
+     * Gets the value double.
+     *
+     * @return the value double
+     * @throws FileLoadException the file load exception
+     */
     public double getValueDouble() throws FileLoadException {
 
         try {
@@ -163,43 +245,84 @@ public class ConfLoader {
         }
     }
 
+    /**
+     * Gets the next string.
+     *
+     * @return the next string
+     * @throws FileLoadException the file load exception
+     */
     public String getNextString() throws FileLoadException {
 
         return readln();
     }
 
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     public String getName() {
 
         return name;
     }
 
+    /**
+     * Gets the version.
+     *
+     * @return the version
+     */
     public int getVersion() {
 
         return version;
     }
     
+    /**
+     * Gets the uuid.
+     *
+     * @return the uuid
+     */
     public UUID getUUID() {
         
         return uuid;
     }
 
+    /**
+     * Gets the file name.
+     *
+     * @return the file name
+     */
     public String getFileName() {
 
         return file.getName();
     }
 
     // Used for errors
+    /**
+     * Gets the line nb.
+     *
+     * @return the line nb
+     */
     public int getLineNb() {
 
         return actLineNb;
     }
 
     // Used for errors
+    /**
+     * Gets the line.
+     *
+     * @return the line
+     */
     public String getLine() {
 
         return actLine;
     }
 
+    /**
+     * Close.
+     *
+     * @throws FileLoadException the file load exception
+     */
     public void close() throws FileLoadException {
         try {
             br.close();

@@ -24,15 +24,26 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ApproveNotif.
+ */
 public class ApproveNotif extends FactoidRunnable {
 
+    /** The Constant PERM_APPROVE. */
     public static final String PERM_APPROVE = "factoid.collisionapprove";
 
+    /**
+     * Instantiates a new approve notif.
+     */
     public ApproveNotif() {
         
         super();
     }
 
+    /**
+     * Run approve notif later.
+     */
     public void runApproveNotifLater() {
 
         long notifyTime = Factoid.getConf().getApproveNotifyTime();
@@ -44,6 +55,9 @@ public class ApproveNotif extends FactoidRunnable {
 
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Runnable#run()
+     */
     @Override
     public void run() {
 
@@ -56,17 +70,33 @@ public class ApproveNotif extends FactoidRunnable {
         }
     }
 
+    /**
+     * Notify for approve.
+     *
+     * @param landName the land name
+     * @param playerName the player name
+     */
     public void notifyForApprove(String landName, String playerName) {
 
         notifyPlayer(Factoid.getLanguage().getMessage("COLLISION.SHOW.NOTIFYLAND", landName, playerName + ChatColor.GREEN));
     }
 
+    /**
+     * Notify list approve.
+     *
+     * @param lstCount the lst count
+     */
     private void notifyListApprove(int lstCount) {
 
         notifyPlayer(Factoid.getLanguage().getMessage("COLLISION.SHOW.NOTIFY", lstCount + ""));
     }
 
     // Notify with a message
+    /**
+     * Notify player.
+     *
+     * @param message the message
+     */
     private void notifyPlayer(String message) {
 
         for (Player players : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {

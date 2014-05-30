@@ -20,15 +20,42 @@ package me.tabinol.factoid.storage;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.Land;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface StorageInt.
+ */
 public interface StorageInt {
     
+    /**
+     * Load all.
+     */
     public void loadAll();
     
+    /**
+     * Save land.
+     *
+     * @param land the land
+     */
     public void saveLand(Land land);
     
+    /**
+     * Removes the land.
+     *
+     * @param land the land
+     */
     public void removeLand(Land land);
 
+    /**
+     * Save faction.
+     *
+     * @param faction the faction
+     */
     public void saveFaction(Faction faction);
     
+    /**
+     * Removes the faction.
+     *
+     * @param faction the faction
+     */
     public void removeFaction(Faction faction);
 }

@@ -26,16 +26,33 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ScoreBoard.
+ */
 public class ScoreBoard extends Thread{
     
+    /** The manager. */
     private ScoreboardManager manager;
+    
+    /** The Scoreboard list. */
     private Map<Player,Scoreboard> ScoreboardList = new HashMap<Player,Scoreboard>();
     
+    /**
+     * Instantiates a new score board.
+     */
     public ScoreBoard(){
         super();
         this.manager = Factoid.getThisPlugin().getServer().getScoreboardManager();
     }
     
+    /**
+     * Send scoreboard.
+     *
+     * @param playerlist the playerlist
+     * @param player the player
+     * @param LandName the land name
+     */
     public void sendScoreboard(HashSet<Player> playerlist, Player player, String LandName){
         resetScoreboard(player);
         Scoreboard scoreboard = manager.getNewScoreboard();
@@ -50,15 +67,31 @@ public class ScoreBoard extends Thread{
         player.setScoreboard(scoreboard);
     }
     
+    /**
+     * Gets the scoreboard.
+     *
+     * @param player the player
+     * @return the scoreboard
+     */
     public Scoreboard getScoreboard(Player player){
             return ScoreboardList.get(player);
     }
     
+    /**
+     * Gets the scoreboard manager.
+     *
+     * @return the scoreboard manager
+     */
     public ScoreboardManager getScoreboardManager(){
         return manager;
     }
 
     
+    /**
+     * Reset scoreboard.
+     *
+     * @param player the player
+     */
     public void resetScoreboard(Player player){
         if(ScoreboardList.containsKey(player)){
             ScoreboardList.get(player).getObjective("land").unregister();

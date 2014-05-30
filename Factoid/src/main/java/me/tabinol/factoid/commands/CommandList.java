@@ -17,43 +17,110 @@
  */
 package me.tabinol.factoid.commands;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Enum CommandList.
+ */
 public enum CommandList {
 
+    /** The reload. */
     RELOAD,
+    
+    /** The select. */
     SELECT,
+    
+    /** The expand. */
     EXPAND,
+    
+    /** The create. */
     CREATE,
+    
+    /** The area. */
     AREA,
+    
+    /** The owner. */
     OWNER,
+    
+    /** The flag. */
     FLAG,
+    
+    /** The permission. */
     PERMISSION,
+    
+    /** The resident. */
     RESIDENT,
+    
+    /** The ban. */
     BAN,
+    
+    /** The remove. */
     REMOVE,
+    
+    /** The confirm. */
     CONFIRM,
+    
+    /** The cancel. */
     CANCEL,
+    
+    /** The info. */
     INFO,
+    
+    /** The adminmod. */
     ADMINMOD,
+    
+    /** The page. */
     PAGE,
+    
+    /** The default. */
     DEFAULT,
+    
+    /** The priority. */
     PRIORITY,
+    
+    /** The approve. */
     APPROVE,
+    
+    /** The rename. */
     RENAME,
+    
+    /** The help. */
     HELP,
+    
+    /** The kick. */
     KICK,
+    
+    /** The who. */
     WHO,
+    
+    /** The notify. */
     NOTIFY,
+    
+    /** The money. */
     MONEY,
+    
+    /** The list. */
     LIST;
 
     // If a command has a second name
+    /**
+     * The Enum SecondName.
+     */
     public enum SecondName {
 
+        /** The current. */
         CURRENT(INFO),
+        
+        /** The here. */
         HERE(INFO);
 
+        /** The main command. */
         public final CommandList mainCommand;
 
+        /**
+         * Instantiates a new second name.
+         *
+         * @param mainCommand the main command
+         */
         SecondName(CommandList mainCommand) {
 
             this.mainCommand = mainCommand;

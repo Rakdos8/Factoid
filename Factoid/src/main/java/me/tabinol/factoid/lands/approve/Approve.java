@@ -27,17 +27,48 @@ import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Approve.
+ */
 public class Approve {
     
+    /** The action. */
     private final LandAction action;
+    
+    /** The land name. */
     private final String landName;
+    
+    /** The removed area id. */
     private final int removedAreaId;
+    
+    /** The new area. */
     private final CuboidArea newArea;
+    
+    /** The owner. */
     private final PlayerContainer owner;
+    
+    /** The parent. */
     private final Land parent;
+    
+    /** The price. */
     private final double price;
+    
+    /** The date time. */
     private final Calendar dateTime;
     
+    /**
+     * Instantiates a new approve.
+     *
+     * @param landName the land name
+     * @param action the action
+     * @param removedAreaId the removed area id
+     * @param newArea the new area
+     * @param owner the owner
+     * @param parent the parent
+     * @param price the price
+     * @param dateTime the date time
+     */
     public Approve(String landName, LandAction action, int removedAreaId, 
             CuboidArea newArea, PlayerContainer owner, Land parent, double price,
             Calendar dateTime) {
@@ -53,46 +84,89 @@ public class Approve {
         
     }
 
+    /**
+     * Gets the action.
+     *
+     * @return the action
+     */
     public LandAction getAction() {
         
         return action;
     }
     
+    /**
+     * Gets the land name.
+     *
+     * @return the land name
+     */
     public String getLandName() {
         
         return landName;
     }
     
+    /**
+     * Gets the removed area id.
+     *
+     * @return the removed area id
+     */
     public int getRemovedAreaId() {
         
         return removedAreaId;
     }
     
+    /**
+     * Gets the new area.
+     *
+     * @return the new area
+     */
     public CuboidArea getNewArea() {
         
         return newArea;
     }
     
+    /**
+     * Gets the owner.
+     *
+     * @return the owner
+     */
     public PlayerContainer getOwner() {
         
         return owner;
     }
     
+    /**
+     * Gets the parent.
+     *
+     * @return the parent
+     */
     public Land getParent() {
         
         return parent;
     }
     
+    /**
+     * Gets the price.
+     *
+     * @return the price
+     */
     public double getPrice() {
         
         return price;
     }
     
+    /**
+     * Gets the date time.
+     *
+     * @return the date time
+     */
     public Calendar getDateTime() {
         
         return dateTime;
     }
     
+    /**
+     * Creates the action.
+     */
     public void createAction() {
         
         if(action == LandAction.AREA_ADD) {

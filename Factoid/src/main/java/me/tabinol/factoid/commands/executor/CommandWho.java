@@ -26,13 +26,26 @@ import me.tabinol.factoid.parameters.PermissionType;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommandWho.
+ */
 public class CommandWho extends CommandExec {
 
+    /**
+     * Instantiates a new command who.
+     *
+     * @param entity the entity
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandWho(CommandEntities entity) throws FactoidCommandException {
 
         super(entity, false, false);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+     */
     @Override
     public void commandExecute() throws FactoidCommandException {
 

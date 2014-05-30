@@ -21,12 +21,28 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.collisions.Collisions.LandError;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CollisionsEntry.
+ */
 public class CollisionsEntry {
 
+    /** The error. */
     private final LandError error;
+    
+    /** The land. */
     private final Land land;
+    
+    /** The area id. */
     private final int areaId;
 
+    /**
+     * Instantiates a new collisions entry.
+     *
+     * @param error the error
+     * @param land the land
+     * @param areaId the area id
+     */
     public CollisionsEntry(LandError error, Land land, int areaId) {
 
         this.error = error;
@@ -34,21 +50,41 @@ public class CollisionsEntry {
         this.areaId = areaId;
     }
 
+    /**
+     * Gets the error.
+     *
+     * @return the error
+     */
     public LandError getError() {
 
         return error;
     }
 
+    /**
+     * Gets the land.
+     *
+     * @return the land
+     */
     public Land getLand() {
 
         return land;
     }
 
+    /**
+     * Gets the area id.
+     *
+     * @return the area id
+     */
     public int getAreaId() {
 
         return areaId;
     }
 
+    /**
+     * Gets the prints the.
+     *
+     * @return the prints the
+     */
     public String getPrint() {
 
         if (error == LandError.COLLISION) {

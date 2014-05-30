@@ -27,12 +27,22 @@ import me.tabinol.factoid.config.vanish.VanishNoPacket;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
 // Contain lists for player (selection, ect, ...)
+/**
+ * The Class PlayerStaticConfig.
+ */
 public class PlayerStaticConfig {
 
+    /** The player conf list. */
     private final Map<CommandSender, PlayerConfEntry> playerConfList;
+    
+    /** The vanish. */
     private final Vanish vanish;
 
+    /**
+     * Instantiates a new player static config.
+     */
     public PlayerStaticConfig() {
 
         playerConfList = new HashMap<CommandSender, PlayerConfEntry>();
@@ -52,6 +62,12 @@ public class PlayerStaticConfig {
     }
 
     // Methods for geting a player static config
+    /**
+     * Adds the.
+     *
+     * @param sender the sender
+     * @return the player conf entry
+     */
     public PlayerConfEntry add(CommandSender sender) {
 
         PlayerConfEntry entry = new PlayerConfEntry(sender);
@@ -60,6 +76,11 @@ public class PlayerStaticConfig {
         return entry;
     }
 
+    /**
+     * Removes the.
+     *
+     * @param sender the sender
+     */
     public void remove(CommandSender sender) {
 
         PlayerConfEntry entry = playerConfList.get(sender);
@@ -70,11 +91,20 @@ public class PlayerStaticConfig {
         playerConfList.remove(sender);
     }
 
+    /**
+     * Gets the.
+     *
+     * @param sender the sender
+     * @return the player conf entry
+     */
     public PlayerConfEntry get(CommandSender sender) {
 
         return playerConfList.get(sender);
     }
 
+    /**
+     * Adds the all.
+     */
     public void addAll() {
 
         // Add the consle in the list
@@ -86,6 +116,9 @@ public class PlayerStaticConfig {
         }
     }
 
+    /**
+     * Removes the all.
+     */
     public void removeAll() {
 
         for (PlayerConfEntry entry : playerConfList.values()) {
@@ -97,6 +130,12 @@ public class PlayerStaticConfig {
         playerConfList.clear();
     }
     
+    /**
+     * Checks if is vanished.
+     *
+     * @param player the player
+     * @return true, if is vanished
+     */
     public boolean isVanished(Player player) {
         
         return vanish.isVanished(player);

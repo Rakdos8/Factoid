@@ -21,8 +21,10 @@ package me.tabinol.factoid.utilities;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
+// TODO: Auto-generated Javadoc
 /**
- * Utility methods for Bukkit
+ * Utility methods for Bukkit.
+ *
  * @author Tabinol
  */
 public class BukkitUtils {

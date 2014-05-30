@@ -147,6 +147,8 @@ COMMAND:
     INVALID: "Le numéro de la page est invalide!"
   LAND:
     LISTSTART: "-liste des terrains-"
+  AREA:
+    LISTSTART: "-liste des étendues de '%'-"
   SELECT:
     JOINMODE: "Vous êtes maintenant en mode sélection."
     HINT: "Tapez % '/factoid select done' % % pour confirmer votre choix."

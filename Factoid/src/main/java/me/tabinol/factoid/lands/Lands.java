@@ -45,21 +45,51 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Lands.
+ */
 public class Lands {
 
+    /** The Constant INDEX_X1. */
     public final static int INDEX_X1 = 0;
+    
+    /** The Constant INDEX_Z1. */
     public final static int INDEX_Z1 = 1;
+    
+    /** The Constant INDEX_X2. */
     public final static int INDEX_X2 = 2;
+    
+    /** The Constant INDEX_Z2. */
     public final static int INDEX_Z2 = 3;
+    
+    /** The area list. */
     private final TreeMap<String, TreeSet<AreaIndex>>[] areaList; // INDEX first, Tree by worlds (then by Areas)
+    
+    /** The land uuid list. */
     private final TreeMap<UUID, Land> landUUIDList; // Lands by UUID;
+    
+    /** The land list. */
     private final TreeMap<String, Land> landList; // Tree by name
+    
+    /** The global area. */
     private final DummyLand globalArea; // GLOBAL configuration
+    
+    /** The outside area. */
     protected TreeMap<String, DummyLand> outsideArea; // Outside a Land (in specific worlds)
+    
+    /** The default conf. */
     protected DummyLand defaultConf; // Default config of a land, String = "global" or WorldName
+    
+    /** The pm. */
     private final PluginManager pm;
+    
+    /** The approve list. */
     private final ApproveList approveList;
 
+    /**
+     * Instantiates a new lands.
+     */
     public Lands() {
 
         areaList = new TreeMap[4];
@@ -81,12 +111,26 @@ public class Lands {
         approveList = new ApproveList();
     }
 
+    /**
+     * Gets the approve list.
+     *
+     * @return the approve list
+     */
     public ApproveList getApproveList() {
 
         return approveList;
     }
 
     // For Land with no parent
+    /**
+     * Creates the land.
+     *
+     * @param landName the land name
+     * @param owner the owner
+     * @param area the area
+     * @return the land
+     * @throws FactoidLandException the factoid land exception
+     */
     public Land createLand(String landName, PlayerContainer owner, CuboidArea area)
             throws FactoidLandException {
 
@@ -94,6 +138,16 @@ public class Lands {
     }
 
     // For Land with parent
+    /**
+     * Creates the land.
+     *
+     * @param landName the land name
+     * @param owner the owner
+     * @param area the area
+     * @param parent the parent
+     * @return the land
+     * @throws FactoidLandException the factoid land exception
+     */
     public Land createLand(String landName, PlayerContainer owner, CuboidArea area, Land parent)
             throws FactoidLandException {
 
@@ -101,6 +155,17 @@ public class Lands {
     }
 
     // For Land with parent and price
+    /**
+     * Creates the land.
+     *
+     * @param landName the land name
+     * @param owner the owner
+     * @param area the area
+     * @param parent the parent
+     * @param price the price
+     * @return the land
+     * @throws FactoidLandException the factoid land exception
+     */
     public Land createLand(String landName, PlayerContainer owner, CuboidArea area, Land parent, double price)
             throws FactoidLandException {
         
@@ -110,6 +175,18 @@ public class Lands {
     }
 
     // Only for Land load at start
+    /**
+     * Creates the land.
+     *
+     * @param landName the land name
+     * @param owner the owner
+     * @param area the area
+     * @param parent the parent
+     * @param areaId the area id
+     * @param uuid the uuid
+     * @return the land
+     * @throws FactoidLandException the factoid land exception
+     */
     public Land createLand(String landName, PlayerContainer owner, CuboidArea area, Land parent, int areaId, UUID uuid)
             throws FactoidLandException {
 
@@ -140,11 +217,24 @@ public class Lands {
         return land;
     }
 
+    /**
+     * Checks if is name exist.
+     *
+     * @param landName the land name
+     * @return true, if is name exist
+     */
     public boolean isNameExist(String landName) {
 
         return landList.containsKey(landName.toLowerCase());
     }
 
+    /**
+     * Removes the land.
+     *
+     * @param land the land
+     * @return true, if successful
+     * @throws FactoidLandException the factoid land exception
+     */
     public boolean removeLand(Land land) throws FactoidLandException {
 
         if (land == null) {
@@ -177,16 +267,38 @@ public class Lands {
         return true;
     }
 
+    /**
+     * Removes the land.
+     *
+     * @param landName the land name
+     * @return true, if successful
+     * @throws FactoidLandException the factoid land exception
+     */
     public boolean removeLand(String landName) throws FactoidLandException {
 
         return removeLand(landList.get(landName.toLowerCase()));
     }
 
+    /**
+     * Removes the land.
+     *
+     * @param uuid the uuid
+     * @return true, if successful
+     * @throws FactoidLandException the factoid land exception
+     */
     public boolean removeLand(UUID uuid) throws FactoidLandException {
 
         return removeLand(landUUIDList.get(uuid));
     }
 
+    /**
+     * Rename land.
+     *
+     * @param landName the land name
+     * @param newName the new name
+     * @return true, if successful
+     * @throws FactoidLandException the factoid land exception
+     */
     public boolean renameLand(String landName, String newName) throws FactoidLandException {
 
         Land land = getLand(landName);
@@ -198,6 +310,14 @@ public class Lands {
         }
     }
 
+    /**
+     * Rename land.
+     *
+     * @param uuid the uuid
+     * @param newName the new name
+     * @return true, if successful
+     * @throws FactoidLandException the factoid land exception
+     */
     public boolean renameLand(UUID uuid, String newName) throws FactoidLandException {
 
         Land land = getLand(uuid);
@@ -209,6 +329,14 @@ public class Lands {
         }
     }
 
+    /**
+     * Rename land.
+     *
+     * @param land the land
+     * @param newName the new name
+     * @return true, if successful
+     * @throws FactoidLandException the factoid land exception
+     */
     public boolean renameLand(Land land, String newName) throws FactoidLandException {
 
         String oldNameLower = land.getName();
@@ -226,16 +354,34 @@ public class Lands {
         return true;
     }
 
+    /**
+     * Gets the land.
+     *
+     * @param landName the land name
+     * @return the land
+     */
     public Land getLand(String landName) {
 
         return landList.get(landName.toLowerCase());
     }
 
+    /**
+     * Gets the land.
+     *
+     * @param uuid the uuid
+     * @return the land
+     */
     public Land getLand(UUID uuid) {
 
         return landUUIDList.get(uuid);
     }
 
+    /**
+     * Gets the land.
+     *
+     * @param loc the loc
+     * @return the land
+     */
     public Land getLand(Location loc) {
 
         CuboidArea ca;
@@ -246,11 +392,22 @@ public class Lands {
         return ca.getLand();
     }
 
+    /**
+     * Gets the lands.
+     *
+     * @return the lands
+     */
     public Collection<Land> getLands() {
 
         return landList.values();
     }
 
+    /**
+     * Gets the land or outside area.
+     *
+     * @param loc the loc
+     * @return the land or outside area
+     */
     public DummyLand getLandOrOutsideArea(Location loc) {
 
         DummyLand land;
@@ -262,11 +419,23 @@ public class Lands {
         return getOutsideArea(loc);
     }
 
+    /**
+     * Gets the outside area.
+     *
+     * @param loc the loc
+     * @return the outside area
+     */
     public DummyLand getOutsideArea(Location loc) {
 
         return getOutsideArea(loc.getWorld().getName());
     }
 
+    /**
+     * Gets the outside area.
+     *
+     * @param worldName the world name
+     * @return the outside area
+     */
     public DummyLand getOutsideArea(String worldName) {
 
         DummyLand dummyLand;
@@ -279,6 +448,12 @@ public class Lands {
         return dummyLand;
     }
 
+    /**
+     * Gets the lands.
+     *
+     * @param loc the loc
+     * @return the lands
+     */
     public Collection<Land> getLands(Location loc) {
 
         Collection<CuboidArea> areas = getCuboidAreas(loc);
@@ -291,6 +466,12 @@ public class Lands {
         return lands.values();
     }
 
+    /**
+     * Gets the lands.
+     *
+     * @param owner the owner
+     * @return the lands
+     */
     public Collection<Land> getLands(PlayerContainer owner) {
 
         Collection<Land> lands = new HashSet<Land>();
@@ -304,15 +485,32 @@ public class Lands {
         return lands;
     }
 
+    /**
+     * Gets the price from player.
+     *
+     * @param worldName the world name
+     * @param pc the pc
+     * @param price the price
+     * @return the price from player
+     */
     protected boolean getPriceFromPlayer(String worldName, PlayerContainer pc, double price) {
         
         if(pc.getContainerType() == PlayerContainerType.PLAYER && price > 0) {
-            return Factoid.getPlayerMoney().getFromPlayer(((PlayerContainerPlayer)pc).getPlayerName(), worldName, price);
+            return Factoid.getPlayerMoney().getFromPlayer(((PlayerContainerPlayer)pc).getOfflinePlayer(), worldName, price);
         }
     
     return true;
     }
     
+    /**
+     * Gets the permission in world.
+     *
+     * @param worldName the world name
+     * @param player the player
+     * @param pt the pt
+     * @param onlyInherit the only inherit
+     * @return the permission in world
+     */
     protected boolean getPermissionInWorld(String worldName, Player player, PermissionType pt, boolean onlyInherit) {
 
         Boolean result;
@@ -328,6 +526,14 @@ public class Lands {
         return pt.getDefaultValue();
     }
 
+    /**
+     * Gets the flag in world.
+     *
+     * @param worldName the world name
+     * @param ft the ft
+     * @param onlyInherit the only inherit
+     * @return the flag in world
+     */
     protected LandFlag getFlagInWorld(String worldName, FlagType ft, boolean onlyInherit) {
 
         LandFlag result;
@@ -343,7 +549,13 @@ public class Lands {
         return null;
     }
 
-    public Collection getCuboidAreas(Location loc) {
+    /**
+     * Gets the cuboid areas.
+     *
+     * @param loc the loc
+     * @return the cuboid areas
+     */
+    public Collection<CuboidArea> getCuboidAreas(Location loc) {
 
         Collection<CuboidArea> areas = new ArrayList<CuboidArea>();
         String worldName = loc.getWorld().getName();
@@ -354,7 +566,7 @@ public class Lands {
         AreaIndex ai;
         Iterator<AreaIndex> it;
 
-        // First, determinate if what is the higest number between x1, x2, z1 and z2
+        // First, determinate if what is the highest number between x1, x2, z1 and z2
         if (Math.abs(loc.getBlockX()) > Math.abs(loc.getBlockZ())) {
             nbToFind = loc.getBlockX();
             if (loc.getBlockX() < 0) {
@@ -400,6 +612,12 @@ public class Lands {
         return areas;
     }
 
+    /**
+     * Gets the cuboid area.
+     *
+     * @param loc the loc
+     * @return the cuboid area
+     */
     public CuboidArea getCuboidArea(Location loc) {
 
         int actualPrio = Short.MIN_VALUE;
@@ -446,6 +664,14 @@ public class Lands {
         return actualArea;
     }
 
+    /**
+     * Check continue search.
+     *
+     * @param area the area
+     * @param nbToFind the nb to find
+     * @param SearchIndex the search index
+     * @return true, if successful
+     */
     private boolean checkContinueSearch(CuboidArea area, int nbToFind, int SearchIndex) {
 
         switch (SearchIndex) {
@@ -474,6 +700,11 @@ public class Lands {
         }
     }
 
+    /**
+     * Adds the area to list.
+     *
+     * @param area the area
+     */
     protected void addAreaToList(CuboidArea area) {
 
         if (!areaList[0].containsKey(area.getWorldName())) {
@@ -488,6 +719,11 @@ public class Lands {
         areaList[INDEX_Z2].get(area.getWorldName()).add(new AreaIndex(area.getZ2(), area));
     }
 
+    /**
+     * Removes the area from list.
+     *
+     * @param area the area
+     */
     protected void removeAreaFromList(CuboidArea area) {
 
         areaList[INDEX_X1].get(area.getWorldName()).remove(new AreaIndex(area.getX1(), area));
@@ -496,12 +732,22 @@ public class Lands {
         areaList[INDEX_Z2].get(area.getWorldName()).remove(new AreaIndex(area.getZ2(), area));
     }
 
+    /**
+     * Adds the land to list.
+     *
+     * @param land the land
+     */
     private void addLandToList(Land land) {
 
         landList.put(land.getName(), land);
         landUUIDList.put(land.getUUID(), land);
     }
 
+    /**
+     * Removes the land from list.
+     *
+     * @param land the land
+     */
     private void removeLandFromList(Land land) {
 
         landList.remove(land.getName());

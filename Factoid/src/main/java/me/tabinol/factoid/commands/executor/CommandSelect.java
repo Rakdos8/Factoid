@@ -33,13 +33,30 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommandSelect.
+ */
 public class CommandSelect extends CommandExec {
 
+    /** The player. */
     private final Player player;
+    
+    /** The location. */
     private final Location location;
+    
+    /** The player conf. */
     private final PlayerConfEntry playerConf;
+    
+    /** The arg list. */
     private final ArgList argList;
 
+    /**
+     * Instantiates a new command select.
+     *
+     * @param entity the entity
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandSelect(CommandEntities entity) throws FactoidCommandException {
 
         super(entity, false, false);
@@ -50,6 +67,14 @@ public class CommandSelect extends CommandExec {
     }
 
     // Called from player action, not a command
+    /**
+     * Instantiates a new command select.
+     *
+     * @param player the player
+     * @param argList the arg list
+     * @param location the location
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandSelect(Player player, ArgList argList, Location location) throws FactoidCommandException {
 
         super(null, false, false);
@@ -59,6 +84,9 @@ public class CommandSelect extends CommandExec {
         this.argList = argList;
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+     */
     @Override
     public void commandExecute() throws FactoidCommandException {
 
@@ -148,6 +176,11 @@ public class CommandSelect extends CommandExec {
         }
     }
 
+    /**
+     * Do select area done.
+     *
+     * @throws FactoidCommandException the factoid command exception
+     */
     private void doSelectAreaDone() throws FactoidCommandException {
 
         checkSelections(null, true);
@@ -166,6 +199,11 @@ public class CommandSelect extends CommandExec {
         }
     }
 
+    /**
+     * Do select area info.
+     *
+     * @throws FactoidCommandException the factoid command exception
+     */
     private void doSelectAreaInfo() throws FactoidCommandException {
 
         checkSelections(null, true);

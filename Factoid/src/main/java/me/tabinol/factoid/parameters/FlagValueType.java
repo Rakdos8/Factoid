@@ -17,14 +17,30 @@
  */
 package me.tabinol.factoid.parameters;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Enum FlagValueType.
+ */
 public enum FlagValueType {
     
+    /** The undefined. */
     UNDEFINED(),
+    
+    /** The boolean. */
     BOOLEAN(),
+    
+    /** The double. */
     DOUBLE(),
+    
+    /** The string. */
     STRING(),
+    
+    /** The string list. */
     STRING_LIST();
     
+    /**
+     * Instantiates a new flag value type.
+     */
     private FlagValueType() {
     }
 }

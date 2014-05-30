@@ -20,8 +20,18 @@ package me.tabinol.factoid.utilities;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StringChanges.
+ */
 public class StringChanges {
 
+    /**
+     * To lower.
+     *
+     * @param list the list
+     * @return the list
+     */
     public static List<String> toLower(List<String> list) {
 
         if (list == null) {
@@ -37,6 +47,12 @@ public class StringChanges {
         return listLower;
     }
 
+    /**
+     * To quote.
+     *
+     * @param str the str
+     * @return the string
+     */
     public static String toQuote(String str) {
 
         String strRet;
@@ -50,6 +66,12 @@ public class StringChanges {
         return "'" + strRet.replaceAll("'", "''") + "'";
     }
 
+    /**
+     * From quote.
+     *
+     * @param str the str
+     * @return the string
+     */
     public static String fromQuote(String str) {
 
         if (isStartQuote(str) && isEndQuote(str)) {
@@ -59,6 +81,13 @@ public class StringChanges {
         }
     }
 
+    /**
+     * Split keep quote.
+     *
+     * @param str the str
+     * @param split the split
+     * @return the string[]
+     */
     public static String[] splitKeepQuote(String str, String split) {
 
         String[] strs = str.split(split);
@@ -84,6 +113,12 @@ public class StringChanges {
         return strl.toArray(new String[0]);
     }
 
+    /**
+     * Checks if is start quote.
+     *
+     * @param str the str
+     * @return true, if is start quote
+     */
     private static boolean isStartQuote(String str) {
 
         if (str.startsWith("'") || str.startsWith("\"")) {
@@ -92,6 +127,12 @@ public class StringChanges {
         return false;
     }
 
+    /**
+     * Checks if is end quote.
+     *
+     * @param str the str
+     * @return true, if is end quote
+     */
     private static boolean isEndQuote(String str) {
 
         if (str.endsWith("'") || str.endsWith("\"") || str.endsWith(";") /* Fix String list */) {
@@ -100,6 +141,13 @@ public class StringChanges {
         return false;
     }
     
+    /**
+     * Split add void.
+     *
+     * @param string the string
+     * @param split the split
+     * @return the string[]
+     */
     public static String[] splitAddVoid(String string, String split) {
         
         String[] tlist = string.split(split);
@@ -112,6 +160,12 @@ public class StringChanges {
         return result;
     }
     
+    /**
+     * To integer.
+     *
+     * @param n the n
+     * @return the int
+     */
     public static int toInteger(String n){
         try{
            return Integer.parseInt(n);
@@ -120,6 +174,12 @@ public class StringChanges {
         }
     }
     
+    /**
+     * Checks if is int.
+     *
+     * @param n the n
+     * @return true, if is int
+     */
     public static boolean isInt(String n)
     {
         try{
@@ -130,6 +190,12 @@ public class StringChanges {
         return true;
     }
     
+    /**
+     * To double.
+     *
+     * @param n the n
+     * @return the double
+     */
     public static double toDouble(String n){
         try{
            return Double.parseDouble(n);
@@ -138,6 +204,12 @@ public class StringChanges {
         }
     }
     
+    /**
+     * Checks if is double.
+     *
+     * @param n the n
+     * @return true, if is double
+     */
     public static boolean isDouble(String n)
     {
         try{
@@ -148,6 +220,12 @@ public class StringChanges {
         return true;
     }
     
+    /**
+     * To long.
+     *
+     * @param n the n
+     * @return the long
+     */
     public static long toLong(String n){
         try{
            return Long.parseLong(n);
@@ -156,6 +234,12 @@ public class StringChanges {
         }
     }
     
+    /**
+     * Checks if is long.
+     *
+     * @param n the n
+     * @return true, if is long
+     */
     public static boolean isLong(String n)
     {
         try{
@@ -166,6 +250,12 @@ public class StringChanges {
         return true;
     }
     
+    /**
+     * First upper then lower.
+     *
+     * @param str the str
+     * @return the string
+     */
     public static String FirstUpperThenLower(String str) {
         
         return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();

@@ -27,6 +27,7 @@ import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+// TODO: Auto-generated Javadoc
 /**
  * Load app.properties from Maven properties
  *
@@ -34,12 +35,19 @@ import java.util.logging.Logger;
  */
 public class MavenAppProperties {
 
+    /** The properties. */
     Properties properties;
 
+    /**
+     * Instantiates a new maven app properties.
+     */
     public MavenAppProperties() {
         this.properties = new Properties();
     }
 
+    /**
+     * Load properties.
+     */
     public void loadProperties() {
 
         try {
@@ -58,11 +66,23 @@ public class MavenAppProperties {
         }
     }
 
+    /**
+     * Gets the property string.
+     *
+     * @param path the path
+     * @return the property string
+     */
     public String getPropertyString(String path) {
 
         return properties.getProperty(path);
     }
 
+    /**
+     * Gets the property int.
+     *
+     * @param path the path
+     * @return the property int
+     */
     public int getPropertyInt(String path) {
 
         return Integer.parseInt(properties.getProperty(path));

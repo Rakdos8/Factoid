@@ -36,12 +36,24 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ApproveList.
+ */
 public class ApproveList {
 
+    /** The approve file. */
     final private File approveFile;
+    
+    /** The approve config. */
     private FileConfiguration approveConfig;
+    
+    /** The land names. */
     final private TreeSet<String> landNames;
 
+    /**
+     * Instantiates a new approve list.
+     */
     public ApproveList() {
 
         approveFile = new File(Factoid.getThisPlugin().getDataFolder() + "/approvelist.yml");
@@ -50,6 +62,11 @@ public class ApproveList {
         loadFile();
     }
 
+    /**
+     * Adds the approve.
+     *
+     * @param approve the approve
+     */
     public void addApprove(Approve approve) {
 
         landNames.add(approve.getLandName());
@@ -61,22 +78,39 @@ public class ApproveList {
         if (approve.getParent() != null) {
             section.set("Parent", approve.getParent().getName());
         }
-        section.set("Price", approve.getPrice() + "");
+        section.set("Price", approve.getPrice());
         section.set("DateTime", approve.getDateTime().getTimeInMillis());
         saveFile();
         Factoid.getApproveNotif().notifyForApprove(approve.getLandName(), approve.getOwner().getPrint());
     }
 
+    /**
+     * Gets the approve list.
+     *
+     * @return the approve list
+     */
     public Set<String> getApproveList() {
 
         return landNames;
     }
 
+    /**
+     * Checks if is in approve.
+     *
+     * @param landName the land name
+     * @return true, if is in approve
+     */
     public boolean isInApprove(String landName) {
 
         return landNames.contains(landName.toLowerCase());
     }
 
+    /**
+     * Gets the approve.
+     *
+     * @param landName the land name
+     * @return the approve
+     */
     public Approve getApprove(String landName) {
 
         Factoid.getLog().write("Get approve for: " + landName);
@@ -107,6 +141,11 @@ public class ApproveList {
                 parent, section.getDouble("Price"), cal);
     }
 
+    /**
+     * Removes the approve.
+     *
+     * @param approve the approve
+     */
     public void removeApprove(Approve approve) {
 
         Factoid.getLog().write("Remove Approve from list: " + approve.getLandName());
@@ -116,6 +155,9 @@ public class ApproveList {
         saveFile();
     }
 
+    /**
+     * Removes the all.
+     */
     public void removeAll() {
 
         Factoid.getLog().write("Remove all Approves from list.");
@@ -133,6 +175,9 @@ public class ApproveList {
         loadFile();
     }
 
+    /**
+     * Load file.
+     */
     private void loadFile() {
 
         Factoid.getLog().write("Loading Approve list file");
@@ -158,6 +203,9 @@ public class ApproveList {
         }
     }
 
+    /**
+     * Save file.
+     */
     private void saveFile() {
 
         Factoid.getLog().write("Saving Approve list file");

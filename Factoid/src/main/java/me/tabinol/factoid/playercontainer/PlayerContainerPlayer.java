@@ -18,22 +18,38 @@
 package me.tabinol.factoid.playercontainer;
 
 import java.util.UUID;
+
 import me.tabinol.factoid.lands.Land;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PlayerContainerPlayer.
+ */
 public class PlayerContainerPlayer extends PlayerContainer {
 
+    /** The minecraft uuid. */
     private final UUID minecraftUUID;
     
     // Compare before create
+    /**
+     * Instantiates a new player container player.
+     *
+     * @param minecraftUUID the minecraft uuid
+     */
     public PlayerContainerPlayer(UUID minecraftUUID) {
 
         super("ID-" + minecraftUUID.toString(), PlayerContainerType.PLAYER, false);
         this.minecraftUUID = minecraftUUID;
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
+     */
     @Override
     public boolean equals(PlayerContainer container2) {
         
@@ -41,12 +57,18 @@ public class PlayerContainerPlayer extends PlayerContainer {
                 minecraftUUID.equals(((PlayerContainerPlayer) container2).minecraftUUID);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#copyOf()
+     */
     @Override
     public PlayerContainer copyOf() {
         
         return new PlayerContainerPlayer(minecraftUUID);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#hasAccess(org.bukkit.entity.Player)
+     */
     @Override
     public boolean hasAccess(Player player) {
         
@@ -57,6 +79,9 @@ public class PlayerContainerPlayer extends PlayerContainer {
         }
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainer#getPrint()
+     */
     @Override
     public String getPrint() {
 
@@ -68,28 +93,61 @@ public class PlayerContainerPlayer extends PlayerContainer {
         return sb.toString();
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
+     */
     @Override
     public void setLand(Land land) {
 
     }
     
+    /**
+     * Gets the minecraft uuid.
+     *
+     * @return the minecraft uuid
+     */
     public UUID getMinecraftUUID() {
         
         return minecraftUUID;
     }
     
+    /**
+     * Gets the player name.
+     *
+     * @return the player name
+     */
     public String getPlayerName() {
         
         return Bukkit.getOfflinePlayer(minecraftUUID).getName();
     }
     
+    /**
+     * Checks if is online.
+     *
+     * @return true, if is online
+     */
     public boolean isOnline() {
         
         return Bukkit.getOfflinePlayer(minecraftUUID).isOnline();
     }
     
+    /**
+     * Gets the player.
+     *
+     * @return the player
+     */
     public Player getPlayer() {
         
         return Bukkit.getPlayer(minecraftUUID);
+    }
+    
+    /**
+     * Get the offline player.
+     * 
+     * @return the offline player
+     */
+    public OfflinePlayer getOfflinePlayer() {
+    	
+    	return Bukkit.getOfflinePlayer(minecraftUUID);
     }
 }

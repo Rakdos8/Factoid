@@ -23,11 +23,24 @@ import me.tabinol.factoid.commands.CommandList;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import org.bukkit.command.CommandSender;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommandHelp.
+ */
 public class CommandHelp extends CommandExec {
 
+    /** The sender. */
     private final CommandSender sender;
+    
+    /** The command name. */
     private String commandName;
 
+    /**
+     * Instantiates a new command help.
+     *
+     * @param entity the entity
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandHelp(CommandEntities entity) throws FactoidCommandException {
 
         super(entity, true, false);
@@ -35,6 +48,13 @@ public class CommandHelp extends CommandExec {
     }
 
     // Call directly the Help without verification CommandName is UPERCASE
+    /**
+     * Instantiates a new command help.
+     *
+     * @param sender the sender
+     * @param commandName the command name
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandHelp(CommandSender sender, String commandName) throws FactoidCommandException {
 
         super(null, true, false);
@@ -42,6 +62,9 @@ public class CommandHelp extends CommandExec {
         this.commandName = commandName;
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+     */
     @Override
     public void commandExecute() throws FactoidCommandException {
 
@@ -64,6 +87,11 @@ public class CommandHelp extends CommandExec {
         showHelp();
     }
 
+    /**
+     * Show help.
+     *
+     * @throws FactoidCommandException the factoid command exception
+     */
     private void showHelp() throws FactoidCommandException {
 
         String help = Factoid.getLanguage().getHelp(commandName);

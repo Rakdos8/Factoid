@@ -21,28 +21,54 @@ import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import org.bukkit.event.HandlerList;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PlayerContainerLandBanEvent.
+ */
 public class PlayerContainerLandBanEvent extends LandEvent {
 
+    /** The Constant handlers. */
     private static final HandlerList handlers = new HandlerList();
+    
+    /** The player container. */
     PlayerContainer playerContainer;
 
+    /**
+     * Instantiates a new player container land ban event.
+     *
+     * @param land the land
+     * @param playerContainer the player container
+     */
     public PlayerContainerLandBanEvent(final Land land, final PlayerContainer playerContainer) {
 
         super(land);
         this.playerContainer = playerContainer;
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.event.LandEvent#getHandlers()
+     */
     @Override
     public HandlerList getHandlers() {
 
         return handlers;
     }
 
+    /**
+     * Gets the handler list.
+     *
+     * @return the handler list
+     */
     public static HandlerList getHandlerList() {
 
         return handlers;
     }
 
+    /**
+     * Gets the player container.
+     *
+     * @return the player container
+     */
     public PlayerContainer getPlayerContainer() {
 
         return playerContainer;

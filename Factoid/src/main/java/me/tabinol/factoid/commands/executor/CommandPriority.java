@@ -23,13 +23,26 @@ import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.utilities.Calculate;
 import org.bukkit.ChatColor;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommandPriority.
+ */
 public class CommandPriority extends CommandExec {
 
+    /**
+     * Instantiates a new command priority.
+     *
+     * @param entity the entity
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandPriority(CommandEntities entity) throws FactoidCommandException {
 
         super(entity, false, true);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+     */
     @Override
     public void commandExecute() throws FactoidCommandException {
 

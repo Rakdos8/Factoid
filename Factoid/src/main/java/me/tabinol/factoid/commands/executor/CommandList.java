@@ -26,18 +26,29 @@ import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import org.bukkit.ChatColor;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class CommandList.
  *
  * @author Tabinol
  */
 public class CommandList extends CommandExec {
 
+    /**
+     * Instantiates a new command list.
+     *
+     * @param entity the entity
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandList(CommandEntities entity) throws FactoidCommandException {
 
         super(entity, false, false);
 
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+     */
     @Override
     public void commandExecute() throws FactoidCommandException {
 

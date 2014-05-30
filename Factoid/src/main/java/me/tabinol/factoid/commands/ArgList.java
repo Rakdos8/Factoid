@@ -32,12 +32,27 @@ import me.tabinol.factoid.playercontainer.PlayerContainerType;
 import me.tabinol.factoid.utilities.StringChanges;
 import org.bukkit.command.CommandSender;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ArgList.
+ */
 public class ArgList {
 
+    /** The arg. */
     private final String[] arg;
+    
+    /** The iterator. */
     private int iterator;
+    
+    /** The player. */
     private final CommandSender player;
 
+    /**
+     * Instantiates a new arg list.
+     *
+     * @param arg the arg
+     * @param player the player
+     */
     public ArgList(String[] arg, CommandSender player) {
 
         this.arg = arg;
@@ -45,12 +60,22 @@ public class ArgList {
         iterator = -1;
     }
 
+    /**
+     * Gets the next.
+     *
+     * @return the next
+     */
     public String getNext() {
 
         iterator++;
         return getCur();
     }
 
+    /**
+     * Gets the cur.
+     *
+     * @return the cur
+     */
     public String getCur() {
 
         if (iterator >= arg.length) {
@@ -63,26 +88,51 @@ public class ArgList {
         return arg[iterator];
     }
 
+    /**
+     * Gets the pos.
+     *
+     * @return the pos
+     */
     public int getPos() {
 
         return iterator;
     }
 
+    /**
+     * Sets the pos.
+     *
+     * @param iterator the new pos
+     */
     public void setPos(int iterator) {
 
         this.iterator = iterator;
     }
 
+    /**
+     * Checks if is last.
+     *
+     * @return true, if is last
+     */
     public boolean isLast() {
 
         return iterator == arg.length - 1;
     }
 
+    /**
+     * Length.
+     *
+     * @return the int
+     */
     public int length() {
 
         return iterator;
     }
 
+    /**
+     * Gets the next to end.
+     *
+     * @return the next to end
+     */
     public String getNextToEnd() {
 
         StringBuilder result = new StringBuilder();
@@ -98,6 +148,14 @@ public class ArgList {
         return result.toString();
     }
 
+    /**
+     * Gets the flag type from arg.
+     *
+     * @param isAdminmod the is adminmod
+     * @param isOwner the is owner
+     * @return the flag type from arg
+     * @throws FactoidCommandException the factoid command exception
+     */
     public FlagType getFlagTypeFromArg(boolean isAdminmod, boolean isOwner) throws FactoidCommandException {
 
         String curArg = getNext();
@@ -119,6 +177,14 @@ public class ArgList {
         return flagType;
     }
 
+    /**
+     * Gets the flag from arg.
+     *
+     * @param isAdminmob the is adminmob
+     * @param isOwner the is owner
+     * @return the flag from arg
+     * @throws FactoidCommandException the factoid command exception
+     */
     public LandFlag getFlagFromArg(boolean isAdminmob, boolean isOwner) throws FactoidCommandException {
 
         FlagType flagType = getFlagTypeFromArg(isAdminmob, isOwner);
@@ -150,6 +216,14 @@ public class ArgList {
         return landFlag;
     }
 
+    /**
+     * Gets the player container from arg.
+     *
+     * @param land the land
+     * @param bannedPCTList the banned pct list
+     * @return the player container from arg
+     * @throws FactoidCommandException the factoid command exception
+     */
     public PlayerContainer getPlayerContainerFromArg(Land land,
             PlayerContainerType[] bannedPCTList) throws FactoidCommandException {
 
@@ -198,6 +272,14 @@ public class ArgList {
         return pc;
     }
 
+    /**
+     * Gets the permission type from arg.
+     *
+     * @param isAdminmod the is adminmod
+     * @param isOwner the is owner
+     * @return the permission type from arg
+     * @throws FactoidCommandException the factoid command exception
+     */
     public PermissionType getPermissionTypeFromArg(boolean isAdminmod, boolean isOwner) throws FactoidCommandException {
 
         String curArg = getNext();
@@ -219,6 +301,14 @@ public class ArgList {
         return pt;
     }
 
+    /**
+     * Gets the permission from arg.
+     *
+     * @param isAdminmod the is adminmod
+     * @param isOwner the is owner
+     * @return the permission from arg
+     * @throws FactoidCommandException the factoid command exception
+     */
     public Permission getPermissionFromArg(boolean isAdminmod, boolean isOwner) throws FactoidCommandException {
 
         PermissionType pt = getPermissionTypeFromArg(isAdminmod, isOwner);

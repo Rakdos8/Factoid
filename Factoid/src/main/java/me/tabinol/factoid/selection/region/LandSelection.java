@@ -23,11 +23,24 @@ import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LandSelection.
+ */
 public class LandSelection extends RegionSelection {
 
+    /** The land. */
     private final Land land;
+    
+    /** The visual areas. */
     private final TreeMap<CuboidArea, AreaSelection> visualAreas; // Visuals arealist
     
+    /**
+     * Instantiates a new land selection.
+     *
+     * @param player the player
+     * @param land the land
+     */
     public LandSelection(Player player, Land land) {
         
         super(SelectionType.LAND, player);
@@ -40,11 +53,19 @@ public class LandSelection extends RegionSelection {
         }
     }
     
+    /**
+     * Gets the land.
+     *
+     * @return the land
+     */
     public Land getLand() {
         
         return land;
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.selection.region.RegionSelection#removeSelection()
+     */
     @Override
     public void removeSelection() {
 

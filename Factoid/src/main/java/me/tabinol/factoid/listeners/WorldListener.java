@@ -53,16 +53,37 @@ import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.inventory.ItemStack;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The listener interface for receiving world events.
+ * The class that is interested in processing a world
+ * event implements this interface, and the object created
+ * with that class is registered with a component using the
+ * component's <code>addWorldListener<code> method. When
+ * the world event occurs, that object's appropriate
+ * method is invoked.
+ *
+ * @see WorldEvent
+ */
 public class WorldListener implements Listener {
 
+    /** The conf. */
     private Config conf;
 
+    /**
+     * Instantiates a new world listener.
+     */
     public WorldListener() {
 
         super();
         conf = Factoid.getConf();
     }
 
+    /**
+     * On explosion prime.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onExplosionPrime(ExplosionPrimeEvent event) {
 
@@ -91,6 +112,11 @@ public class WorldListener implements Listener {
         }
     }
 
+    /**
+     * On entity explode.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityExplode(EntityExplodeEvent event) {
 
@@ -143,6 +169,11 @@ public class WorldListener implements Listener {
         }
     }
 
+    /**
+     * On hanging break.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onHangingBreak(HangingBreakEvent event) {
 
@@ -155,6 +186,17 @@ public class WorldListener implements Listener {
         }
     }
 
+    /**
+     * Explode blocks.
+     *
+     * @param blocks the blocks
+     * @param ft the ft
+     * @param loc the loc
+     * @param yield the yield
+     * @param power the power
+     * @param setFire the set fire
+     * @param doExplosion the do explosion
+     */
     private void ExplodeBlocks(List<Block> blocks, FlagType ft, Location loc,
             float yield, float power, boolean setFire, boolean doExplosion) {
 
@@ -194,6 +236,11 @@ public class WorldListener implements Listener {
         }
     }
 
+    /**
+     * On entity change block.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
 
@@ -211,6 +258,11 @@ public class WorldListener implements Listener {
         }
     }
 
+    /**
+     * On block ignite.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockIgnite(BlockIgniteEvent event) {
 
@@ -226,6 +278,11 @@ public class WorldListener implements Listener {
         }
     }
 
+    /**
+     * On block burn.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBurn(BlockBurnEvent event) {
 
@@ -240,6 +297,11 @@ public class WorldListener implements Listener {
         }
     }
 
+    /**
+     * On creature spawn.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
 
@@ -258,6 +320,11 @@ public class WorldListener implements Listener {
         }
     }
 
+    /**
+     * On entity damage.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
 

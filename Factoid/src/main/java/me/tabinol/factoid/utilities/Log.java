@@ -25,17 +25,32 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Log.
+ */
 public class Log extends Thread {
 
+    /** The Folder. */
     public File Folder;
+    
+    /** The debug. */
     private boolean debug = false;
 
+    /**
+     * Instantiates a new log.
+     */
     public Log() {
 
         this.debug = Factoid.getConf().isDebug();
         this.Folder = Factoid.getThisPlugin().getDataFolder();
     }
 
+    /**
+     * Write.
+     *
+     * @param text the text
+     */
     public void write(String text) {
 
         if (debug) {
@@ -70,6 +85,11 @@ public class Log extends Thread {
         }
     }
 
+    /**
+     * Sets the debug.
+     *
+     * @param newdebug the new debug
+     */
     public void setDebug(boolean newdebug) {
 
         this.debug = newdebug;

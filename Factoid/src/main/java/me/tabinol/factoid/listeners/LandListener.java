@@ -39,14 +39,37 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The listener interface for receiving land events.
+ * The class that is interested in processing a land
+ * event implements this interface, and the object created
+ * with that class is registered with a component using the
+ * component's <code>addLandListener<code> method. When
+ * the land event occurs, that object's appropriate
+ * method is invoked.
+ *
+ * @see LandEvent
+ */
 public class LandListener implements Listener {
 
+    /** The player heal. */
     private final ArrayList<Player> playerHeal;
+    
+    /** The land heal. */
     private final LandHeal landHeal;
+    
+    /** The player conf. */
     private final PlayerStaticConfig playerConf;
 
+    /**
+     * The Class LandHeal.
+     */
     private class LandHeal extends BukkitRunnable {
 
+        /* (non-Javadoc)
+         * @see java.lang.Runnable#run()
+         */
         @Override
         public void run() {
 
@@ -79,6 +102,9 @@ public class LandListener implements Listener {
         }
     }
 
+    /**
+     * Instantiates a new land listener.
+     */
     public LandListener() {
 
         super();
@@ -90,6 +116,11 @@ public class LandListener implements Listener {
     }
 
     // Must be running before PlayerListener
+    /**
+     * On player quit.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerQuit(PlayerQuitEvent event) {
 
@@ -108,6 +139,11 @@ public class LandListener implements Listener {
         }
     }
 
+    /**
+     * On player land change.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerLandChange(PlayerLandChangeEvent event) {
         Player player = event.getPlayer();
@@ -201,18 +237,35 @@ public class LandListener implements Listener {
         }
     }
 
+    /**
+     * On player container land ban.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerContainerLandBan(PlayerContainerLandBanEvent event) {
 
         checkForBannedPlayers(event.getLand(), event.getPlayerContainer(), "ACTION.BANNED");
     }
 
+    /**
+     * On player container add no enter.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerContainerAddNoEnter(PlayerContainerAddNoEnterEvent event) {
 
         checkForBannedPlayers(event.getLand(), event.getPlayerContainer(), "ACTION.NOENTRY");
     }
 
+    /**
+     * Check for banned players.
+     *
+     * @param land the land
+     * @param pc the pc
+     * @param message the message
+     */
     private void checkForBannedPlayers(Land land, PlayerContainer pc, String message) {
 
         for (Player players : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
@@ -225,6 +278,13 @@ public class LandListener implements Listener {
     }
 
     // Notify players for land Enter/Exit
+    /**
+     * Notify players.
+     *
+     * @param land the land
+     * @param message the message
+     * @param playerIn the player in
+     */
     private void notifyPlayers(Land land, String message, Player playerIn) {
 
         Player player;
@@ -242,6 +302,13 @@ public class LandListener implements Listener {
         }
     }
 
+    /**
+     * Tp spawn.
+     *
+     * @param player the player
+     * @param land the land
+     * @param message the message
+     */
     private void tpSpawn(Player player, Land land, String message) {
 
         player.teleport(player.getWorld().getSpawnLocation());

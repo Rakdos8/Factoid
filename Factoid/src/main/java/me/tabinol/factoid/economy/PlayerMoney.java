@@ -17,38 +17,74 @@
  */
 package me.tabinol.factoid.economy;
 
+import org.bukkit.OfflinePlayer;
+
 import me.tabinol.factoid.Factoid;
 import net.milkbowl.vault.economy.Economy;
 
+// TODO: Auto-generated Javadoc
 /**
- * Money from players
+ * Money from players.
  *
  * @author Tabinol
  */
 public class PlayerMoney {
 
+    /** The economy. */
     private final Economy economy;
 
+    /**
+     * Instantiates a new player money.
+     */
     public PlayerMoney() {
 
         economy = Factoid.getDependPlugin().getEconomy();
     }
     
-    public Double getPlayerBalance(String playerName, String worldName) {
+    /**
+     * Gets the player balance.
+     *
+     * @param offlinePlayer the offline player
+     * @param worldName the world name
+     * @return the player balance
+     */
+    public Double getPlayerBalance(OfflinePlayer offlinePlayer, String worldName) {
         
-        return economy.getBalance(playerName, worldName);
+        return economy.getBalance(offlinePlayer, worldName);
     }
     
-    public boolean giveToPlayer(String playerName, String worldName, Double amount) {
+    /**
+     * Give to player.
+     *
+     * @param offlinePlayer the offline player
+     * @param worldName the world name
+     * @param amount the amount
+     * @return true, if successful
+     */
+    public boolean giveToPlayer(OfflinePlayer offlinePlayer, String worldName, Double amount) {
         
-        return economy.depositPlayer(playerName, worldName, amount).transactionSuccess();
+        return economy.depositPlayer(offlinePlayer, worldName, amount).transactionSuccess();
     }
 
-    public boolean getFromPlayer(String playerName, String worldName, Double amount) {
+    /**
+     * Gets the from player.
+     *
+     * @param offlinePlayer the offline player
+     * @param worldName the world name
+     * @param amount the amount
+     * @return the from player
+     */
+    public boolean getFromPlayer(OfflinePlayer offlinePlayer, String worldName, Double amount) {
         
-        return economy.withdrawPlayer(playerName, worldName, amount).transactionSuccess();
+        return economy.withdrawPlayer(offlinePlayer, worldName, amount).transactionSuccess();
     }
     
+    /**
+     * To format.
+     *
+     * @param amount the amount
+     * @return the string
+     */
     public String toFormat(Double amount) {
         
         return economy.format(amount);

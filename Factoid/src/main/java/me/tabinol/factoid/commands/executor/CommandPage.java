@@ -20,13 +20,26 @@ package me.tabinol.factoid.commands.executor;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommandPage.
+ */
 public class CommandPage extends CommandExec {
 
+    /**
+     * Instantiates a new command page.
+     *
+     * @param entity the entity
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandPage(CommandEntities entity) throws FactoidCommandException {
 
         super(entity, true, true);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+     */
     @Override
     public void commandExecute() throws FactoidCommandException {
 

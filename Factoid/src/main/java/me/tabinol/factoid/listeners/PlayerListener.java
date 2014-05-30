@@ -76,14 +76,38 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.PluginManager;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The listener interface for receiving player events.
+ * The class that is interested in processing a player
+ * event implements this interface, and the object created
+ * with that class is registered with a component using the
+ * component's <code>addPlayerListener<code> method. When
+ * the player event occurs, that object's appropriate
+ * method is invoked.
+ *
+ * @see PlayerEvent
+ */
 public class PlayerListener implements Listener {
 
+    /** The conf. */
     private Config conf;
+    
+    /** The player conf. */
     private PlayerStaticConfig playerConf;
+    
+    /** The Constant DEFAULT_TIME_LAPS. */
     public static final int DEFAULT_TIME_LAPS = 500; // in milliseconds
+    
+    /** The time check. */
     private int timeCheck;
+    
+    /** The pm. */
     private PluginManager pm;
 
+    /**
+     * Instantiates a new player listener.
+     */
     public PlayerListener() {
 
         super();
@@ -93,6 +117,11 @@ public class PlayerListener implements Listener {
         pm = Factoid.getThisPlugin().getServer().getPluginManager();
     }
 
+    /**
+     * On player join.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
 
@@ -122,6 +151,11 @@ public class PlayerListener implements Listener {
     }
 
     // Must be running after LandListener
+    /**
+     * On player quit.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
 
@@ -137,6 +171,11 @@ public class PlayerListener implements Listener {
         playerConf.remove(player);
     }
 
+    /**
+     * On player teleport.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
 
@@ -156,6 +195,11 @@ public class PlayerListener implements Listener {
         }
     }
 
+    /**
+     * On player move.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event) {
 
@@ -179,6 +223,11 @@ public class PlayerListener implements Listener {
         updatePosInfo(event, entry, event.getTo(), false);
     }
 
+    /**
+     * On player interact.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
 
@@ -292,6 +341,11 @@ public class PlayerListener implements Listener {
         }
     }
 
+    /**
+     * On block place.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
 
@@ -308,6 +362,11 @@ public class PlayerListener implements Listener {
         }
     }
 
+    /**
+     * On hanging place.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onHangingPlace(HangingPlaceEvent event) {
 
@@ -325,6 +384,11 @@ public class PlayerListener implements Listener {
         }
     }
 
+    /**
+     * On player interact entity.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         if (!playerConf.get(event.getPlayer()).isAdminMod()
@@ -342,6 +406,11 @@ public class PlayerListener implements Listener {
         }
     }
 
+    /**
+     * On block break.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
 
@@ -358,6 +427,11 @@ public class PlayerListener implements Listener {
         }
     }
 
+    /**
+     * On player bucket fill.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerBucketFill(PlayerBucketFillEvent event) {
 
@@ -374,6 +448,11 @@ public class PlayerListener implements Listener {
         }
     }
 
+    /**
+     * On hanging break by entity.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
 
@@ -393,6 +472,11 @@ public class PlayerListener implements Listener {
         }
     }
 
+    /**
+     * On player drop item.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerDropItem(PlayerDropItemEvent event) {
 
@@ -406,6 +490,11 @@ public class PlayerListener implements Listener {
         }
     }
 
+    /**
+     * On player pickup item.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
 
@@ -419,6 +508,11 @@ public class PlayerListener implements Listener {
         }
     }
 
+    /**
+     * On player bed enter.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerBedEnter(PlayerBedEnterEvent event) {
 
@@ -433,6 +527,11 @@ public class PlayerListener implements Listener {
         }
     }
 
+    /**
+     * On entity damage by entity.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 
@@ -518,6 +617,11 @@ public class PlayerListener implements Listener {
         }
     }
 
+    /**
+     * On player bucket empty.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
 
@@ -536,6 +640,11 @@ public class PlayerListener implements Listener {
         }
     }
 
+    /**
+     * On block ignite.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockIgnite(BlockIgniteEvent event) {
 
@@ -552,6 +661,11 @@ public class PlayerListener implements Listener {
         }
     }
 
+    /**
+     * On potion splash.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPotionSplash(PotionSplashEvent event) {
 
@@ -570,6 +684,11 @@ public class PlayerListener implements Listener {
         }
     }
 
+    /**
+     * On player command preprocess.
+     *
+     * @param event the event
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 
@@ -595,16 +714,37 @@ public class PlayerListener implements Listener {
         }
     }
 
+    /**
+     * Check permission.
+     *
+     * @param land the land
+     * @param player the player
+     * @param pt the pt
+     * @return true, if successful
+     */
     private boolean checkPermission(DummyLand land, Player player, PermissionType pt) {
 
         return land.checkPermissionAndInherit(player, pt) == pt.getDefaultValue();
     }
 
+    /**
+     * Message permission.
+     *
+     * @param player the player
+     */
     private void MessagePermission(Player player) {
 
         player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("GENERAL.MISSINGPERMISSION"));
     }
 
+    /**
+     * Update pos info.
+     *
+     * @param event the event
+     * @param entry the entry
+     * @param loc the loc
+     * @param newPlayer the new player
+     */
     private void updatePosInfo(Event event, PlayerConfEntry entry, Location loc, boolean newPlayer) {
 
         DummyLand land;

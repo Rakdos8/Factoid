@@ -24,16 +24,30 @@ import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoid.parameters.PermissionType;
 import org.bukkit.ChatColor;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommandMoney.
+ */
 public class CommandMoney extends CommandExec {
 
+    /** The player money. */
     private final PlayerMoney playerMoney;
 
+    /**
+     * Instantiates a new command money.
+     *
+     * @param entity the entity
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandMoney(CommandEntities entity) throws FactoidCommandException {
 
         super(entity, false, true);
         playerMoney = Factoid.getPlayerMoney();
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+     */
     public void commandExecute() throws FactoidCommandException {
 
         if (playerMoney == null) {
@@ -56,6 +70,11 @@ public class CommandMoney extends CommandExec {
         }
     }
 
+    /**
+     * Balance.
+     *
+     * @throws FactoidCommandException the factoid command exception
+     */
     private void balance() throws FactoidCommandException {
 
         checkPermission(true, false, PermissionList.MONEY_BALANCE.getPermissonType(), null);
@@ -63,6 +82,11 @@ public class CommandMoney extends CommandExec {
                 land.getName(), playerMoney.toFormat(land.getMoney())));
     }
 
+    /**
+     * Deposit.
+     *
+     * @throws FactoidCommandException the factoid command exception
+     */
     private void deposit() throws FactoidCommandException {
 
         checkPermission(true, false, PermissionList.MONEY_DEPOSIT.getPermissonType(), null);
@@ -70,17 +94,22 @@ public class CommandMoney extends CommandExec {
         double amount = getAmountFromCommandLine();
 
         // Amount is valid?
-        if (amount > playerMoney.getPlayerBalance(entity.playerName, land.getWorldName())) {
+        if (amount > playerMoney.getPlayerBalance(entity.player.getPlayer(), land.getWorldName())) {
             throw new FactoidCommandException("Invalid amount", entity.player, "COMMAND.ECONOMY.INVALIDAMOUNT");
         }
 
         // Land Deposit
-        playerMoney.getFromPlayer(entity.playerName, land.getWorldName(), amount);
+        playerMoney.getFromPlayer(entity.player.getPlayer(), land.getWorldName(), amount);
         land.addMoney(amount);
         entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ECONOMY.LANDDEPOSIT",
                 playerMoney.toFormat(land.getMoney()), land.getName()));
     }
 
+    /**
+     * Withdraw.
+     *
+     * @throws FactoidCommandException the factoid command exception
+     */
     private void withdraw() throws FactoidCommandException {
 
         checkPermission(true, false, PermissionList.MONEY_WITHDRAW.getPermissonType(), null);
@@ -94,11 +123,17 @@ public class CommandMoney extends CommandExec {
 
         // Land Deposit
         land.substractMoney(amount);
-        playerMoney.giveToPlayer(entity.playerName, land.getWorldName(), amount);
+        playerMoney.giveToPlayer(entity.player.getPlayer(), land.getWorldName(), amount);
         entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ECONOMY.LANDWITHDRAW",
                 playerMoney.toFormat(land.getMoney()), land.getName()));
     }
 
+    /**
+     * Gets the amount from command line.
+     *
+     * @return the amount from command line
+     * @throws FactoidCommandException the factoid command exception
+     */
     private double getAmountFromCommandLine() throws FactoidCommandException {
 
         double ret = 0;

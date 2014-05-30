@@ -21,33 +21,59 @@ import me.tabinol.factoid.lands.Land;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LandDeleteEvent.
+ */
 public class LandDeleteEvent extends LandEvent implements Cancellable {
 
+    /** The Constant handlers. */
     private static final HandlerList handlers = new HandlerList();
+    
+    /** The cancelled. */
     protected boolean cancelled = false;
 
+    /**
+     * Instantiates a new land delete event.
+     *
+     * @param deletedLand the deleted land
+     */
     public LandDeleteEvent(final Land deletedLand) {
 
         super(deletedLand);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.event.LandEvent#getHandlers()
+     */
     @Override
     public HandlerList getHandlers() {
 
         return handlers;
     }
 
+    /**
+     * Gets the handler list.
+     *
+     * @return the handler list
+     */
     public static HandlerList getHandlerList() {
 
         return handlers;
     }
     
+    /* (non-Javadoc)
+     * @see org.bukkit.event.Cancellable#isCancelled()
+     */
     @Override
     public boolean isCancelled() {
         
         return cancelled;
     }
 
+    /* (non-Javadoc)
+     * @see org.bukkit.event.Cancellable#setCancelled(boolean)
+     */
     @Override
     public void setCancelled(boolean bln) {
         

@@ -19,8 +19,17 @@ package me.tabinol.factoid.commands.executor;
 
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface CommandInterface.
+ */
 public interface CommandInterface {
 
+    /**
+     * Command execute.
+     *
+     * @throws FactoidCommandException the factoid command exception
+     */
     public void commandExecute() throws FactoidCommandException;
     
     

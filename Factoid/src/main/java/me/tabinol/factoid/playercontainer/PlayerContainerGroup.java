@@ -23,13 +23,25 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PlayerContainerGroup.
+ */
 public class PlayerContainerGroup extends PlayerContainer {
     
+    /**
+     * Instantiates a new player container group.
+     *
+     * @param groupName the group name
+     */
     public PlayerContainerGroup(String groupName) {
         
         super(groupName, PlayerContainerType.GROUP, true);
     }
     
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
+     */
     @Override
     public boolean equals(PlayerContainer container2) {
         
@@ -37,12 +49,18 @@ public class PlayerContainerGroup extends PlayerContainer {
                 name.equalsIgnoreCase(container2.getName());
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#copyOf()
+     */
     @Override
     public PlayerContainer copyOf() {
         
         return new PlayerContainerGroup(name);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#hasAccess(org.bukkit.entity.Player)
+     */
     @Override
     public boolean hasAccess(Player player) {
         
@@ -53,12 +71,18 @@ public class PlayerContainerGroup extends PlayerContainer {
         }
     }
     
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainer#getPrint()
+     */
     @Override
     public String getPrint() {
         
         return ChatColor.BLUE + "G:" + ChatColor.WHITE + name;
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
+     */
     @Override
     public void setLand(Land land) {
         

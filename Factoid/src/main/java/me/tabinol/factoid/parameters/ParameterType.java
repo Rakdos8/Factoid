@@ -19,42 +19,74 @@ package me.tabinol.factoid.parameters;
 
 import org.bukkit.ChatColor;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class ParameterType.
  *
  * @author michel
  */
 public class ParameterType implements Comparable<ParameterType> {
     
+    /** The name. */
     private final String name;
+    
+    /** The is registered. */
     private boolean isRegistered = false;
     
+    /**
+     * Instantiates a new parameter type.
+     *
+     * @param name the name
+     */
     ParameterType(String name) {
         
         this.name = name;
     }
     
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
     @Override
     public int compareTo(ParameterType t) {
         
         return name.compareTo(t.name);
     }
     
+    /**
+     * Equals.
+     *
+     * @param t the t
+     * @return true, if successful
+     */
     public boolean equals(ParameterType t) {
         
         return name.equals(t.name);
     }
     
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     public String getName() {
         
         return name;
     }
     
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
         
         return name;
     }
     
+    /**
+     * Gets the prints the.
+     *
+     * @return the prints the
+     */
     public String getPrint() {
         
         if(isRegistered) {
@@ -64,11 +96,19 @@ public class ParameterType implements Comparable<ParameterType> {
         }
     }
     
+    /**
+     * Checks if is registered.
+     *
+     * @return true, if is registered
+     */
     public boolean isRegistered() {
         
         return isRegistered;
     }
     
+    /**
+     * Sets the registered.
+     */
     void setRegistered() {
         
         isRegistered = true;

@@ -30,13 +30,30 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommandInfo.
+ */
 public class CommandInfo extends CommandExec {
 
+    /** The area. */
     private CuboidArea area;
+    
+    /** The player. */
     private final Player player;
+    
+    /** The player name. */
     private final String playerName;
+    
+    /** The arg list. */
     private final ArgList argList;
 
+    /**
+     * Instantiates a new command info.
+     *
+     * @param entity the entity
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandInfo(CommandEntities entity) throws FactoidCommandException {
 
         super(entity, false, false);
@@ -48,6 +65,13 @@ public class CommandInfo extends CommandExec {
     }
 
     // called from the bone
+    /**
+     * Instantiates a new command info.
+     *
+     * @param player the player
+     * @param area the area
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandInfo(Player player, CuboidArea area) throws FactoidCommandException {
 
         super(null, false, false);
@@ -57,6 +81,9 @@ public class CommandInfo extends CommandExec {
         argList = null;
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+     */
     @Override
     public void commandExecute() throws FactoidCommandException {
 
@@ -112,6 +139,13 @@ public class CommandInfo extends CommandExec {
         }
     }
 
+    /**
+     * Gets the permission in col for pl.
+     *
+     * @param land the land
+     * @param pt the pt
+     * @return the permission in col for pl
+     */
     private String getPermissionInColForPl(Land land, PermissionType pt) {
 
         boolean result = land.checkPermissionAndInherit(player, pt);

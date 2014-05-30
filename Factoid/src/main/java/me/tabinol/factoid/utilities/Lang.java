@@ -29,14 +29,30 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Lang.
+ */
 public class Lang extends Thread {
 
+    /** The Constant ACTUAL_VERSION. */
     public static final int ACTUAL_VERSION = Factoid.getMavenAppProperties().getPropertyInt("langVersion");
+    
+    /** The lang. */
     private String lang = null;
+    
+    /** The lang file. */
     private File langFile;
+    
+    /** The langconfig. */
     private final FileConfiguration langconfig;
+    
+    /** The plugin. */
     private final JavaPlugin plugin;
 
+    /**
+     * Instantiates a new lang.
+     */
     public Lang() {
         this.langconfig = new YamlConfiguration();
         this.plugin = Factoid.getThisPlugin();
@@ -44,6 +60,9 @@ public class Lang extends Thread {
         checkVersion();
     }
 
+    /**
+     * Reload config.
+     */
     public final void reloadConfig() {
         this.lang = Factoid.getConf().getLang();
         this.langFile = new File(plugin.getDataFolder() + "/lang/", lang + ".yml");
@@ -54,6 +73,9 @@ public class Lang extends Thread {
     }
 
     // Check if it is the next version, if not, the file will be renamed
+    /**
+     * Check version.
+     */
     public final void checkVersion() {
 
         int fileVersion = langconfig.getInt("VERSION");
@@ -67,6 +89,13 @@ public class Lang extends Thread {
         }
     }
 
+    /**
+     * Gets the message.
+     *
+     * @param path the path
+     * @param param the param
+     * @return the message
+     */
     public String getMessage(String path, String... param) {
 
         String message = langconfig.getString(path);
@@ -89,11 +118,25 @@ public class Lang extends Thread {
         return message;
     }
 
+    /**
+     * Checks if is message exist.
+     *
+     * @param path the path
+     * @return true, if is message exist
+     */
     public boolean isMessageExist(String path) {
 
         return langconfig.getString(path) != null;
     }
 
+    /**
+     * Replace.
+     *
+     * @param s_original the s_original
+     * @param s_cherche the s_cherche
+     * @param s_nouveau the s_nouveau
+     * @return the string
+     */
     public String replace(String s_original, String s_cherche, String s_nouveau) {
         if ((s_original == null) || (s_original.equals(""))) {
             return "";
@@ -112,6 +155,9 @@ public class Lang extends Thread {
         return s_final.toString();
     }
 
+    /**
+     * Load yamls.
+     */
     private void loadYamls() {
         try {
             langconfig.load(langFile);
@@ -120,6 +166,9 @@ public class Lang extends Thread {
         }
     }
 
+    /**
+     * Make.
+     */
     private void Make() {
         try {
             if (!langFile.exists()) {
@@ -131,6 +180,12 @@ public class Lang extends Thread {
         }
     }
 
+    /**
+     * Copy.
+     *
+     * @param in the in
+     * @param file the file
+     */
     private void copy(InputStream in, File file) {
         try {
             OutputStream out = new FileOutputStream(file);
@@ -146,6 +201,13 @@ public class Lang extends Thread {
         }
     }
 
+    /**
+     * Gets the occurence.
+     *
+     * @param s the s
+     * @param r the r
+     * @return the occurence
+     */
     private int getOccurence(String s, char r) {
         int counter = 0;
         for (int i = 0; i < s.length(); i++) {
@@ -156,6 +218,12 @@ public class Lang extends Thread {
         return counter;
     }
 
+    /**
+     * Gets the help.
+     *
+     * @param commandName the command name
+     * @return the help
+     */
     public String getHelp(String commandName) {
         
         ConfigurationSection helpSec = langconfig.getConfigurationSection("HELP." + commandName);

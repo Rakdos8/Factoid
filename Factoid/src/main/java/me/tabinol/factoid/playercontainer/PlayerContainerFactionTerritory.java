@@ -21,16 +21,29 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.Land;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PlayerContainerFactionTerritory.
+ */
 public class PlayerContainerFactionTerritory extends PlayerContainer {
     
+    /** The land. */
     private Land land;
     
+    /**
+     * Instantiates a new player container faction territory.
+     *
+     * @param land the land
+     */
     public PlayerContainerFactionTerritory(Land land) {
         
         super("", PlayerContainerType.FACTION_TERRITORY, false);
         this.land = land;
     }
     
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
+     */
     @Override
     public boolean equals(PlayerContainer container2) {
         
@@ -38,12 +51,18 @@ public class PlayerContainerFactionTerritory extends PlayerContainer {
                 land == ((PlayerContainerFactionTerritory)container2).land;
     }
     
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#copyOf()
+     */
     @Override
     public PlayerContainer copyOf() {
         
         return new PlayerContainerFactionTerritory(land);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#hasAccess(org.bukkit.entity.Player)
+     */
     @Override
     public boolean hasAccess(Player player) {
         
@@ -54,11 +73,19 @@ public class PlayerContainerFactionTerritory extends PlayerContainer {
         return land.getFactionTerritory().isPlayerInList(Factoid.getPlayerConf().get(player).getPlayerContainer());
     }
 
+    /**
+     * Gets the land.
+     *
+     * @return the land
+     */
     public Land getLand() {
         
         return land;
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
+     */
     @Override
     public void setLand(Land land) {
      

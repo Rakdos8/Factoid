@@ -23,17 +23,30 @@ import me.tabinol.factoid.commands.executor.CommandCancel;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.utilities.FactoidRunnable;
 
+// TODO: Auto-generated Javadoc
 // Auto cancel selection
+/**
+ * The Class PlayerAutoCancelSelect.
+ */
 public class PlayerAutoCancelSelect extends FactoidRunnable {
 
+    /** The entry. */
     private final PlayerConfEntry entry;
 
+    /**
+     * Instantiates a new player auto cancel select.
+     *
+     * @param entry the entry
+     */
     public PlayerAutoCancelSelect(PlayerConfEntry entry) {
 
         super();
         this.entry = entry;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Runnable#run()
+     */
     @Override
     public void run() {
         

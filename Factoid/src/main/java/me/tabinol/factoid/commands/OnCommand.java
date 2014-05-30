@@ -31,12 +31,22 @@ import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
 import static me.tabinol.factoid.commands.CommandList.valueOf;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class OnCommand.
+ */
 public class OnCommand extends Thread implements CommandExecutor {
 
+    /**
+     * Instantiates a new on command.
+     */
     public OnCommand() {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.bukkit.command.CommandExecutor#onCommand(org.bukkit.command.CommandSender, org.bukkit.command.Command, java.lang.String, java.lang.String[])
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] arg) {
 
@@ -54,6 +64,14 @@ public class OnCommand extends Thread implements CommandExecutor {
     }
 
     // Get command from args
+    /**
+     * Gets the command.
+     *
+     * @param sender the sender
+     * @param argList the arg list
+     * @return the command
+     * @throws FactoidCommandException the factoid command exception
+     */
     public void getCommand(CommandSender sender, ArgList argList) throws FactoidCommandException {
 
         try {
@@ -110,6 +128,14 @@ public class OnCommand extends Thread implements CommandExecutor {
     }
 
     // Get the command value from command list
+    /**
+     * Gets the command value.
+     *
+     * @param command the command
+     * @param sender the sender
+     * @return the command value
+     * @throws FactoidCommandException the factoid command exception
+     */
     private CommandList getCommandValue(String command, CommandSender sender) throws FactoidCommandException {
 
         CommandList cl;

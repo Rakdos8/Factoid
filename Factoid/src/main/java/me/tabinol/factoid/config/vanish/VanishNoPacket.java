@@ -20,10 +20,11 @@ package me.tabinol.factoid.config.vanish;
 import me.tabinol.factoid.Factoid;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
+// TODO: Auto-generated Javadoc
 // import org.kitteh.vanish.VanishPlugin;
 
 /**
- * VanishNoPacket Function
+ * VanishNoPacket Function.
  *
  * @author michel
  */
@@ -31,11 +32,17 @@ public class VanishNoPacket implements Vanish {
 
     // private final VanishPlugin vanishNoPacket;
 
+    /**
+     * Instantiates a new vanish no packet.
+     */
     public VanishNoPacket() {
 
         // vanishNoPacket = (VanishPlugin) Factoid.getDependPlugin().getVanishNoPacket();
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.config.vanish.Vanish#isVanished(org.bukkit.entity.Player)
+     */
     @Override
     public boolean isVanished(Player player) {
 

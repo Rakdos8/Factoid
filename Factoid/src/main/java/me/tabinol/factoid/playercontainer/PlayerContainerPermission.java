@@ -22,16 +22,29 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PlayerContainerPermission.
+ */
 public class PlayerContainerPermission extends PlayerContainer {
 
+    /** The perm. */
     private Permission perm;
     
+    /**
+     * Instantiates a new player container permission.
+     *
+     * @param bukkitPermission the bukkit permission
+     */
     public PlayerContainerPermission(String bukkitPermission) {
 
         super(bukkitPermission, PlayerContainerType.PERMISSION, true);
         perm = new Permission(bukkitPermission);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
+     */
     @Override
     public boolean equals(PlayerContainer container2) {
 
@@ -39,24 +52,36 @@ public class PlayerContainerPermission extends PlayerContainer {
                 && name.equalsIgnoreCase(container2.getName());
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#copyOf()
+     */
     @Override
     public PlayerContainer copyOf() {
 
         return new PlayerContainerPermission(name);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#hasAccess(org.bukkit.entity.Player)
+     */
     @Override
     public boolean hasAccess(Player player) {
 
         return player.hasPermission(perm);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainer#getPrint()
+     */
     @Override
     public String getPrint() {
 
         return ChatColor.GRAY + "B:" + ChatColor.WHITE + name;
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
+     */
     @Override
     public void setLand(Land land) {
 

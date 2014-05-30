@@ -148,6 +148,8 @@ COMMAND:
     INVALID: "The page number is invalid!"
   LAND:
     LISTSTART: "-Lands list-"
+  AREA:
+    LISTSTART: "-Areas list of '%'-"
   SELECT:
     JOINMODE: "You are now in Select Mode."
     HINT: "Type % '/factoid select done' % % to confirm your choice."

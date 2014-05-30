@@ -23,13 +23,26 @@ import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.lands.collisions.Collisions;
 import org.bukkit.ChatColor;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommandRemove.
+ */
 public class CommandRemove extends CommandExec {
 
+    /**
+     * Instantiates a new command remove.
+     *
+     * @param entity the entity
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandRemove(CommandEntities entity) throws FactoidCommandException {
 
         super(entity, false, false);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+     */
     @Override
     public void commandExecute() throws FactoidCommandException {
 
@@ -38,7 +51,7 @@ public class CommandRemove extends CommandExec {
 
         // Check for collision
         if (checkCollision(land.getName(), land, Collisions.LandAction.LAND_REMOVE, 
-                0, null, land.getParent(), 0, true)) {
+                0, null, land.getParent(), land.getOwner(), 0, true)) {
             return;
         }
 

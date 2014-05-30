@@ -25,12 +25,27 @@ import me.tabinol.factoid.selection.region.RegionSelection;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommandCancel.
+ */
 public class CommandCancel extends CommandExec {
 
+    /** The player. */
     private final Player player;
+    
+    /** The player conf. */
     private final PlayerConfEntry playerConf;
+    
+    /** The from auto cancel. */
     private final boolean fromAutoCancel; // true: launched from autoCancel
 
+    /**
+     * Instantiates a new command cancel.
+     *
+     * @param entity the entity
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandCancel(CommandEntities entity) throws FactoidCommandException {
 
         super(entity, false, false);
@@ -40,6 +55,13 @@ public class CommandCancel extends CommandExec {
     }
 
     // Called from PlayerListener
+    /**
+     * Instantiates a new command cancel.
+     *
+     * @param entry the entry
+     * @param fromAutoCancel the from auto cancel
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandCancel(PlayerConfEntry entry, boolean fromAutoCancel) throws FactoidCommandException {
 
         super(null, false, false);
@@ -48,6 +70,9 @@ public class CommandCancel extends CommandExec {
         this.fromAutoCancel = fromAutoCancel;
     }
     
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+     */
     @Override
     public void commandExecute() throws FactoidCommandException {
 

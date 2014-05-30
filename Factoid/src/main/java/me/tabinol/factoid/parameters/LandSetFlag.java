@@ -24,14 +24,33 @@ import me.tabinol.factoid.lands.areas.CuboidArea;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LandSetFlag.
+ */
 public class LandSetFlag extends Thread implements Listener{
     
+    /** The player. */
     private Player player;
+    
+    /** The area. */
     private CuboidArea area;
+    
+    /** The Redstone torch off. */
     private ItemStack RedstoneTorchOff = new ItemStack(Material.REDSTONE_TORCH_OFF);
+    
+    /** The Redstone torch on. */
     private ItemStack RedstoneTorchOn = new ItemStack(Material.REDSTONE_TORCH_ON);
+    
+    /** The inventory. */
     private Inventory inventory;
     
+    /**
+     * Instantiates a new land set flag.
+     *
+     * @param player the player
+     * @param area the area
+     */
     public LandSetFlag(Player player,CuboidArea area){
         this.player = player;
         this.area = area;
@@ -39,6 +58,9 @@ public class LandSetFlag extends Thread implements Listener{
         //player.openInventory(inventory);
     }
     
+    /**
+     * Make menu.
+     */
     private void makeMenu(){
         
         inventory = player.getServer().createInventory(null,8,"Flag Setting");

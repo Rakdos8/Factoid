@@ -24,16 +24,38 @@ import me.tabinol.factoid.config.players.PlayerConfEntry;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
 // Contains general information for commandExecutor
+/**
+ * The Class CommandEntities.
+ */
 public class CommandEntities {
     
+    /** The command. */
     protected final CommandList command;
+    
+    /** The sender. */
     protected final CommandSender sender;
+    
+    /** The arg list. */
     protected final ArgList argList;
+    
+    /** The player. */
     protected final Player player;
+    
+    /** The player name. */
     protected final String playerName;
+    
+    /** The player conf. */
     protected final PlayerConfEntry playerConf;
 
+    /**
+     * Instantiates a new command entities.
+     *
+     * @param command the command
+     * @param sender the sender
+     * @param argList the arg list
+     */
     public CommandEntities(CommandList command, CommandSender sender, ArgList argList) {
         
         this.command = command;

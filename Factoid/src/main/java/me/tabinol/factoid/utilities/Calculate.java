@@ -17,8 +17,19 @@
  */
 package me.tabinol.factoid.utilities;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Calculate.
+ */
 public class Calculate {
 
+    /**
+     * Greater int.
+     *
+     * @param nb1 the nb1
+     * @param nb2 the nb2
+     * @return the int
+     */
     public static int greaterInt(int nb1, int nb2) {
 
         if (nb1 > nb2) {
@@ -28,6 +39,13 @@ public class Calculate {
         }
     }
 
+    /**
+     * Lower int.
+     *
+     * @param nb1 the nb1
+     * @param nb2 the nb2
+     * @return the int
+     */
     public static int lowerInt(int nb1, int nb2) {
 
         if (nb1 < nb2) {
@@ -37,12 +55,28 @@ public class Calculate {
         }
     }
     
+    /**
+     * Checks if is in interval.
+     *
+     * @param nbSource the nb source
+     * @param nb1 the nb1
+     * @param nb2 the nb2
+     * @return true, if is in interval
+     */
     public static boolean isInInterval(int nbSource, int nb1, int nb2) {
         
         return nbSource >= nb1 && nbSource <= nb2;
     }
     
     // -1 before, 0 inside, +1 after
+    /**
+     * Compare position.
+     *
+     * @param nbSource the nb source
+     * @param nb1 the nb1
+     * @param nb2 the nb2
+     * @return the int
+     */
     public static int comparePosition(int nbSource, int nb1, int nb2) {
         
         if(nbSource < nb1) {
@@ -54,6 +88,13 @@ public class Calculate {
         return 0;
     }
     
+    /**
+     * Addition double.
+     *
+     * @param a the a
+     * @param b the b
+     * @return the double
+     */
     public static Double AdditionDouble(Double a, Double b){
         Double t = null;
         if(a<0){
@@ -64,6 +105,13 @@ public class Calculate {
         return t;
     }
     
+    /**
+     * Addition int.
+     *
+     * @param a the a
+     * @param b the b
+     * @return the int
+     */
     public static int AdditionInt(int a, int b){
         int t = 0;
         if(a<0){
@@ -74,6 +122,12 @@ public class Calculate {
         return t;
     }
     
+    /**
+     * Gets the random yield.
+     *
+     * @param yield the yield
+     * @return the random yield
+     */
     public static boolean getRandomYield(float yield) {
         
         return Math.random() < yield;

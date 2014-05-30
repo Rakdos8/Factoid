@@ -23,21 +23,39 @@ import me.tabinol.factoid.lands.Land;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PlayerContainerFaction.
+ */
 public class PlayerContainerFaction extends PlayerContainer {
 
+    /** The faction. */
     private Faction faction;
 
+    /**
+     * Instantiates a new player container faction.
+     *
+     * @param faction the faction
+     */
     public PlayerContainerFaction(Faction faction) {
 
         super(faction.getName(), PlayerContainerType.FACTION, true);
         this.faction = faction;
     }
 
+    /**
+     * Gets the faction.
+     *
+     * @return the faction
+     */
     public Faction getFaction() {
 
         return faction;
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
+     */
     @Override
     public boolean equals(PlayerContainer container2) {
 
@@ -45,24 +63,36 @@ public class PlayerContainerFaction extends PlayerContainer {
                 && name.equalsIgnoreCase(container2.getName());
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#copyOf()
+     */
     @Override
     public PlayerContainer copyOf() {
 
         return new PlayerContainerFaction(faction);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#hasAccess(org.bukkit.entity.Player)
+     */
     @Override
     public boolean hasAccess(Player player) {
 
         return faction.isPlayerInList(Factoid.getPlayerConf().get(player).getPlayerContainer());
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainer#getPrint()
+     */
     @Override
     public String getPrint() {
 
         return ChatColor.GOLD + "F:" + ChatColor.WHITE + name;
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
+     */
     @Override
     public void setLand(Land land) {
 

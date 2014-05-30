@@ -27,13 +27,26 @@ import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import org.bukkit.ChatColor;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CommandArea.
+ */
 public class CommandArea extends CommandExec {
 
+    /**
+     * Instantiates a new command area.
+     *
+     * @param entity the entity
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandArea(CommandEntities entity) throws FactoidCommandException {
 
         super(entity, false, true);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+     */
     @Override
     public void commandExecute() throws FactoidCommandException {
 
@@ -48,7 +61,8 @@ public class CommandArea extends CommandExec {
             double price = entity.playerConf.getSelection().getAreaAddPrice();
 
             // Check for collision
-            if (checkCollision(land.getName(), land, LandAction.AREA_ADD, 0, area, land.getParent(), price, true)) {
+            if (checkCollision(land.getName(), land, LandAction.AREA_ADD, 0, area, land.getParent(), 
+            		land.getOwner(), price, true)) {
                 return;
             }
 
@@ -62,6 +76,7 @@ public class CommandArea extends CommandExec {
         } else if (curArg.equalsIgnoreCase("remove") || curArg.equalsIgnoreCase("replace")) {
 
             checkPermission(true, true, null, null);
+            checkSelections(true, null);
 
             String areaNbStr = entity.argList.getNext();
             int areaNb = 0;
@@ -90,10 +105,9 @@ public class CommandArea extends CommandExec {
             // Only for a remove
             if (curArg.equalsIgnoreCase("remove")) {
 
-                checkSelections(true, null);
-
                 // Check for collision
-                if (checkCollision(curArg, land, LandAction.AREA_REMOVE, areaNb, null, land.getParent(), 0, true)) {
+                if (checkCollision(curArg, land, LandAction.AREA_REMOVE, areaNb, null, land.getParent(), 
+                		land.getOwner(), 0, true)) {
                     return;
                 }
 
@@ -115,12 +129,13 @@ public class CommandArea extends CommandExec {
                 double price = entity.playerConf.getSelection().getAreaReplacePrice(areaNb);
 
                 // Check for collision
-                if (checkCollision(land.getName(), land, LandAction.AREA_MODIFY, areaNb, area, land.getParent(), price, true)) {
+                if (checkCollision(land.getName(), land, LandAction.AREA_MODIFY, areaNb, area, land.getParent(), 
+                		land.getOwner(), price, true)) {
                     return;
                 }
 
                 // Replace Area
-                land.replaceArea(areaNb, area);
+                land.replaceArea(areaNb, area, price);
 
                 entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.AREA.ISDONE", land.getName()));
                 Factoid.getLog().write(entity.playerName + " have create an area named " + land.getName() + " at position " + land.getAreas().toString());
@@ -133,7 +148,7 @@ public class CommandArea extends CommandExec {
             for (Map.Entry<Integer, CuboidArea> entry : land.getIdsAndAreas().entrySet()) {
                 stList.append("ID: " + entry.getKey() + ", " + entry.getValue().getPrint() + Factoid.getConf().NEWLINE);
             }
-            new ChatPage("COMMAND.CURRENT.LAND.AREA", stList.toString(), entity.sender, land.getName()).getPage(1);
+            new ChatPage("COMMAND.AREA.LISTSTART", stList.toString(), entity.sender, land.getName()).getPage(1);
         } else {
             throw new FactoidCommandException("Missing information command", entity.sender, "GENERAL.MISSINGINFO");
         }

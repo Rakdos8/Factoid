@@ -20,31 +20,50 @@ package me.tabinol.factoid.playercontainer;
 import me.tabinol.factoid.lands.Land;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PlayerContainerEverybody.
+ */
 public class PlayerContainerEverybody extends PlayerContainer {
 
+    /**
+     * Instantiates a new player container everybody.
+     */
     public PlayerContainerEverybody() {
         
         super("", PlayerContainerType.EVERYBODY, false);
     }
     
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
+     */
     @Override
     public boolean equals(PlayerContainer container2) {
         
         return container2 instanceof PlayerContainerEverybody;
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#copyOf()
+     */
     @Override
     public PlayerContainer copyOf() {
         
         return new PlayerContainerEverybody();
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#hasAccess(org.bukkit.entity.Player)
+     */
     @Override
     public boolean hasAccess(Player player) {
         
         return true;
     }
     
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
+     */
     @Override
     public void setLand(Land land) {
         

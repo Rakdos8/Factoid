@@ -37,11 +37,11 @@ land:
   DefaultZsize: 10
   DefaultBottom: 0
   DefaultTop: 255
+  MaxLandPerPlayer: 5
   area:
     MinAreaSize: 1
     MaxAreaSize: 1
     MaxAreaPerLand: 3
-    MaxLandPerPlayer: 5
   OwnerCanSet:                     # What the owner can set on his land?
     Permissions: [BUILD, OPEN, USE]
     Flags: [MESSAGE_JOIN, MESSAGE_QUIT]

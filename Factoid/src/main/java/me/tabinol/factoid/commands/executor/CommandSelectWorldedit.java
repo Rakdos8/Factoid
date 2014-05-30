@@ -30,20 +30,39 @@ import me.tabinol.factoid.selection.region.AreaSelection;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+// TODO: Auto-generated Javadoc
 // WorldEdit is in a separate class from CommandSelect because if WorldEdit
 // is not installed, we don't want to makes error.
 
+/**
+ * The Class CommandSelectWorldedit.
+ */
 public class CommandSelectWorldedit {
     
+    /** The player. */
     Player player;
+    
+    /** The entry. */
     PlayerConfEntry entry;
     
+    /**
+     * Instantiates a new command select worldedit.
+     *
+     * @param player the player
+     * @param entry the entry
+     * @throws FactoidCommandException the factoid command exception
+     */
     public CommandSelectWorldedit(Player player, PlayerConfEntry entry) throws FactoidCommandException{
         
         this.player = player;
         this.entry = entry;
     }
     
+    /**
+     * Make select.
+     *
+     * @throws FactoidCommandException the factoid command exception
+     */
     protected void MakeSelect() throws FactoidCommandException {
         
         if (Factoid.getDependPlugin().getWorldEdit() == null) {

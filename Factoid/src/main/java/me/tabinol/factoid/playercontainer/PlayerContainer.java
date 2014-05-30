@@ -26,11 +26,25 @@ import me.tabinol.factoid.utilities.StringChanges;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PlayerContainer.
+ */
 public abstract class PlayerContainer implements PlayerContainerInterface, Comparable<PlayerContainer> {
 
+    /** The name. */
     protected String name;
+    
+    /** The container type. */
     protected PlayerContainerType containerType;
 
+    /**
+     * Instantiates a new player container.
+     *
+     * @param name the name
+     * @param containerType the container type
+     * @param toLowerCase the to lower case
+     */
     protected PlayerContainer(String name, PlayerContainerType containerType, boolean toLowerCase) {
 
         if (toLowerCase) {
@@ -41,6 +55,14 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
         this.containerType = containerType;
     }
 
+    /**
+     * Creates the.
+     *
+     * @param land the land
+     * @param pct the pct
+     * @param name the name
+     * @return the player container
+     */
     public static PlayerContainer create(Land land, PlayerContainerType pct, String name) {
 
         if (pct == PlayerContainerType.FACTION) {
@@ -101,18 +123,27 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
         return null;
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#getName()
+     */
     @Override
     public String getName() {
 
         return name;
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#getContainerType()
+     */
     @Override
     public PlayerContainerType getContainerType() {
 
         return containerType;
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#compareTo(me.tabinol.factoid.playercontainer.PlayerContainer)
+     */
     @Override
     public int compareTo(PlayerContainer t) {
 
@@ -127,18 +158,30 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
         return name.compareTo(t.name);
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
 
         return containerType.toString() + ":" + name;
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#getPrint()
+     */
     @Override
     public String getPrint() {
 
         return containerType.toString();
     }
 
+    /**
+     * Gets the from string.
+     *
+     * @param string the string
+     * @return the from string
+     */
     public static PlayerContainer getFromString(String string) {
 
         String strs[] = StringChanges.splitAddVoid(string, ":");

@@ -43,15 +43,33 @@ import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.utilities.StringChanges;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StorageFlat.
+ */
 public class StorageFlat extends Storage implements StorageInt {
 
+    /** The Constant EXT_CONF. */
     public static final String EXT_CONF = ".conf";
+    
+    /** The Constant LAND_VERSION. */
     public static final int LAND_VERSION = Factoid.getMavenAppProperties().getPropertyInt("landVersion");
+    
+    /** The Constant FACTION_VERSION. */
     public static final int FACTION_VERSION = Factoid.getMavenAppProperties().getPropertyInt("factionVersion");
+    
+    /** The factions dir. */
     private String factionsDir;
+    
+    /** The lands dir. */
     private String landsDir;
+    
+    /** The to resave. */
     private boolean toResave = false; // If a new version of .conf file, we need to save again
 
+    /**
+     * Instantiates a new storage flat.
+     */
     public StorageFlat() {
 
         super();
@@ -59,6 +77,9 @@ public class StorageFlat extends Storage implements StorageInt {
         createDirFiles();
     }
 
+    /**
+     * Creates the dir files.
+     */
     private void createDirFiles() {
 
         factionsDir = Factoid.getThisPlugin().getDataFolder() + "/" + "factions" + "/";
@@ -68,6 +89,11 @@ public class StorageFlat extends Storage implements StorageInt {
         createDir(factionsDir);
     }
 
+    /**
+     * Creates the dir.
+     *
+     * @param dir the dir
+     */
     private void createDir(String dir) {
 
         File file = new File(dir);
@@ -77,16 +103,31 @@ public class StorageFlat extends Storage implements StorageInt {
         }
     }
 
+    /**
+     * Gets the faction file.
+     *
+     * @param faction the faction
+     * @return the faction file
+     */
     private File getFactionFile(Faction faction) {
 
         return new File(factionsDir + "/" + faction.getName() + EXT_CONF);
     }
 
+    /**
+     * Gets the land file.
+     *
+     * @param land the land
+     * @return the land file
+     */
     private File getLandFile(Land land) {
 
         return new File(landsDir + "/" + land.getName() + "." + land.getGenealogy() + EXT_CONF);
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.storage.StorageInt#loadAll()
+     */
     @Override
     public void loadAll() {
 
@@ -101,6 +142,9 @@ public class StorageFlat extends Storage implements StorageInt {
         }
     }
 
+    /**
+     * Load factions.
+     */
     private void loadFactions() {
 
         File[] files = new File(factionsDir).listFiles();
@@ -120,6 +164,9 @@ public class StorageFlat extends Storage implements StorageInt {
         Factoid.getLog().write(loadedfactions + " faction(s) loaded.");
     }
 
+    /**
+     * Load lands.
+     */
     private void loadLands() {
 
         File[] files = new File(landsDir).listFiles();
@@ -146,6 +193,11 @@ public class StorageFlat extends Storage implements StorageInt {
         Factoid.getLog().write(loadedlands + " land(s) loaded.");
     }
 
+    /**
+     * Load faction.
+     *
+     * @param file the file
+     */
     private void loadFaction(File file) {
 
         Faction faction;
@@ -185,6 +237,11 @@ public class StorageFlat extends Storage implements StorageInt {
         }
     }
 
+    /**
+     * Load land.
+     *
+     * @param file the file
+     */
     private void loadLand(File file) {
 
         int version;
@@ -353,6 +410,9 @@ public class StorageFlat extends Storage implements StorageInt {
         }
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.storage.StorageInt#saveLand(me.tabinol.factoid.lands.Land)
+     */
     @Override
     public void saveLand(Land land) {
         try {
@@ -436,12 +496,18 @@ public class StorageFlat extends Storage implements StorageInt {
         }
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.storage.StorageInt#removeLand(me.tabinol.factoid.lands.Land)
+     */
     @Override
     public void removeLand(Land land) {
 
         getLandFile(land).delete();
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.storage.StorageInt#saveFaction(me.tabinol.factoid.factions.Faction)
+     */
     @Override
     public void saveFaction(Faction faction) {
         try {
@@ -464,12 +530,18 @@ public class StorageFlat extends Storage implements StorageInt {
         }
     }
 
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.storage.StorageInt#removeFaction(me.tabinol.factoid.factions.Faction)
+     */
     @Override
     public void removeFaction(Faction faction) {
 
         getFactionFile(faction).delete();
     }
 
+    /**
+     * Save all.
+     */
     private void saveAll() {
 
         for (Land land : Factoid.getLands().getLands()) {
