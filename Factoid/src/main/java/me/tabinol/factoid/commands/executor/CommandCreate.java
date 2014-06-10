@@ -82,20 +82,31 @@ public class CommandCreate extends CommandExec {
             throw new FactoidCommandException("CommandCreate", entity.player, "COMMAND.CREATE.HINTUSE");
         }
 
-        // Autodetect parent
-        parent = Factoid.getLands().getLand(new Location(area.getWord(), area.getX1(), area.getY1(), area.getZ1()));
-        if(parent == null) {
-        	parent = Factoid.getLands().getLand(new Location(area.getWord(), area.getX2(), area.getY2(), area.getZ2()));
-        }
-
         // Check for parent
-        if (parent == null && !entity.argList.isLast()) {
+        if (!entity.argList.isLast()) {
 
-            parent = Factoid.getLands().getLand(entity.argList.getNext());
-
-            if (parent == null) {
-                throw new FactoidCommandException("CommandCreate", entity.player, "COMMAND.CREATE.PARENTNOTEXIST");
+            String curString = entity.argList.getNext();
+            
+            if(curString.equalsIgnoreCase("noparent")) {
+            	
+            	parent = null;
             }
+        	
+            else {
+        	
+            	parent = Factoid.getLands().getLand(curString);
+
+            	if (parent == null) {
+            		throw new FactoidCommandException("CommandCreate", entity.player, "COMMAND.CREATE.PARENTNOTEXIST");
+            	}
+            }
+        } else {
+
+        	// Autodetect parent
+            parent = Factoid.getLands().getLand(new Location(area.getWord(), area.getX1(), area.getY1(), area.getZ1()));
+        	if(parent == null) {
+        		parent = Factoid.getLands().getLand(new Location(area.getWord(), area.getX2(), area.getY2(), area.getZ2()));
+        	}
         }
 
         // Not complicated! The player must be AdminMod, or access to create (in world) 
