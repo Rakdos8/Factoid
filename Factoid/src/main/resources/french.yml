@@ -63,7 +63,7 @@ HELP:
   CANCEL:
     1: "/factoid cancel : Annule une sélection ou une action."
   CREATE:
-    1: "/factoid create <terrain> [parent] : Crée un terrain."
+    1: "/factoid create <terrain> [parent]/[noparent] : Crée un terrain. Parent détecté automatiquement."
   DEFAULT:
     1: "/factoid default : Remet le terrain à sa configuration par défaut."
   EXPAND:

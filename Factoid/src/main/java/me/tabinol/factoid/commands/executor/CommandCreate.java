@@ -19,6 +19,7 @@ package me.tabinol.factoid.commands.executor;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ArgList;
 import me.tabinol.factoid.config.BannedWords;
@@ -33,7 +34,9 @@ import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerNobody;
 import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
 import me.tabinol.factoid.selection.region.AreaSelection;
+
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -65,6 +68,7 @@ public class CommandCreate extends CommandExec {
 
         CuboidArea area = select.getCuboidArea();
         Double price = entity.playerConf.getSelection().getLandCreatePrice();
+        Land parent;
 
         // Quit select mod
         // entity.playerConf.setAreaSelection(null);
@@ -78,10 +82,14 @@ public class CommandCreate extends CommandExec {
             throw new FactoidCommandException("CommandCreate", entity.player, "COMMAND.CREATE.HINTUSE");
         }
 
-        Land parent;
+        // Autodetect parent
+        parent = Factoid.getLands().getLand(new Location(area.getWord(), area.getX1(), area.getY1(), area.getZ1()));
+        if(parent == null) {
+        	parent = Factoid.getLands().getLand(new Location(area.getWord(), area.getX2(), area.getY2(), area.getZ2()));
+        }
 
         // Check for parent
-        if ((parent = entity.playerConf.getSelection().getLand()) == null && !entity.argList.isLast()) {
+        if (parent == null && !entity.argList.isLast()) {
 
             parent = Factoid.getLands().getLand(entity.argList.getNext());
 

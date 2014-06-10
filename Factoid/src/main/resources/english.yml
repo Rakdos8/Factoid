@@ -63,7 +63,7 @@ HELP:
   CANCEL:
     1: "/factoid cancel : Cancel a selection or an action."
   CREATE:
-    1: "/factoid create <land name> [parent] : Create a land."
+    1: "/factoid create <land name> [parent]/[noparent] : Create a land. Parent detected automatically."
   DEFAULT:
     1: "/factoid default : Reset land configuration to default."
   EXPAND:

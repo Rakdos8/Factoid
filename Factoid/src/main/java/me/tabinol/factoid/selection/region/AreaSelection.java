@@ -18,12 +18,18 @@
 package me.tabinol.factoid.selection.region;
 
 import static java.lang.Math.abs;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.areas.CuboidArea;
+import me.tabinol.factoid.parameters.PermissionList;
+import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -114,6 +120,11 @@ public class AreaSelection extends RegionSelection implements Listener {
             Factoid.getLog().write("Selection disabled!");
             return;
         }
+        
+        // Detect the curent land from the first postion
+        DummyLand actualLand = Factoid.getLands().getLandOrOutsideArea(new Location(
+        		area.getWord(), area.getX1(), area.getY1(), area.getZ1()));
+        boolean canCreate = actualLand.checkPermissionAndInherit(player, PermissionList.LAND_CREATE.getPermissonType()); 
 
         //MakeSquare
         for (int posX = area.getX1(); posX <= area.getX2(); posX++) {
@@ -127,8 +138,9 @@ public class AreaSelection extends RegionSelection implements Listener {
                     if (!isFromLand) {
 
                         // Active Selection
-                        Land testCuboidarea = Factoid.getLands().getLand(newloc);
-                        if (testCuboidarea == null) {
+                        DummyLand testCuboidarea = Factoid.getLands().getLandOrOutsideArea(newloc);
+                        if (actualLand == testCuboidarea 
+                        		&& (canCreate == true || Factoid.getPlayerConf().get(player).isAdminMod())) {
                             this.player.sendBlockChange(newloc, Material.SPONGE, this.by);
                         } else {
                             this.player.sendBlockChange(newloc, Material.REDSTONE_BLOCK, this.by);
