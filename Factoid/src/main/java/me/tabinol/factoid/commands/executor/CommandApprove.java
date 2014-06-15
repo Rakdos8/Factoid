@@ -79,8 +79,7 @@ public class CommandApprove extends CommandExec {
             TreeMap<Date,Approve> approveTree = new TreeMap<Date,Approve>();
             
             //create list (short by date/time)
-            for (String approveName : approveList.getApproveList()) {
-                Approve app = approveList.getApprove(approveName);
+            for (Approve app : approveList.getApproveList().values()) {
                 approveTree.put(app.getDateTime().getTime(), app);
             }
             

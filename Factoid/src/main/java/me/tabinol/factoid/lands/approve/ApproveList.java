@@ -20,10 +20,12 @@ package me.tabinol.factoid.lands.approve;
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Set;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.areas.CuboidArea;
@@ -31,6 +33,7 @@ import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
 import me.tabinol.factoid.utilities.StringChanges;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -89,9 +92,34 @@ public class ApproveList {
      *
      * @return the approve list
      */
-    public Set<String> getApproveList() {
+    public TreeMap<String,Approve> getApproveList() {
 
-        return landNames;
+    	TreeMap<String,Approve> approves = new TreeMap<String,Approve>();
+    	TreeMap<String,Approve> approvesToRemove = new TreeMap<String,Approve>();
+    	
+    	// Check if land names are ok
+    	for(String landName : landNames) {
+    		
+        	Approve app = getApprove(landName);
+        	
+        	if(app != null) {
+        		
+        		// Approve ok, put in list
+        		approves.put(landName, app);
+        	} else {
+        		
+        		// Approve not ok, add it to list
+        		approvesToRemove.put(landName, app);
+        	}
+        }
+    	
+    	// Remove wrong approves
+    	for(Map.Entry<String,Approve> appEntry : approvesToRemove.entrySet()) {
+    		
+    		removeApprove(appEntry.getKey());
+    	}
+    	
+    	return approves;
     }
 
     /**
@@ -147,11 +175,21 @@ public class ApproveList {
      * @param approve the approve
      */
     public void removeApprove(Approve approve) {
+    
+    	removeApprove(approve.getLandName());
+    }
 
-        Factoid.getLog().write("Remove Approve from list: " + approve.getLandName());
+    /**
+     * Removes the approve.
+     *
+     * @param land name
+     */
+    public void removeApprove(String landName) {
+        
+    	Factoid.getLog().write("Remove Approve from list: " + landName);
 
-        approveConfig.set(approve.getLandName(), null);
-        landNames.remove(approve.getLandName());
+        approveConfig.set(landName, null);
+        landNames.remove(landName);
         saveFile();
     }
 

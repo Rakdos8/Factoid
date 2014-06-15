@@ -5,7 +5,7 @@
     <groupId>me.tabinol.factoid</groupId>
     <artifactId>Factoid</artifactId>
     <!-- *** Change version here *** -->
-    <version>0.2</version>
+    <version>0.3</version>
     <packaging>jar</packaging>
 
     <name>Factoid</name>
@@ -19,8 +19,6 @@
         <landVersion>3</landVersion>
         <!-- *** Change faction .conf version here here *** -->
         <factionVersion>3</factionVersion>
-        <!-- *** Players UUID .conf version here here *** -->
-        <playerUUIDVersion>1</playerUUIDVersion>
     </properties>
 
     <repositories>
