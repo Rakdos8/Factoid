@@ -154,16 +154,25 @@ public class ApproveList {
         Land parent = null;
         if (section.contains("Parent")) {
             parent = Factoid.getLands().getLand(section.getString("Parent"));
+            
+            // If the parent does not exist
             if (parent == null) {
                 Factoid.getLog().write("Error, parent not found");
                 return null;
             }
         }
+        
+        LandAction action = LandAction.valueOf(section.getString("Action"));
+        
+        // If the land was deleted
+        if(action != LandAction.LAND_ADD && Factoid.getLands().getLand(landName) == null) {
+        	return null;
+        }
 
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(section.getLong("DateTime"));
 
-        return new Approve(landName, LandAction.valueOf(section.getString("Action")),
+        return new Approve(landName, action,
                 section.getInt("RemovedAreaId"),
                 CuboidArea.getFromString(section.getString("NewArea")), pc,
                 parent, section.getDouble("Price"), cal);
