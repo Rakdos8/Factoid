@@ -29,10 +29,11 @@ HELP:
     20: "/factoid page : Voir la page du résultat d'une commande."
     21: "/factoid permission : Permissions du terrain."
     22: "/factoid priority : Priorité du terrain."
-    23: "/factoid rename : Renommer un terrain."
-    24: "/factoid resident : Résidents du terrain."
-    25: "/factoid who : (*) Lister les joueurs sur un terrain."
-    26: "(*) Si un terrain n'est pas sélectionné, le nom du celui-ci peut être le dernier argument."
+    23: "/factoid remove : Effacer un terrain."
+    24: "/factoid rename : Renommer un terrain."
+    25: "/factoid resident : Résidents du terrain."
+    26: "/factoid who : (*) Lister les joueurs sur un terrain."
+    27: "(*) Si un terrain n'est pas sélectionné, le nom du celui-ci peut être le dernier argument."
   SELECT:
     1: "/factoid select <here/nom du terrain> : Sélectionner un terrain pour une modification."
     2: "/factoid select : Démarrer la sélection visuelle."
@@ -92,7 +93,9 @@ HELP:
     2: "/factoid permission set <contenant joueur> <perm> <valeur> : Ajoute une permission."
     3: "/factoid flag unset unset <contenant joueur> <perm> : Enlève une permission."
   PRIORITY:
-    1: "/factoid owner <contenant joueur> : Change la priorité du terrain"
+    1: "/factoid priority <nombre> : Change la priorité du terrain."
+  REMOVE:
+    1: "/factoid remove : Effacer un terrain."
   RENAME:
     1: "/factoid rename <nouveau nom> : Renomme un terrain."
   RESIDENT:

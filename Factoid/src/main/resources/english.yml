@@ -29,13 +29,14 @@ HELP:
     20: "/factoid page : View a command result page."
     21: "/factoid permission : Permissions of the land."
     22: "/factoid priority : Priority of the land."
-    23: "/factoid rename : Rename a land."
-    24: "/factoid resident : Resident of the land."
-    25: "/factoid who : (*) Show players on a land."
-    26: "(*) If the land is not selected, the name can be the last parameter."
+    23: "/factoid remove : Delete a land."
+    24: "/factoid rename : Rename a land."
+    25: "/factoid resident : Resident of the land."
+    26: "/factoid who : (*) Show players on a land."
+    27: "(*) If the land is not selected, the name can be the last parameter."
   SELECT:
     1: "/factoid select <here/land name> : Select a land for modification."
-    2: "/factoid select : Start the visal selection."
+    2: "/factoid select : Start the visual selection."
     3: "/factoid select done : Set a visual selection done."
     4: "/factoid select worldedit : Select the WorldEdit selection."
     5: "/factoid select info : Informations about the selection."
@@ -76,7 +77,7 @@ HELP:
   KICK:
     1: "/factoid kick [player] <land> : Kick a player from a land."
   LIST:
-    1: "/factoid land [player] / world [world name] : Lands list."
+    1: "/factoid list [player] / world [world name] : Lands list."
   MONEY:
     1: "/factoid money balance : Show the money balance of the land."
     2: "/factoid money deposit <amount> : Deposit money."
@@ -90,9 +91,11 @@ HELP:
   PERMISSION:
     1: "/factoid permission list : List permissions."
     2: "/factoid permission set <player container> <perm> <value> : Add a permission."
-    3: "/factoid flag unset unset <player container> <perm> : Remove a permission."
+    3: "/factoid permission unset unset <player container> <perm> : Remove a permission."
   PRIORITY:
-    1: "/factoid owner <player container> : Change the land priority."
+    1: "/factoid priority <number> : Change the land priority."
+  REMOVE:
+    1: "/factoid remove : Delete a land."
   RENAME:
     1: "/factoid rename <new name> : Rename a land."
   RESIDENT:
