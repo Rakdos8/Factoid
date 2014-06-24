@@ -172,7 +172,10 @@ public enum PermissionList {
     ECO_LAND_FOR_RENT(false),
     
     /** The eco land rent. */
-    ECO_LAND_RENT(false);
+    ECO_LAND_RENT(false),
+    
+    /** TP with ender pearl */
+    ENDERPEARL_TP(true);
 
     /** The base value. */
     final boolean baseValue;
