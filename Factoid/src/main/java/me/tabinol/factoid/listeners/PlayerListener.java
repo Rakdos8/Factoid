@@ -493,11 +493,14 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerDropItem(PlayerDropItemEvent event) {
 
-        if (!playerConf.get(event.getPlayer()).isAdminMod()) {
-            DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getPlayer().getLocation());
+    	Player player = event.getPlayer();
+    	PlayerConfEntry entry = playerConf.get(player);
+    	
+    	if (entry != null && !entry.isAdminMod()) {
+            DummyLand land = Factoid.getLands().getLandOrOutsideArea(player.getLocation());
 
             if (!checkPermission(land, event.getPlayer(), PermissionList.DROP.getPermissonType())) {
-                messagePermission(event.getPlayer());
+                messagePermission(player);
                 event.setCancelled(true);
             }
         }
