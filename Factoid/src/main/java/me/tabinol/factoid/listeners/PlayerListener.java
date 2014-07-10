@@ -300,13 +300,15 @@ public class PlayerListener implements Listener {
                     || (((action == Action.RIGHT_CLICK_BLOCK // BEGIN of USE
                     && (ml == Material.WOODEN_DOOR || ml == Material.TRAP_DOOR
                     || ml == Material.STONE_BUTTON || ml == Material.WOOD_BUTTON
-                    || ml == Material.LEVER || ml == Material.TRAPPED_CHEST))
+                    || ml == Material.LEVER || ml == Material.TRAPPED_CHEST
+                    || ml == Material.FENCE_GATE))
                     || (action == Action.PHYSICAL
                     && (ml == Material.WOOD_PLATE || ml == Material.STONE_PLATE
                     || ml == Material.STRING)))
                     && !checkPermission(land, player, PermissionList.USE.getPermissonType())) // End of "USE"
                     || (action == Action.RIGHT_CLICK_BLOCK
-                    && (ml == Material.WOODEN_DOOR || ml == Material.TRAP_DOOR)
+                    && (ml == Material.WOODEN_DOOR || ml == Material.TRAP_DOOR
+                    || ml == Material.FENCE_GATE)
                     && !checkPermission(land, player, PermissionList.USE_DOOR.getPermissonType()))
                     || (action == Action.RIGHT_CLICK_BLOCK
                     && (ml == Material.STONE_BUTTON || ml == Material.WOOD_BUTTON)
