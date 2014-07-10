@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.UUID;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.config.WorldConfig;
@@ -41,6 +42,7 @@ import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -625,9 +627,18 @@ public class Lands {
         int actualGen = 0;
         int curGen;
         CuboidArea actualArea = null;
-        Collection<CuboidArea> areas = getCuboidAreas(loc);
+        Location resLoc; // Resolved location
+        
+        // Give the position from the sky to underbedrock if the Y is greater than 255 or lower than 0
+        if(loc.getBlockY() >= loc.getWorld().getMaxHeight()) {
+        	resLoc = new Location(loc.getWorld(), loc.getX(), loc.getWorld().getMaxHeight() - 1, loc.getZ()); 
+        } else if(loc.getBlockY() < 0){
+        	resLoc = new Location(loc.getWorld(), loc.getX(), 0, loc.getZ()); 
+        } else resLoc = loc; 
+        
+        Collection<CuboidArea> areas = getCuboidAreas(resLoc);
 
-        Factoid.getLog().write("Area check in" + loc.toString());
+        Factoid.getLog().write("Area check in" + resLoc.toString());
 
         // Compare priorities of parents (or main)
         for (CuboidArea area : areas) {
@@ -648,19 +659,6 @@ public class Lands {
             }
         }
 
-        /* Section not needed: the priority is inneritable
-         // If we need a second pass and more (for children)
-         for (int t = 1; t <= actualGen; t++) {
-         actualPrio = Short.MIN_VALUE;
-         for (CuboidArea area : areas) {
-         if (area.getLand() == actualArea.getLand().getAncestor(actualGen - t)
-         && actualPrio < (curPrio = area.getLand().getPriority())) {
-         actualArea = area;
-         actualPrio = curPrio;
-         }
-         }
-         }
-         */
         return actualArea;
     }
 

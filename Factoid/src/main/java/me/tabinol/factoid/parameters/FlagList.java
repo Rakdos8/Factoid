@@ -84,7 +84,10 @@ public enum FlagList {
     ECO_BLOCK_PRICE(FlagValueType.DOUBLE),
     
     /** The exclude commands. */
-    EXCLUDE_COMMANDS(FlagValueType.STRING_LIST);
+    EXCLUDE_COMMANDS(FlagValueType.STRING_LIST),
+    
+    /** The spawn and teleport point */
+    SPAWN(FlagValueType.STRING);
 
     /** The value type. */
     FlagValueType valueType;

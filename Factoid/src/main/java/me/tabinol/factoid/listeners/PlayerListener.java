@@ -39,6 +39,7 @@ import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.selection.region.PlayerMoveListen;
 import me.tabinol.factoid.selection.region.RegionSelection;
+import me.tabinol.factoid.utilities.StringChanges;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -75,6 +76,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.plugin.PluginManager;
@@ -347,7 +349,11 @@ public class PlayerListener implements Listener {
                     || (ml == Material.DROPPER
                     && !checkPermission(land, player, PermissionList.OPEN_DROPPER.getPermissonType()))
                     || (ml == Material.HOPPER
-                    && !checkPermission(land, player, PermissionList.OPEN_HOPPER.getPermissonType())))) {
+                    && !checkPermission(land, player, PermissionList.OPEN_HOPPER.getPermissonType())))
+                    // For dragon egg fix
+                    || (ml == Material.DRAGON_EGG
+                    && (!checkPermission(land, event.getPlayer(), PermissionList.BUILD.getPermissonType())
+                    || !checkPermission(land, event.getPlayer(), PermissionList.BUILD_DESTROY.getPermissonType())))) {
                 messagePermission(player);
                 event.setCancelled(true);
             }
@@ -656,6 +662,38 @@ public class PlayerListener implements Listener {
         }
     }
 
+   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true) // Must be after Essentials
+   public void onPlayerRespawn(PlayerRespawnEvent event) {
+	   
+	   Player player = event.getPlayer();
+	   PlayerConfEntry entry = playerConf.get(player);
+	   DummyLand land = Factoid.getLands().getLandOrOutsideArea(player.getLocation());
+	   String strLoc;
+	   Location loc;
+	   
+	   // For repsawn after death
+	   if(entry != null && land.checkPermissionAndInherit(player, PermissionList.TP_DEATH.getPermissonType())
+			   && (strLoc = land.getFlagAndInherit(FlagList.SPAWN.getFlagType()).getValueString()) != null
+			   && (loc = StringChanges.stringToLocation(strLoc)) != null) {
+		   event.setRespawnLocation(loc);
+	   }
+   }
+
+   /**
+    * On player respawn2.
+    *
+    * @param event the event
+    */
+   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true) // For land listener
+   public void onPlayerRespawn2(PlayerRespawnEvent event) {
+
+       Player player = event.getPlayer();
+       PlayerConfEntry entry = playerConf.get(player);
+       Location loc = event.getRespawnLocation();
+
+       updatePosInfo(event, entry, loc, false);
+   }
+    
     /**
      * On block ignite.
      *

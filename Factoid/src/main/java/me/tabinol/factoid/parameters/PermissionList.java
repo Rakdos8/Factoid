@@ -175,7 +175,13 @@ public enum PermissionList {
     ECO_LAND_RENT(false),
     
     /** TP with ender pearl */
-    ENDERPEARL_TP(true);
+    ENDERPEARL_TP(true),
+    
+    /** The player can teleport itself to the land */
+    TP(false),
+    
+    /** The payer respawn at the land spawn */
+    TP_DEATH(false);
 
     /** The base value. */
     final boolean baseValue;

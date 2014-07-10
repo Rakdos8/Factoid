@@ -20,6 +20,10 @@ package me.tabinol.factoid.utilities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class StringChanges.
@@ -259,5 +263,53 @@ public class StringChanges {
     public static String FirstUpperThenLower(String str) {
         
         return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
+    }
+    
+    /**
+     * Location to string.
+     *
+     * @param location the location
+     * @return the string
+     */
+    public static String locationToString(Location location) {
+    	
+    	return location.getWorld().getName() + ";" + location.getX() + ";" + location.getY() + ";" + location.getZ() 
+    			+ ";" + location.getYaw() + ";" + location.getPitch();
+    }
+    
+    /**
+     * String to location.
+     *
+     * @param locStr the loc str
+     * @return the location
+     */
+    public static Location stringToLocation(String locStr) {
+    	
+    	String[] strs = locStr.split("\\;");
+    	
+    	// Wrong parameter
+    	if(strs.length != 6) {
+    		return null;
+    	}
+    	
+    	World world = Bukkit.getWorld(strs[0]);
+    	
+    	if(world == null) {
+    		return null;
+    	}
+    	
+    	// Get the location
+    	Location location;
+    	
+    	try {
+    		location = new Location(world, Double.parseDouble(strs[1]), Double.parseDouble(strs[2]),
+    				Double.parseDouble(strs[3]), Float.parseFloat(strs[4]), Float.parseFloat(strs[5]));
+    	} catch(NumberFormatException ex) {
+    		
+    		// if location is wrong, set null
+    		location = null;
+    	}
+    	
+    	return location;
     }
 }

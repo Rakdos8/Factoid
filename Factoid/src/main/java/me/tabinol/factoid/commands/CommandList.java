@@ -99,7 +99,13 @@ public enum CommandList {
     MONEY,
     
     /** The list. */
-    LIST;
+    LIST,
+    
+    /** Set the land spawn point */
+    SETSPAWN,
+    
+    /** Teleport to a land */
+    TP;
 
     // If a command has a second name
     /**
