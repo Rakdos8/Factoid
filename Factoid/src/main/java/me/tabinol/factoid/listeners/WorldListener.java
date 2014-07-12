@@ -18,7 +18,9 @@
 package me.tabinol.factoid.listeners;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.lands.DummyLand;
@@ -26,6 +28,7 @@ import me.tabinol.factoid.parameters.FlagList;
 import me.tabinol.factoid.parameters.FlagType;
 import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.utilities.Calculate;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -37,6 +40,7 @@ import org.bukkit.entity.Hanging;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Slime;
 import org.bukkit.entity.TNTPrimed;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -135,35 +139,29 @@ public class WorldListener implements Listener {
                 } else {
                     power = 3L;
                 }
-                event.setCancelled(true);
-                ExplodeBlocks(event.blockList(), FlagList.CREEPER_DAMAGE.getFlagType(), event.getLocation(),
+                ExplodeBlocks(event, event.blockList(), FlagList.CREEPER_DAMAGE.getFlagType(), event.getLocation(),
                         event.getYield(), power, false, true);
 
                 //  Wither
             } else if (event.getEntityType() == EntityType.WITHER_SKULL) {
-                event.setCancelled(true);
-                ExplodeBlocks(event.blockList(), FlagList.WITHER_DAMAGE.getFlagType(), event.getLocation(),
+                ExplodeBlocks(event, event.blockList(), FlagList.WITHER_DAMAGE.getFlagType(), event.getLocation(),
                         event.getYield(), 1L, false, true);
             } else if (event.getEntityType() == EntityType.WITHER) {
-                event.setCancelled(true);
-                ExplodeBlocks(event.blockList(), FlagList.WITHER_DAMAGE.getFlagType(), event.getLocation(),
+                ExplodeBlocks(event, event.blockList(), FlagList.WITHER_DAMAGE.getFlagType(), event.getLocation(),
                         event.getYield(), 7L, false, true);
 
                 // Ghast
             } else if (event.getEntityType() == EntityType.FIREBALL) {
-                event.setCancelled(true);
-                ExplodeBlocks(event.blockList(), FlagList.GHAST_DAMAGE.getFlagType(), event.getLocation(),
+                ExplodeBlocks(event, event.blockList(), FlagList.GHAST_DAMAGE.getFlagType(), event.getLocation(),
                         event.getYield(), 1L, true, true);
 
                 // TNT
             } else if (event.getEntityType() == EntityType.MINECART_TNT
                     || event.getEntityType() == EntityType.PRIMED_TNT) {
-                event.setCancelled(true);
-                ExplodeBlocks(event.blockList(), FlagList.TNT_DAMAGE.getFlagType(), event.getLocation(),
+                ExplodeBlocks(event, event.blockList(), FlagList.TNT_DAMAGE.getFlagType(), event.getLocation(),
                         event.getYield(), 4L, false, true);
             } else if (event.getEntityType() == EntityType.ENDER_DRAGON) {
-                event.setCancelled(true);
-                ExplodeBlocks(event.blockList(), FlagList.ENDERDRAGON_DAMAGE.getFlagType(), event.getLocation(),
+                ExplodeBlocks(event, event.blockList(), FlagList.ENDERDRAGON_DAMAGE.getFlagType(), event.getLocation(),
                         event.getYield(), 4L, false, false);
             }
         }
@@ -189,6 +187,7 @@ public class WorldListener implements Listener {
     /**
      * Explode blocks.
      *
+     * @param event The cancellable event
      * @param blocks the blocks
      * @param ft the ft
      * @param loc the loc
@@ -197,43 +196,33 @@ public class WorldListener implements Listener {
      * @param setFire the set fire
      * @param doExplosion the do explosion
      */
-    private void ExplodeBlocks(List<Block> blocks, FlagType ft, Location loc,
+    private void ExplodeBlocks(Cancellable event, List<Block> blocks, FlagType ft, Location loc,
             float yield, float power, boolean setFire, boolean doExplosion) {
 
         LandFlag flag;
-        ArrayList<Block> listToRem = new ArrayList<Block>();
+        boolean cancelEvent = false;
+        Iterator<Block> itBlock = blocks.iterator();
+        Block block;
 
         Factoid.getLog().write("Explosion : " + ", Yield: " + yield + ", power: " + power);
 
-        // Check blocks to remove
-        for (Block block : blocks) {
-            if ((flag = Factoid.getLands().getLandOrOutsideArea(
-                    block.getLocation()).getFlagAndInherit(ft)) == null
-                    || (flag != null && flag.getValueBoolean() == true)) {
-                listToRem.add(block);
+        // Check if 1 block or more is in a protected place
+        while(itBlock.hasNext() && !cancelEvent) {
+        	block = itBlock.next();
+        	flag = Factoid.getLands().getLandOrOutsideArea(block.getLocation()).getFlagAndInherit(ft);
+            if (flag != null && flag.getValueBoolean() == false) {
+                cancelEvent = true;
             }
         }
-
-        // Do the explosion
-        if (doExplosion) {
+        
+        if(cancelEvent) {
+        	// Cancel Event and do a false explosion
+        	event.setCancelled(true);
             loc.getWorld().createExplosion(loc.getX(), loc.getY(), loc.getZ(),
                     power, setFire, false);
         }
-
-        // Remove and drop exploded blocks
-        for (Block block : listToRem) {
-            if (block.getType() != Material.AIR) {
-                if (block.getType() == Material.TNT) {
-                    block.setType(Material.AIR);
-                    loc.getWorld().spawn(block.getLocation().add(.5, .5, .5), TNTPrimed.class);
-                } else {
-                    if (Calculate.getRandomYield(yield)) {
-                        loc.getWorld().dropItem(loc, new ItemStack(block.getType()));
-                    }
-                    block.setType(Material.AIR);
-                }
-            }
-        }
+        
+        // If not the event will executed has is
     }
 
     /**
