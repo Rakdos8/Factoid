@@ -27,6 +27,11 @@ import me.tabinol.factoid.Factoid;
 public class FileLoadException extends Exception {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1116607352612567604L;
+
+	/**
      * Instantiates a new file load exception.
      *
      * @param FileName the file name

@@ -135,9 +135,11 @@ public class WorldListener implements Listener {
             // Creeper Explosion
             if (event.getEntityType() == EntityType.CREEPER) {
                 if (((Creeper) event.getEntity()).isPowered()) {
-                    power = 6L;
+                    // bugfix : droped item destroyed
+                	power = 0L;
                 } else {
-                    power = 3L;
+                    // bugfix : droped item destroyed
+                	power = 0L;
                 }
                 ExplodeBlocks(event, event.blockList(), FlagList.CREEPER_DAMAGE.getFlagType(), event.getLocation(),
                         event.getYield(), power, false, true);
@@ -222,7 +224,7 @@ public class WorldListener implements Listener {
                     power, setFire, false);
         }
         
-        // If not the event will executed has is
+        // If not the event will be executed has is
     }
 
     /**

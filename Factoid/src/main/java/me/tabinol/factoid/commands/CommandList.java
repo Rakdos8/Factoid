@@ -105,7 +105,13 @@ public enum CommandList {
     SETSPAWN,
     
     /** Teleport to a land */
-    TP;
+    TP,
+    
+    /** Make the land for sale */
+    SALE,
+    
+    /** Make the land for rent */
+    RENT;
 
     // If a command has a second name
     /**

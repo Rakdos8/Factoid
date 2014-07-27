@@ -28,6 +28,11 @@ import org.bukkit.command.CommandSender;
 public class FactoidCommandException extends Exception {
     
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5585486767311219615L;
+
+	/**
      * Instantiates a new factoid command exception.
      *
      * @param logMsg the log msg

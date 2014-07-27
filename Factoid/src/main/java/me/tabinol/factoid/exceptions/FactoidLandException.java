@@ -28,6 +28,11 @@ import me.tabinol.factoid.lands.collisions.Collisions;
 public class FactoidLandException extends Exception {
     
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4561559858019587492L;
+
+	/**
      * Instantiates a new factoid land exception.
      *
      * @param landName the land name

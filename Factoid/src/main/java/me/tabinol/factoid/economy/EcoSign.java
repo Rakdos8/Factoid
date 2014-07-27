@@ -17,8 +17,12 @@
  */
 package me.tabinol.factoid.economy;
 
+import java.util.HashSet;
+
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.exceptions.SignException;
 import me.tabinol.factoid.lands.Land;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -36,207 +40,314 @@ import org.bukkit.entity.Player;
  */
 public class EcoSign {
 
-    /** The land. */
-    Land land;
-    
-    /** The location. */
-    Location location;
-    
-    /** The facing. */
-    BlockFace facing;
-    
-    /** The is wall sign. */
-    boolean isWallSign;
+	/** The land. */
+	Land land;
 
-    // Create from player position
-    /**
-     * Instantiates a new eco sign.
-     *
-     * @param land the land
-     * @param player the player
-     */
-    public EcoSign(Land land, Player player) {
+	/** The location. */
+	Location location;
 
-        // ************* TO DO ***************
-        
-    }
-    
-    
-    // Create from configuration
-    /**
-     * Instantiates a new eco sign.
-     *
-     * @param land the land
-     * @param location the location
-     * @param facing the facing
-     * @param isWallSign the is wall sign
-     */
-    public EcoSign(Land land, Location location, BlockFace facing, boolean isWallSign) {
+	/** The facing. */
+	BlockFace facing;
 
-        this.location = location;
-        this.facing = facing;
-        this.isWallSign = isWallSign;
-    }
+	/** The is wall sign. */
+	boolean isWallSign;
 
-    /**
-     * Gets the location.
-     *
-     * @return the location
-     */
-    public Location getLocation() {
+	// Create from player position
+	/**
+	 * Instantiates a new eco sign.
+	 *
+	 * @param land            the land
+	 * @param player            the player
+	 * @throws SignException the sign exception
+	 */
+	public EcoSign(Land land, Player player) throws SignException {
 
-        return location;
-    }
+		Block targetBlock = player.getTargetBlock(null, 10);
 
-    /**
-     * Sets the location.
-     *
-     * @param location the new location
-     */
-    public void setLocation(Location location) {
+		if(targetBlock == null) {
+			throw new SignException();
+		}
+		
+		if (targetBlock.getRelative(BlockFace.UP).getType() == Material.AIR) {
 
-        this.location = location;
-    }
+			// If the block as air upside, put the block on top of it
+			this.location = targetBlock.getRelative(BlockFace.UP).getLocation();
+			this.facing = signFacing(player.getLocation().getYaw());
+			this.isWallSign = false;
+		
+		} else {
+			
+			// A Wall Sign
+			this.facing  = wallFacing(player.getLocation().getYaw());
+			if(targetBlock.getRelative(facing).getType() != Material.AIR) {
+				// Error no place to put the wall sign
+				throw new SignException();
+			}
+			this.location = targetBlock.getRelative(facing).getLocation();
+			this.isWallSign = true;
+		}
+		
+		// Target is outside the land
+		if(!land.isLocationInside(this.location)) {
+			throw new SignException();
+		}
+	}
 
-    /**
-     * Gets the facing.
-     *
-     * @return the facing
-     */
-    public BlockFace getFacing() {
+	// Create from configuration
+	/**
+	 * Instantiates a new eco sign.
+	 *
+	 * @param land
+	 *            the land
+	 * @param location
+	 *            the location
+	 * @param facing
+	 *            the facing
+	 * @param isWallSign
+	 *            the is wall sign
+	 */
+	public EcoSign(Land land, Location location, BlockFace facing,
+			boolean isWallSign) {
 
-        return facing;
-    }
+		this.location = location;
+		this.facing = facing;
+		this.isWallSign = isWallSign;
+	}
 
-    /**
-     * Sets the facing.
-     *
-     * @param facing the new facing
-     */
-    public void setFacing(BlockFace facing) {
+	/**
+	 * Gets the location.
+	 *
+	 * @return the location
+	 */
+	public Location getLocation() {
 
-        this.facing = facing;
-    }
+		return location;
+	}
 
-    /**
-     * Checks if is wall sign.
-     *
-     * @return true, if is wall sign
-     */
-    public boolean isWallSign() {
+	/**
+	 * Sets the location.
+	 *
+	 * @param location
+	 *            the new location
+	 */
+	public void setLocation(Location location) {
 
-        return isWallSign;
-    }
+		this.location = location;
+	}
 
-    /**
-     * Sets the checks if is wall sign.
-     *
-     * @param isWallSign the new checks if is wall sign
-     */
-    public void setIsWallSign(boolean isWallSign) {
+	/**
+	 * Gets the facing.
+	 *
+	 * @return the facing
+	 */
+	public BlockFace getFacing() {
 
-        this.isWallSign = isWallSign;
-    }
+		return facing;
+	}
 
-    /**
-     * Creates the sign for sale.
-     *
-     * @param price the price
-     * @return true, if successful
-     */
-    public boolean createSignForSale(double price) {
+	/**
+	 * Sets the facing.
+	 *
+	 * @param facing
+	 *            the new facing
+	 */
+	public void setFacing(BlockFace facing) {
 
-        String[] lines = new String[4];
-        lines[0] = ChatColor.GREEN + Factoid.getLanguage().getMessage("SIGN.SALE.FORSALE");
-        lines[1] = "";
-        lines[2] = "";
-        lines[3] = ChatColor.BLUE + Factoid.getPlayerMoney().toFormat(price);
+		this.facing = facing;
+	}
 
-        return createSign(lines);
-    }
+	/**
+	 * Checks if is wall sign.
+	 *
+	 * @return true, if is wall sign
+	 */
+	public boolean isWallSign() {
 
-    /**
-     * Creates the sign for rent.
-     *
-     * @param price the price
-     * @param renew the renew
-     * @param autoRenew the auto renew
-     * @param tenantName the tenant name
-     * @return true, if successful
-     */
-    public boolean createSignForRent(double price, int renew, boolean autoRenew, String tenantName) {
+		return isWallSign;
+	}
 
-        String[] lines = new String[4];
+	/**
+	 * Sets the checks if is wall sign.
+	 *
+	 * @param isWallSign
+	 *            the new checks if is wall sign
+	 */
+	public void setIsWallSign(boolean isWallSign) {
 
-        if (tenantName != null) {
-            lines[0] = ChatColor.RED + Factoid.getLanguage().getMessage("SIGN.RENT.RENTED");
-            lines[1] = ChatColor.RED + tenantName;
-        } else {
-            lines[0] = ChatColor.GREEN + Factoid.getLanguage().getMessage("SIGN.RENT.FORRENT");
-            lines[1] = "";
-        }
+		this.isWallSign = isWallSign;
+	}
 
-        if (autoRenew) {
-            lines[2] = ChatColor.BLUE + Factoid.getLanguage().getMessage("SIGN.RENT.AUTORENEW");
-        } else {
-            lines[2] = "";
-        }
+	/**
+	 * Creates the sign for sale.
+	 *
+	 * @param price
+	 *            the price
+	 * @return true, if successful
+	 */
+	public boolean createSignForSale(double price) {
 
-        lines[3] = ChatColor.BLUE + Factoid.getPlayerMoney().toFormat(price) + "/" + renew;
+		String[] lines = new String[4];
+		lines[0] = ChatColor.GREEN
+				+ Factoid.getLanguage().getMessage("SIGN.SALE.FORSALE");
+		lines[1] = "";
+		lines[2] = "";
+		lines[3] = ChatColor.BLUE + Factoid.getPlayerMoney().toFormat(price);
 
-        return createSign(lines);
-    }
+		return createSign(lines);
+	}
 
-    /**
-     * Creates the sign.
-     *
-     * @param lines the lines
-     * @return true, if successful
-     */
-    public boolean createSign(String[] lines) {
+	/**
+	 * Creates the sign for rent.
+	 *
+	 * @param price
+	 *            the price
+	 * @param renew
+	 *            the renew
+	 * @param autoRenew
+	 *            the auto renew
+	 * @param tenantName
+	 *            the tenant name
+	 * @return true, if successful
+	 */
+	public boolean createSignForRent(double price, int renew,
+			boolean autoRenew, String tenantName) {
 
-        World world = land.getWorld();
+		String[] lines = new String[4];
 
-        // Impossible to create the sign here
-        if (Factoid.getLands().getLand(location) != land) {
-            return false;
-        }
+		if (tenantName != null) {
+			lines[0] = ChatColor.RED
+					+ Factoid.getLanguage().getMessage("SIGN.RENT.RENTED");
+			lines[1] = ChatColor.RED + tenantName;
+		} else {
+			lines[0] = ChatColor.GREEN
+					+ Factoid.getLanguage().getMessage("SIGN.RENT.FORRENT");
+			lines[1] = "";
+		}
 
-        Material mat;
-        if (isWallSign) {
+		if (autoRenew) {
+			lines[2] = ChatColor.BLUE
+					+ Factoid.getLanguage().getMessage("SIGN.RENT.AUTORENEW");
+		} else {
+			lines[2] = "";
+		}
 
-            mat = Material.WALL_SIGN;
-        } else {
-            mat = Material.SIGN_POST;
-        }
+		lines[3] = ChatColor.BLUE + Factoid.getPlayerMoney().toFormat(price)
+				+ "/" + renew;
 
-        // Create sign
-        Block blockPlace = world.getBlockAt(location);
-        blockPlace.setType(mat);
+		return createSign(lines);
+	}
 
-        Sign sign = (Sign) blockPlace.getState();
+	/**
+	 * Creates the sign.
+	 *
+	 * @param lines
+	 *            the lines
+	 * @return true, if successful
+	 */
+	public boolean createSign(String[] lines) {
 
-        //Add lines
-        for (int t = 0; t <= 3; t++) {
-            sign.setLine(t, lines[t]);
-        }
+		World world = land.getWorld();
 
-        // Set facing
-        ((org.bukkit.material.Sign) sign.getData()).setFacingDirection(facing);
+		// Impossible to create the sign here
+		if (Factoid.getLands().getLand(location) != land) {
+			return false;
+		}
 
-        return true;
-    }
+		Material mat;
+		if (isWallSign) {
 
-    /**
-     * Removes the sign.
-     */
-    public void removeSign() {
+			mat = Material.WALL_SIGN;
+		} else {
+			mat = Material.SIGN_POST;
+		}
 
-        Block block = land.getWorld().getBlockAt(location);
+		// Create sign
+		Block blockPlace = world.getBlockAt(location);
+		blockPlace.setType(mat);
 
-        // Remove only if it is a sign;
-        if (block.getType() == Material.SIGN_POST || block.getType() == Material.WALL_SIGN) {
-            block.setType(Material.AIR);
-        }
-    }
+		Sign sign = (Sign) blockPlace.getState();
+
+		// Add lines
+		for (int t = 0; t <= 3; t++) {
+			sign.setLine(t, lines[t]);
+		}
+
+		// Set facing
+		((org.bukkit.material.Sign) sign.getData()).setFacingDirection(facing);
+
+		return true;
+	}
+
+	/**
+	 * Removes the sign.
+	 */
+	public void removeSign() {
+
+		Block block = land.getWorld().getBlockAt(location);
+
+		// Remove only if it is a sign;
+		if (block.getType() == Material.SIGN_POST
+				|| block.getType() == Material.WALL_SIGN) {
+			block.setType(Material.AIR);
+		}
+	}
+
+	private BlockFace signFacing(float yaw) {
+
+		BlockFace facing;
+
+		if (yaw > 360 -11.25 || yaw <= 11.25) {
+			facing = BlockFace.SOUTH;
+		} else if (yaw <= (360/16*2) - 11.25) {
+			facing = BlockFace.SOUTH_SOUTH_WEST;
+		} else if (yaw <= (360/16*3) - 11.25) {
+			facing = BlockFace.SOUTH_WEST;
+		} else if (yaw <= (360/16*4) - 11.25) {
+			facing = BlockFace.WEST_SOUTH_WEST;
+		} else if (yaw <= (360/16*5) - 11.25) {
+			facing = BlockFace.WEST;
+		} else if (yaw <= (360/16*6) - 11.25) {
+			facing = BlockFace.WEST_NORTH_WEST;
+		} else if (yaw <= (360/16*7) - 11.25) {
+			facing = BlockFace.NORTH_WEST;
+		} else if (yaw <= (360/16*8) - 11.25) {
+			facing = BlockFace.NORTH_NORTH_WEST;
+		} else if (yaw <= (360/16*9) - 11.25) {
+			facing = BlockFace.NORTH;
+		} else if (yaw <= (360/16*10) - 11.25) {
+			facing = BlockFace.NORTH_NORTH_EAST;
+		} else if (yaw <= (360/16*11) - 11.25) {
+			facing = BlockFace.NORTH_EAST;
+		} else if (yaw <= (360/16*12) - 11.25) {
+			facing = BlockFace.EAST_NORTH_EAST;
+		} else if (yaw <= (360/16*13) - 11.25) {
+			facing = BlockFace.EAST;
+		} else if (yaw <= (360/16*14) - 11.25) {
+			facing = BlockFace.EAST_SOUTH_EAST;
+		} else if (yaw <= (360/16*15) - 11.25) {
+			facing = BlockFace.SOUTH_EAST;
+		} else {
+			facing = BlockFace.SOUTH_SOUTH_EAST;
+		}
+		
+		return facing;
+	}
+	
+	private BlockFace wallFacing(float yaw) {
+		
+		BlockFace facing;
+		
+		if(yaw > -315 || yaw <= 45) {
+			facing = BlockFace.SOUTH;
+		} else if(yaw <= 135) {
+			facing = BlockFace.WEST;
+		} else if(yaw <= 225) {
+			facing = BlockFace.NORTH;
+		} else {
+			facing = BlockFace.EAST;
+		}
+		
+		return facing;
+	}
+
 }
