@@ -72,11 +72,13 @@ public class CommandArea extends CommandExec {
             entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.AREA.ISDONE", land.getName()));
             Factoid.getLog().write(entity.playerName + " have create an area named " + land.getName() + " at position " + land.getAreas().toString());
             new CommandCancel(entity.playerConf, false).commandExecute();
+            entity.playerConf.getSelection().refreshLand();
 
         } else if (curArg.equalsIgnoreCase("remove") || curArg.equalsIgnoreCase("replace")) {
 
             checkPermission(true, true, null, null);
             checkSelections(true, null);
+            
 
             String areaNbStr = entity.argList.getNext();
             int areaNb = 0;
@@ -85,6 +87,11 @@ public class CommandArea extends CommandExec {
             CuboidArea areaToReplace = entity.playerConf.getSelection().getAreaToReplace();
             if (areaToReplace != null) {
                 areaNb = areaToReplace.getKey();
+            }
+            
+            // set area to the only one if there is only one area
+            if(land.getAreas().size() == 1 && areaNbStr == null && areaNb == 0) {
+            	areaNb = land.getAreas().iterator().next().getKey();
             }
 
             // 0 is same has not set
@@ -140,6 +147,7 @@ public class CommandArea extends CommandExec {
                 entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.AREA.ISDONE", land.getName()));
                 Factoid.getLog().write(entity.playerName + " have create an area named " + land.getName() + " at position " + land.getAreas().toString());
                 new CommandCancel(entity.playerConf, false).commandExecute();
+                entity.playerConf.getSelection().refreshLand();
             }
 
         } else if (curArg.equalsIgnoreCase("list")) {

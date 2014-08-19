@@ -91,7 +91,10 @@ public class Collisions {
         MAX_AREA_FOR_LAND(true),
         
         /** The max land for player. */
-        MAX_LAND_FOR_PLAYER(true);
+        MAX_LAND_FOR_PLAYER(true),
+        
+        /** A land must have one or more areas */
+        MUST_HAVE_AT_LEAST_ONE_AREA(false);
 
         /** The can be approved. */
         public final boolean canBeApproved; // False = No approve is possible
@@ -219,6 +222,11 @@ public class Collisions {
         		coll.add(new CollisionsEntry(LandError.MAX_LAND_FOR_PLAYER, null, 0));
         	}
         }
+        
+        // Pass 10 check if the area to remove is the only one
+        if(action == LandAction.AREA_REMOVE && land.getAreas().size() == 1) {
+        	coll.add(new CollisionsEntry(LandError.MUST_HAVE_AT_LEAST_ONE_AREA, land, removedAreaId));
+        }
 
         // End check if the action can be done or approve
         allowApprove = true;
@@ -329,7 +337,7 @@ public class Collisions {
      * @param parentAreas the parent areas
      * @return true, if successful
      */
-    private boolean checkIfAreaOutsideParent(CuboidArea childArea, Collection parentAreas) {
+    private boolean checkIfAreaOutsideParent(CuboidArea childArea, Collection<CuboidArea> parentAreas) {
 
         // area = this new area, areas2 = areas of parents
         Collection<CuboidArea> childAreas = new HashSet<CuboidArea>();

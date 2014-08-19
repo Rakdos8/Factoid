@@ -88,7 +88,12 @@ public class Lands {
     
     /** The approve list. */
     private final ApproveList approveList;
+    
+    /**  List of forSale. */
+    private final HashSet<Land> forSale;
 
+    /**  List of forRent and rented. */
+    private final HashSet<Land> forRent;
     /**
      * Instantiates a new lands.
      */
@@ -111,6 +116,8 @@ public class Lands {
         landList = new TreeMap<String, Land>();
         landUUIDList = new TreeMap<UUID, Land>();
         approveList = new ApproveList();
+        forSale = new HashSet<Land>();
+        forRent = new HashSet<Land>();
     }
 
     /**
@@ -753,5 +760,65 @@ public class Lands {
         for (CuboidArea area : land.getAreas()) {
             removeAreaFromList(area);
         }
+    }
+    
+    /**
+     * Adds the for sale.
+     *
+     * @param land the land
+     */
+    protected void addForSale(Land land) {
+    	
+    	forSale.add(land);
+    }
+    
+    /**
+     * Removes the for sale.
+     *
+     * @param land the land
+     */
+    protected void removeForSale(Land land) {
+    	
+    	forSale.remove(land);
+    }
+    
+    /**
+     * Gets the for sale.
+     *
+     * @return the for sale
+     */
+    public Collection<Land> getForSale() {
+    	
+    	return forSale;
+    }
+
+    /**
+     * Adds the for rent.
+     *
+     * @param land the land
+     */
+    protected void addForRent(Land land) {
+    	
+    	forRent.add(land);
+    }
+    
+    /**
+     * Removes the for rent.
+     *
+     * @param land the land
+     */
+    protected void removeForRent(Land land) {
+    	
+    	forRent.remove(land);
+    }
+    
+    /**
+     * Gets the for rent.
+     *
+     * @return the for rent
+     */
+    public Collection<Land> getForRent() {
+    	
+    	return forRent;
     }
 }

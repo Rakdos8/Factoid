@@ -71,6 +71,7 @@ public class CommandConfirm extends CommandExec {
                 if (!confirmEntry.land.removeArea(confirmEntry.areaNb)) {
                     throw new FactoidCommandException("Area", entity.player, "COMMAND.REMOVE.AREA.INVALID");
                 }
+                entity.playerConf.getSelection().refreshLand();
                 entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.REMOVE.DONE.AREA", confirmEntry.land.getName()));
                 Factoid.getLog().write("area " + confirmEntry.areaNb + " for land " + confirmEntry.land.getName() + " is removed by " + entity.playerName);
 

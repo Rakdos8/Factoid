@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.UUID;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.event.PlayerContainerLandBanEvent;
 import me.tabinol.factoid.factions.Faction;
@@ -37,6 +38,7 @@ import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerNobody;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -103,11 +105,17 @@ public class Land extends DummyLand {
     /** The for sale. */
     private boolean forSale = false;
     
+    /** The for sale sign location */
+    private Location forSaleSignLoc = null;
+    
     /** The sale price. */
     private double salePrice = 0;
     
     /** The for rent. */
     private boolean forRent = false;
+    
+    /** The for rent sign location */
+    private Location forRentSignLoc = null;
     
     /** The rent price. */
     private double rentPrice = 0;
@@ -1006,16 +1014,26 @@ public class Land extends DummyLand {
      *
      * @param isForSale the is for sale
      * @param salePrice the sale price
+     * @param sign the sign
      */
-    public void setForSale(boolean isForSale, double salePrice) {
+    public void setForSale(boolean isForSale, double salePrice, Location signLoc) {
 
         forSale = isForSale;
         if (forSale) {
             this.salePrice = salePrice;
+            this.forSaleSignLoc = signLoc;
+            Factoid.getLands().addForSale(this);
         } else {
             this.salePrice = 0;
+            this.forSaleSignLoc = null;
+            Factoid.getLands().removeForSale(this);
         }
         doSave();
+    }
+
+    public Location getSaleSignLoc() {
+    	
+    	return forSaleSignLoc;
     }
 
     /**
@@ -1045,15 +1063,22 @@ public class Land extends DummyLand {
      * @param rentRenew the rent renew
      * @param rentAutoRenew the rent auto renew
      */
-    public void setForRent(double rentPrice, int rentRenew, boolean rentAutoRenew) {
+    public void setForRent(double rentPrice, int rentRenew, boolean rentAutoRenew, Location signLoc) {
 
         forRent = true;
         this.rentPrice = rentPrice;
         this.rentRenew = rentRenew;
         this.rentAutoRenew = rentAutoRenew;
+        this.forRentSignLoc = signLoc;
+        Factoid.getLands().addForRent(this);
         doSave();
     }
 
+    public Location getRentSignLoc() {
+    	
+    	return forRentSignLoc;
+    }
+    
     /**
      * Un set for rent.
      */
@@ -1063,6 +1088,8 @@ public class Land extends DummyLand {
         rentPrice = 0;
         rentRenew = 0;
         rentAutoRenew = false;
+        forRentSignLoc = null;
+        Factoid.getLands().removeForRent(this);
         doSave();
     }
 

@@ -17,8 +17,6 @@
  */
 package me.tabinol.factoid.economy;
 
-import java.util.HashSet;
-
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.SignException;
 import me.tabinol.factoid.lands.Land;
@@ -292,6 +290,12 @@ public class EcoSign {
 		}
 	}
 
+	/**
+	 * Sign facing.
+	 *
+	 * @param yaw the yaw
+	 * @return the block face
+	 */
 	private BlockFace signFacing(float yaw) {
 
 		BlockFace facing;
@@ -333,6 +337,12 @@ public class EcoSign {
 		return facing;
 	}
 	
+	/**
+	 * Wall facing.
+	 *
+	 * @param yaw the yaw
+	 * @return the block face
+	 */
 	private BlockFace wallFacing(float yaw) {
 		
 		BlockFace facing;

@@ -19,6 +19,8 @@ package me.tabinol.factoid.selection;
 
 import java.util.Collection;
 import java.util.EnumMap;
+import java.util.Map;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.players.PlayerConfEntry;
 import me.tabinol.factoid.lands.Land;
@@ -42,7 +44,7 @@ public class PlayerSelection {
     public enum SelectionType { // ACTIVE = move with the player, PASSIVE = fixed
 
         /** The land. */
- LAND,
+    	LAND,
         
         /** The area. */
         AREA;
@@ -129,6 +131,19 @@ public class PlayerSelection {
         }
 
         return select;
+    }
+    
+    /**
+     * Refresh land selection.
+     */
+    public void refreshLand() {
+    	
+    	Land land = getLand();
+    	
+    	if(land !=null) {
+    		removeSelection(SelectionType.LAND);
+    		addSelection(new LandSelection(playerConfEntry.getPlayer(), land));
+    	}
     }
 
     /**

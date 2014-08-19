@@ -251,6 +251,7 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         Action action = event.getAction();
         PlayerConfEntry entry;
+    	Location loc = event.getClickedBlock().getLocation();
 
         Factoid.getLog().write("PlayerInteract player name: " + event.getPlayer().getName() + ", Action: " + event.getAction());
 
@@ -292,10 +293,25 @@ public class PlayerListener implements Listener {
             }
 
             event.setCancelled(true);
+            
+            // For economy (buy or rent/unrent)
+        } else if (action == Action.RIGHT_CLICK_BLOCK
+        		&& (ml == Material.SIGN_POST || ml == Material.WALL_SIGN)) {
+        	
+        	Land trueLand = Factoid.getLands().getLand(loc);
+        	
+        	if(trueLand != null) {
+        		
+        		if(trueLand.getSaleSignLoc() == loc) {
+        			
+        			// Eco to do!!!!
+        			
+        		}
+        	}
 
             // Citizen bug, check if entry exist before
         } else if ((entry = playerConf.get(player)) != null && !entry.isAdminMod()) {
-            land = Factoid.getLands().getLandOrOutsideArea(event.getClickedBlock().getLocation());
+        	land = Factoid.getLands().getLandOrOutsideArea(loc);
             if ((land instanceof Land && ((Land) land).isBanned(player))
                     || (((action == Action.RIGHT_CLICK_BLOCK // BEGIN of USE
                     && (ml == Material.WOODEN_DOOR || ml == Material.TRAP_DOOR

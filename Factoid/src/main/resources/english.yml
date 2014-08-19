@@ -135,6 +135,7 @@ COLLISION:
     NOT_ENOUGH_MONEY: "You have not enough money."
     MAX_AREA_FOR_LAND: "More than the maximum number of areas for the land '%'."
     MAX_LAND_FOR_PLAYER: "More than the maximum number of lands for a player."
+    MUST_HAVE_AT_LEAST_ONE_AREA: "The land must have at least one area."
     LISTSTART: "-Action(s) to be approved-"
     LIST: "% Land: %, requester: %, action: %."
     LISTROWNULL: "No action in list to be approved."

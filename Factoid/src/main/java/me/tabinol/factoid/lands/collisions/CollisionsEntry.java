@@ -105,6 +105,8 @@ public class CollisionsEntry {
             return Factoid.getLanguage().getMessage("COLLISION.SHOW.MAX_AREA_FOR_LAND", land.getName());
         } else if (error == LandError.MAX_LAND_FOR_PLAYER) {
             return Factoid.getLanguage().getMessage("COLLISION.SHOW.MAX_LAND_FOR_PLAYER");
+        } else if (error == LandError.MUST_HAVE_AT_LEAST_ONE_AREA) {
+        	return Factoid.getLanguage().getMessage("COLLISION.SHOW.MUST_HAVE_AT_LEAST_ONE_AREA");
         }
         
 

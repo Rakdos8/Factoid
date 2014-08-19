@@ -263,6 +263,8 @@ public class StorageFlat extends Storage implements StorageInt {
         double money;
         Set<PlayerContainerPlayer> pNotifs = new TreeSet<PlayerContainerPlayer>();
         Land parent;
+        
+        Factoid.getLog().write("Open file : " + file.getName());
 
         try {
             cf = new ConfLoader(file);
@@ -290,6 +292,9 @@ public class StorageFlat extends Storage implements StorageInt {
             while ((str = cf.getNextString()) != null) {
                 String[] multiStr = str.split(":", 2);
                 areas.put(Integer.parseInt(multiStr[0]), CuboidArea.getFromString(multiStr[1]));
+            }
+            if (areas.isEmpty()) {
+            	throw new FileLoadException(file.getName(), cf.getLine(), cf.getLineNb(), "No areas in the list.");
             }
 
             cf.readParam();
