@@ -19,6 +19,7 @@ package me.tabinol.factoid.storage;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -29,6 +30,9 @@ import java.util.TreeSet;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.bukkit.Location;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.FactoidLandException;
 import me.tabinol.factoid.exceptions.FileLoadException;
@@ -263,7 +267,20 @@ public class StorageFlat extends Storage implements StorageInt {
         double money;
         Set<PlayerContainerPlayer> pNotifs = new TreeSet<PlayerContainerPlayer>();
         Land parent;
-        
+
+        // For economy
+        boolean forSale = false;
+        Location forSaleSignLoc = null;
+        double salePrice = 0;
+        boolean forRent = false;
+        Location forRentSignLoc = null;
+        double rentPrice = 0;
+        int rentRenew = 0;
+        boolean rentAutoRenew = false;
+        boolean rented = false;
+        PlayerContainerPlayer tenant = null;
+        Timestamp lastPayment = null;
+
         Factoid.getLog().write("Open file : " + file.getName());
 
         try {
@@ -348,6 +365,38 @@ public class StorageFlat extends Storage implements StorageInt {
             while ((str = cf.getNextString()) != null) {
                 pNotifs.add((PlayerContainerPlayer) PlayerContainer.getFromString(str));
             }
+            
+            // Economy
+            if(version >= 4) {
+            	cf.readParam();
+            	forSale = Boolean.parseBoolean(cf.getValueString());
+            	if(forSale) {
+            		cf.readParam();
+            		forSaleSignLoc = StringChanges.stringToLocation(cf.getValueString());
+            		cf.readParam();
+            		salePrice = cf.getValueDouble();
+            	}
+            	cf.readParam();
+            	forRent = Boolean.parseBoolean(cf.getValueString());
+            	if(forRent) {
+            		cf.readParam();
+            		forRentSignLoc = StringChanges.stringToLocation(cf.getValueString());
+            		cf.readParam();
+            		rentPrice = cf.getValueDouble();
+            		cf.readParam();
+            		rentRenew = cf.getValueInt();
+            		cf.readParam();
+            		rentAutoRenew = Boolean.parseBoolean(cf.getValueString());
+            		cf.readParam();
+            		rented = Boolean.parseBoolean(cf.getValueString());
+            		if(rented) {
+            			cf.readParam();
+            			tenant = (PlayerContainerPlayer) PlayerContainer.getFromString(cf.getValueString());
+            			cf.readParam();
+            			lastPayment = Timestamp.valueOf(cf.getValueString());
+            		}
+            	}
+            }
 
             cf.close();
 
@@ -412,6 +461,20 @@ public class StorageFlat extends Storage implements StorageInt {
         land.addMoney(money);
         for (PlayerContainerPlayer pNotif : pNotifs) {
             land.addPlayerNotify(pNotif);
+        }
+        
+        // Economy add
+        if (version >= 4) {
+        	if(forSale) {
+        		land.setForSale(true, salePrice, forSaleSignLoc);
+        	}
+        	if(forRent) {
+        		land.setForRent(rentPrice, rentRenew, rentAutoRenew, forRentSignLoc);
+        		if(rented) {
+        			land.setRented(tenant);
+        			land.setLastPaymentTime(lastPayment);
+        		}
+        	}
         }
     }
 
@@ -495,9 +558,28 @@ public class StorageFlat extends Storage implements StorageInt {
             }
             cb.writeParam("PlayersNotify", strs.toArray(new String[0]));
 
+        	// Economy
+        	cb.writeParam("ForSale", land.isForSale() + "");
+        	if(land.isForSale()) {
+        		cb.writeParam("ForSaleSignLoc", StringChanges.locationToString(land.getSaleSignLoc()));
+        		cb.writeParam("SalePrice", land.getSalePrice());
+        	}
+        	if(land.isForRent()) {
+        		cb.writeParam("ForRent", land.isForRent() + "");
+        		cb.writeParam("ForRentSignLoc", StringChanges.locationToString(land.getRentSignLoc()));
+        		cb.writeParam("RentPrice", land.getRentPrice());
+        		cb.writeParam("ForRenew", land.getRentRenew());
+        		cb.writeParam("ForAutoRenew", land.getRentAutoRenew() + "");
+        		cb.writeParam("Rented", land.isRented() + "");
+        		if(land.isRented()) {
+        			cb.writeParam("Tenant", land.getTenant().toString());
+        			cb.writeParam("LastPayment", land.getLastPaymentTime().toString());
+        		}
+        	}
+
             cb.close();
         } catch (IOException ex) {
-            Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "Error on saving Faction: " + land.getName(), ex);
+            Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "Error on saving land: " + land.getName(), ex);
         }
     }
 

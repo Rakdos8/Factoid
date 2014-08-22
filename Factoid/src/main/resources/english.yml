@@ -32,10 +32,12 @@ HELP:
     23: "/factoid priority : Priority of the land."
     24: "/factoid remove : Delete a land."
     25: "/factoid rename : Rename a land."
-    26: "/factoid resident : Resident of the land."
-    27: "/factoid setspawn : Create a spawn location."
-    28: "/factoid who : (*) Show players on a land."
-    29: "(*) If the land is not selected, the name can be the last parameter."
+    26: "/factoid rent : Set the land for rent."
+    27: "/factoid resident : Resident of the land."
+    28: "/factoid sale : Set the land for sale."
+    29: "/factoid setspawn : Create a spawn location."
+    30: "/factoid who : (*) Show players on a land."
+    31: "(*) If the land is not selected, the name can be the last parameter."
   SELECT:
     1: "/factoid select <here/land name> : Select a land for modification."
     2: "/factoid select : Start the visual selection."
@@ -100,11 +102,17 @@ HELP:
     1: "/factoid remove : Delete a land."
   RENAME:
     1: "/factoid rename <new name> : Rename a land."
+  RENT:
+    1: "/factoid rent <price> <nb of days> [autorenew true/false] : Set the land for rent."
+    2: "/factoid rent recreate : Move or recreate a lost sign."
   RESIDENT:
     1: "/factoid resident list : List residents."
     2: "/factoid resident add <player container> : Add a resident."
     3: "/factoid resident remove <player container> : Remove a resident."
-  SETSPAWN
+  SALE:
+    1: "/factoid sale <price> : Set the land for sale."
+    2: "/factoid sale recreate : Move or recreate a lost sign."
+  SETSPAWN:
     1: "/factoid setspawn : Create a spawn location."
   TP:
     1: "/factoid tp <terrain> : Teleport you to the land."
@@ -284,8 +292,11 @@ COMMAND:
       LISTSTART: "-Land info for '%'-"
       NAME: "Name: %, ID: %"
       PRIORITY: "Priority: %, "
+      FORSALE: "For sale!"
+      FORRENT: "For rent!"
       PARENT: "Parent: % "
       OWNER: "Owner: %"
+      TENANT: ", Tenant: %"
       ACTIVEAREA: "You are on area: %"
       MAINPERMISSION: "Your main permissions are: %"
       AREA: "-Area(s)- for '%'"
@@ -319,6 +330,18 @@ COMMAND:
     INVALIDAMOUNT: "Invalid amount."
     LANDDEPOSIT: "You added '%' to land '%'."
     LANDWITHDRAW: "you removed '%' from land '%'."
+    ERRORCREATESIGN: "You can not create a sign here."
+    SIGNDONE: "The sign is created."
+    NOTENOUGHMONEY: "Not enough money."
+    BUYLAND: "You have purchased the land '%'."
+    RENTLAND: "You rented the land '%'."
+    UNRENTLAND: "You no longer rent the land '%'."
+    UNFORRENT: "The land '%' is no longer for rent."
+    UNFORSALE: "The land '%' is no longer for sale."
+    RECREATE: "The sign recreated."
+    ALREADYSALE: "The sign is already created. Use '/factoid sale recreate' to recreate or move the sign"
+    ALREADYRENT: "The sign is already created. Use '/factoid rent recreate' to recreate or move the sign"
+    MUSTHAVEISIGN: "You must have a sign in your hand."
 ACTION:
   BANNED: "You are banned from the land %!"
   NOENTRY: "You can not enter in the land %!"

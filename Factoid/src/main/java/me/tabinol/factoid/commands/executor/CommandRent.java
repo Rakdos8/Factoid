@@ -17,11 +17,17 @@
  */
 package me.tabinol.factoid.commands.executor;
 
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
+
+import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.economy.EcoSign;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.exceptions.SignException;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.parameters.PermissionList;
+import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 
 public class CommandRent extends CommandExec {
 	
@@ -46,14 +52,43 @@ public class CommandRent extends CommandExec {
         String curArg = entity.argList.getNext();
         double rentPrice = 0;
         int rentRenew = 0;
-        boolean rentAutoRenew;
+        boolean rentAutoRenew = true;
         EcoSign ecoSign = null;
+        
+        // Check for sign in hand
+        if(entity.player.getGameMode() != GameMode.CREATIVE && entity.player.getItemInHand().getType() != Material.SIGN) {
+        	throw new FactoidCommandException("Must have a sign in hand", entity.player, "COMMAND.ECONOMY.MUSTHAVEISIGN");
+        }
+        
+        // If 'recreate'
+        if(curArg.equalsIgnoreCase("recreate")) {
+        	if(!land.isForRent()) {
+        		throw new FactoidCommandException("The land is not for rent", entity.player, "COMMAND.ECONOMY.ERRORCREATESIGN");
+        	}
+        	try {
+        		ecoSign = new EcoSign(land, entity.player);
+				ecoSign.createSignForRent(land.getRentPrice(), land.getRentRenew(), land.getRentAutoRenew(),
+						land.isRented() ? land.getTenant().getPlayerName() : null); // Tenant name if the land is rented
+				removeSignFromHand();
+				if(!ecoSign.getLocation().getBlock().equals(land.getRentSignLoc().getBlock())) {
+					ecoSign.removeSign(land.getRentSignLoc());
+					land.setRentSignLoc(ecoSign.getLocation());
+				}
+			} catch (SignException e) {
+				throw new FactoidCommandException("Error in the command", entity.player, "COMMAND.ECONOMY.ERRORCREATESIGN");
+			}
+        	
+            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ECONOMY.RECREATE"));
+            Factoid.getLog().write("Sign recreated for land " + land.getName() + " by: " + entity.playerName);
+            
+            return;
+        }
         
         // get price
         try {
-            rentPrice = Short.parseShort(curArg);
+            rentPrice = Double.parseDouble(curArg);
         } catch (NumberFormatException ex) {
-            // ********* EXCEPTION
+        	throw new FactoidCommandException("Error in the command", entity.player, "GENERAL.MISSINGINFO");
         }
         
         // get renew
@@ -61,27 +96,35 @@ public class CommandRent extends CommandExec {
         try {
             rentRenew = Integer.parseInt(curArg);
         } catch (NumberFormatException ex) {
-            // ********* EXCEPTION
+        	throw new FactoidCommandException("Error in the command", entity.player, "GENERAL.MISSINGINFO");
         }
         
         // get auto renew
         curArg = entity.argList.getNext();
-        try {
-            rentAutoRenew = Boolean.parseBoolean(curArg);
-        } catch (NumberFormatException ex) {
-            // Default value
-        	rentAutoRenew = true;
+        if(curArg != null) {
+        	try {
+        		rentAutoRenew = Boolean.parseBoolean(curArg);
+        	} catch (NumberFormatException ex) {
+        		// Default value
+        		rentAutoRenew = true;
+        	}
+        }
+        
+        // Land already for rent?
+        if(land.isForRent()) {
+        	throw new FactoidCommandException("Land already for rent", entity.player, "COMMAND.ECONOMY.ALREADYRENT");
         }
         
         // Create Sign
         try {
 			ecoSign = new EcoSign(land, entity.player);
+			ecoSign.createSignForRent(rentPrice, rentRenew, rentAutoRenew, null);
+			removeSignFromHand();
 		} catch (SignException e) {
-			// ********* EXCEPTION
+			throw new FactoidCommandException("Error in the command", entity.player, "COMMAND.ECONOMY.ERRORCREATESIGN");
 		}
-        ecoSign.createSignForRent(rentPrice, rentRenew, rentAutoRenew, null);
         land.setForRent(rentPrice, rentRenew, rentAutoRenew, ecoSign.getLocation());
-        
-        // ******************** ECRIRE DONE
+        entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ECONOMY.SIGNDONE"));
+        Factoid.getLog().write("The land " + land.getName() + " is set to for rent by: " + entity.playerName);
     }
 }

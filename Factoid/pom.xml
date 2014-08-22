@@ -16,7 +16,7 @@
         <!-- *** Change Language version here here *** -->
         <langVersion>17</langVersion>
         <!-- *** Change land .conf version here here *** -->
-        <landVersion>3</landVersion>
+        <landVersion>4</landVersion>
         <!-- *** Change faction .conf version here here *** -->
         <factionVersion>3</factionVersion>
     </properties>

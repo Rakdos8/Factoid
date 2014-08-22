@@ -30,6 +30,9 @@ import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -250,5 +253,19 @@ public abstract class CommandExec implements CommandInterface {
         if (land == null && !entity.argList.isLast()) {
             land = Factoid.getLands().getLand(entity.argList.getNext());
         }
+    }
+    
+    /**
+     * Removes the sign from hand.
+     */
+    protected void removeSignFromHand() {
+    	
+    	if(entity.player.getGameMode() != GameMode.CREATIVE) {
+    		if(entity.player.getItemInHand().getAmount() == 1) {
+    			entity.player.setItemInHand(new ItemStack(Material.AIR));
+    		} else {
+    			entity.player.getItemInHand().setAmount(entity.player.getItemInHand().getAmount() - 1);
+    		}
+    	}
     }
 }

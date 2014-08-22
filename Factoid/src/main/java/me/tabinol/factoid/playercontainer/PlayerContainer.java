@@ -72,29 +72,21 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
             } else {
                 return null;
             }
-        }
-        if (pct == PlayerContainerType.GROUP) {
+        } else if (pct == PlayerContainerType.GROUP) {
             return new PlayerContainerGroup(name);
-        }
-        if (pct == PlayerContainerType.RESIDENT) {
+        } else if (pct == PlayerContainerType.RESIDENT) {
             return new PlayerContainerResident(land);
-        }
-        if (pct == PlayerContainerType.VISITOR) {
+        } else if (pct == PlayerContainerType.VISITOR) {
             return new PlayerContainerVisitor(land);
-        }
-        if (pct == PlayerContainerType.FACTION_TERRITORY) {
+        } else if (pct == PlayerContainerType.FACTION_TERRITORY) {
             return new PlayerContainerFactionTerritory(land);
-        }
-        if (pct == PlayerContainerType.OWNER) {
+        } else if (pct == PlayerContainerType.OWNER) {
             return new PlayerContainerOwner(land);
-        }
-        if (pct == PlayerContainerType.EVERYBODY) {
+        } else if (pct == PlayerContainerType.EVERYBODY) {
             return new PlayerContainerEverybody();
-        }
-        if (pct == PlayerContainerType.NOBODY) {
+        } else if (pct == PlayerContainerType.NOBODY) {
             return new PlayerContainerNobody();
-        }
-        if (pct == PlayerContainerType.PLAYER) {
+        } else if (pct == PlayerContainerType.PLAYER) {
             UUID minecraftUUID;
             OfflinePlayer offlinePlayer;
 
@@ -116,9 +108,10 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
 
             // Not found, return null
             return null;
-        }
-        if (pct == PlayerContainerType.PERMISSION) {
+        } else if (pct == PlayerContainerType.PERMISSION) {
             return new PlayerContainerPermission(name);
+        } else if (pct == PlayerContainerType.TENANT) {
+            return new PlayerContainerTenant(land);
         }
         return null;
     }

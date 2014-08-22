@@ -114,12 +114,21 @@ public class CommandInfo extends CommandExec {
                     ChatColor.GREEN + land.getName() + ChatColor.YELLOW, ChatColor.GREEN + land.getUUID().toString() + ChatColor.YELLOW));
             stList.append(NEWLINE);
             stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.PRIORITY", land.getPriority() + ""));
+            if(land.isForSale()) {
+            	stList.append(ChatColor.RED + " " + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.FORSALE"));
+            }
+            if(land.isForRent() && !land.isRented()) {
+            	stList.append(ChatColor.RED + " " + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.FORRENT"));
+            }
             stList.append(NEWLINE);
             if (land.getParent() != null) {
                 stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.PARENT", land.getParent().getName()));
                 stList.append(NEWLINE);
             }
             stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.OWNER", land.getOwner().getPrint()));
+            if(land.isRented()) {
+            	stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.TENANT", land.getTenant().getPrint()));
+            }
             stList.append(NEWLINE);
             stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.MAINPERMISSION",
                     getPermissionInColForPl(land, PermissionList.BUILD.getPermissonType()) + " "

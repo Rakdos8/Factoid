@@ -17,6 +17,11 @@
  */
 package me.tabinol.factoid.commands.executor;
 
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
+
+import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.economy.EcoSign;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.exceptions.SignException;
@@ -46,23 +51,57 @@ public class CommandSale extends CommandExec {
         double salePrice = 0;
         EcoSign ecoSign = null;
         
-        // get price
-        try {
-            salePrice = Short.parseShort(curArg);
-        } catch (NumberFormatException ex) {
-            // ********* EXCEPTION
+        // Check for sign in hand
+        if(entity.player.getGameMode() != GameMode.CREATIVE && entity.player.getItemInHand().getType() != Material.SIGN) {
+        	throw new FactoidCommandException("Must have a sign in hand", entity.player, "COMMAND.ECONOMY.MUSTHAVEISIGN");
         }
         
+        // If 'recreate'
+        if(curArg.equalsIgnoreCase("recreate")) {
+        	if(!land.isForSale()) {
+        		throw new FactoidCommandException("The land is not for sale", entity.player, "COMMAND.ECONOMY.ERRORCREATESIGN");
+        	}
+        	try {
+        		ecoSign = new EcoSign(land, entity.player);
+				ecoSign.createSignForSale(land.getSalePrice());
+				removeSignFromHand();
+				if(!ecoSign.getLocation().getBlock().equals(land.getSaleSignLoc().getBlock())) {
+					ecoSign.removeSign(land.getSaleSignLoc());
+					land.setSaleSignLoc(ecoSign.getLocation());
+				}
+			} catch (SignException e) {
+				throw new FactoidCommandException("Error in the command", entity.player, "COMMAND.ECONOMY.ERRORCREATESIGN");
+			}
+        	
+            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ECONOMY.RECREATE"));
+            Factoid.getLog().write("Sign recreated for land " + land.getName() + " by: " + entity.playerName);
+            
+            return;
+        }
+        
+        // get price
+        try {
+            salePrice = Double.parseDouble(curArg);
+        } catch (NumberFormatException ex) {
+        	throw new FactoidCommandException("Error in the command", entity.player, "GENERAL.MISSINGINFO");
+        }
+        
+        // Land already for sale?
+        if(land.isForSale()) {
+        	throw new FactoidCommandException("Land already for sale", entity.player, "COMMAND.ECONOMY.ALREADYSALE");
+        }
+
         // Create Sign
         try {
 			ecoSign = new EcoSign(land, entity.player);
+			ecoSign.createSignForSale(salePrice);
+			removeSignFromHand();
 		} catch (SignException e) {
-			// ********* EXCEPTION
+			throw new FactoidCommandException("Error in the command", entity.player, "COMMAND.ECONOMY.ERRORCREATESIGN");
 		}
-        ecoSign.createSignForSale(salePrice);
         land.setForSale(true, salePrice, ecoSign.getLocation());
-        
-        // ******************** ECRIRE DONE
+        entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ECONOMY.SIGNDONE"));
+        Factoid.getLog().write("The land " + land.getName() + " is set to for sale by: " + entity.playerName);
     }
 
 

@@ -21,6 +21,7 @@ import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.config.DependPlugin;
 import me.tabinol.factoid.config.players.PlayerStaticConfig;
+import me.tabinol.factoid.economy.EcoScheduler;
 import me.tabinol.factoid.economy.PlayerMoney;
 import me.tabinol.factoid.factions.Factions;
 import me.tabinol.factoid.lands.Lands;
@@ -35,6 +36,7 @@ import me.tabinol.factoid.storage.StorageFlat;
 import me.tabinol.factoid.utilities.Lang;
 import me.tabinol.factoid.utilities.Log;
 import me.tabinol.factoid.utilities.MavenAppProperties;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 // TODO: Auto-generated Javadoc
@@ -43,7 +45,10 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class Factoid extends JavaPlugin {
 
-    /** The Command listener. */
+	/** The Economy schedule interval */
+	public static final int ECO_SCHEDULE_INTERVAL = 20 * 60 * 5;
+	
+	/** The Command listener. */
     private OnCommand CommandListener;
     
     /** The player listener. */
@@ -54,6 +59,9 @@ public class Factoid extends JavaPlugin {
     
     /** The land listener. */
     private LandListener landListener;
+    
+    /** The economy scheduler */
+    private EcoScheduler ecoScheduler;
     
     /** The maven app properties. */
     private static MavenAppProperties mavenAppProperties;
@@ -134,6 +142,8 @@ public class Factoid extends JavaPlugin {
         Scoreboard = new ScoreBoard();
         approveNotif = new ApproveNotif();
         approveNotif.runApproveNotifLater();
+        ecoScheduler = new EcoScheduler();
+        ecoScheduler.runTaskTimer(this, ECO_SCHEDULE_INTERVAL, ECO_SCHEDULE_INTERVAL);
         getServer().getPluginManager().registerEvents(worldListener, this);
         getServer().getPluginManager().registerEvents(playerListener, this);
         getServer().getPluginManager().registerEvents(landListener, this);

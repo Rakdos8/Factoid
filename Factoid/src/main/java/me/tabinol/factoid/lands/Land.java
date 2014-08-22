@@ -1036,6 +1036,12 @@ public class Land extends DummyLand {
     	return forSaleSignLoc;
     }
 
+    public void setSaleSignLoc(Location forSaleSignLoc) {
+    	
+    	this.forSaleSignLoc = forSaleSignLoc;
+    	doSave();
+    }
+
     /**
      * Gets the sale price.
      *
@@ -1077,6 +1083,12 @@ public class Land extends DummyLand {
     public Location getRentSignLoc() {
     	
     	return forRentSignLoc;
+    }
+    
+    public void setRentSignLoc(Location forRentSignLoc) {
+    	
+    	this.forRentSignLoc = forRentSignLoc;
+    	doSave();
     }
     
     /**
@@ -1183,9 +1195,20 @@ public class Land extends DummyLand {
      */
     public boolean isTenant(Player player) {
 
-        return tenant.hasAccess(player);
+        return rented && tenant.hasAccess(player);
     }
 
+    /**
+     * Sets the last payment time.
+     *
+     * @param lastPayment the new last payment time
+     */
+    public void setLastPaymentTime(Timestamp lastPayment) {
+    	
+    	this.lastPayment = lastPayment;
+    	doSave();
+    }
+    
     /**
      * Gets the last payment time.
      *
