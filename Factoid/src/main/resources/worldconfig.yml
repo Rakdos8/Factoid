@@ -2,7 +2,7 @@
 # Important: For Permission keys, replace "." by "_".
 # Example: "group.newbies" will become "group_newbies"
 
-_Global_:                           # _Global_ for all worlds
+_Global_:                           # _Global_ is for all worlds
   ContainerPermissions:
     Permission:
       group_newbies:
@@ -26,10 +26,52 @@ _Global_:                           # _Global_ for all worlds
         BUILD:
           Value: true
           Heritable: false
+        ECO_LAND_FOR_SALE:
+          Value: true
+          Heritable: true
+        ECO_LAND_BUY:
+          Value: true
+          Heritable: true
+        ECO_LAND_FOR_RENT:
+          Value: true
+          Heritable: true
+        ECO_LAND_RENT:
+          Value: true
+          Heritable: true
   ContainerFlags:
+    FIRESPREAD:
+      Value: true
+      Heritable: true
     CREEPER_DAMAGE:
       Value: true
-      Heritable: false
+      Heritable: true
+    TNT_EXPLOSION:
+      Value: true
+      Heritable: true
+    TNT_DAMAGE:
+      Value: true
+      Heritable: true
+    ENDERMAN_DAMAGE:
+      Value: true
+      Heritable: true
+    WITHER_DAMAGE:
+      Value: true
+      Heritable: true
+    ENDERDRAGON_DAMAGE:
+      Value: true
+      Heritable: true
+    GHAST_DAMAGE:
+      Value: true
+      Heritable: true
+    TNT_DAMAGE:
+      Value: true
+      Heritable: true
+    FULL_PVP:
+      Value: true
+      Heritable: true
+    FACTION_PVP:
+      Value: true
+      Heritable: true
     ECO_BLOCK_PRICE:
       Value: 0.01
       Heritable: true
