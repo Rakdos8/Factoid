@@ -222,10 +222,13 @@ public class Land extends DummyLand {
      *
      * @param area the area
      * @param price the price
+     * @param mustPay If the owner has to pay
      */
-    public void addArea(CuboidArea area, double price) {
+    public void addArea(CuboidArea area, double price, boolean mustPay) {
 
-        Factoid.getLands().getPriceFromPlayer(worldName, owner, price);
+        if(mustPay) {
+        	Factoid.getLands().getPriceFromPlayer(worldName, owner, price);
+        }
         addArea(area);
     }
 
@@ -285,11 +288,14 @@ public class Land extends DummyLand {
      * @param key the key
      * @param newArea the new area
      * @param price the price
+     * @param mustPay If the owner has to pay
      * @return true, if successful
      */
-    public boolean replaceArea(int key, CuboidArea newArea, double price) {
+    public boolean replaceArea(int key, CuboidArea newArea, double price, boolean mustPay) {
 
-        Factoid.getLands().getPriceFromPlayer(worldName, owner, price);
+        if (mustPay) {
+        	Factoid.getLands().getPriceFromPlayer(worldName, owner, price);
+        }
 
         return replaceArea(key, newArea);
     }

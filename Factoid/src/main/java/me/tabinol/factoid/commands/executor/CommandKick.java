@@ -82,7 +82,7 @@ public class CommandKick extends CommandExec {
         // Only if it is from Kick command
         if (entity != null) {
             checkSelections(true, null);
-            checkPermission(true, true, PermissionList.LAND_KICK.getPermissonType(), null);
+            checkPermission(true, true, PermissionList.LAND_KICK.getPermissionType(), null);
         }
 
         // No player name?

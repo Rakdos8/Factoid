@@ -112,8 +112,7 @@ public enum PermissionList {
     
     /** The horse kill. */
     HORSE_KILL(true),
-    //HORSE_EQUIP(true),
-    //HORSE_CLIMB(true),
+
     /** The bucket water. */
     BUCKET_WATER(true),
     
@@ -122,9 +121,15 @@ public enum PermissionList {
     
     /** The fire. */
     FIRE(true),
-    //TNT(true),
+
     /** The auto heal. */
     AUTO_HEAL(false),
+    
+    /** The eat. */
+    EAT(true),
+    
+    /** The food heal. */
+    FOOD_HEAL(true),
     
     /** The potion splash. */
     POTION_SPLASH(true),
@@ -174,13 +179,13 @@ public enum PermissionList {
     /** The eco land rent. */
     ECO_LAND_RENT(false),
     
-    /** TP with ender pearl */
+    /**  TP with ender pearl. */
     ENDERPEARL_TP(true),
     
-    /** The player can teleport itself to the land */
+    /**  The player can teleport itself to the land. */
     TP(false),
     
-    /** The payer respawn at the land spawn */
+    /**  The payer respawn at the land spawn. */
     TP_DEATH(false);
 
     /** The base value. */
@@ -210,11 +215,11 @@ public enum PermissionList {
     }
 
     /**
-     * Gets the permisson type.
+     * Gets the permission type.
      *
-     * @return the permisson type
+     * @return the permission type
      */
-    public PermissionType getPermissonType() {
+    public PermissionType getPermissionType() {
         
         return PermissionType;
     }

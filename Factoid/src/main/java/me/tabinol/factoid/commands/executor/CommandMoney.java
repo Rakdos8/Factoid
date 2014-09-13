@@ -77,7 +77,7 @@ public class CommandMoney extends CommandExec {
      */
     private void balance() throws FactoidCommandException {
 
-        checkPermission(true, false, PermissionList.MONEY_BALANCE.getPermissonType(), null);
+        checkPermission(true, false, PermissionList.MONEY_BALANCE.getPermissionType(), null);
         entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ECONOMY.LANDBALANCE",
                 land.getName(), playerMoney.toFormat(land.getMoney())));
     }
@@ -89,7 +89,7 @@ public class CommandMoney extends CommandExec {
      */
     private void deposit() throws FactoidCommandException {
 
-        checkPermission(true, false, PermissionList.MONEY_DEPOSIT.getPermissonType(), null);
+        checkPermission(true, false, PermissionList.MONEY_DEPOSIT.getPermissionType(), null);
 
         double amount = getAmountFromCommandLine();
 
@@ -112,7 +112,7 @@ public class CommandMoney extends CommandExec {
      */
     private void withdraw() throws FactoidCommandException {
 
-        checkPermission(true, false, PermissionList.MONEY_WITHDRAW.getPermissonType(), null);
+        checkPermission(true, false, PermissionList.MONEY_WITHDRAW.getPermissionType(), null);
 
         double amount = getAmountFromCommandLine();
 

@@ -124,7 +124,7 @@ public class AreaSelection extends RegionSelection implements Listener {
         // Detect the curent land from the first postion
         DummyLand actualLand = Factoid.getLands().getLandOrOutsideArea(new Location(
         		area.getWord(), area.getX1(), area.getY1(), area.getZ1()));
-        boolean canCreate = actualLand.checkPermissionAndInherit(player, PermissionList.LAND_CREATE.getPermissonType()); 
+        boolean canCreate = actualLand.checkPermissionAndInherit(player, PermissionList.LAND_CREATE.getPermissionType()); 
 
         //MakeSquare
         for (int posX = area.getX1(); posX <= area.getX2(); posX++) {

@@ -135,7 +135,7 @@ public class CommandSelect extends CommandExec {
                     PlayerContainer owner = landtest.getOwner();
 
                     if (!owner.hasAccess(player) && !playerConf.isAdminMod()
-                            && !landtest.checkPermissionAndInherit(player, PermissionList.RESIDENT_MANAGER.getPermissonType())) {
+                            && !landtest.checkPermissionAndInherit(player, PermissionList.RESIDENT_MANAGER.getPermissionType())) {
                         throw new FactoidCommandException("CommandSelect", player, "GENERAL.MISSINGPERMISSION");
                     }
                     if (playerConf.getSelection().getLand() == null) {

@@ -21,7 +21,6 @@ import java.util.UUID;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.Land;
-import me.tabinol.factoid.utilities.BukkitUtils;
 import me.tabinol.factoid.utilities.StringChanges;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -98,7 +97,7 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
 
                 // Is not an ID. We will try to get the name of the player
                 // Note : This method is only what I found in Bukkt
-                offlinePlayer = BukkitUtils.getOfflinePlayer(name);
+                offlinePlayer = Bukkit.getOfflinePlayer(name);
             }
 
             // If not null, assign the value to a new PlayerContainer

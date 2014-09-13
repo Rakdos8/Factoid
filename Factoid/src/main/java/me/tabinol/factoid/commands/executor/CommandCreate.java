@@ -112,8 +112,8 @@ public class CommandCreate extends CommandExec {
         // Not complicated! The player must be AdminMod, or access to create (in world) 
         // or access to create in parent if it is a subland.
         if (!entity.playerConf.isAdminMod()
-                && ((parent == null && !Factoid.getLands().getOutsideArea(area.getWorldName()).checkPermissionAndInherit(entity.player, PermissionList.LAND_CREATE.getPermissonType()))
-                || (parent != null && !parent.checkPermissionAndInherit(entity.player, PermissionList.LAND_CREATE.getPermissonType())))) {
+                && ((parent == null && !Factoid.getLands().getOutsideArea(area.getWorldName()).checkPermissionAndInherit(entity.player, PermissionList.LAND_CREATE.getPermissionType()))
+                || (parent != null && !parent.checkPermissionAndInherit(entity.player, PermissionList.LAND_CREATE.getPermissionType())))) {
             throw new FactoidCommandException("CommandCreate", entity.player, "GENERAL.MISSINGPERMISSION");
         }
 
@@ -126,7 +126,7 @@ public class CommandCreate extends CommandExec {
         }
 
         // Check for collision
-        if (checkCollision(curArg, null, LandAction.LAND_ADD, 0, area, parent, owner, price, true)) {
+        if (checkCollision(curArg, null, LandAction.LAND_ADD, 0, area, parent, owner, price, !entity.playerConf.isAdminMod(), true)) {
             new CommandCancel(entity.playerConf, true).commandExecute();
             return;
         }

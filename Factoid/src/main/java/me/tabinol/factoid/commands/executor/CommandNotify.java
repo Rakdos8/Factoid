@@ -48,7 +48,7 @@ public class CommandNotify extends CommandExec {
 
         getLandFromCommandIfNoLandSelected();
         checkSelections(true, null);
-        checkPermission(true, true, PermissionList.LAND_NOTIFY.getPermissonType(), null);
+        checkPermission(true, true, PermissionList.LAND_NOTIFY.getPermissionType(), null);
 
         
         if (land.isPlayerNotify(entity.playerConf.getPlayerContainer())) {

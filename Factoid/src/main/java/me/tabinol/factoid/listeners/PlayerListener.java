@@ -64,17 +64,20 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -214,7 +217,7 @@ public class PlayerListener implements Listener {
 		if (!playerConf.get(event.getPlayer()).isAdminMod()
 				&& event.getCause() == TeleportCause.ENDER_PEARL
 				&& !checkPermission(land, player,
-						PermissionList.ENDERPEARL_TP.getPermissonType())) {
+						PermissionList.ENDERPEARL_TP.getPermissionType())) {
 			messagePermission(player);
 			event.setCancelled(true);
 		}
@@ -354,35 +357,35 @@ public class PlayerListener implements Listener {
 							|| ml == Material.TRAPPED_CHEST || ml == Material.FENCE_GATE)) || (action == Action.PHYSICAL && (ml == Material.WOOD_PLATE
 							|| ml == Material.STONE_PLATE || ml == Material.STRING))) && !checkPermission(
 								land, player,
-								PermissionList.USE.getPermissonType())) // End
+								PermissionList.USE.getPermissionType())) // End
 																		// of
 																		// "USE"
 					|| (action == Action.RIGHT_CLICK_BLOCK
 							&& (ml == Material.WOODEN_DOOR
 									|| ml == Material.TRAP_DOOR || ml == Material.FENCE_GATE) && !checkPermission(
 								land, player,
-								PermissionList.USE_DOOR.getPermissonType()))
+								PermissionList.USE_DOOR.getPermissionType()))
 					|| (action == Action.RIGHT_CLICK_BLOCK
 							&& (ml == Material.STONE_BUTTON || ml == Material.WOOD_BUTTON) && !checkPermission(
 								land, player,
-								PermissionList.USE_BUTTON.getPermissonType()))
+								PermissionList.USE_BUTTON.getPermissionType()))
 					|| (action == Action.RIGHT_CLICK_BLOCK
 							&& ml == Material.LEVER && !checkPermission(land,
 								player,
-								PermissionList.USE_LEVER.getPermissonType()))
+								PermissionList.USE_LEVER.getPermissionType()))
 					|| (action == Action.PHYSICAL
 							&& (ml == Material.WOOD_PLATE || ml == Material.STONE_PLATE) && !checkPermission(
 								land, player,
 								PermissionList.USE_PRESSUREPLATE
-										.getPermissonType()))
+										.getPermissionType()))
 					|| (action == Action.RIGHT_CLICK_BLOCK
 							&& ml == Material.TRAPPED_CHEST && !checkPermission(
 								land, player,
 								PermissionList.USE_TRAPPEDCHEST
-										.getPermissonType()))
+										.getPermissionType()))
 					|| (action == Action.PHYSICAL && ml == Material.STRING && !checkPermission(
 							land, player,
-							PermissionList.USE_STRING.getPermissonType()))) {
+							PermissionList.USE_STRING.getPermissionType()))) {
 
 				if (action != Action.PHYSICAL) {
 					messagePermission(player);
@@ -396,44 +399,44 @@ public class PlayerListener implements Listener {
 							|| ml == Material.FURNACE || ml == Material.BEACON
 							|| ml == Material.DROPPER || ml == Material.HOPPER) && !checkPermission(
 								land, player,
-								PermissionList.OPEN.getPermissonType())) // End
+								PermissionList.OPEN.getPermissionType())) // End
 																			// of
 																			// OPEN
 							|| (ml == Material.CHEST && !checkPermission(land,
 									player,
 									PermissionList.OPEN_CHEST
-											.getPermissonType()))
+											.getPermissionType()))
 							|| (ml == Material.ENDER_CHEST && !checkPermission(
 									land, player,
 									PermissionList.OPEN_ENDERCHEST
-											.getPermissonType()))
+											.getPermissionType()))
 							|| (ml == Material.WORKBENCH && !checkPermission(
 									land, player,
 									PermissionList.OPEN_CRAFT
-											.getPermissonType()))
+											.getPermissionType()))
 							|| (ml == Material.BREWING_STAND && !checkPermission(
 									land, player,
-									PermissionList.OPEN_BREW.getPermissonType()))
+									PermissionList.OPEN_BREW.getPermissionType()))
 							|| (ml == Material.FURNACE && !checkPermission(
 									land, player,
 									PermissionList.OPEN_FURNACE
-											.getPermissonType()))
+											.getPermissionType()))
 							|| (ml == Material.BEACON && !checkPermission(land,
 									player,
 									PermissionList.OPEN_BEACON
-											.getPermissonType()))
+											.getPermissionType()))
 							|| (ml == Material.DROPPER && !checkPermission(
 									land, player,
 									PermissionList.OPEN_DROPPER
-											.getPermissonType())) || (ml == Material.HOPPER && !checkPermission(
+											.getPermissionType())) || (ml == Material.HOPPER && !checkPermission(
 							land, player,
-							PermissionList.OPEN_HOPPER.getPermissonType())))
+							PermissionList.OPEN_HOPPER.getPermissionType())))
 					// For dragon egg fix
 					|| (ml == Material.DRAGON_EGG && (!checkPermission(land,
 							event.getPlayer(),
-							PermissionList.BUILD.getPermissonType()) || !checkPermission(
+							PermissionList.BUILD.getPermissionType()) || !checkPermission(
 							land, event.getPlayer(),
-							PermissionList.BUILD_DESTROY.getPermissonType())))) {
+							PermissionList.BUILD_DESTROY.getPermissionType())))) {
 				messagePermission(player);
 				event.setCancelled(true);
 			}
@@ -457,9 +460,9 @@ public class PlayerListener implements Listener {
 			if ((land instanceof Land && ((Land) land).isBanned(event
 					.getPlayer()))
 					|| !checkPermission(land, event.getPlayer(),
-							PermissionList.BUILD.getPermissonType())
+							PermissionList.BUILD.getPermissionType())
 					|| !checkPermission(land, event.getPlayer(),
-							PermissionList.BUILD_PLACE.getPermissonType())) {
+							PermissionList.BUILD_PLACE.getPermissionType())) {
 				messagePermission(event.getPlayer());
 				event.setCancelled(true);
 			}
@@ -483,9 +486,9 @@ public class PlayerListener implements Listener {
 
 			if ((land instanceof Land && ((Land) land).isBanned(player))
 					|| !checkPermission(land, player,
-							PermissionList.BUILD.getPermissonType())
+							PermissionList.BUILD.getPermissionType())
 					|| !checkPermission(land, player,
-							PermissionList.BUILD_PLACE.getPermissonType())) {
+							PermissionList.BUILD_PLACE.getPermissionType())) {
 				messagePermission(player);
 				event.setCancelled(true);
 			}
@@ -509,9 +512,9 @@ public class PlayerListener implements Listener {
 
 			if ((land instanceof Land && ((Land) land).isBanned(player))
 					|| !checkPermission(land, player,
-							PermissionList.BUILD.getPermissonType())
+							PermissionList.BUILD.getPermissionType())
 					|| !checkPermission(land, player,
-							PermissionList.BUILD_PLACE.getPermissonType())) {
+							PermissionList.BUILD_PLACE.getPermissionType())) {
 				messagePermission(player);
 				event.setCancelled(true);
 			}
@@ -535,9 +538,9 @@ public class PlayerListener implements Listener {
 			if ((land instanceof Land && ((Land) land).isBanned(event
 					.getPlayer()))
 					|| !checkPermission(land, event.getPlayer(),
-							PermissionList.BUILD.getPermissonType())
+							PermissionList.BUILD.getPermissionType())
 					|| !checkPermission(land, event.getPlayer(),
-							PermissionList.BUILD_DESTROY.getPermissonType())) {
+							PermissionList.BUILD_DESTROY.getPermissionType())) {
 				messagePermission(event.getPlayer());
 				event.setCancelled(true);
 			}
@@ -561,9 +564,9 @@ public class PlayerListener implements Listener {
 			if ((land instanceof Land && ((Land) land).isBanned(event
 					.getPlayer()))
 					|| !checkPermission(land, event.getPlayer(),
-							PermissionList.BUILD.getPermissonType())
+							PermissionList.BUILD.getPermissionType())
 					|| !checkPermission(land, event.getPlayer(),
-							PermissionList.BUILD_DESTROY.getPermissonType())) {
+							PermissionList.BUILD_DESTROY.getPermissionType())) {
 				messagePermission(event.getPlayer());
 				event.setCancelled(true);
 			}
@@ -590,9 +593,9 @@ public class PlayerListener implements Listener {
 
 			if ((land instanceof Land && ((Land) land).isBanned(player))
 					|| !checkPermission(land, player,
-							PermissionList.BUILD.getPermissonType())
+							PermissionList.BUILD.getPermissionType())
 					|| !checkPermission(land, player,
-							PermissionList.BUILD_DESTROY.getPermissonType())) {
+							PermissionList.BUILD_DESTROY.getPermissionType())) {
 				messagePermission(player);
 				event.setCancelled(true);
 			}
@@ -616,7 +619,7 @@ public class PlayerListener implements Listener {
 					player.getLocation());
 
 			if (!checkPermission(land, event.getPlayer(),
-					PermissionList.DROP.getPermissonType())) {
+					PermissionList.DROP.getPermissionType())) {
 				messagePermission(player);
 				event.setCancelled(true);
 			}
@@ -637,7 +640,7 @@ public class PlayerListener implements Listener {
 					event.getPlayer().getLocation());
 
 			if (!checkPermission(land, event.getPlayer(),
-					PermissionList.PICKETUP.getPermissonType())) {
+					PermissionList.PICKETUP.getPermissionType())) {
 				messagePermission(event.getPlayer());
 				event.setCancelled(true);
 			}
@@ -660,7 +663,7 @@ public class PlayerListener implements Listener {
 			if ((land instanceof Land && ((Land) land).isBanned(event
 					.getPlayer()))
 					|| (!checkPermission(land, event.getPlayer(),
-							PermissionList.SLEEP.getPermissonType()))) {
+							PermissionList.SLEEP.getPermissionType()))) {
 				messagePermission(event.getPlayer());
 				event.setCancelled(true);
 			}
@@ -691,9 +694,9 @@ public class PlayerListener implements Listener {
 
 			if ((land instanceof Land && ((Land) land).isBanned(player))
 					|| !checkPermission(land, player,
-							PermissionList.BUILD.getPermissonType())
+							PermissionList.BUILD.getPermissionType())
 					|| !checkPermission(land, player,
-							PermissionList.BUILD_DESTROY.getPermissonType())) {
+							PermissionList.BUILD_DESTROY.getPermissionType())) {
 				messagePermission(player);
 				event.setCancelled(true);
 			}
@@ -729,28 +732,28 @@ public class PlayerListener implements Listener {
 								|| (entity instanceof Animals && !checkPermission(
 										land, player,
 										PermissionList.ANIMAL_KILL
-												.getPermissonType()))
+												.getPermissionType()))
 								|| (entity instanceof Monster && !checkPermission(
 										land, player,
 										PermissionList.MOB_KILL
-												.getPermissonType()))
+												.getPermissionType()))
 								|| (et == EntityType.VILLAGER && !checkPermission(
 										land, player,
 										PermissionList.VILLAGER_KILL
-												.getPermissonType()))
+												.getPermissionType()))
 								|| (et == EntityType.IRON_GOLEM && !checkPermission(
 										land, player,
 										PermissionList.VILLAGER_GOLEM_KILL
-												.getPermissonType()))
+												.getPermissionType()))
 								|| (et == EntityType.HORSE && !checkPermission(
 										land, player,
 										PermissionList.HORSE_KILL
-												.getPermissonType())) || (entity instanceof Tameable
+												.getPermissionType())) || (entity instanceof Tameable
 								&& ((Tameable) entity).isTamed() == true
 								&& ((Tameable) entity).getOwner() != player && !checkPermission(
 									land, player,
 									PermissionList.TAMED_KILL
-											.getPermissonType())))) {
+											.getPermissionType())))) {
 
 					messagePermission(player);
 					event.setCancelled(true);
@@ -807,10 +810,10 @@ public class PlayerListener implements Listener {
 					.getPlayer()))
 					|| (mt == Material.LAVA_BUCKET && !checkPermission(land,
 							event.getPlayer(),
-							PermissionList.BUCKET_LAVA.getPermissonType()))
+							PermissionList.BUCKET_LAVA.getPermissionType()))
 					|| (mt == Material.WATER_BUCKET && !checkPermission(land,
 							event.getPlayer(),
-							PermissionList.BUCKET_WATER.getPermissonType()))) {
+							PermissionList.BUCKET_WATER.getPermissionType()))) {
 				messagePermission(event.getPlayer());
 				event.setCancelled(true);
 			}
@@ -831,7 +834,7 @@ public class PlayerListener implements Listener {
 		// For repsawn after death
 		if (entry != null
 				&& land.checkPermissionAndInherit(player,
-						PermissionList.TP_DEATH.getPermissonType())
+						PermissionList.TP_DEATH.getPermissionType())
 				&& (strLoc = land.getFlagAndInherit(
 						FlagList.SPAWN.getFlagType()).getValueString()) != null
 				&& (loc = StringChanges.stringToLocation(strLoc)) != null) {
@@ -862,7 +865,7 @@ public class PlayerListener implements Listener {
 	 * @param event
 	 *            the event
 	 */
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockIgnite(BlockIgniteEvent event) {
 
 		if (event.getPlayer() != null && event.getPlayer() != null
@@ -874,7 +877,7 @@ public class PlayerListener implements Listener {
 			if ((land instanceof Land && ((Land) land).isBanned(event
 					.getPlayer()))
 					|| (!checkPermission(land, event.getPlayer(),
-							PermissionList.FIRE.getPermissonType()))) {
+							PermissionList.FIRE.getPermissionType()))) {
 				messagePermission(event.getPlayer());
 				event.setCancelled(true);
 			}
@@ -887,22 +890,70 @@ public class PlayerListener implements Listener {
 	 * @param event
 	 *            the event
 	 */
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPotionSplash(PotionSplashEvent event) {
-
-		DummyLand land = Factoid.getLands().getLandOrOutsideArea(
-				event.getPotion().getLocation());
 
 		if (event.getEntity() != null
 				&& event.getEntity().getShooter() instanceof Player) {
 
+			DummyLand land = Factoid.getLands().getLandOrOutsideArea(
+					event.getPotion().getLocation());
 			Player player = (Player) event.getEntity().getShooter();
 
 			if (!checkPermission(land, player,
-					PermissionList.POTION_SPLASH.getPermissonType())) {
+					PermissionList.POTION_SPLASH.getPermissionType())) {
 				if (player.isOnline()) {
 					messagePermission(player);
 				}
+				event.setCancelled(true);
+			}
+		}
+	}
+	
+	/**
+	 * On entity regain health.
+	 *
+	 * @param event the event
+	 */
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onEntityRegainHealth(EntityRegainHealthEvent event) {
+		
+		Entity entity = event.getEntity();
+		Player player;
+		PlayerConfEntry entry;
+		
+		if(entity != null && event.getEntity() instanceof Player
+				&& (event.getRegainReason() == RegainReason.REGEN
+				|| event.getRegainReason() == RegainReason.SATIATED)
+				&& (entry = playerConf.get((player = (Player) event.getEntity()))) != null
+				&& !entry.isAdminMod()) {
+		
+			DummyLand land = Factoid.getLands().getLandOrOutsideArea(player.getLocation());
+			
+			if (!checkPermission(land, player, PermissionList.FOOD_HEAL.getPermissionType())) {
+				event.setCancelled(true);
+			}
+		}
+	}
+
+	/**
+	 * On player item consume.
+	 *
+	 * @param event the event
+	 */
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
+		
+		Player player = event.getPlayer();
+		PlayerConfEntry entry;
+		
+		if((entry = playerConf.get(player)) != null
+				&& !entry.isAdminMod()) {
+		
+			DummyLand land = Factoid.getLands().getLandOrOutsideArea(player.getLocation());
+			
+			if (!checkPermission(land, player, PermissionList.EAT.getPermissionType())) {
+				messagePermission(player);
 				event.setCancelled(true);
 			}
 		}

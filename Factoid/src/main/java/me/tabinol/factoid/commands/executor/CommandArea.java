@@ -55,19 +55,19 @@ public class CommandArea extends CommandExec {
         if (curArg.equalsIgnoreCase("add")) {
 
             checkPermission(true, true, null, null);
-            checkSelections(true, null);
+            checkSelections(true, true);
 
             CuboidArea area = entity.playerConf.getSelection().getCuboidArea();
             double price = entity.playerConf.getSelection().getAreaAddPrice();
 
             // Check for collision
             if (checkCollision(land.getName(), land, LandAction.AREA_ADD, 0, area, land.getParent(), 
-            		land.getOwner(), price, true)) {
+            		land.getOwner(), price, !entity.playerConf.isAdminMod(), true)) {
                 return;
             }
 
             // Add Area
-            land.addArea(area, price);
+            land.addArea(area, price, !entity.playerConf.isAdminMod());
 
             entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.AREA.ISDONE", land.getName()));
             Factoid.getLog().write(entity.playerName + " have create an area named " + land.getName() + " at position " + land.getAreas().toString());
@@ -114,7 +114,7 @@ public class CommandArea extends CommandExec {
 
                 // Check for collision
                 if (checkCollision(curArg, land, LandAction.AREA_REMOVE, areaNb, null, land.getParent(), 
-                		land.getOwner(), 0, true)) {
+                		land.getOwner(), 0, !entity.playerConf.isAdminMod(), true)) {
                     return;
                 }
 
@@ -137,12 +137,12 @@ public class CommandArea extends CommandExec {
 
                 // Check for collision
                 if (checkCollision(land.getName(), land, LandAction.AREA_MODIFY, areaNb, area, land.getParent(), 
-                		land.getOwner(), price, true)) {
+                		land.getOwner(), price, !entity.playerConf.isAdminMod(), true)) {
                     return;
                 }
 
                 // Replace Area
-                land.replaceArea(areaNb, area, price);
+                land.replaceArea(areaNb, area, price, !entity.playerConf.isAdminMod());
 
                 entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.AREA.ISDONE", land.getName()));
                 Factoid.getLog().write(entity.playerName + " have create an area named " + land.getName() + " at position " + land.getAreas().toString());
@@ -152,7 +152,8 @@ public class CommandArea extends CommandExec {
 
         } else if (curArg.equalsIgnoreCase("list")) {
 
-            StringBuilder stList = new StringBuilder();
+        	checkSelections(true, null);
+        	StringBuilder stList = new StringBuilder();
             for (Map.Entry<Integer, CuboidArea> entry : land.getIdsAndAreas().entrySet()) {
                 stList.append("ID: " + entry.getKey() + ", " + entry.getValue().getPrint() + Factoid.getConf().NEWLINE);
             }

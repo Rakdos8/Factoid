@@ -59,7 +59,7 @@ public class CommandTp extends CommandExec {
         }
         
         // Check adminmod or permission TP
-        checkPermission(true, false, PermissionList.TP.getPermissonType(), null);
+        checkPermission(true, false, PermissionList.TP.getPermissionType(), null);
 
         // Try to get Location
         LandFlag flag = land.getFlagAndInherit(FlagList.SPAWN.getFlagType());

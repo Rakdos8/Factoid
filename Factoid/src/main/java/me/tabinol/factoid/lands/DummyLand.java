@@ -103,7 +103,7 @@ public class DummyLand {
         doSave();
 
         // Start Event
-        if (this instanceof Land && perm.getPermType() == PermissionList.LAND_ENTER.getPermissonType()
+        if (this instanceof Land && perm.getPermType() == PermissionList.LAND_ENTER.getPermissionType()
                 && perm.getValue() != perm.getPermType().getDefaultValue()) {
             Factoid.getThisPlugin().getServer().getPluginManager().callEvent(
                     new PlayerContainerAddNoEnterEvent((Land) this, pc));

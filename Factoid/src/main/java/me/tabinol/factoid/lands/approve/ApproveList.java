@@ -82,6 +82,7 @@ public class ApproveList {
             section.set("Parent", approve.getParent().getName());
         }
         section.set("Price", approve.getPrice());
+        section.set("MustPay", approve.isMustPay());
         section.set("DateTime", approve.getDateTime().getTimeInMillis());
         saveFile();
         Factoid.getApproveNotif().notifyForApprove(approve.getLandName(), approve.getOwner().getPrint());
@@ -175,7 +176,7 @@ public class ApproveList {
         return new Approve(landName, action,
                 section.getInt("RemovedAreaId"),
                 CuboidArea.getFromString(section.getString("NewArea")), pc,
-                parent, section.getDouble("Price"), cal);
+                parent, section.getDouble("Price"), section.getBoolean("MustPay"), cal);
     }
 
     /**

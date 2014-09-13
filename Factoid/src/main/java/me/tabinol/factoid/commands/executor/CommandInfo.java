@@ -131,9 +131,9 @@ public class CommandInfo extends CommandExec {
             }
             stList.append(NEWLINE);
             stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.MAINPERMISSION",
-                    getPermissionInColForPl(land, PermissionList.BUILD.getPermissonType()) + " "
-                    + getPermissionInColForPl(land, PermissionList.USE.getPermissonType()) + " "
-                    + getPermissionInColForPl(land, PermissionList.OPEN.getPermissonType())));
+                    getPermissionInColForPl(land, PermissionList.BUILD.getPermissionType()) + " "
+                    + getPermissionInColForPl(land, PermissionList.USE.getPermissionType()) + " "
+                    + getPermissionInColForPl(land, PermissionList.OPEN.getPermissionType())));
             stList.append(NEWLINE);
             if (area != null) {
                 stList.append(ChatColor.YELLOW + Factoid.getLanguage().getMessage("COMMAND.INFO.LAND.ACTIVEAREA",

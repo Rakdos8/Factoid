@@ -1,5 +1,5 @@
 # Ne pas changer la version si vous ne savez pas ce que vous faites!
-VERSION: ${langVersion}
+VERSION: 17
 ENABLE: "Factoid est actif."
 DISABLE: "Factoid est désactivé."
 CONSOLE: "Hé Console! attends...quoi?"
@@ -85,7 +85,7 @@ HELP:
   MONEY:
     1: "/factoid money balance : Montrer le montant d'argent du terrain."
     2: "/factoid money deposit <montant> : Déposer de l'argent."
-    3: "/factoid money withdraw <montant> : retirer de l'argent."
+    3: "/factoid money withdraw <montant> : Retirer de l'argent."
   NOTIFY:
     1: "/factoid notify [terrain] : Activer/Désactiver la notification de terrain."
   OWNER:
@@ -99,11 +99,11 @@ HELP:
   PRIORITY:
     1: "/factoid priority <nombre> : Change la priorité du terrain."
   REMOVE:
-    1: "/factoid remove : Effacer un terrain."
+    1: "/factoid remove : Efface un terrain."
   RENAME:
     1: "/factoid rename <nouveau nom> : Renomme un terrain."
   RENT:
-    1: "/factoid rent <prix> <nb de jours> [autorenouv true/false] : Mettre le terrain à loué."
+    1: "/factoid rent <prix> <nb de jours> [autorenouv true/false] : Mettre le terrain à louer."
     2: "/factoid rent recreate : Déplacer ou recréer un panneau perdu."
   RESIDENT:
     1: "/factoid resident list : Affiche les résidents."
@@ -141,7 +141,7 @@ COLLISION:
     IN_APPROVE_LIST: "Ce terrain est déjà dans la liste d'approbation."
     NOT_ENOUGH_MONEY: "Vous n'avez pas assez d'argent."
     MAX_AREA_FOR_LAND: "Plus que le nombre maximum d'étendues pour le terrain '%'."
-    MAX_LAND_FOR_PLAYER: "Plus que le nombre maximum de terrains pour le joueur."
+    MAX_LAND_FOR_PLAYER: "Plus que le nombre maximum de terrain pour le joueur."
     MUST_HAVE_AT_LEAST_ONE_AREA: "Le terrain doit avoir au moins une étendue."
     LISTSTART: "-Action(s) à approuver-"
     LIST: "% Terrain: %, demandeur: %, action: %."
@@ -153,7 +153,7 @@ COLLISION:
     NEEDAPPROVE: "Votre action est en attente d'approbation. \"/factoid approve cancel %\" si vous voulez annuler."
     CANNOTDONE: "Problème de collision! Votre action ne peut être complétée."
     DONE: "Cette action est approuvée."
-    REMOVE: "Cette action est enlevé de la liste."
+    REMOVE: "Cette action est enlevée de la liste."
     CLEAR: "La liste est maintenant détruite."
 COMMAND:
   TP:
@@ -162,13 +162,13 @@ COMMAND:
     INVALID: "La zone de téléportation est invalide."
     OUTSIDE: "Vous êtes à l'extérieur du terrain."
     CREATED: "La zone de téléportation est maintenant ici."
-  NOTEXIST: "Cette commande n'éxiste pas. Vous pouvez faire \"/factoid help\""
+  NOTEXIST: "Cette commande n'existe pas. Vous pouvez faire \"/factoid help\""
   CONFIRM: "Pour confirmer votre choix, tapez \"/factoid confirm\" ou pour annuler, tapez \"/factoid cancel\"."
   NOCONFIRM: "Aucune action à confirmer."
   PAGE:
     ONEPAGE: "-Page (1/1)-"
     MULTIPAGE: "-Page (%/%)- tapez: /factoid page <numéro>"
-    INVALID: "Le numéro de la page est invalide!"
+    INVALID: "Le numéro de la page est invalide !"
   LAND:
     LISTSTART: "-liste des terrains-"
   AREA:
@@ -193,9 +193,9 @@ COMMAND:
     SELECTEDAREA: "Vous avez sélectionné la zone '%'"
     WORLDEDIT:
       NOTLOAD: " WorldEdit n'est pas chargé."
-      SELECTIONNED: " Vous avez sélectionné un terrain avec WorldEdit!"
-      NOSELECTIONNED: " Pas de sélection WorldEdit ou pas de type cuboïd!"
-      SELECTIONINCOMPLET: " La sélection WorldEdit est incomplète!"
+      SELECTIONNED: " Vous avez sélectionné un terrain avec WorldEdit !"
+      NOSELECTIONNED: " Pas de sélection WorldEdit ou pas de type cuboïd !"
+      SELECTIONINCOMPLET: " La sélection WorldEdit est incomplète !"
     INFO:
       INFO1: "Sélection: %"
       INFO2: "Nombre de blocs: %"
@@ -221,7 +221,7 @@ COMMAND:
     HINTUSE: "/factoid create [nom du terrain]"
     PARENTNOTEXIST: "Le terrain parent n'existe pas."
   RENAME:
-    HINTUSE: "Ce nom ne peut être utilisé."
+    HINTUSE: "Ce nom ne peut être pas utilisé."
     ISDONE: "Le terrain '%' est renommé '%'."
   FLAGS:
     JOINMODE: "Vous êtes maintenant en mode Drapeau."
@@ -229,14 +229,14 @@ COMMAND:
     LAND:
       INVALID: "Le terrain sélectionné est invalide."
     FLAGNULL: "Le drapeau n'existe pas."
-    ISDONE: "Vous avez mit '%' à '%'."
+    ISDONE: "Vous avez mis '%' à '%'."
     LISTSTART: "-Drapeaux de '%'-"
     LISTROWNULL: "Pas de drapeau."
     REMOVENOTEXIST: "Pas dans la liste des drapeaux."
-    REMOVEISDONE: "Vous avex enlevé '%' de la liste des drapeaux."
+    REMOVEISDONE: "Vous avez enlevé '%' de la liste des drapeaux."
   CONTAINERTYPE:
     TYPENULL: "Entrez un type de contenant joueur ou un nom de joueur."
-    NOTPERMITTED: "Ce contenant joueur n'est pas permit ici."
+    NOTPERMITTED: "Ce contenant joueur n'est pas permis ici."
   CONTAINER:
     CONTAINERNULL: "Ce contenant joueur nécessite un nom."
     PLAYERNOTEXIST: "Ce joueur n'existe pas."
@@ -260,7 +260,7 @@ COMMAND:
     VALUENULL: "Vous devez entrer une valeur pour cette permission."
   RESIDENT:
     LISTSTART: "-Résidents de '%'-"
-    LISTROWNULL: "No Redisent."
+    LISTROWNULL: "Pas de résident."
     ISDONE: "'%' est maintenant résident de '%'."
     REMOVENOTEXIST: "Pas dans la liste des résidents."
     REMOVEISDONE: "Vous avez enlevé '%' de la liste des résidents de '%'."
@@ -273,7 +273,7 @@ COMMAND:
     LISTSTART: "-Bannis de '%'-"
     LISTROWNULL: "Pas de banni."
     NOTINSPAWN: "Vous ne pouvez pas bannir à l'endroit ou le SPAWN du monde se trouve."
-    REMOVENOTEXIST: "Pas de la liste des bannis."
+    REMOVENOTEXIST: "Pas dans la liste des bannis."
     REMOVEISDONE: "Vous avez enlevé '%' de la liste des bannis dans '%'."
   REMOVE:
     AREA:
@@ -291,8 +291,8 @@ COMMAND:
       LISTSTART: "-Information sur le terrain '%'-"
       NAME: "Nom: %, ID: %"
       PRIORITY: "Priorité: %, "
-      FORSALE: "À vendre!"
-      FORRENT: "À louer!"
+      FORSALE: "À vendre !"
+      FORRENT: "À louer !"
       PARENT: "Parent: % "
       OWNER: "Propriétaire: %"
       TENANT: ", Locataire: %"
@@ -337,13 +337,13 @@ COMMAND:
     UNRENTLAND: "Vous ne louez plus le terrain '%'."
     UNFORRENT: "Le terrain '%' n'est plus à louer."
     UNFORSALE: "Le terrain '%' n'est plus à vendre."
-    RECREATE: "Le panneau recréé."
+    RECREATE: "Le panneau a été recréé."
     ALREADYSALE: "Le panneau est déja créé. Utilisez '/factoid sale recreate' pour recréer ou déplacer le panneau."
     ALREADYRENT: "Le panneau est déja créé. Utilisez '/factoid rent recreate' pour recréer ou déplacer le panneau."
     MUSTHAVEISIGN: "Vous devez avoir un panneau en main."
 ACTION:
-  BANNED: "Vous êtes banni du terrain %!"
-  NOENTRY: "Vous ne pouvez pas entrez sur le terrain %!"
+  BANNED: "Vous êtes banni du terrain % !"
+  NOENTRY: "Vous ne pouvez pas entrez sur le terrain % !"
   PLAYERENTER: "% entre sur le terrain %."
   PLAYEREXIT: "% quitte le terrain %."
 SIGN:

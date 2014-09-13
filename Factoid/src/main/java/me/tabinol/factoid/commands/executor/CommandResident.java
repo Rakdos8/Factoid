@@ -51,7 +51,7 @@ public class CommandResident extends CommandExec {
     public void commandExecute() throws FactoidCommandException {
 
         checkSelections(true, null);
-        checkPermission(true, true, PermissionList.RESIDENT_MANAGER.getPermissonType(), null);
+        checkPermission(true, true, PermissionList.RESIDENT_MANAGER.getPermissionType(), null);
         
         String curArg = entity.argList.getNext();
 

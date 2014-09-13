@@ -68,7 +68,7 @@ public class CommandEcosign extends CommandExec {
 
 				// Buy a land
 				if (!land.checkPermissionAndInherit(player,
-						PermissionList.ECO_LAND_BUY.getPermissonType())) {
+						PermissionList.ECO_LAND_BUY.getPermissionType())) {
 					throw new FactoidCommandException("No permission to do this action", player, "GENERAL.MISSINGPERMISSION");
 				}
 				if (Factoid.getPlayerMoney().getPlayerBalance(player,
@@ -120,7 +120,7 @@ public class CommandEcosign extends CommandExec {
 
 					// Rent
 					if (!land.checkPermissionAndInherit(player,
-							PermissionList.ECO_LAND_RENT.getPermissonType())) {
+							PermissionList.ECO_LAND_RENT.getPermissionType())) {
 						throw new FactoidCommandException("No permission to do this action", player, "GENERAL.MISSINGPERMISSION");
 					}
 					if (Factoid.getPlayerMoney().getPlayerBalance(player,

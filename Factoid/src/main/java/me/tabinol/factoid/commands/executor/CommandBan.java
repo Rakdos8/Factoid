@@ -52,7 +52,7 @@ public class CommandBan extends CommandExec {
     public void commandExecute() throws FactoidCommandException {
 
         checkSelections(true, null);
-        checkPermission(true, true, PermissionList.LAND_BAN.getPermissonType(), null);
+        checkPermission(true, true, PermissionList.LAND_BAN.getPermissionType(), null);
 
         String curArg = entity.argList.getNext();
 

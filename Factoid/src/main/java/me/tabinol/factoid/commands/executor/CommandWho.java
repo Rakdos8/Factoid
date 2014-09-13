@@ -51,7 +51,7 @@ public class CommandWho extends CommandExec {
 
         getLandFromCommandIfNoLandSelected();
         checkSelections(true, null);
-        checkPermission(true, true, PermissionList.LAND_WHO.getPermissonType(), null);
+        checkPermission(true, true, PermissionList.LAND_WHO.getPermissionType(), null);
 
         // Create list
         StringBuilder stList = new StringBuilder();

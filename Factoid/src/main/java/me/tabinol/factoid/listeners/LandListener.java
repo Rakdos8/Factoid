@@ -177,7 +177,7 @@ public class LandListener implements Listener {
 
             if (!playerConf.get(player).isAdminMod()) {
                 // is banned or can enter
-                PermissionType permissionType = PermissionList.LAND_ENTER.getPermissonType();
+                PermissionType permissionType = PermissionList.LAND_ENTER.getPermissionType();
                 if ((land.isBanned(player)
                         || land.checkPermissionAndInherit(player, permissionType) != permissionType.getDefaultValue())
                         && !land.isOwner(player)) {
@@ -224,7 +224,7 @@ public class LandListener implements Listener {
         }
 
         //Check for Healing
-        PermissionType permissionType = PermissionList.AUTO_HEAL.getPermissonType();
+        PermissionType permissionType = PermissionList.AUTO_HEAL.getPermissionType();
         
         if (dummyLand.checkPermissionAndInherit(player, permissionType) != permissionType.getDefaultValue()) {
             if (!playerHeal.contains(player)) {
