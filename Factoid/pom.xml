@@ -12,6 +12,7 @@
 	<url>http://www.tabinol.me</url>
 
 	<properties>
+		<build.number>SNAPSHOT</build.number>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- *** Change Language version here here *** -->
 		<langVersion>18</langVersion>
@@ -141,7 +142,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>${project.artifactId}-${project.version}</finalName>
+		<finalName>${project.artifactId}-${project.version}-${build.number}</finalName>
 		<resources>
 			<resource>
 				<targetPath>.</targetPath>
