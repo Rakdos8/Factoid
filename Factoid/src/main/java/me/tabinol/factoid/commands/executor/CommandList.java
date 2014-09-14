@@ -18,12 +18,15 @@
 package me.tabinol.factoid.commands.executor;
 
 import java.util.Collection;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
+import me.tabinol.factoid.playerscache.PlayerCacheEntry;
+
 import org.bukkit.ChatColor;
 
 // TODO: Auto-generated Javadoc
@@ -32,7 +35,10 @@ import org.bukkit.ChatColor;
  *
  * @author Tabinol
  */
-public class CommandList extends CommandExec {
+public class CommandList extends CommandThreadExec {
+
+	private PlayerContainer pc;
+    private String worldName = null;
 
     /**
      * Instantiates a new command list.
@@ -53,8 +59,6 @@ public class CommandList extends CommandExec {
     public void commandExecute() throws FactoidCommandException {
 
         String curArg = entity.argList.getNext();
-        String worldName = null;
-        PlayerContainer pc = null;
 
         if (curArg != null) {
             if (curArg.equalsIgnoreCase("world")) {
@@ -74,8 +78,20 @@ public class CommandList extends CommandExec {
 
             }
         }
+        
+        Factoid.getPlayersCache().getUUIDWithNames(this, pc);
+    }
 
-        // Check if the player is AdminMod or send only owned lands
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.commands.executor.CommandThreadExec#commandThreadExecute(me.tabinol.factoid.playerscache.PlayerCacheEntry[])
+     */
+    @Override
+    public void commandThreadExecute(PlayerCacheEntry[] playerCacheEntry)
+    		throws FactoidCommandException {
+        
+    	pc = convertPcIfNeeded(playerCacheEntry, pc);
+
+    	// Check if the player is AdminMod or send only owned lands
         Collection<Land> lands;
 
         if (entity.playerConf.isAdminMod()) {

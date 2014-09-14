@@ -19,6 +19,7 @@ package me.tabinol.factoid.playercontainer;
 
 import java.util.UUID;
 
+import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.Land;
 
 import org.bukkit.Bukkit;
@@ -86,11 +87,43 @@ public class PlayerContainerPlayer extends PlayerContainer {
     public String getPrint() {
 
         StringBuilder sb = new StringBuilder();
+        String playerName = getPlayerName();
         
         sb.append(ChatColor.DARK_RED).append("P:");
-        sb.append(ChatColor.WHITE).append(Bukkit.getOfflinePlayer(minecraftUUID).getName());
+        
+        if(playerName != null) {
+        	sb.append(ChatColor.WHITE).append(playerName);
+        } else {
+        	// Player never connected on the server, show UUID
+        	sb.append(ChatColor.DARK_GRAY).append("ID-" + minecraftUUID);
+        }
         
         return sb.toString();
+    }
+    
+    public String getPlayerName() {
+    	
+    	String playerName;
+    	
+    	// Pass 1 get in Online players
+    	Player player = Bukkit.getPlayer(minecraftUUID);
+    	if(player != null) {
+    		return player.getName();
+    	}
+    	
+    	// Pass 2 get from Factoid cache
+    	playerName = Factoid.getPlayersCache().getNameFromUUID(minecraftUUID);
+    	if(playerName != null) {
+    		return playerName;
+    	}
+    	
+    	// Pass 3 get from offline players
+    	OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(minecraftUUID);
+    	if(offlinePlayer != null) {
+    		return offlinePlayer.getName();
+    	}
+    	
+        return null;    	
     }
 
     /* (non-Javadoc)
@@ -112,26 +145,6 @@ public class PlayerContainerPlayer extends PlayerContainer {
     }
     
     /**
-     * Gets the player name.
-     *
-     * @return the player name
-     */
-    public String getPlayerName() {
-        
-        return Bukkit.getOfflinePlayer(minecraftUUID).getName();
-    }
-    
-    /**
-     * Checks if is online.
-     *
-     * @return true, if is online
-     */
-    public boolean isOnline() {
-        
-        return Bukkit.getOfflinePlayer(minecraftUUID).isOnline();
-    }
-    
-    /**
      * Gets the player.
      *
      * @return the player
@@ -140,7 +153,7 @@ public class PlayerContainerPlayer extends PlayerContainer {
         
         return Bukkit.getPlayer(minecraftUUID);
     }
-    
+
     /**
      * Get the offline player.
      * 

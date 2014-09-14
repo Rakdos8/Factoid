@@ -21,15 +21,19 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
+import me.tabinol.factoid.playerscache.PlayerCacheEntry;
+
 import org.bukkit.ChatColor;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class CommandOwner.
  */
-public class CommandOwner extends CommandExec {
+public class CommandOwner extends CommandThreadExec {
 
-    /**
+	private PlayerContainer pc;
+
+	/**
      * Instantiates a new command owner.
      *
      * @param entity the entity
@@ -52,6 +56,18 @@ public class CommandOwner extends CommandExec {
         PlayerContainer pc = entity.argList.getPlayerContainerFromArg(land,
                 new PlayerContainerType[]{PlayerContainerType.EVERYBODY,
                     PlayerContainerType.OWNER, PlayerContainerType.VISITOR});
+        Factoid.getPlayersCache().getUUIDWithNames(this, pc);
+    }
+
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.commands.executor.CommandThreadExec#commandThreadExecute(me.tabinol.factoid.playerscache.PlayerCacheEntry[])
+     */
+    @Override
+    public void commandThreadExecute(PlayerCacheEntry[] playerCacheEntry)
+    		throws FactoidCommandException {
+        
+    	pc = convertPcIfNeeded(playerCacheEntry, pc);
+
         land.setOwner(pc);
         entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.OWNER.ISDONE", pc.getPrint(), land.getName()));
         Factoid.getLog().write("The land " + land.getName() + "is set to owner: " + pc.getPrint());

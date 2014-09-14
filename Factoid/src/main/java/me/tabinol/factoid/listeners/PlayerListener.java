@@ -138,6 +138,9 @@ public class PlayerListener implements Listener {
 
 		Player player = event.getPlayer();
 
+		// Update players cache
+		Factoid.getPlayersCache().updatePlayer(player.getUniqueId(), player.getName());
+		
 		// Create a new static config
 		PlayerConfEntry entry = playerConf.add(player);
 

@@ -85,28 +85,20 @@ public abstract class PlayerContainer implements PlayerContainerInterface, Compa
             return new PlayerContainerEverybody();
         } else if (pct == PlayerContainerType.NOBODY) {
             return new PlayerContainerNobody();
-        } else if (pct == PlayerContainerType.PLAYER) {
+        } else if (pct == PlayerContainerType.PLAYER || pct == PlayerContainerType.PLAYERNAME) {
             UUID minecraftUUID;
-            OfflinePlayer offlinePlayer;
 
-            // First check if the ID is valid or whas connected to the server
+            // First check if the ID is valid or was connected to the server
             try {
                 minecraftUUID = UUID.fromString(name.replaceFirst("ID-", ""));
-                offlinePlayer = Bukkit.getOfflinePlayer(minecraftUUID);
             } catch (IllegalArgumentException ex) {
 
-                // Is not an ID. We will try to get the name of the player
-                // Note : This method is only what I found in Bukkt
-                offlinePlayer = Bukkit.getOfflinePlayer(name);
+                // If there is an error, just return a temporary PlayerName
+            	return new PlayerContainerPlayerName(name);
             }
 
             // If not null, assign the value to a new PlayerContainer
-            if (offlinePlayer != null) {
-                return new PlayerContainerPlayer(offlinePlayer.getUniqueId());
-            }
-
-            // Not found, return null
-            return null;
+            return new PlayerContainerPlayer(minecraftUUID);
         } else if (pct == PlayerContainerType.PERMISSION) {
             return new PlayerContainerPermission(name);
         } else if (pct == PlayerContainerType.TENANT) {

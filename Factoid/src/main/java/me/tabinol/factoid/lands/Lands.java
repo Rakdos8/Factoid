@@ -271,7 +271,7 @@ public class Lands {
         if (land.getParent() != null) {
             land.getParent().removeChild(land.getUUID());
         }
-        Factoid.getStorage().removeLand(land);
+        Factoid.getStorageThread().removeLand(land);
         Factoid.getLog().write("remove land: " + land);
         return true;
     }

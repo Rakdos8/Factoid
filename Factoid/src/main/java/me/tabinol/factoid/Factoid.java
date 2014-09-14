@@ -30,9 +30,11 @@ import me.tabinol.factoid.listeners.LandListener;
 import me.tabinol.factoid.listeners.PlayerListener;
 import me.tabinol.factoid.listeners.WorldListener;
 import me.tabinol.factoid.parameters.Parameters;
+import me.tabinol.factoid.playerscache.PlayersCache;
 import me.tabinol.factoid.scoreboard.ScoreBoard;
 import me.tabinol.factoid.storage.Storage;
 import me.tabinol.factoid.storage.StorageFlat;
+import me.tabinol.factoid.storage.StorageThread;
 import me.tabinol.factoid.utilities.Lang;
 import me.tabinol.factoid.utilities.Log;
 import me.tabinol.factoid.utilities.MavenAppProperties;
@@ -45,7 +47,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class Factoid extends JavaPlugin {
 
-	/** The Economy schedule interval */
+	/**  The Economy schedule interval. */
 	public static final int ECO_SCHEDULE_INTERVAL = 20 * 60 * 5;
 	
 	/** The Command listener. */
@@ -60,7 +62,7 @@ public class Factoid extends JavaPlugin {
     /** The land listener. */
     private LandListener landListener;
     
-    /** The economy scheduler */
+    /**  The economy scheduler. */
     private EcoScheduler ecoScheduler;
     
     /** The maven app properties. */
@@ -69,8 +71,8 @@ public class Factoid extends JavaPlugin {
     /** The approve notif. */
     private static ApproveNotif approveNotif;
     
-    /** The storage. */
-    private static Storage storage = null;
+    /** The storage thread. */
+    private static StorageThread storageThread = null;
     
     /** The log. */
     private static Log log;
@@ -108,6 +110,9 @@ public class Factoid extends JavaPlugin {
     /** The Scoreboard. */
     private static ScoreBoard Scoreboard;
     
+    /** The players cache. */
+    private static PlayersCache playersCache;
+    
     /* (non-Javadoc)
      * @see org.bukkit.plugin.java.JavaPlugin#onEnable()
      */
@@ -131,10 +136,10 @@ public class Factoid extends JavaPlugin {
         playerConf = new PlayerStaticConfig();
         playerConf.addAll();
         language = new Lang();
-        storage = new StorageFlat();
+        storageThread = new StorageThread();
         factions = new Factions();
         lands = new Lands();
-        storage.loadAll();
+        storageThread.loadAllAndStart();
         worldListener = new WorldListener();
         playerListener = new PlayerListener();
         landListener = new LandListener();
@@ -144,6 +149,8 @@ public class Factoid extends JavaPlugin {
         approveNotif.runApproveNotifLater();
         ecoScheduler = new EcoScheduler();
         ecoScheduler.runTaskTimer(this, ECO_SCHEDULE_INTERVAL, ECO_SCHEDULE_INTERVAL);
+        playersCache = new PlayersCache();
+        playersCache.start();
         getServer().getPluginManager().registerEvents(worldListener, this);
         getServer().getPluginManager().registerEvents(playerListener, this);
         getServer().getPluginManager().registerEvents(landListener, this);
@@ -167,7 +174,8 @@ public class Factoid extends JavaPlugin {
         language.reloadConfig();
         factions = new Factions();
         lands = new Lands();
-        storage.loadAll();
+        storageThread.stopNextRun();
+        storageThread.loadAllAndStart();
         approveNotif.stopNextRun();
         approveNotif.runApproveNotifLater();
     }
@@ -179,7 +187,9 @@ public class Factoid extends JavaPlugin {
     public void onDisable() {
 
         log.write(Factoid.getLanguage().getMessage("DISABLE"));
+        playersCache.stopNextRun();
         approveNotif.stopNextRun();
+        storageThread.stopNextRun();
         playerConf.removeAll();
         log.interrupt();
         language.interrupt();
@@ -280,9 +290,9 @@ public class Factoid extends JavaPlugin {
      *
      * @return the storage
      */
-    public static Storage getStorage() {
+    public static StorageThread getStorageThread() {
 
-        return storage;
+        return storageThread;
     }
 
     /**
@@ -333,5 +343,15 @@ public class Factoid extends JavaPlugin {
     public static PlayerMoney getPlayerMoney() {
 
         return playerMoney;
+    }
+    
+    /**
+     * Gets the players cache.
+     *
+     * @return the players cache
+     */
+    public static PlayersCache getPlayersCache() {
+    	
+    	return playersCache;
     }
 }

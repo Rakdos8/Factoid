@@ -17,6 +17,9 @@
  */
 package me.tabinol.factoid.storage;
 
+import java.io.File;
+
+import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.Land;
 
@@ -45,6 +48,16 @@ public interface StorageInt {
      */
     public void removeLand(Land land);
 
+    /**
+     * Load factions.
+     */
+    public void loadFactions();
+    
+    /**
+     * Load lands.
+     */
+    public void loadLands();    
+    
     /**
      * Save faction.
      *

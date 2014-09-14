@@ -26,6 +26,8 @@ import me.tabinol.factoid.parameters.Permission;
 import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
+import me.tabinol.factoid.playerscache.PlayerCacheEntry;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -33,9 +35,12 @@ import org.bukkit.entity.Player;
 /**
  * The Class CommandPermission.
  */
-public class CommandPermission extends CommandExec {
+public class CommandPermission extends CommandThreadExec {
 
-    /**
+	private String fonction;
+	private PlayerContainer pc;
+
+	/**
      * Instantiates a new command permission.
      *
      * @param entity the entity
@@ -53,11 +58,49 @@ public class CommandPermission extends CommandExec {
     public void commandExecute() throws FactoidCommandException {
 
         checkSelections(true, null);
-        String curArg = entity.argList.getNext();
 
-        if (curArg.equalsIgnoreCase("set")) {
+        if (fonction.equalsIgnoreCase("set")) {
 
-            PlayerContainer pc = entity.argList.getPlayerContainerFromArg(land, null);
+            pc = entity.argList.getPlayerContainerFromArg(land, null);
+            Factoid.getPlayersCache().getUUIDWithNames(this, pc);
+
+        } else if (fonction.equalsIgnoreCase("unset")) {
+
+            pc = entity.argList.getPlayerContainerFromArg(land, null);
+            Factoid.getPlayersCache().getUUIDWithNames(this, pc);
+
+        } else if (fonction.equalsIgnoreCase("list")) {
+
+            StringBuilder stList = new StringBuilder();
+            if (!land.getSetPCHavePermission().isEmpty()) {
+                for (PlayerContainer pc : land.getSetPCHavePermission()) {
+                    stList.append(ChatColor.WHITE).append(pc.getPrint()).append(":");
+                    for (Permission perm : land.getPermissionsForPC(pc)) {
+                        stList.append(" ").append(ChatColor.YELLOW).append(perm.getPermType().getPrint()).append(":").append(perm.getValuePrint());
+                    }
+                    stList.append(Config.NEWLINE);
+                }
+            } else {
+                entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.LISTROWNULL"));
+            }
+            new ChatPage("COMMAND.PERMISSION.LISTSTART", stList.toString(), entity.player, land.getName()).getPage(1);
+
+        } else {
+            throw new FactoidCommandException("Missing information command", entity.player, "GENERAL.MISSINGINFO");
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.commands.executor.CommandThreadExec#commandThreadExecute(me.tabinol.factoid.playerscache.PlayerCacheEntry[])
+     */
+    @Override
+    public void commandThreadExecute(PlayerCacheEntry[] playerCacheEntry)
+    		throws FactoidCommandException {
+        
+    	pc = convertPcIfNeeded(playerCacheEntry, pc);
+
+        if (fonction.equalsIgnoreCase("set")) {
+
             Permission perm = entity.argList.getPermissionFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.player));
             if (perm.getPermType() == PermissionList.LAND_ENTER.getPermissionType()
                     && perm.getValue() != perm.getPermType().getDefaultValue()
@@ -79,34 +122,14 @@ public class CommandPermission extends CommandExec {
                 }
             }
 
-        } else if (curArg.equalsIgnoreCase("unset")) {
+        } else if (fonction.equalsIgnoreCase("unset")) {
 
-            PlayerContainer pc = entity.argList.getPlayerContainerFromArg(land, null);
             PermissionType pt = entity.argList.getPermissionTypeFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.player));
             if (!land.removePermission(pc, pt)) {
                 throw new FactoidCommandException("Permission", entity.player, "COMMAND.PERMISSION.REMOVENOTEXIST");
             }
             entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.REMOVEISDONE", pt.toString()));
             Factoid.getLog().write("Permission unset: " + pt.toString());
-
-        } else if (curArg.equalsIgnoreCase("list")) {
-
-            StringBuilder stList = new StringBuilder();
-            if (!land.getSetPCHavePermission().isEmpty()) {
-                for (PlayerContainer pc : land.getSetPCHavePermission()) {
-                    stList.append(ChatColor.WHITE).append(pc.getPrint()).append(":");
-                    for (Permission perm : land.getPermissionsForPC(pc)) {
-                        stList.append(" ").append(ChatColor.YELLOW).append(perm.getPermType().getPrint()).append(":").append(perm.getValuePrint());
-                    }
-                    stList.append(Config.NEWLINE);
-                }
-            } else {
-                entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.PERMISSION.LISTROWNULL"));
-            }
-            new ChatPage("COMMAND.PERMISSION.LISTSTART", stList.toString(), entity.player, land.getName()).getPage(1);
-
-        } else {
-            throw new FactoidCommandException("Missing information command", entity.player, "GENERAL.MISSINGINFO");
         }
     }
 }

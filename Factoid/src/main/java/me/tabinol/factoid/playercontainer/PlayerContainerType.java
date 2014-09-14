@@ -58,7 +58,10 @@ public enum PlayerContainerType {
     EVERYBODY(10,"Everybody", false),
     
     /** The nobody. */
-    NOBODY(11,"Nobody", false);
+    NOBODY(11,"Nobody", false),
+    
+    /** Player Name, Only for UUID resolve and replace to a true player. */
+    PLAYERNAME(12, "PlayerName", false);
     
     /** The value. */
     private final int value;

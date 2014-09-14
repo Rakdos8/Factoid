@@ -17,14 +17,24 @@
  */
 package me.tabinol.factoid.storage;
 
+import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.factions.Faction;
+import me.tabinol.factoid.lands.Land;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class Storage.
  */
 public abstract class Storage implements StorageInt {
 
-    /** The in load. */
-    protected boolean inLoad = true; // True if the Database is in Loaded
+    /** The Constant LAND_VERSION. */
+    public static final int LAND_VERSION = Factoid.getMavenAppProperties().getPropertyInt("landVersion");
+    
+    /** The Constant FACTION_VERSION. */
+    public static final int FACTION_VERSION = Factoid.getMavenAppProperties().getPropertyInt("factionVersion");
+
+    /** The to resave. */
+    private boolean toResave = false; // If a new version of .conf file, we need to save again
 
     /**
      * Instantiates a new storage.
@@ -32,13 +42,34 @@ public abstract class Storage implements StorageInt {
     public Storage() {
     }
     
-    /**
-     * Checks if is in load.
-     *
-     * @return true, if is in load
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.storage.StorageInt#loadAll()
      */
-    public boolean isInLoad() {
-        
-        return inLoad;
+    @Override
+    public void loadAll() {
+
+        loadFactions();
+        loadLands();
+
+        // New version, we have to save all
+        if (toResave) {
+            saveAll();
+        }
+    }
+
+    /**
+     * Save all.
+     */
+    private void saveAll() {
+
+        for (Land land : Factoid.getLands().getLands()) {
+
+            land.forceSave();
+        }
+
+        for (Faction faction : Factoid.getFactions().getFactions()) {
+
+            faction.forceSave();
+        }
     }
 }

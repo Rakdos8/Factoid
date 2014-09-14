@@ -95,7 +95,7 @@ public class Factions {
         if (!factionList.containsKey(faction.getName())) {
             return false;
         }
-        Factoid.getStorage().removeFaction(faction);
+        Factoid.getStorageThread().removeFaction(faction);
         factionList.remove(faction.getName());
         Factoid.getLog().write("remove faction: " + faction.getName());
         return true;

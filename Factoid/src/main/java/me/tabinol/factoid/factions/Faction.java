@@ -140,7 +140,7 @@ public class Faction {
      */
     public void forceSave() {
         
-        Factoid.getStorage().saveFaction(this);
+        Factoid.getStorageThread().saveFaction(this);
         Factoid.getLog().write("Faction " + name + " is saved.");
     }
     

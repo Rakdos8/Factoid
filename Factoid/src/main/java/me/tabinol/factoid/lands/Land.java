@@ -160,7 +160,7 @@ public class Land extends DummyLand {
         }
         this.owner = owner;
         this.genealogy = genealogy;
-        if (!Factoid.getStorage().isInLoad()) {
+        if (!Factoid.getStorageThread().isInLoad()) {
             if (!Factoid.getLands().defaultConf.flags.isEmpty()) {
                 flags = (TreeMap<FlagType, LandFlag>) Factoid.getLands().defaultConf.flags.clone();
             }
@@ -466,7 +466,7 @@ public class Land extends DummyLand {
     protected void setName(String newName) {
 
         setAutoSave(false);
-        Factoid.getStorage().removeLand(this);
+        Factoid.getStorageThread().removeLand(this);
         this.name = newName;
         setAutoSave(true);
         doSave();
@@ -782,7 +782,7 @@ public class Land extends DummyLand {
      */
     public void forceSave() {
 
-        Factoid.getStorage().saveLand(this);
+        Factoid.getStorageThread().saveLand(this);
     }
 
     /* (non-Javadoc)

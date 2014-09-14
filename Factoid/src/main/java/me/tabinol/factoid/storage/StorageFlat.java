@@ -56,21 +56,12 @@ public class StorageFlat extends Storage implements StorageInt {
     /** The Constant EXT_CONF. */
     public static final String EXT_CONF = ".conf";
     
-    /** The Constant LAND_VERSION. */
-    public static final int LAND_VERSION = Factoid.getMavenAppProperties().getPropertyInt("landVersion");
-    
-    /** The Constant FACTION_VERSION. */
-    public static final int FACTION_VERSION = Factoid.getMavenAppProperties().getPropertyInt("factionVersion");
-    
     /** The factions dir. */
     private String factionsDir;
     
     /** The lands dir. */
     private String landsDir;
     
-    /** The to resave. */
-    private boolean toResave = false; // If a new version of .conf file, we need to save again
-
     /**
      * Instantiates a new storage flat.
      */
@@ -130,26 +121,10 @@ public class StorageFlat extends Storage implements StorageInt {
     }
 
     /* (non-Javadoc)
-     * @see me.tabinol.factoid.storage.StorageInt#loadAll()
+     * @see me.tabinol.factoid.storage.StorageInt#loadFactions()
      */
     @Override
-    public void loadAll() {
-
-        inLoad = true;
-        loadFactions();
-        loadLands();
-        inLoad = false;
-
-        // New version, we have to save all
-        if (toResave) {
-            saveAll();
-        }
-    }
-
-    /**
-     * Load factions.
-     */
-    private void loadFactions() {
+    public void loadFactions() {
 
         File[] files = new File(factionsDir).listFiles();
         int loadedfactions = 0;
@@ -168,10 +143,11 @@ public class StorageFlat extends Storage implements StorageInt {
         Factoid.getLog().write(loadedfactions + " faction(s) loaded.");
     }
 
-    /**
-     * Load lands.
+    /* (non-Javadoc)
+     * @see me.tabinol.factoid.storage.StorageInt#loadLands()
      */
-    private void loadLands() {
+    @Override
+    public void loadLands() {
 
         File[] files = new File(landsDir).listFiles();
         int loadedlands = 0;
@@ -486,7 +462,7 @@ public class StorageFlat extends Storage implements StorageInt {
         try {
             ArrayList<String> strs;
 
-            if (inLoad) {
+            if (Factoid.getStorageThread().isInLoad()) {
                 return;
             }
 
@@ -598,7 +574,7 @@ public class StorageFlat extends Storage implements StorageInt {
     @Override
     public void saveFaction(Faction faction) {
         try {
-            if (inLoad) {
+            if (Factoid.getStorageThread().isInLoad()) {
                 return;
             }
 
@@ -624,21 +600,5 @@ public class StorageFlat extends Storage implements StorageInt {
     public void removeFaction(Faction faction) {
 
         getFactionFile(faction).delete();
-    }
-
-    /**
-     * Save all.
-     */
-    private void saveAll() {
-
-        for (Land land : Factoid.getLands().getLands()) {
-
-            land.forceSave();
-        }
-
-        for (Faction faction : Factoid.getFactions().getFactions()) {
-
-            faction.forceSave();
-        }
     }
 }
