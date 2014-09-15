@@ -59,6 +59,8 @@ public class CommandPermission extends CommandThreadExec {
 
         checkSelections(true, null);
 
+        fonction = entity.argList.getNext();
+        
         if (fonction.equalsIgnoreCase("set")) {
 
             pc = entity.argList.getPlayerContainerFromArg(land, null);

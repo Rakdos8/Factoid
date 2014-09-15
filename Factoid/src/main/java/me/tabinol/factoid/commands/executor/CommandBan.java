@@ -118,7 +118,8 @@ public class CommandBan extends CommandThreadExec {
     			}
     		}
 
-    		entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.ISDONE", pc.getContainerType().toString(), pc.getName()));
+    		entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.ISDONE", 
+    				pc.getPrint() + ChatColor.YELLOW, land.getName()));
     		Factoid.getLog().write("Ban added: " + pc.toString());
 
     	} else if (fonction.equalsIgnoreCase("remove")) {
@@ -126,7 +127,8 @@ public class CommandBan extends CommandThreadExec {
     		if (!land.removeBanned(pc)) {
     			throw new FactoidCommandException("Banned", entity.player, "COMMAND.BANNED.REMOVENOTEXIST");
     		}
-    		entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.REMOVEISDONE", pc.getContainerType().toString(), pc.getName()));
+    		entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.REMOVEISDONE", 
+    				pc.getPrint() + ChatColor.YELLOW, land.getName()));
     		Factoid.getLog().write("Ban removed: " + pc.toString());
     	}
     }
