@@ -726,8 +726,7 @@ public class PlayerListener implements Listener {
 				EntityType et = entity.getType();
 
 				// kill en entity (none player)
-				if (event.getDamager() instanceof Player
-						&& (entry = playerConf.get(player)) != null // Citizens
+				if ((entry = playerConf.get(player)) != null // Citizens
 																	// bugfix
 						&& !entry.isAdminMod()
 						&& ((land instanceof Land && ((Land) land)
