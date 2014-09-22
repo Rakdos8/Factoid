@@ -175,6 +175,7 @@ public class Factoid extends JavaPlugin {
         factions = new Factions();
         lands = new Lands();
         storageThread.stopNextRun();
+        storageThread= new StorageThread();
         storageThread.loadAllAndStart();
         approveNotif.stopNextRun();
         approveNotif.runApproveNotifLater();
