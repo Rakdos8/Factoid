@@ -219,7 +219,7 @@ COMMAND:
     COLLISION: "Your selection have an collision with an another Land."
     DONE: "You have created your land."
     ALREADYUSE: "This Land name is already used."
-    HINTUSE: "/factoid create [Land Name]"
+    HINTUSE: "This name can't be used."
     PARENTNOTEXIST: "The parent land doesn't exist."
   RENAME:
     HINTUSE: "This name can't be used."

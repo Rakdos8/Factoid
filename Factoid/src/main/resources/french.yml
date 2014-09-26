@@ -218,10 +218,10 @@ COMMAND:
     COLLISION: "Vous avez une collision avez un autre terrain."
     DONE: "Vous avez créé votre terrain."
     ALREADYUSE: "Le nom de terrain est déjà utilisé."
-    HINTUSE: "/factoid create [nom du terrain]"
+    HINTUSE: "Ce nom ne peut pas être utilisé."
     PARENTNOTEXIST: "Le terrain parent n'existe pas."
   RENAME:
-    HINTUSE: "Ce nom ne peut être pas utilisé."
+    HINTUSE: "Ce nom ne peut pas être utilisé."
     ISDONE: "Le terrain '%' est renommé '%'."
   FLAGS:
     JOINMODE: "Vous êtes maintenant en mode Drapeau."

@@ -18,9 +18,8 @@
 package me.tabinol.factoid.config;
 
 // TODO: Auto-generated Javadoc
-// Banned words for land creation
 /**
- * The Enum BannedWords.
+ * Banned words for a land.
  */
 public enum BannedWords {
 
@@ -90,24 +89,36 @@ public enum BannedWords {
     /** The rename. */
     RENAME;
 
-    // Check if it is a banned word
+    /** The Constant INVALID_CHARACTERS. */
+    public static final String[] INVALID_CHARACTERS = new String[] {
+    	":", ";", "#", ",", ".", "*", "(", ")", "{", "}", "[", "]", 
+    	"|", "\\", "/", "!", "?", "*", "\"", "'", "+", "-", "=" };   
+    
     /**
      * Checks if is banned word.
      *
      * @param bannedWord the banned word
-     * @return true, if is banned word
+     * @return true, if banned word or invalid character
      */
-    public static boolean isBannedWord(String bannedWord) {
+    public static boolean isBannedWord(String name) {
 
-        try {
-            valueOf(bannedWord.toUpperCase());
-        } catch (IllegalArgumentException ex) {
-
-            // If this is not a banned word, the chatch will be throws
-            return false;
+        // Pass 1 check for an invalid word
+    	try {
+            valueOf(name.toUpperCase());
+            // No catch, the name is in ban list
+            return true;
+        
+    	} catch (IllegalArgumentException ex) {
+        	// The word is not in ban list
         }
 
-        // A banned word, return true
-        return true;
+    	// Pass 2 check for an invalid character
+        for(String invalidChar : INVALID_CHARACTERS) {
+        	if(name.contains(invalidChar)) {
+        		return true;
+        	}
+        }
+
+        return false;
     }
 }
