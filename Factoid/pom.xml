@@ -150,6 +150,7 @@
 				<filtering>true</filtering>
 				<directory>${basedir}/src/main/resources/</directory>
 				<includes>
+					<include>lang/*.yml</include>
 					<include>*.yml</include>
 					<include>app.properties</include>
 					<include>LICENSE</include>

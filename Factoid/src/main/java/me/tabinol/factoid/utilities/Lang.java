@@ -176,7 +176,7 @@ public class Lang extends Thread {
         try {
             if (!langFile.exists()) {
                 langFile.getParentFile().mkdirs();
-                copy(plugin.getResource(lang + ".yml"), langFile);
+                copy(plugin.getResource("lang/" + lang + ".yml"), langFile);
             }
         } catch (Exception e) {
             e.printStackTrace();
