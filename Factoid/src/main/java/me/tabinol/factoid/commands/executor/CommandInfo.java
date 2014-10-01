@@ -30,7 +30,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandInfo.
  */
@@ -41,9 +41,6 @@ public class CommandInfo extends CommandExec {
     
     /** The player. */
     private final Player player;
-    
-    /** The player name. */
-    private final String playerName;
     
     /** The arg list. */
     private final ArgList argList;
@@ -58,7 +55,6 @@ public class CommandInfo extends CommandExec {
 
         super(entity, false, false);
         player = entity.player;
-        playerName = entity.playerName;
         Location playerloc = entity.player.getLocation();
         area = Factoid.getLands().getCuboidArea(playerloc);
         argList = entity.argList;
@@ -77,7 +73,6 @@ public class CommandInfo extends CommandExec {
         super(null, false, false);
         this.player = player;
         this.area = area;
-        playerName = player.getName();
         argList = null;
     }
 

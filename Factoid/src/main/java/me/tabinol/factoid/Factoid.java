@@ -32,8 +32,6 @@ import me.tabinol.factoid.listeners.WorldListener;
 import me.tabinol.factoid.parameters.Parameters;
 import me.tabinol.factoid.playerscache.PlayersCache;
 import me.tabinol.factoid.scoreboard.ScoreBoard;
-import me.tabinol.factoid.storage.Storage;
-import me.tabinol.factoid.storage.StorageFlat;
 import me.tabinol.factoid.storage.StorageThread;
 import me.tabinol.factoid.utilities.Lang;
 import me.tabinol.factoid.utilities.Log;
@@ -41,7 +39,7 @@ import me.tabinol.factoid.utilities.MavenAppProperties;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Factoid.
  */

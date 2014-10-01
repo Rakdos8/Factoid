@@ -21,7 +21,7 @@ import com.earth2me.essentials.Essentials;
 import me.tabinol.factoid.Factoid;
 import org.bukkit.entity.Player;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Essentials Functions.
  *

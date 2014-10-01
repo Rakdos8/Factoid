@@ -17,10 +17,9 @@
  */
 package me.tabinol.factoid.config.vanish;
 
-import me.tabinol.factoid.Factoid;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
-// TODO: Auto-generated Javadoc
+
 // import org.kitteh.vanish.VanishPlugin;
 
 /**

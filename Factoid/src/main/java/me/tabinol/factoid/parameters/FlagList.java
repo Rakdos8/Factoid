@@ -17,7 +17,7 @@
  */
 package me.tabinol.factoid.parameters;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Enum FlagList.
  *

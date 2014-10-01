@@ -26,7 +26,7 @@ import static org.bukkit.Bukkit.getServer;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class DependPlugin.
  */

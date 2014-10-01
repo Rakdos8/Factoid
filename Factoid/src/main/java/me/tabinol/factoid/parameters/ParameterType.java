@@ -19,7 +19,7 @@ package me.tabinol.factoid.parameters;
 
 import org.bukkit.ChatColor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ParameterType.
  *

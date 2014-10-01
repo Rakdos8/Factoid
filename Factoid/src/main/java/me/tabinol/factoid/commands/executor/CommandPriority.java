@@ -23,7 +23,7 @@ import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.utilities.Calculate;
 import org.bukkit.ChatColor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandPriority.
  */

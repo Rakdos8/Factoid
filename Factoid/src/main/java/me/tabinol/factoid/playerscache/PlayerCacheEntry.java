@@ -19,7 +19,7 @@ package me.tabinol.factoid.playerscache;
 
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class PlayerCacheEntry.
  */

@@ -21,7 +21,7 @@ import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import org.bukkit.event.HandlerList;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class PlayerContainerLandBanEvent.
  */

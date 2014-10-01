@@ -20,7 +20,7 @@ package me.tabinol.factoid.selection.region;
 import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
 import org.bukkit.entity.Player;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class RegionSelection.
  */

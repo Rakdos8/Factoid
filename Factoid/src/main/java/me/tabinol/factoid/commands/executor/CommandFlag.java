@@ -21,13 +21,12 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.parameters.FlagType;
 import me.tabinol.factoid.parameters.LandFlag;
-import me.tabinol.factoid.parameters.LandSetFlag;
+
 import org.bukkit.ChatColor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandFlag.
  */
@@ -53,19 +52,21 @@ public class CommandFlag extends CommandExec {
         checkSelections(true, null);
                 String curArg = entity.argList.getNext();
 
-        // Temporary desactivated
-        if (entity.argList.length() < 2 && false) {
+        /*
+        if (entity.argList.length() < 2) {
 
-            /*
             entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.JOINMODE"));
             Factoid.getLog().write("PlayerSetFlagUI for " + entity.playerName);
             entity.player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.HINT"));
             CuboidArea area = Factoid.getLands().getCuboidArea(entity.player.getLocation());
             LandSetFlag setting = new LandSetFlag(entity.player, area);
             entity.playerConf.setSetFlagUI(setting);
-            */
+            
                     
-        } else if (curArg.equalsIgnoreCase("set")) {
+        } else 
+        */ 
+        
+        if (curArg.equalsIgnoreCase("set")) {
 
             // Permission check is on getFlagFromArg
             

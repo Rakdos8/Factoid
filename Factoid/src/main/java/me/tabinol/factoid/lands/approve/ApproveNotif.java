@@ -18,13 +18,14 @@
 package me.tabinol.factoid.lands.approve;
 
 import java.util.logging.Level;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.utilities.FactoidRunnable;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permission;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ApproveNotif.
  */

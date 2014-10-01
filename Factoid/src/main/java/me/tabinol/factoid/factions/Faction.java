@@ -23,7 +23,7 @@ import java.util.UUID;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Faction.
  */

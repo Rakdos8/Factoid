@@ -23,13 +23,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
 import java.util.logging.Level;
+
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.config.Config;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Lang.
  */
@@ -237,7 +240,7 @@ public class Lang extends Thread {
         StringBuilder sb = new StringBuilder();
         
         for(int t = 1; t <= valueList.size(); t ++) {
-            sb.append((String) valueList.get(t + "")).append(Factoid.getConf().NEWLINE);
+            sb.append((String) valueList.get(t + "")).append(Config.NEWLINE);
         }
         
         return sb.toString();

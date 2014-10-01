@@ -21,7 +21,7 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class FactoidLandException.
  */

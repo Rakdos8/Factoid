@@ -17,7 +17,7 @@
  */
 package me.tabinol.factoid.playercontainer;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Enum PlayerContainerType.
  */

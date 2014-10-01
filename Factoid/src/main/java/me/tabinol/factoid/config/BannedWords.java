@@ -17,7 +17,7 @@
  */
 package me.tabinol.factoid.config;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Banned words for a land.
  */
@@ -95,9 +95,9 @@ public enum BannedWords {
     	"|", "\\", "/", "!", "?", "*", "\"", "'", "+", "-", "=" };   
     
     /**
-     * Checks if is banned word.
+     * Checks if is banned word or invalid.
      *
-     * @param bannedWord the banned word
+     * @param name The name to check if is invalid
      * @return true, if banned word or invalid character
      */
     public static boolean isBannedWord(String name) {

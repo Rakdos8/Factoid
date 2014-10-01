@@ -20,7 +20,7 @@ package me.tabinol.factoid.commands.executor;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandPage.
  */

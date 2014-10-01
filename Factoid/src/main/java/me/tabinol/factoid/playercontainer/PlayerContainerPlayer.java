@@ -27,7 +27,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class PlayerContainerPlayer.
  */

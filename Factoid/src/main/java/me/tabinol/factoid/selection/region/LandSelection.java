@@ -23,7 +23,7 @@ import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
 import org.bukkit.entity.Player;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class LandSelection.
  */

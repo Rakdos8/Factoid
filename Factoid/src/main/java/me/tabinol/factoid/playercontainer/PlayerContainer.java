@@ -18,14 +18,13 @@
 package me.tabinol.factoid.playercontainer;
 
 import java.util.UUID;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.utilities.StringChanges;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class PlayerContainer.
  */

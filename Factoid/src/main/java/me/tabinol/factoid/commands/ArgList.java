@@ -32,7 +32,7 @@ import me.tabinol.factoid.playercontainer.PlayerContainerType;
 import me.tabinol.factoid.utilities.StringChanges;
 import org.bukkit.command.CommandSender;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ArgList.
  */

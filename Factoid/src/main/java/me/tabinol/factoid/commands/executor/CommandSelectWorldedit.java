@@ -30,7 +30,7 @@ import me.tabinol.factoid.selection.region.AreaSelection;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-// TODO: Auto-generated Javadoc
+
 // WorldEdit is in a separate class from CommandSelect because if WorldEdit
 // is not installed, we don't want to makes error.
 

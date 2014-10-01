@@ -47,7 +47,7 @@ import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.utilities.StringChanges;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class StorageFlat.
  */
@@ -188,7 +188,10 @@ public class StorageFlat extends Storage implements StorageInt {
         try {
             cf = new ConfLoader(file);
             String str;
-            int version = cf.getVersion();
+            
+            @SuppressWarnings("unused")
+			int version = cf.getVersion();
+            
             uuid = cf.getUUID();
             cf.readParam();
             while ((str = cf.getNextString()) != null) {

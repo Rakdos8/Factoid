@@ -25,9 +25,7 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.economy.EcoSign;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.exceptions.SignException;
-import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.parameters.PermissionList;
-import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 
 public class CommandRent extends CommandExec {
 	

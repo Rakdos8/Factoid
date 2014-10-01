@@ -21,7 +21,7 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import org.bukkit.ChatColor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandReload.
  */

@@ -23,7 +23,7 @@ import me.tabinol.factoid.commands.CommandList;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import org.bukkit.command.CommandSender;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandHelp.
  */

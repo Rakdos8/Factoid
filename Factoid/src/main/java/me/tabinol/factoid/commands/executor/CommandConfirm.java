@@ -25,7 +25,7 @@ import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.exceptions.FactoidLandException;
 import org.bukkit.ChatColor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandConfirm.
  */

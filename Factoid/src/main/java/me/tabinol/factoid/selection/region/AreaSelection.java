@@ -24,10 +24,8 @@ import java.util.Map;
 
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.DummyLand;
-import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.parameters.PermissionList;
-import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
 
 import org.bukkit.Location;
@@ -36,7 +34,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class AreaSelection.
  */
@@ -102,7 +100,8 @@ public class AreaSelection extends RegionSelection implements Listener {
     /**
      * Make visual selection.
      */
-    final void makeVisualSelection() {
+    @SuppressWarnings("deprecation")
+	final void makeVisualSelection() {
 
         // Get the size (x and z) no abs (already ajusted)
         int diffX = area.getX2() - area.getX1();
@@ -182,7 +181,8 @@ public class AreaSelection extends RegionSelection implements Listener {
     /* (non-Javadoc)
      * @see me.tabinol.factoid.selection.region.RegionSelection#removeSelection()
      */
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public void removeSelection() {
 
         for (Map.Entry<Location, Material> EntrySet : this.blockList.entrySet()) {

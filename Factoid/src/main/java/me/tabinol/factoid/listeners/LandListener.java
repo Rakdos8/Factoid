@@ -20,6 +20,7 @@ package me.tabinol.factoid.listeners;
 import java.util.ArrayList;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.players.PlayerStaticConfig;
+import me.tabinol.factoid.event.LandEvent;
 import me.tabinol.factoid.event.PlayerContainerAddNoEnterEvent;
 import me.tabinol.factoid.event.PlayerContainerLandBanEvent;
 import me.tabinol.factoid.event.PlayerLandChangeEvent;
@@ -39,7 +40,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The listener interface for receiving land events.
  * The class that is interested in processing a land

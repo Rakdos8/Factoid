@@ -24,7 +24,7 @@ import me.tabinol.factoid.config.players.PlayerConfEntry;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-// TODO: Auto-generated Javadoc
+
 // Contains general information for commandExecutor
 /**
  * The Class CommandEntities.

@@ -21,7 +21,7 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.Land;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Storage.
  */

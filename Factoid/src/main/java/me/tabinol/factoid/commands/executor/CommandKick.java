@@ -22,11 +22,11 @@ import me.tabinol.factoid.commands.ArgList;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.parameters.PermissionList;
-import me.tabinol.factoid.parameters.PermissionType;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandKick.
  */
@@ -90,7 +90,8 @@ public class CommandKick extends CommandExec {
             throw new FactoidCommandException("Kicked", player, "COMMAND.KICK.PLAYERNULL");
         }
 
-        Player playerKick = Factoid.getThisPlugin().getServer().getPlayer(playerKickName);
+        @SuppressWarnings("deprecation")
+		Player playerKick = Factoid.getThisPlugin().getServer().getPlayer(playerKickName);
 
         // Player not in land?
         if (playerKick == null || !land.isPlayerinLandNoVanish(playerKick, player)

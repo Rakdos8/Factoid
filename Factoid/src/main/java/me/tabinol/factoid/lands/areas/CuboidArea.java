@@ -25,7 +25,7 @@ import me.tabinol.factoid.utilities.Calculate;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CuboidArea.
  */

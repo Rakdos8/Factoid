@@ -22,14 +22,13 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.commands.ConfirmEntry;
 import me.tabinol.factoid.lands.DummyLand;
-import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.selection.PlayerSelection;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class PlayerConfEntry.
  */

@@ -22,7 +22,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Schedule task in Factoid.
  *

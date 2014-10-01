@@ -17,7 +17,7 @@
  */
 package me.tabinol.factoid.utilities;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Calculate.
  */

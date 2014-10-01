@@ -26,7 +26,7 @@ import java.util.UUID;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.FileLoadException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ConfLoader.
  */

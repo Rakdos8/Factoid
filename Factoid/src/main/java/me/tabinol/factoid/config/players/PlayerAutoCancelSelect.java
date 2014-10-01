@@ -23,7 +23,7 @@ import me.tabinol.factoid.commands.executor.CommandCancel;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.utilities.FactoidRunnable;
 
-// TODO: Auto-generated Javadoc
+
 // Auto cancel selection
 /**
  * The Class PlayerAutoCancelSelect.

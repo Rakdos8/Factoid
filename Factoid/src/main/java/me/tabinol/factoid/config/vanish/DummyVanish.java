@@ -19,7 +19,7 @@ package me.tabinol.factoid.config.vanish;
 
 import org.bukkit.entity.Player;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Only return false if there is no Vanish plugin.
  *

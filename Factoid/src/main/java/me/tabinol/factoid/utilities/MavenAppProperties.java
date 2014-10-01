@@ -27,7 +27,7 @@ import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Load app.properties from Maven properties
  *
@@ -58,6 +58,7 @@ public class MavenAppProperties {
             InputStream resource = jar.getInputStream(entry);
             properties.load(resource);
             resource.close();
+            jar.close();
         
         } catch (URISyntaxException ex) {
             Logger.getLogger(MavenAppProperties.class.getName()).log(Level.SEVERE, null, ex);

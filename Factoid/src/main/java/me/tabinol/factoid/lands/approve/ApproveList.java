@@ -39,7 +39,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ApproveList.
  */
@@ -192,7 +192,7 @@ public class ApproveList {
     /**
      * Removes the approve.
      *
-     * @param land name
+     * @param landName the land name
      */
     public void removeApprove(String landName) {
         

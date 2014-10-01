@@ -27,7 +27,7 @@ import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Approve.
  */

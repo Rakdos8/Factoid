@@ -21,7 +21,6 @@ import java.util.Collection;
 
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
-import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
@@ -29,7 +28,7 @@ import me.tabinol.factoid.playerscache.PlayerCacheEntry;
 
 import org.bukkit.ChatColor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandList.
  *

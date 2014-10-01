@@ -21,7 +21,7 @@ import me.tabinol.factoid.parameters.LandFlag;
 import java.util.HashSet;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ContainerFlag.
  */

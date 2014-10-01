@@ -19,7 +19,7 @@ package me.tabinol.factoid.parameters;
 
 import java.util.TreeMap;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Parameters.
  *

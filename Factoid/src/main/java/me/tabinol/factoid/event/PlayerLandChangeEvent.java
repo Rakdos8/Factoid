@@ -24,7 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class PlayerLandChangeEvent.
  */

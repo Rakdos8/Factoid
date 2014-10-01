@@ -25,7 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import me.tabinol.factoid.Factoid;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Log.
  */

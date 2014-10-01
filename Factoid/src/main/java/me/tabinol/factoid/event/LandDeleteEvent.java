@@ -21,7 +21,7 @@ import me.tabinol.factoid.lands.Land;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class LandDeleteEvent.
  */

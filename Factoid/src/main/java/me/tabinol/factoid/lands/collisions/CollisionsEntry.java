@@ -21,7 +21,7 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.collisions.Collisions.LandError;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CollisionsEntry.
  */

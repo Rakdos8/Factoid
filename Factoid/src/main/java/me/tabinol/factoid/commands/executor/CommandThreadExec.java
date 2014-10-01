@@ -22,7 +22,7 @@ import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.playerscache.PlayerCacheEntry;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandThreadExec.
  */

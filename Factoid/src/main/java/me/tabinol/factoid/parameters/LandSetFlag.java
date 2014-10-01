@@ -20,11 +20,13 @@ package me.tabinol.factoid.parameters;
 import org.bukkit.Material;
 import org.bukkit.event.Listener;
 import org.bukkit.entity.Player;
+
 import me.tabinol.factoid.lands.areas.CuboidArea;
+
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class LandSetFlag.
  */
@@ -34,16 +36,20 @@ public class LandSetFlag extends Thread implements Listener{
     private Player player;
     
     /** The area. */
-    private CuboidArea area;
+    @SuppressWarnings("unused")
+	private CuboidArea area;
     
     /** The Redstone torch off. */
-    private ItemStack RedstoneTorchOff = new ItemStack(Material.REDSTONE_TORCH_OFF);
+    @SuppressWarnings("unused")
+	private ItemStack RedstoneTorchOff = new ItemStack(Material.REDSTONE_TORCH_OFF);
     
     /** The Redstone torch on. */
-    private ItemStack RedstoneTorchOn = new ItemStack(Material.REDSTONE_TORCH_ON);
+    @SuppressWarnings("unused")
+	private ItemStack RedstoneTorchOn = new ItemStack(Material.REDSTONE_TORCH_ON);
     
     /** The inventory. */
-    private Inventory inventory;
+    @SuppressWarnings("unused")
+	private Inventory inventory;
     
     /**
      * Instantiates a new land set flag.
@@ -64,7 +70,8 @@ public class LandSetFlag extends Thread implements Listener{
     private void makeMenu(){
         
         inventory = player.getServer().createInventory(null,8,"Flag Setting");
-        int i = 0;
+        @SuppressWarnings("unused")
+		int i = 0;
        /* for(){
             if(){
                 ItemStack Torch = RedstoneTorchOn.clone();

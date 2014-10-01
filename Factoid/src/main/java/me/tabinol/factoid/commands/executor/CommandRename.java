@@ -26,7 +26,7 @@ import me.tabinol.factoid.exceptions.FactoidLandException;
 import me.tabinol.factoid.lands.collisions.Collisions;
 import org.bukkit.ChatColor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandRename.
  */

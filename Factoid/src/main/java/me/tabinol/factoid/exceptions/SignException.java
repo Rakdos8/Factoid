@@ -17,7 +17,7 @@
  */
 package me.tabinol.factoid.exceptions;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class SignException.
  */

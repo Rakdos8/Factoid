@@ -35,7 +35,7 @@ import me.tabinol.factoid.playercontainer.PlayerContainer;
 
 import org.bukkit.ChatColor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandApprove.
  */

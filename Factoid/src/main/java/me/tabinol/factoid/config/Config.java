@@ -23,7 +23,7 @@ import me.tabinol.factoid.parameters.FlagType;
 import me.tabinol.factoid.parameters.PermissionType;
 import org.bukkit.configuration.file.FileConfiguration;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Config.
  */

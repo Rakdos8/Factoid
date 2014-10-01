@@ -19,7 +19,6 @@ package me.tabinol.factoid.selection;
 
 import java.util.Collection;
 import java.util.EnumMap;
-import java.util.Map;
 
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.players.PlayerConfEntry;
@@ -32,7 +31,7 @@ import me.tabinol.factoid.selection.region.AreaSelection;
 import me.tabinol.factoid.selection.region.LandSelection;
 import me.tabinol.factoid.selection.region.RegionSelection;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class PlayerSelection.
  */

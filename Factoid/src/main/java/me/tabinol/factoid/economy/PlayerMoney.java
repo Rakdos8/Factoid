@@ -22,7 +22,7 @@ import org.bukkit.OfflinePlayer;
 import me.tabinol.factoid.Factoid;
 import net.milkbowl.vault.economy.Economy;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Money from players.
  *

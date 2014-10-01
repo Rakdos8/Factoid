@@ -26,7 +26,7 @@ import me.tabinol.factoid.selection.region.AreaSelection;
 import me.tabinol.factoid.selection.region.ExpandAreaSelection;
 import org.bukkit.ChatColor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandExpand.
  */

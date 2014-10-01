@@ -18,16 +18,19 @@
 package me.tabinol.factoid.commands.executor;
 
 import java.util.Map;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.commands.ConfirmEntry;
 import me.tabinol.factoid.commands.ConfirmEntry.ConfirmType;
+import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
+
 import org.bukkit.ChatColor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandArea.
  */
@@ -155,7 +158,7 @@ public class CommandArea extends CommandExec {
         	checkSelections(true, null);
         	StringBuilder stList = new StringBuilder();
             for (Map.Entry<Integer, CuboidArea> entry : land.getIdsAndAreas().entrySet()) {
-                stList.append("ID: " + entry.getKey() + ", " + entry.getValue().getPrint() + Factoid.getConf().NEWLINE);
+                stList.append("ID: " + entry.getKey() + ", " + entry.getValue().getPrint() + Config.NEWLINE);
             }
             new ChatPage("COMMAND.AREA.LISTSTART", stList.toString(), entity.sender, land.getName()).getPage(1);
         } else {

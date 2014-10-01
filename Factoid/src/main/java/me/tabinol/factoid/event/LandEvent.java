@@ -22,7 +22,7 @@ import me.tabinol.factoid.lands.Land;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class LandEvent.
  */

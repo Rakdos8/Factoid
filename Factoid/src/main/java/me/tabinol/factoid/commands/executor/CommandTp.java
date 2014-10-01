@@ -17,7 +17,6 @@
  */
 package me.tabinol.factoid.commands.executor;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 import me.tabinol.factoid.Factoid;
@@ -27,7 +26,7 @@ import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoid.utilities.StringChanges;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandTp.
  */

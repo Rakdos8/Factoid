@@ -42,7 +42,7 @@ import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Land.
  */
@@ -147,7 +147,8 @@ public class Land extends DummyLand {
      * @param parent the parent
      * @param areaId the area id
      */
-    protected Land(String landName, UUID uuid, PlayerContainer owner,
+    @SuppressWarnings("unchecked")
+	protected Land(String landName, UUID uuid, PlayerContainer owner,
             CuboidArea area, int genealogy, Land parent, int areaId) {
 
         super(area.getWorldName().toLowerCase());
@@ -172,7 +173,8 @@ public class Land extends DummyLand {
     /**
      * Sets the default.
      */
-    public void setDefault() {
+    @SuppressWarnings("unchecked")
+	public void setDefault() {
         owner = new PlayerContainerNobody();
         residents = new TreeSet<PlayerContainer>();
         playerNotify = new TreeSet<PlayerContainerPlayer>();
@@ -185,7 +187,8 @@ public class Land extends DummyLand {
     /**
      * Copy perms.
      */
-    private void copyPerms() {
+    @SuppressWarnings("unchecked")
+	private void copyPerms() {
 
         for (PlayerContainer pc : Factoid.getLands().defaultConf.permissions.keySet()) {
             permissions.put(PlayerContainer.create(this, pc.getContainerType(), pc.getName()),
@@ -1020,7 +1023,7 @@ public class Land extends DummyLand {
      *
      * @param isForSale the is for sale
      * @param salePrice the sale price
-     * @param sign the sign
+     * @param signLoc the sign location
      */
     public void setForSale(boolean isForSale, double salePrice, Location signLoc) {
 

@@ -17,7 +17,6 @@
  */
 package me.tabinol.factoid.listeners;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,10 +26,8 @@ import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.parameters.FlagList;
 import me.tabinol.factoid.parameters.FlagType;
 import me.tabinol.factoid.parameters.LandFlag;
-import me.tabinol.factoid.utilities.Calculate;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Creeper;
@@ -39,7 +36,6 @@ import org.bukkit.entity.Flying;
 import org.bukkit.entity.Hanging;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Slime;
-import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -55,9 +51,9 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.world.WorldEvent;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The listener interface for receiving world events.
  * The class that is interested in processing a world

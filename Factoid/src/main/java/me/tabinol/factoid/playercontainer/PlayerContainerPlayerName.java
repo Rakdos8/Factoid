@@ -5,7 +5,7 @@ import me.tabinol.factoid.lands.Land;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class PlayerContainerPlayerName.
  */

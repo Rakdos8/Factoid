@@ -25,7 +25,7 @@ import me.tabinol.factoid.playerscache.PlayerCacheEntry;
 
 import org.bukkit.ChatColor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandOwner.
  */

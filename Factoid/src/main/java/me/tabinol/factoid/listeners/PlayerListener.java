@@ -87,7 +87,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.plugin.PluginManager;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The listener interface for receiving player events. The class that is
  * interested in processing a player event implements this interface, and the
@@ -261,6 +261,7 @@ public class PlayerListener implements Listener {
 	 * @param event
 	 *            the event
 	 */
+	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 

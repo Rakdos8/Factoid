@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import me.tabinol.factoid.utilities.StringChanges;
 import org.bukkit.ChatColor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class LandFlag.
  */

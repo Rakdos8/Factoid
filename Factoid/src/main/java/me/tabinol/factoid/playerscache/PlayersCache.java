@@ -45,7 +45,7 @@ import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayerName;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class PlayersCache.
  */
@@ -155,7 +155,6 @@ public class PlayersCache extends Thread {
 	 *
 	 * @param commandExec the command exec
 	 * @param pc the pc
-	 * @return the UUID with names
 	 */
 	public void getUUIDWithNames(CommandThreadExec commandExec, PlayerContainer pc) {
 		
@@ -172,7 +171,6 @@ public class PlayersCache extends Thread {
 	 *
 	 * @param commandExec the command exec
 	 * @param playerNames the player names
-	 * @return the UUID with names
 	 */
 	public void getUUIDWithNames(CommandThreadExec commandExec, String... playerNames) {
 		
@@ -315,7 +313,8 @@ public class PlayersCache extends Thread {
                 return;
             }
 
-            int version = Integer.parseInt(br.readLine().split(":")[1]);
+            @SuppressWarnings("unused")
+			int version = Integer.parseInt(br.readLine().split(":")[1]);
             br.readLine(); // Read remark line
 
             String str;

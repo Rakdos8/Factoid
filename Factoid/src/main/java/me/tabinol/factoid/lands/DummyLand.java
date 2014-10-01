@@ -32,7 +32,7 @@ import me.tabinol.factoid.playercontainer.PlayerContainer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class DummyLand.
  */

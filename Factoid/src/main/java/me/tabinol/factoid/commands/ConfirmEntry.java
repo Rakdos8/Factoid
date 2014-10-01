@@ -19,7 +19,7 @@ package me.tabinol.factoid.commands;
 
 import me.tabinol.factoid.lands.Land;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ConfirmEntry.
  */

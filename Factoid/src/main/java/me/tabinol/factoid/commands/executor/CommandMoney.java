@@ -21,10 +21,9 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.economy.PlayerMoney;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.parameters.PermissionList;
-import me.tabinol.factoid.parameters.PermissionType;
 import org.bukkit.ChatColor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandMoney.
  */

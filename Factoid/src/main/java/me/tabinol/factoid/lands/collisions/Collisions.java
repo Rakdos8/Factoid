@@ -31,7 +31,7 @@ import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Collisions.
  */
@@ -133,12 +133,6 @@ public class Collisions {
     /** The parent. */
     private final Land parent;
     
-    /** The price. */
-    private final double price;
-    
-    /** The owner. */
-    private final PlayerContainer owner;
-    
     /** The allow approve. */
     private boolean allowApprove;
 
@@ -166,8 +160,6 @@ public class Collisions {
         this.removedAreaId = removedAreaId;
         this.newArea = newArea;
         this.parent = parent;
-        this.owner = owner;
-        this.price = price;
 
         // Pass 1 check if there is a collision
         if (action == LandAction.LAND_ADD || action == LandAction.AREA_ADD || action == LandAction.AREA_MODIFY) {

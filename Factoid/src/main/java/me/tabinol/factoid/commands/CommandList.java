@@ -17,7 +17,7 @@
  */
 package me.tabinol.factoid.commands;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Enum CommandList.
  */

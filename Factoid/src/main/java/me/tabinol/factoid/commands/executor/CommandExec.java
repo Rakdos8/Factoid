@@ -34,7 +34,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandExec.
  */
@@ -245,8 +245,6 @@ public abstract class CommandExec implements CommandInterface {
     // The name says what it does!!!
     /**
      * Gets the land from command if no land selected.
-     *
-     * @return the land from command if no land selected
      */
     protected void getLandFromCommandIfNoLandSelected() {
 

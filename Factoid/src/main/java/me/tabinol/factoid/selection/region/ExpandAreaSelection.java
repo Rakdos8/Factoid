@@ -21,7 +21,7 @@ import me.tabinol.factoid.lands.areas.CuboidArea;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ExpandAreaSelection.
  */

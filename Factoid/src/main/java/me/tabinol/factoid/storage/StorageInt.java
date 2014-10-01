@@ -17,13 +17,10 @@
  */
 package me.tabinol.factoid.storage;
 
-import java.io.File;
-
-import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.Land;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface StorageInt.
  */

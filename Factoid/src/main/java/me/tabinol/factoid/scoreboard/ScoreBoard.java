@@ -21,12 +21,14 @@ import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
+
 import me.tabinol.factoid.Factoid;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ScoreBoard.
  */
@@ -53,7 +55,8 @@ public class ScoreBoard extends Thread{
      * @param player the player
      * @param LandName the land name
      */
-    public void sendScoreboard(HashSet<Player> playerlist, Player player, String LandName){
+    @SuppressWarnings("deprecation")
+	public void sendScoreboard(HashSet<Player> playerlist, Player player, String LandName){
         resetScoreboard(player);
         Scoreboard scoreboard = manager.getNewScoreboard();
         ScoreboardList.put(player,scoreboard);
@@ -92,7 +95,8 @@ public class ScoreBoard extends Thread{
      *
      * @param player the player
      */
-    public void resetScoreboard(Player player){
+    @SuppressWarnings("deprecation")
+	public void resetScoreboard(Player player){
         if(ScoreboardList.containsKey(player)){
             ScoreboardList.get(player).getObjective("land").unregister();
             ScoreboardList.get(player).resetScores(player);

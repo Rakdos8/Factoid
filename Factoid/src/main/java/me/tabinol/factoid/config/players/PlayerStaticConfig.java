@@ -27,7 +27,7 @@ import me.tabinol.factoid.config.vanish.VanishNoPacket;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-// TODO: Auto-generated Javadoc
+
 // Contain lists for player (selection, ect, ...)
 /**
  * The Class PlayerStaticConfig.

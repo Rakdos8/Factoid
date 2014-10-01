@@ -37,7 +37,7 @@ import me.tabinol.factoid.selection.region.AreaSelection;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandCreate.
  */

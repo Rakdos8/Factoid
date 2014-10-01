@@ -17,7 +17,7 @@
  */
 package me.tabinol.factoid.selection.region;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface PlayerMoveListen.
  */

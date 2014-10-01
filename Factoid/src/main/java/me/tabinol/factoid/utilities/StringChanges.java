@@ -24,7 +24,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class StringChanges.
  */

@@ -47,7 +47,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Lands.
  */
@@ -94,10 +94,12 @@ public class Lands {
 
     /**  List of forRent and rented. */
     private final HashSet<Land> forRent;
+    
     /**
      * Instantiates a new lands.
      */
-    public Lands() {
+    @SuppressWarnings("unchecked")
+	public Lands() {
 
         areaList = new TreeMap[4];
         pm = Factoid.getThisPlugin().getServer().getPluginManager();

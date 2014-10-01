@@ -24,14 +24,13 @@ import me.tabinol.factoid.lands.Land;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Represent the economy sign.
  *
@@ -61,6 +60,7 @@ public class EcoSign {
 	 */
 	public EcoSign(Land land, Player player) throws SignException {
 
+		@SuppressWarnings("deprecation")
 		Block targetBlock = player.getTargetBlock(null, 10);
 		this.land = land;
 

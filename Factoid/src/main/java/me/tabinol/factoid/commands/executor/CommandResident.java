@@ -22,15 +22,13 @@ import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.parameters.PermissionList;
-import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
-import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
 import me.tabinol.factoid.playerscache.PlayerCacheEntry;
 
 import org.bukkit.ChatColor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandResident.
  */

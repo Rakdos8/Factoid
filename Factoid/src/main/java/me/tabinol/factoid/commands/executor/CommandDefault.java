@@ -22,7 +22,7 @@ import me.tabinol.factoid.commands.ConfirmEntry;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import org.bukkit.ChatColor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CommandDefault.
  */

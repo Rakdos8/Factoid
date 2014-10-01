@@ -18,20 +18,24 @@
 package me.tabinol.factoid.commands;
 
 import java.lang.reflect.InvocationTargetException;
+
 import me.tabinol.factoid.commands.executor.CommandEntities;
 import me.tabinol.factoid.commands.executor.CommandExec;
 import me.tabinol.factoid.commands.executor.CommandHelp;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.utilities.StringChanges;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.CommandExecutor;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import me.tabinol.factoid.Factoid;
 import static me.tabinol.factoid.commands.CommandList.valueOf;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class OnCommand.
  */
@@ -69,7 +73,6 @@ public class OnCommand extends Thread implements CommandExecutor {
      *
      * @param sender the sender
      * @param argList the arg list
-     * @return the command
      * @throws FactoidCommandException the factoid command exception
      */
     public void getCommand(CommandSender sender, ArgList argList) throws FactoidCommandException {
@@ -93,8 +96,8 @@ public class OnCommand extends Thread implements CommandExecutor {
                 Factoid.getPlayerConf().get(sender).setChatPage(null);
             }
 
-            // Do de command (get the class name from the CommandName)
-            Class commandClass = Class.forName("me.tabinol.factoid.commands.executor.Command"
+            // Do the command (get the class name from the CommandName)
+            Class<?> commandClass = Class.forName("me.tabinol.factoid.commands.executor.Command"
                     + StringChanges.FirstUpperThenLower(cl.name()));
             CommandExec ce = (CommandExec) commandClass.getConstructor(CommandEntities.class)
                     .newInstance(new CommandEntities(cl, sender, argList));

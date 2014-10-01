@@ -23,7 +23,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.ChatPaginator;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ChatPage.
  */
@@ -73,7 +73,6 @@ public class ChatPage {
      * Gets the page.
      *
      * @param pageNumber the page number
-     * @return the page
      * @throws FactoidCommandException the factoid command exception
      */
     public void getPage(int pageNumber) throws FactoidCommandException {

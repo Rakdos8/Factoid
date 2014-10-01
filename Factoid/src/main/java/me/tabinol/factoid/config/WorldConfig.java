@@ -31,7 +31,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-// TODO: Auto-generated Javadoc
+
 // Started by Lands.Class
 // Load world config and lands default
 /**
