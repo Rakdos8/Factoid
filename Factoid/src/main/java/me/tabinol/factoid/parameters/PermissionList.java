@@ -96,14 +96,13 @@ public enum PermissionList {
     
     /** The animal kill. */
     ANIMAL_KILL(true),
-    //ANIMAL_FEED(true),
-    //ANIMAL_ACCOUPLE(true),
+
     /** The tamed kill. */
     TAMED_KILL(true),
     
     /** The mob kill. */
     MOB_KILL(true),
-    //MOB_HEAL(true),
+
     /** The villager kill. */
     VILLAGER_KILL(true),
     
@@ -192,7 +191,7 @@ public enum PermissionList {
     final boolean baseValue;
     
     /** The Permission type. */
-    PermissionType PermissionType;
+    private PermissionType PermissionType;
 
     /**
      * Instantiates a new permission list.

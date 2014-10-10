@@ -21,14 +21,17 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.event.PlayerContainerAddNoEnterEvent;
 import me.tabinol.factoid.parameters.FlagType;
+import me.tabinol.factoid.parameters.FlagValue;
 import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.parameters.Permission;
 import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
+
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -179,9 +182,15 @@ public class DummyLand {
      * @param pt the pt
      * @return the boolean
      */
-    public Boolean checkPermissionNoInherit(Player player, PermissionType pt) {
+    public boolean checkPermissionNoInherit(Player player, PermissionType pt) {
 
-        return getPermission(player, pt, false);
+        Boolean value = getPermission(player, pt, false);
+        
+        if(value != null) {
+        	return value;
+        } else {
+        	return pt.getDefaultValue();
+        }
     }
 
     /**
@@ -254,20 +263,14 @@ public class DummyLand {
     /**
      * Gets the flags.
      *
-     * @return the flags
+     * @return the flags value or default
      */
     public Collection<LandFlag> getFlags() {
 
         return flags.values();
     }
 
-    /**
-     * Gets the flag and inherit.
-     *
-     * @param ft the ft
-     * @return the flag and inherit
-     */
-    public LandFlag getFlagAndInherit(FlagType ft) {
+    public FlagValue getFlagAndInherit(FlagType ft) {
 
         return getFlagAndInherit(ft, false);
     }
@@ -276,11 +279,17 @@ public class DummyLand {
      * Gets the flag no inherit.
      *
      * @param ft the ft
-     * @return the flag no inherit
+     * @return the flag value or default
      */
-    public LandFlag getFlagNoInherit(FlagType ft) {
+    public FlagValue getFlagNoInherit(FlagType ft) {
 
-        return getFlag(ft, false);
+        FlagValue value = getFlag(ft, false);
+        
+        if(value != null) {
+        	return value;
+        } else {
+        	return ft.getDefaultValue();
+        }
     }
 
     /**
@@ -290,7 +299,7 @@ public class DummyLand {
      * @param onlyInherit the only inherit
      * @return the flag and inherit
      */
-    protected LandFlag getFlagAndInherit(FlagType ft, boolean onlyInherit) {
+    protected FlagValue getFlagAndInherit(FlagType ft, boolean onlyInherit) {
 
         if (this instanceof Land) {
             return ((Land) this).getLandFlagAndInherit(ft, onlyInherit);
@@ -303,16 +312,16 @@ public class DummyLand {
      *
      * @param ft the ft
      * @param onlyInherit the only inherit
-     * @return the flag
+     * @return the flag value
      */
-    protected LandFlag getFlag(FlagType ft, boolean onlyInherit) {
+    protected FlagValue getFlag(FlagType ft, boolean onlyInherit) {
 
         LandFlag flag = flags.get(ft);
         if (flag != null) {
             Factoid.getLog().write("Flag: " + flag.toString());
 
             if ((onlyInherit && flag.isHeritable()) || !onlyInherit) {
-                return flag;
+                return flag.getValue();
             }
         }
 

@@ -17,9 +17,13 @@
  */
 package me.tabinol.factoid.parameters;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.TreeMap;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class Parameters.
  *
@@ -32,6 +36,9 @@ public class Parameters {
     
     /** The flags. */
     private final TreeMap<String, FlagType> flags;
+    
+    /** List of unregistered flags for an update **/
+    protected final List<LandFlag> unRegisteredFlags;
 
     /**
      * Instantiates a new parameters.
@@ -40,13 +47,14 @@ public class Parameters {
 
         permissions = new TreeMap<String, PermissionType>();
         flags = new TreeMap<String, FlagType>();
+        unRegisteredFlags = new ArrayList<LandFlag>();
 
         // Add flags and permissions
         for (PermissionList permissionList : PermissionList.values()) {
             permissionList.setPermissionType(registerPermissionType(permissionList.name(), permissionList.baseValue));
         }
         for (FlagList flagList : FlagList.values()) {
-            flagList.setFlagType(registerFlagType(flagList.name(), flagList.valueType));
+            flagList.setFlagType(registerFlagType(flagList.name(), flagList.baseValue));
         }
     }
 
@@ -71,19 +79,31 @@ public class Parameters {
      * Register flag type.
      *
      * @param flagName the flag name
-     * @param flagValueType the flag value type
+     * @param defaultValue the default value
      * @return the flag type
      */
-    public final FlagType registerFlagType(String flagName, FlagValueType flagValueType) {
+    public final FlagType registerFlagType(String flagName, FlagValue defaultValue) {
 
-        String flagNameUpper = flagName.toUpperCase();
+    	String flagNameUpper = flagName.toUpperCase();
         FlagType flagType = getFlagTypeNoValid(flagNameUpper);
-        flagType.setFlagValueType(flagValueType);
+        flagType.setDefaultValue(defaultValue);
         flagType.setRegistered();
         
+        // Update flag registration (for correct type)
+        Iterator<LandFlag> iFlag = unRegisteredFlags.iterator();
+        while (iFlag.hasNext()) {
+           LandFlag flag = iFlag.next();
+           if(flagType == flag.getFlagType()) {
+        	   String str = flag.getValue().getValueString();
+        	   flag.setValue(FlagValue.getFromString(str, flagType));
+        	   iFlag.remove();
+           }
+        }
+        
         return flagType;
+    	
     }
-
+    
     /**
      * Gets the permission type.
      *
@@ -147,7 +167,7 @@ public class Parameters {
         FlagType ft = flags.get(flagName);
         
         if(ft == null) {
-            ft = new FlagType(flagName, FlagValueType.UNDEFINED);
+            ft = new FlagType(flagName, new String());
             flags.put(flagName, ft);
         }
         

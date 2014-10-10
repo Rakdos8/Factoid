@@ -26,7 +26,6 @@ import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.parameters.FlagList;
 import me.tabinol.factoid.parameters.FlagType;
-import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.selection.region.AreaSelection;
 import me.tabinol.factoid.selection.region.LandSelection;
 import me.tabinol.factoid.selection.region.RegionSelection;
@@ -208,23 +207,24 @@ public class PlayerSelection {
 
         Land land = getLand();
         CuboidArea area = getCuboidArea();
-        LandFlag priceFlag;
+        Double priceFlag;
         FlagType flagType = FlagList.ECO_BLOCK_PRICE.getFlagType();
         
         // Get land price
         if (land == null) {
-            priceFlag = Factoid.getLands().getOutsideArea(area.getWorldName()).getFlagAndInherit(flagType);
+            priceFlag = Factoid.getLands().getOutsideArea(area.getWorldName())
+            		.getFlagAndInherit(flagType).getValueDouble();
                     
         } else {
-            priceFlag = land.getFlagAndInherit(flagType);
+            priceFlag = land.getFlagAndInherit(flagType).getValueDouble();
         }
 
         // Not set, return 0
-        if (priceFlag == null) {
+        if (priceFlag == 0D) {
             return 0;
         }
 
-        return priceFlag.getValueDouble() * area.getTotalBlock();
+        return priceFlag * area.getTotalBlock();
     }
 
     /**
@@ -240,7 +240,7 @@ public class PlayerSelection {
 
         Land land = getLand();
         CuboidArea area = getCuboidArea();
-        LandFlag priceFlag;
+        double priceFlag;
         FlagType flagType = FlagList.ECO_BLOCK_PRICE.getFlagType();
 
         if(land == null) {
@@ -249,20 +249,21 @@ public class PlayerSelection {
 
         // The area is from parent ask parent
         if (land.getParent() == null) {
-            priceFlag = Factoid.getLands().getOutsideArea(area.getWorldName()).getFlagAndInherit(flagType);
+            priceFlag = Factoid.getLands().getOutsideArea(area.getWorldName())
+            		.getFlagAndInherit(flagType).getValueDouble();
         } else {
-            priceFlag = land.getParent().getFlagAndInherit(flagType);
+            priceFlag = land.getParent().getFlagAndInherit(flagType).getValueDouble();
         }
 
         // Not set, return 0
-        if (priceFlag == null) {
+        if (priceFlag == 0D) {
             return 0;
         }
 
         // get total areas cube
         long nbCube = land.getNbBlocksOutside(area);
 
-        return priceFlag.getValueDouble() * nbCube;
+        return priceFlag * nbCube;
     }
 
     /**

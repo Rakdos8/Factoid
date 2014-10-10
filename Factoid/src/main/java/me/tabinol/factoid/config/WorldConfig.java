@@ -20,13 +20,17 @@ package me.tabinol.factoid.config;
 import java.io.File;
 import java.util.Set;
 import java.util.TreeMap;
+
 import me.tabinol.factoid.Factoid;
 import static me.tabinol.factoid.config.Config.GLOBAL;
 import me.tabinol.factoid.lands.DummyLand;
+import me.tabinol.factoid.parameters.FlagType;
+import me.tabinol.factoid.parameters.FlagValue;
 import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.parameters.Permission;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -155,8 +159,10 @@ public class WorldConfig {
         if (csFlags != null) {
             for (String flag : csFlags.getKeys(false)) {
                 Factoid.getLog().write("Flag: " + flag);
-                dl.addFlag(new LandFlag(Factoid.getParameters().getFlagTypeNoValid(flag.toUpperCase()),
-                        fc.getString(flags + "." + flag + ".Value"), fc.getBoolean(flags + "." + flag + ".Heritable")));
+                FlagType ft = Factoid.getParameters().getFlagTypeNoValid(flag.toUpperCase());
+                dl.addFlag(new LandFlag(ft,
+                        FlagValue.getFromString(fc.getString(flags + "." + flag + ".Value"), ft), 
+                        fc.getBoolean(flags + "." + flag + ".Heritable")));
             }
         }
 

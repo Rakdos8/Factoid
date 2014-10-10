@@ -17,9 +17,8 @@
  */
 package me.tabinol.factoid.parameters;
 
-import java.util.ArrayList;
+import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.utilities.StringChanges;
-import org.bukkit.ChatColor;
 
 
 /**
@@ -30,103 +29,32 @@ public class LandFlag {
     /** The flag type. */
     private FlagType flagType;
     
-    /** The value boolean. */
-    private boolean valueBoolean = false;
+    /** The value. */
+    private FlagValue value = null;
     
-    /** The value double. */
-    private double valueDouble = 0;
-    
-    /** The value string. */
-    private String valueString = null;
-    
-    /** The value string list. */
-    private String[] valueStringList = null;
-    
-    /** The heritable. */
+    /** The inheritable. */
     private boolean heritable;
     
     /**
      * Instantiates a new land flag.
      *
      * @param flagType the flag type
-     * @param valueBoolean the value boolean
-     * @param heritable the heritable
+     * @param value the value
+     * @param heritable the inheritable
      */
-    public LandFlag(final FlagType flagType, final boolean valueBoolean, final boolean heritable) {
+    public LandFlag(final FlagType flagType, final Object value, final boolean heritable) {
         
         this.flagType = flagType;
-        this.valueBoolean = valueBoolean;
-        this.heritable = heritable;
-    }
-
-    /**
-     * Instantiates a new land flag.
-     *
-     * @param flagType the flag type
-     * @param valueDouble the value double
-     * @param heritable the heritable
-     */
-    public LandFlag(final FlagType flagType, final double valueDouble, final boolean heritable) {
-        
-        this.flagType = flagType;
-        this.valueDouble = valueDouble;
-        this.heritable = heritable;
-    }
-
-    /**
-     * Instantiates a new land flag.
-     *
-     * @param flagType the flag type
-     * @param valueString the value string
-     * @param heritable the heritable
-     */
-    public LandFlag(final FlagType flagType, final String valueString, final boolean heritable) {
-        
-        this.flagType = flagType;
-        
-        if(flagType.getFlagValueType() == FlagValueType.BOOLEAN
-                || flagType.getFlagValueType() == FlagValueType.UNDEFINED) {
-            this.valueBoolean = Boolean.parseBoolean(valueString);
-        }
-        
-        if(flagType.getFlagValueType() == FlagValueType.DOUBLE
-                || flagType.getFlagValueType() == FlagValueType.UNDEFINED) {
-            try {
-            this.valueDouble = Double.parseDouble(valueString);
-            } catch(NumberFormatException ex) {
-                // null
-            }
-        }
-        
-        if(flagType.getFlagValueType() == FlagValueType.STRING
-                || flagType.getFlagValueType() == FlagValueType.UNDEFINED) {
-            this.valueString = StringChanges.fromQuote(valueString);
-        }
-        
-        if(flagType.getFlagValueType() == FlagValueType.STRING_LIST
-                || flagType.getFlagValueType() == FlagValueType.UNDEFINED) {
-            ArrayList<String> result = new ArrayList<String>();
-            String[] strs = StringChanges.splitKeepQuote(valueString, ";");
-            for(String str : strs) {
-                result.add(StringChanges.fromQuote(str));
-            }
-            this.valueStringList = result.toArray(new String[0]);
+        if(value instanceof FlagValue) {
+        	this.value = (FlagValue) value;
+        } else {
+        	this.value = new FlagValue(value);
         }
         this.heritable = heritable;
-    }
-
-    /**
-     * Instantiates a new land flag.
-     *
-     * @param flagType the flag type
-     * @param valueStringList the value string list
-     * @param heritable the heritable
-     */
-    public LandFlag(final FlagType flagType, final String[] valueStringList, final boolean heritable) {
         
-        this.flagType = flagType;
-        this.valueStringList = valueStringList;
-        this.heritable = heritable;
+        if(!flagType.isRegistered()) {
+        	Factoid.getParameters().unRegisteredFlags.add(this);
+        }
     }
 
     /**
@@ -151,74 +79,23 @@ public class LandFlag {
     }
     
     /**
-     * Gets the value boolean.
+     * Gets the value.
      *
-     * @return the value boolean
+     * @return the value
      */
-    public final boolean getValueBoolean() {
-        
-        return valueBoolean;
-    }
-
-    /**
-     * Gets the value double.
-     *
-     * @return the value double
-     */
-    public final double getValueDouble() {
-        
-        return valueDouble;
-    }
-
-    /**
-     * Gets the value string.
-     *
-     * @return the value string
-     */
-    public final String getValueString() {
-        
-        return valueString;
+    public final FlagValue getValue() {
+    	
+    	return value;
     }
     
     /**
-     * Gets the value print.
+     * Sets the value.
      *
-     * @return the value print
+     * @param value the new value
      */
-    public final String getValuePrint() {
-
-        if(flagType.getFlagValueType() == FlagValueType.BOOLEAN) {
-            if(valueBoolean) {
-                return "" + ChatColor.GREEN + valueBoolean;
-            } else {
-                return "" + ChatColor.RED + valueBoolean;
-            }
-        }
-        if(flagType.getFlagValueType() == FlagValueType.STRING) {
-            return valueString;
-        }
-        if(flagType.getFlagValueType() == FlagValueType.STRING_LIST) {
-            StringBuilder sb = new StringBuilder();
-            for(String st : valueStringList) {
-                if(sb.length() != 0) {
-                    sb.append("; ");
-                }
-                sb.append(StringChanges.toQuote(st));
-            }
-            return sb.toString();
-        }
-        
-        return null;
-    }
-    
-    /**
-     * Gets the value string list.
-     *
-     * @return the value string list
-     */
-    public final String[] getValueStringList() {
-        
-        return valueStringList;
+    protected void setValue(FlagValue value) {
+    	
+    	this.value = value;
     }
     
     /**
@@ -237,23 +114,45 @@ public class LandFlag {
     @Override
     public String toString() {
         
-        if(flagType.getFlagValueType() == FlagValueType.BOOLEAN) {
-            return flagType.toString() + ":" + valueBoolean + ":" + heritable;
+        if(!flagType.isRegistered()) {
+        	return flagType.toString() + ":" + value.getValue() + ":" + heritable;
         }
-        if(flagType.getFlagValueType() == FlagValueType.DOUBLE) {
-            return flagType.toString() + ":" + valueDouble + ":" + heritable;
+    	
+    	if(value.getValue() instanceof Boolean) {
+            return flagType.toString() + ":" + value.getValueBoolean() + ":" + heritable;
         }
-        if(flagType.getFlagValueType() == FlagValueType.STRING) {
-            return flagType.toString() + ":" + StringChanges.toQuote(valueString) + ":" + heritable;
+        
+        if(value.getValue() instanceof Double) {
+            return flagType.toString() + ":" + value.getValueDouble() + ":" + heritable;
         }
-        if(flagType.getFlagValueType() == FlagValueType.STRING_LIST) {
+        
+        if(value.getValue() instanceof String) {
+            return flagType.toString() + ":" + StringChanges.toQuote(value.getValueString()) + ":" + heritable;
+        }
+        
+        if(value.getValue() instanceof String[]) {
             StringBuilder sb = new StringBuilder();
-            for(String st : valueStringList) {
+            for(String st : value.getValueStringList()) {
                 sb.append(StringChanges.toQuote(st)).append(";");
             }
             return flagType.toString() + ":" + sb.toString() + ":" + heritable;
         }
         
         return null;
+    }
+    
+    /**
+     * Gets the from string.
+     *
+     * @param str the str
+     * @return the from string
+     */
+    public static LandFlag getFromString(String str) {
+    	
+    	String[] multiStr = StringChanges.splitKeepQuote(str, ":");
+    	FlagType ft = Factoid.getParameters().getFlagTypeNoValid(multiStr[0]);
+    	Object value = FlagValue.getFromString(multiStr[1], ft);
+    	
+    	return new LandFlag(ft, value, Boolean.parseBoolean(multiStr[2]));
     }
 }

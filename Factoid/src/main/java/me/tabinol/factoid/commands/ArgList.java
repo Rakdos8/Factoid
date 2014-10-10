@@ -19,17 +19,16 @@ package me.tabinol.factoid.commands;
 
 // Work with command arguments
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import java.util.ArrayList;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.parameters.FlagType;
-import me.tabinol.factoid.parameters.FlagValueType;
+import me.tabinol.factoid.parameters.FlagValue;
 import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.parameters.Permission;
 import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerType;
-import me.tabinol.factoid.utilities.StringChanges;
 import org.bukkit.command.CommandSender;
 
 
@@ -192,28 +191,14 @@ public class ArgList {
         if (isLast()) {
             throw new FactoidCommandException("Flag error", player, "GENERAL.MISSINGINFO");
         }
+        
+        FlagValue flagValue = FlagValue.getFromString(getNextToEnd(), flagType);
 
-        LandFlag landFlag;
-
-        if (flagType.getFlagValueType() == FlagValueType.BOOLEAN) {
-            boolean BooleanValue = Boolean.parseBoolean(getNext());
-            landFlag = new LandFlag(flagType, BooleanValue, true);
-        } else if (flagType.getFlagValueType() == FlagValueType.STRING) {
-            String StringValue = getNextToEnd();
-            landFlag = new LandFlag(flagType, StringValue, true);
-        } else if (flagType.getFlagValueType() == FlagValueType.STRING_LIST) {
-            ArrayList<String> result = new ArrayList<String>();
-            String[] strs = StringChanges.splitKeepQuote(getNext(), ";");
-            for (String str : strs) {
-                result.add(StringChanges.fromQuote(str));
-            }
-            String[] StringArrayValue = result.toArray(new String[0]);
-            landFlag = new LandFlag(flagType, StringArrayValue, true);
+        if(flagValue != null) {
+        	return new LandFlag(flagType, flagValue, true);
         } else {
-            landFlag = null;
+        	return null;
         }
-
-        return landFlag;
     }
 
     /**

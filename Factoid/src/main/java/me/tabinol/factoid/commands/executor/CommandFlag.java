@@ -71,10 +71,17 @@ public class CommandFlag extends CommandExec {
             // Permission check is on getFlagFromArg
             
             LandFlag landFlag = entity.argList.getFlagFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.player));
+            
+            if(!landFlag.getFlagType().isRegistered()) {
+            	throw new FactoidCommandException("Flag not registered", entity.player, "COMMAND.FLAGS.FLAGNULL");
+            }
+            
             land.addFlag(landFlag);
-            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.ISDONE", landFlag.getFlagType().toString(), 
-                    landFlag.getValuePrint() + ChatColor.YELLOW));
-            Factoid.getLog().write("Flag set: " + landFlag.getFlagType().toString() + ", value: " + landFlag.getValueString());
+            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + 
+            Factoid.getLanguage().getMessage("COMMAND.FLAGS.ISDONE", landFlag.getFlagType().toString(), 
+                    landFlag.getValue().getValuePrint() + ChatColor.YELLOW));
+            Factoid.getLog().write("Flag set: " + landFlag.getFlagType().toString() + ", value: " + 
+                    landFlag.getValue().getValueString());
 
         } else if (curArg.equalsIgnoreCase("unset")) {
         
@@ -93,7 +100,7 @@ public class CommandFlag extends CommandExec {
                     if (stList.length() != 0) {
                         stList.append(" ");
                     }
-                    stList.append(flag.getFlagType().getPrint()).append(":").append(flag.getValuePrint());
+                    stList.append(flag.getFlagType().getPrint()).append(":").append(flag.getValue().getValuePrint());
                 }
                 stList.append(Config.NEWLINE);
             } else {

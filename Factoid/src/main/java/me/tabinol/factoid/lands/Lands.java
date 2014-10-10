@@ -37,7 +37,7 @@ import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import me.tabinol.factoid.lands.collisions.Collisions.LandError;
 import me.tabinol.factoid.parameters.FlagType;
-import me.tabinol.factoid.parameters.LandFlag;
+import me.tabinol.factoid.parameters.FlagValue;
 import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
@@ -543,11 +543,11 @@ public class Lands {
      * @param worldName the world name
      * @param ft the ft
      * @param onlyInherit the only inherit
-     * @return the flag in world
+     * @return the flag value in world
      */
-    protected LandFlag getFlagInWorld(String worldName, FlagType ft, boolean onlyInherit) {
+    protected FlagValue getFlagInWorld(String worldName, FlagType ft, boolean onlyInherit) {
 
-        LandFlag result;
+        FlagValue result;
         DummyLand dl;
 
         if ((dl = outsideArea.get(worldName.toLowerCase())) != null && (result = dl.getFlag(ft, onlyInherit)) != null) {
@@ -557,7 +557,7 @@ public class Lands {
             return result;
         }
 
-        return null;
+        return ft.getDefaultValue();
     }
 
     /**

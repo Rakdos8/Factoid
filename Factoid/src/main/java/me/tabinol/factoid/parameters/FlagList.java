@@ -26,85 +26,84 @@ package me.tabinol.factoid.parameters;
 public enum FlagList {
     
     /** The undefined. */
-    UNDEFINED(FlagValueType.UNDEFINED),
+    UNDEFINED(new String()),
     
     /** The firespread. */
-    FIRESPREAD(FlagValueType.BOOLEAN),
+    FIRESPREAD(new Boolean(true)),
     
     /** The fire. */
-    FIRE(FlagValueType.BOOLEAN),
+    FIRE(new Boolean(true)),
     
     /** The explosion. */
-    EXPLOSION(FlagValueType.BOOLEAN),
+    EXPLOSION(new Boolean(true)),
     
     /** The creeper explosion. */
-    CREEPER_EXPLOSION(FlagValueType.BOOLEAN),
+    CREEPER_EXPLOSION(new Boolean(true)),
     
     /** The tnt explosion. */
-    TNT_EXPLOSION(FlagValueType.BOOLEAN),
+    TNT_EXPLOSION(new Boolean(true)),
     
     /** The creeper damage. */
-    CREEPER_DAMAGE(FlagValueType.BOOLEAN),
+    CREEPER_DAMAGE(new Boolean(true)),
     
     /** The enderman damage. */
-    ENDERMAN_DAMAGE(FlagValueType.BOOLEAN),
+    ENDERMAN_DAMAGE(new Boolean(true)),
     
     /** The wither damage. */
-    WITHER_DAMAGE(FlagValueType.BOOLEAN),
+    WITHER_DAMAGE(new Boolean(true)),
     
     /** The ghast damage. */
-    GHAST_DAMAGE(FlagValueType.BOOLEAN),
+    GHAST_DAMAGE(new Boolean(true)),
     
     /** The enderdragon damage. */
-    ENDERDRAGON_DAMAGE(FlagValueType.BOOLEAN),
+    ENDERDRAGON_DAMAGE(new Boolean(true)),
     
     /** The tnt damage. */
-    TNT_DAMAGE(FlagValueType.BOOLEAN),
+    TNT_DAMAGE(new Boolean(true)),
     
     /** The mob spawn. */
-    MOB_SPAWN(FlagValueType.BOOLEAN),
+    MOB_SPAWN(new Boolean(true)),
     
     /** The animal spawn. */
-    ANIMAL_SPAWN(FlagValueType.BOOLEAN),
-    // ANIMAL_CUT("ANIMAL_CUT", FlagValueType.BOOLEAN),
+    ANIMAL_SPAWN(new Boolean(true)),
+
     /** The full pvp. */
-    FULL_PVP(FlagValueType.BOOLEAN),
+    FULL_PVP(new Boolean(true)),
     
     /** The faction pvp. */
-    FACTION_PVP(FlagValueType.BOOLEAN),
-    //EXCLUDE_BLOCKS("EXCLUDE_BLOCKS", FlagValueType.STRING_LIST),
-    //EXCLUDE_ENTITIES("EXCLUDE_ENTITIES", FlagValueType.STRING_LIST),
+    FACTION_PVP(new Boolean(true)),
+
     /** The message join. */
-    MESSAGE_JOIN(FlagValueType.STRING),
+    MESSAGE_JOIN(new String()),
     
     /** The message quit. */
-    MESSAGE_QUIT(FlagValueType.STRING),
+    MESSAGE_QUIT(new String()),
     
     /** The eco block price. */
-    ECO_BLOCK_PRICE(FlagValueType.DOUBLE),
+    ECO_BLOCK_PRICE(new Double(0)),
     
     /** The exclude commands. */
-    EXCLUDE_COMMANDS(FlagValueType.STRING_LIST),
+    EXCLUDE_COMMANDS(new String[] {}),
     
-    /** The spawn and teleport point */
-    SPAWN(FlagValueType.STRING);
+    /**  The spawn and teleport point. */
+    SPAWN(new String(""));
 
-    /** The value type. */
-    FlagValueType valueType;
+    /** The base value. */
+    final FlagValue baseValue;
     
     /** The flag type. */
-    FlagType flagType;
+    private FlagType flagType;
     
     /**
      * Instantiates a new flag list.
      *
-     * @param valueType the value type
+     * @param baseValue the base value
      */
-    private FlagList(final FlagValueType valueType) {
+    private FlagList(Object baseValue) {
 
-        this.valueType = valueType;
+        this.baseValue = new FlagValue(baseValue);
     }
-    
+
     /**
      * Sets the flag type.
      *

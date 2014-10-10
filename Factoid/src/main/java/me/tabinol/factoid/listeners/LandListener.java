@@ -18,6 +18,7 @@
 package me.tabinol.factoid.listeners;
 
 import java.util.ArrayList;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.players.PlayerStaticConfig;
 import me.tabinol.factoid.event.LandEvent;
@@ -27,11 +28,11 @@ import me.tabinol.factoid.event.PlayerLandChangeEvent;
 import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.parameters.FlagList;
-import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -52,7 +53,7 @@ import org.bukkit.scheduler.BukkitRunnable;
  *
  * @see LandEvent
  */
-public class LandListener implements Listener {
+public class LandListener extends CommonListener implements Listener {
 
     /** The player heal. */
     private final ArrayList<Player> playerHeal;
@@ -151,7 +152,6 @@ public class LandListener implements Listener {
         Land lastLand = event.getLastLand();
         Land land = event.getLand();
         DummyLand dummyLand;
-        LandFlag flag;
         String value;
 
         if (lastLand != null) {
@@ -162,8 +162,8 @@ public class LandListener implements Listener {
                 notifyPlayers(lastLand, "ACTION.PLAYEREXIT", player);
 
                 // Message quit
-                if ((flag = lastLand.getFlagNoInherit(FlagList.MESSAGE_QUIT.getFlagType())) != null
-                        && (value = flag.getValueString()) != null) {
+                value = lastLand.getFlagNoInherit(FlagList.MESSAGE_QUIT.getFlagType()).getValueString();
+                if (!value.isEmpty()) {
                     player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + lastLand.getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
                 }
             }
@@ -208,8 +208,8 @@ public class LandListener implements Listener {
                     landTest = landTest.getParent();
                 }
                 // Message join
-                if ((flag = land.getFlagNoInherit(FlagList.MESSAGE_JOIN.getFlagType())) != null
-                        && (value = flag.getValueString()) != null) {
+                value = land.getFlagNoInherit(FlagList.MESSAGE_JOIN.getFlagType()).getValueString();
+                if (!value.isEmpty()) {
                     player.sendMessage(ChatColor.GRAY + "[Factoid] (" + ChatColor.GREEN + land.getName() + ChatColor.GRAY + "): " + ChatColor.WHITE + value);
                 }
             }

@@ -18,43 +18,45 @@
 package me.tabinol.factoid.parameters;
 
 
+
+// TODO: Auto-generated Javadoc
 /**
  * The Class FlagType.
  */
 public class FlagType extends ParameterType {
 
-    /** The value type. */
-    private FlagValueType valueType;
+    /** The default value. */
+    private FlagValue defaultValue;
 
     /**
      * Instantiates a new flag type.
      *
      * @param flagName the flag name
-     * @param valueType the value type
+     * @param defaultValue the default value
      */
-    FlagType(String flagName, FlagValueType valueType) {
+    FlagType(String flagName, Object defaultValue) {
 
         super(flagName);
-        this.valueType = valueType;
+        this.defaultValue = new FlagValue(defaultValue);
     }
     
     /**
-     * Sets the flag value type.
+     * Sets the default value.
      *
-     * @param valueType the new flag value type
+     * @param defaultValue the new default value
      */
-    void setFlagValueType(FlagValueType valueType) {
+    public void setDefaultValue(FlagValue defaultValue) {
         
-        this.valueType = valueType;
+        this.defaultValue = defaultValue;
     }
-    
+
     /**
-     * Gets the flag value type.
+     * Gets the default value.
      *
-     * @return the flag value type
+     * @return the default value
      */
-    public final FlagValueType getFlagValueType() {
+    public FlagValue getDefaultValue() {
         
-        return valueType;
+        return defaultValue;
     }
 }

@@ -22,7 +22,7 @@ import org.bukkit.Location;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.parameters.FlagList;
-import me.tabinol.factoid.parameters.LandFlag;
+import me.tabinol.factoid.parameters.FlagValue;
 import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoid.utilities.StringChanges;
 
@@ -61,13 +61,13 @@ public class CommandTp extends CommandExec {
         checkPermission(true, false, PermissionList.TP.getPermissionType(), null);
 
         // Try to get Location
-        LandFlag flag = land.getFlagAndInherit(FlagList.SPAWN.getFlagType());
+        FlagValue value = land.getFlagAndInherit(FlagList.SPAWN.getFlagType());
         
-        if(flag == null) {
+        if(value.getValueString().isEmpty()) {
         	throw new FactoidCommandException("On land tp player", entity.player, "COMMAND.TP.NOSPAWN");
         }
         
-        Location location = StringChanges.stringToLocation(flag.getValueString());
+        Location location = StringChanges.stringToLocation(value.getValueString());
         
         if(location == null) {
         	throw new FactoidCommandException("On land tp player", entity.player, "COMMAND.TP.INVALID");

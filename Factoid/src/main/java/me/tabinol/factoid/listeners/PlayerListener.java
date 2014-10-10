@@ -32,13 +32,10 @@ import me.tabinol.factoid.config.players.PlayerConfEntry;
 import me.tabinol.factoid.config.players.PlayerStaticConfig;
 import me.tabinol.factoid.event.PlayerLandChangeEvent;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.parameters.FlagList;
-import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.parameters.PermissionList;
-import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.selection.region.PlayerMoveListen;
 import me.tabinol.factoid.selection.region.RegionSelection;
 import me.tabinol.factoid.utilities.StringChanges;
@@ -53,7 +50,6 @@ import org.bukkit.entity.Hanging;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Tameable;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -98,7 +94,7 @@ import org.bukkit.plugin.PluginManager;
  * 
  * @see PlayerEvent
  */
-public class PlayerListener implements Listener {
+public class PlayerListener extends CommonListener implements Listener {
 
 	/** The conf. */
 	private Config conf;
@@ -114,7 +110,7 @@ public class PlayerListener implements Listener {
 
 	/** The pm. */
 	private PluginManager pm;
-
+	
 	/**
 	 * Instantiates a new player listener.
 	 */
@@ -684,7 +680,6 @@ public class PlayerListener implements Listener {
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 
 		PlayerConfEntry entry;
-		PlayerConfEntry entryVictime;
 
 		// Check if a player break a ItemFrame
 		if (event.getDamager() instanceof Player
@@ -705,28 +700,16 @@ public class PlayerListener implements Listener {
 				event.setCancelled(true);
 			}
 		} else {
-			Player player = null;
-			Projectile damagerProjectile;
+			Player player = getSourcePlayer(event.getDamager());
 
-			// Check if the damager is a player
-			if (event.getDamager() instanceof Player) {
-				player = (Player) event.getDamager();
-			} else if (event.getDamager() instanceof Projectile
-					&& event.getDamager().getType() != EntityType.EGG
-					&& event.getDamager().getType() != EntityType.SNOWBALL) {
-				damagerProjectile = (Projectile) event.getDamager();
-				if (damagerProjectile.getShooter() instanceof Player) {
-					player = (Player) damagerProjectile.getShooter();
-				}
-			}
-
+			// Check for non-player kill
 			if (player != null) {
 				DummyLand land = Factoid.getLands().getLandOrOutsideArea(
 						event.getEntity().getLocation());
 				Entity entity = event.getEntity();
 				EntityType et = entity.getType();
 
-				// kill en entity (none player)
+				// kill an entity (none player)
 				if ((entry = playerConf.get(player)) != null // Citizens
 																	// bugfix
 						&& !entry.isAdminMod()
@@ -760,37 +743,7 @@ public class PlayerListener implements Listener {
 
 					messagePermission(player);
 					event.setCancelled(true);
-
-					// For PVP
-				} else if (entity instanceof Player
-						&& (entryVictime = playerConf.get((Player) entity)) != null
-						&& (entry = playerConf.get(player)) != null) { // Citizens
-																		// bugfix
-
-					LandFlag flag;
-					Faction faction = Factoid.getFactions().getPlayerFaction(
-							entry.getPlayerContainer());
-					Faction factionVictime = Factoid
-							.getFactions()
-							.getPlayerFaction(entryVictime.getPlayerContainer());
-
-					if (faction != null
-							&& faction == factionVictime
-							&& (flag = land
-									.getFlagAndInherit(FlagList.FACTION_PVP
-											.getFlagType())) != null
-							&& flag.getValueBoolean() == false) {
-						// player.sendMessage(ChatColor.GRAY + "[Factoid] " +
-						// Factoid.getLanguage().getMessage("ACTION.NOFACTIONPVP"));
-						event.setCancelled(true);
-					} else if ((flag = land.getFlagAndInherit(FlagList.FULL_PVP
-							.getFlagType())) != null
-							&& flag.getValueBoolean() == false) {
-						// player.sendMessage(ChatColor.GRAY + "[Factoid] " +
-						// Factoid.getLanguage().getMessage("ACTION.NOPVP"));
-						event.setCancelled(true);
-					}
-				}
+				} 
 			}
 		}
 	}
@@ -838,8 +791,8 @@ public class PlayerListener implements Listener {
 		if (entry != null
 				&& land.checkPermissionAndInherit(player,
 						PermissionList.TP_DEATH.getPermissionType())
-				&& (strLoc = land.getFlagAndInherit(
-						FlagList.SPAWN.getFlagType()).getValueString()) != null
+				&& !(strLoc = land.getFlagAndInherit(
+						FlagList.SPAWN.getFlagType()).getValueString()).isEmpty()
 				&& (loc = StringChanges.stringToLocation(strLoc)) != null) {
 			event.setRespawnLocation(loc);
 		}
@@ -871,7 +824,7 @@ public class PlayerListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockIgnite(BlockIgniteEvent event) {
 
-		if (event.getPlayer() != null && event.getPlayer() != null
+		if (event.getPlayer() != null
 				&& !playerConf.get(event.getPlayer()).isAdminMod()) {
 
 			DummyLand land = Factoid.getLands().getLandOrOutsideArea(
@@ -883,6 +836,7 @@ public class PlayerListener implements Listener {
 							PermissionList.FIRE.getPermissionType()))) {
 				messagePermission(event.getPlayer());
 				event.setCancelled(true);
+				return;
 			}
 		}
 	}
@@ -977,15 +931,13 @@ public class PlayerListener implements Listener {
 
 			DummyLand land = Factoid.getLands().getLandOrOutsideArea(
 					player.getLocation());
-			LandFlag flagAndInherit = land
-					.getFlagAndInherit(FlagList.EXCLUDE_COMMANDS.getFlagType());
+			String[] excludedCommands = land
+					.getFlagAndInherit(FlagList.EXCLUDE_COMMANDS.getFlagType()).getValueStringList();
 
-			if (flagAndInherit != null
-					&& flagAndInherit.getValueStringList().length > 0) {
-				String commandTyped = event.getMessage().substring(1)
-						.split(" ")[0];
+			if (excludedCommands.length > 0) {
+				String commandTyped = event.getMessage().substring(1).split(" ")[0];
 
-				for (String commandTest : flagAndInherit.getValueStringList()) {
+				for (String commandTest : excludedCommands) {
 
 					if (commandTest.equalsIgnoreCase(commandTyped)) {
 						event.setCancelled(true);
@@ -998,36 +950,6 @@ public class PlayerListener implements Listener {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Check permission.
-	 * 
-	 * @param land
-	 *            the land
-	 * @param player
-	 *            the player
-	 * @param pt
-	 *            the pt
-	 * @return true, if successful
-	 */
-	private boolean checkPermission(DummyLand land, Player player,
-			PermissionType pt) {
-
-		return land.checkPermissionAndInherit(player, pt) == pt
-				.getDefaultValue();
-	}
-
-	/**
-	 * Message permission.
-	 * 
-	 * @param player
-	 *            the player
-	 */
-	private void messagePermission(Player player) {
-
-		player.sendMessage(ChatColor.GRAY + "[Factoid] "
-				+ Factoid.getLanguage().getMessage("GENERAL.MISSINGPERMISSION"));
 	}
 
 	/**

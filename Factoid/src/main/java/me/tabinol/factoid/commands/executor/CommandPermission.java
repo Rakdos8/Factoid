@@ -63,7 +63,8 @@ public class CommandPermission extends CommandThreadExec {
         
         if (fonction.equalsIgnoreCase("set")) {
 
-            pc = entity.argList.getPlayerContainerFromArg(land, null);
+        	pc = entity.argList.getPlayerContainerFromArg(land, null);
+        	
             Factoid.getPlayersCache().getUUIDWithNames(this, pc);
 
         } else if (fonction.equalsIgnoreCase("unset")) {
@@ -104,6 +105,11 @@ public class CommandPermission extends CommandThreadExec {
         if (fonction.equalsIgnoreCase("set")) {
 
             Permission perm = entity.argList.getPermissionFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.player));
+
+            if(!perm.getPermType().isRegistered()) {
+            	throw new FactoidCommandException("Permission not registered", entity.player, "COMMAND.PERMISSIONTYPE.TYPENULL");
+            }
+            
             if (perm.getPermType() == PermissionList.LAND_ENTER.getPermissionType()
                     && perm.getValue() != perm.getPermType().getDefaultValue()
                     && land.isLocationInside(land.getWorld().getSpawnLocation())) {

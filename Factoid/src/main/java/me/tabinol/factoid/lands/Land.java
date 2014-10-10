@@ -32,6 +32,7 @@ import me.tabinol.factoid.event.PlayerContainerLandBanEvent;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.parameters.FlagType;
+import me.tabinol.factoid.parameters.FlagValue;
 import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.parameters.Permission;
 import me.tabinol.factoid.parameters.PermissionType;
@@ -825,14 +826,14 @@ public class Land extends DummyLand {
      *
      * @param ft the ft
      * @param onlyInherit the only inherit
-     * @return the land flag and inherit
+     * @return the land flag value
      */
-    protected LandFlag getLandFlagAndInherit(FlagType ft, boolean onlyInherit) {
+    protected FlagValue getLandFlagAndInherit(FlagType ft, boolean onlyInherit) {
 
-        LandFlag flag;
+        FlagValue flagValue;
 
-        if ((flag = getFlag(ft, onlyInherit)) != null) {
-            return flag;
+        if ((flagValue = getFlag(ft, onlyInherit)) != null) {
+            return flagValue;
         } else if (parent != null) {
             return parent.getFlagAndInherit(ft, true);
         }

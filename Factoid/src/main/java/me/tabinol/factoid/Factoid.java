@@ -28,6 +28,7 @@ import me.tabinol.factoid.lands.Lands;
 import me.tabinol.factoid.lands.approve.ApproveNotif;
 import me.tabinol.factoid.listeners.LandListener;
 import me.tabinol.factoid.listeners.PlayerListener;
+import me.tabinol.factoid.listeners.PvpListener;
 import me.tabinol.factoid.listeners.WorldListener;
 import me.tabinol.factoid.parameters.Parameters;
 import me.tabinol.factoid.playerscache.PlayersCache;
@@ -54,6 +55,9 @@ public class Factoid extends JavaPlugin {
     /** The player listener. */
     private PlayerListener playerListener;
     
+    /** The player listener. */
+    private PvpListener pvpListener;
+
     /** The world listener. */
     private WorldListener worldListener;
     
@@ -140,6 +144,7 @@ public class Factoid extends JavaPlugin {
         storageThread.loadAllAndStart();
         worldListener = new WorldListener();
         playerListener = new PlayerListener();
+        pvpListener = new PvpListener();
         landListener = new LandListener();
         CommandListener = new OnCommand();
         Scoreboard = new ScoreBoard();
@@ -151,6 +156,7 @@ public class Factoid extends JavaPlugin {
         playersCache.start();
         getServer().getPluginManager().registerEvents(worldListener, this);
         getServer().getPluginManager().registerEvents(playerListener, this);
+        getServer().getPluginManager().registerEvents(pvpListener, this);
         getServer().getPluginManager().registerEvents(landListener, this);
         getCommand("factoid").setExecutor(CommandListener);
         log.write(Factoid.getLanguage().getMessage("ENABLE"));

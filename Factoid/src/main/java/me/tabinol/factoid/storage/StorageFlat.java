@@ -39,7 +39,6 @@ import me.tabinol.factoid.exceptions.FileLoadException;
 import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.Land;
-import me.tabinol.factoid.parameters.FlagType;
 import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.parameters.Permission;
 import me.tabinol.factoid.parameters.PermissionType;
@@ -326,9 +325,7 @@ public class StorageFlat extends Storage implements StorageInt {
 
             //Create flags
             while ((str = cf.getNextString()) != null) {
-                String[] multiStr = StringChanges.splitKeepQuote(str, ":");
-                FlagType ft = Factoid.getParameters().getFlagTypeNoValid(multiStr[0]);
-                flags.add(new LandFlag(ft, multiStr[1], Boolean.parseBoolean(multiStr[2])));
+                flags.add(LandFlag.getFromString(str));
             }
             cf.readParam();
 
