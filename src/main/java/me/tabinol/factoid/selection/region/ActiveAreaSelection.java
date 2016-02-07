@@ -19,6 +19,8 @@ package me.tabinol.factoid.selection.region;
 
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.areas.CuboidArea;
+import me.tabinol.factoidapi.lands.areas.ICuboidArea;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -45,7 +47,7 @@ public class ActiveAreaSelection extends AreaSelection implements PlayerMoveList
      * @param player the player
      * @param area the area
      */
-    public ActiveAreaSelection(Player player, CuboidArea area) {
+    public ActiveAreaSelection(Player player, ICuboidArea area) {
 
         super(player);
         this.area = area;
@@ -60,11 +62,11 @@ public class ActiveAreaSelection extends AreaSelection implements PlayerMoveList
         isCollision = false;
 
         Location loc = player.getLocation();
-        int landXr = Factoid.getConf().getDefaultXSize() / 2;
-        int landZr = Factoid.getConf().getDefaultZSize() / 2;
+        int landXr = Factoid.getThisPlugin().iConf().getDefaultXSize() / 2;
+        int landZr = Factoid.getThisPlugin().iConf().getDefaultZSize() / 2;
         area = new CuboidArea(loc.getWorld().getName(),
-                loc.getBlockX() - landXr, Factoid.getConf().getDefaultBottom(), loc.getBlockZ() - landZr,
-                loc.getBlockX() + landXr, Factoid.getConf().getDefaultTop(), loc.getBlockZ() + landZr);
+                loc.getBlockX() - landXr, Factoid.getThisPlugin().iConf().getDefaultBottom(), loc.getBlockZ() - landZr,
+                loc.getBlockX() + landXr, Factoid.getThisPlugin().iConf().getDefaultTop(), loc.getBlockZ() + landZr);
 
         makeVisualSelection();
     }

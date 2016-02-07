@@ -17,13 +17,20 @@
  */
 package me.tabinol.factoid.config.players;
 
+import me.tabinol.factoid.config.chat.Chat;
+import me.tabinol.factoid.config.chat.ChatEssentials;
+import me.tabinol.factoid.config.chat.ChatFactoid;
 import me.tabinol.factoid.config.vanish.VanishEssentials;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.vanish.DummyVanish;
 import me.tabinol.factoid.config.vanish.Vanish;
 import me.tabinol.factoid.config.vanish.VanishNoPacket;
+import me.tabinol.factoidapi.config.players.IPlayerStaticConfig;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -32,13 +39,16 @@ import org.bukkit.entity.Player;
 /**
  * The Class PlayerStaticConfig.
  */
-public class PlayerStaticConfig {
+public class PlayerStaticConfig implements IPlayerStaticConfig {
 
     /** The player conf list. */
     private final Map<CommandSender, PlayerConfEntry> playerConfList;
     
     /** The vanish. */
     private final Vanish vanish;
+    
+    /** The chat. */
+    private final Chat chat;
 
     /**
      * Instantiates a new player static config.
@@ -47,17 +57,24 @@ public class PlayerStaticConfig {
 
         playerConfList = new HashMap<CommandSender, PlayerConfEntry>();
 
-        // Ceck for VanishNoPacket plugin
-        if (Factoid.getDependPlugin().getVanishNoPacket() != null) {
+        // Check for VanishNoPacket plugin
+        if (Factoid.getThisPlugin().iDependPlugin().getVanishNoPacket() != null) {
             vanish = new VanishNoPacket();
 
             // Check for Essentials plugin
-        } else if (Factoid.getDependPlugin().getEssentials() != null) {
+        } else if (Factoid.getThisPlugin().iDependPlugin().getEssentials() != null) {
             vanish = new VanishEssentials();
 
             // Dummy Vanish if no plugins
         } else {
             vanish = new DummyVanish();
+        }
+        
+        // Check for Chat plugin
+        if (Factoid.getThisPlugin().iDependPlugin().getEssentials() != null) {
+        	chat = new ChatEssentials();
+        } else {
+        	chat = new ChatFactoid();
         }
     }
 
@@ -91,13 +108,11 @@ public class PlayerStaticConfig {
         playerConfList.remove(sender);
     }
 
-    /**
-     * Gets the.
-     *
-     * @param sender the sender
-     * @return the player conf entry
-     */
-    public PlayerConfEntry get(CommandSender sender) {
+    /* (non-Javadoc)
+	 * @see me.tabinol.factoid.config.players.IPlayerStaticConfig#get(org.bukkit.command.CommandSender)
+	 */
+    @Override
+	public PlayerConfEntry get(CommandSender sender) {
 
         return playerConfList.get(sender);
     }
@@ -130,14 +145,17 @@ public class PlayerStaticConfig {
         playerConfList.clear();
     }
     
-    /**
-     * Checks if is vanished.
-     *
-     * @param player the player
-     * @return true, if is vanished
-     */
-    public boolean isVanished(Player player) {
+    /* (non-Javadoc)
+	 * @see me.tabinol.factoid.config.players.IPlayerStaticConfig#isVanished(org.bukkit.entity.Player)
+	 */
+    @Override
+	public boolean isVanished(Player player) {
         
         return vanish.isVanished(player);
+    }
+    
+    public Chat getChat() {
+    	
+    	return chat;
     }
 }

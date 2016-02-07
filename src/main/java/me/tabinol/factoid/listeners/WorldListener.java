@@ -22,11 +22,13 @@ import java.util.List;
 
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
-import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.parameters.FlagList;
-import me.tabinol.factoid.parameters.FlagType;
-import me.tabinol.factoid.parameters.FlagValue;
+import me.tabinol.factoidapi.lands.IDummyLand;
+import me.tabinol.factoidapi.parameters.IFlagType;
+import me.tabinol.factoidapi.parameters.IFlagValue;
+
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Creeper;
@@ -40,8 +42,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
+import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -50,19 +54,10 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
-import org.bukkit.event.world.WorldEvent;
 
 
 /**
- * The listener interface for receiving world events.
- * The class that is interested in processing a world
- * event implements this interface, and the object created
- * with that class is registered with a component using the
- * component's <code>addWorldListener<code> method. When
- * the world event occurs, that object's appropriate
- * method is invoked.
- *
- * @see WorldEvent
+ * World listener
  */
 public class WorldListener extends CommonListener implements Listener {
 
@@ -75,7 +70,7 @@ public class WorldListener extends CommonListener implements Listener {
     public WorldListener() {
 
         super();
-        conf = Factoid.getConf();
+        conf = Factoid.getThisPlugin().iConf();
     }
 
     /**
@@ -91,13 +86,13 @@ public class WorldListener extends CommonListener implements Listener {
         }
 
         Location loc = event.getEntity().getLocation();
-        DummyLand land = Factoid.getLands().getLandOrOutsideArea(loc);
+        IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(loc);
         EntityType entityType = event.getEntityType();
 
         // Check for Explosion cancel 
         if ((entityType == EntityType.CREEPER
                 && land.getFlagAndInherit(FlagList.CREEPER_EXPLOSION.getFlagType()).getValueBoolean() == false)
-                || (entityType == EntityType.PRIMED_TNT
+                || ((entityType == EntityType.PRIMED_TNT || entityType == EntityType.MINECART_TNT)
                 && land.getFlagAndInherit(FlagList.TNT_EXPLOSION.getFlagType()).getValueBoolean() == false)
                 || land.getFlagAndInherit(FlagList.EXPLOSION.getFlagType()).getValueBoolean() == false) {
             event.setCancelled(true);
@@ -171,7 +166,7 @@ public class WorldListener extends CommonListener implements Listener {
         if (conf.isOverrideExplosions()) {
             // Check for painting
             if (event.getCause() == RemoveCause.EXPLOSION) {
-                Factoid.getLog().write("Cancel HangingBreak : " + event.getEntity() + ", Cause: " + event.getCause());
+                Factoid.getThisPlugin().iLog().write("Cancel HangingBreak : " + event.getEntity() + ", Cause: " + event.getCause());
                 event.setCancelled(true);
             }
         }
@@ -189,20 +184,20 @@ public class WorldListener extends CommonListener implements Listener {
      * @param setFire the set fire
      * @param doExplosion the do explosion
      */
-    private void ExplodeBlocks(Cancellable event, List<Block> blocks, FlagType ft, Location loc,
+    private void ExplodeBlocks(Cancellable event, List<Block> blocks, IFlagType ft, Location loc,
             float yield, float power, boolean setFire, boolean doExplosion) {
 
-        FlagValue value;
+        IFlagValue value;
         boolean cancelEvent = false;
         Iterator<Block> itBlock = blocks.iterator();
         Block block;
 
-        Factoid.getLog().write("Explosion : " + ", Yield: " + yield + ", power: " + power);
+        Factoid.getThisPlugin().iLog().write("Explosion : " + ", Yield: " + yield + ", power: " + power);
 
         // Check if 1 block or more is in a protected place
         while(itBlock.hasNext() && !cancelEvent) {
         	block = itBlock.next();
-        	value = Factoid.getLands().getLandOrOutsideArea(block.getLocation()).getFlagAndInherit(ft);
+        	value = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(block.getLocation()).getFlagAndInherit(ft);
             if (value.getValueBoolean() == false) {
                 cancelEvent = true;
             }
@@ -226,7 +221,9 @@ public class WorldListener extends CommonListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
 
-        DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
+        IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(event.getBlock().getLocation());
+        Material matFrom = event.getBlock().getType();
+        Material matTo = event.getTo();
 
         // Enderman removeblock
         if ((event.getEntityType() == EntityType.ENDERMAN
@@ -234,6 +231,12 @@ public class WorldListener extends CommonListener implements Listener {
                 || (event.getEntityType() == EntityType.WITHER
                 && land.getFlagAndInherit(FlagList.WITHER_DAMAGE.getFlagType()).getValueBoolean() == false)) {
             event.setCancelled(true);
+        
+        // Crop trample
+        } else if (matFrom == Material.SOIL
+        		&& matTo == Material.DIRT
+                && land.getFlagAndInherit(FlagList.CROP_TRAMPLE.getFlagType()).getValueBoolean() == false) {
+        	event.setCancelled(true);
         }
     }
 
@@ -245,7 +248,7 @@ public class WorldListener extends CommonListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockIgnite(BlockIgniteEvent event) {
 
-        DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
+        IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(event.getBlock().getLocation());
 
         if (((event.getCause() == IgniteCause.SPREAD || event.getCause() == IgniteCause.LAVA)
                 && land.getFlagAndInherit(FlagList.FIRESPREAD.getFlagType()).getValueBoolean() == false)
@@ -262,7 +265,7 @@ public class WorldListener extends CommonListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBurn(BlockBurnEvent event) {
 
-        DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getBlock().getLocation());
+        IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(event.getBlock().getLocation());
 
         if ((land.getFlagAndInherit(FlagList.FIRESPREAD.getFlagType()).getValueBoolean() == false)
                 || (land.getFlagAndInherit(FlagList.FIRE.getFlagType()).getValueBoolean() == false)) {
@@ -278,7 +281,7 @@ public class WorldListener extends CommonListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
 
-        DummyLand land = Factoid.getLands().getLandOrOutsideArea(event.getEntity().getLocation());
+        IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(event.getEntity().getLocation());
 
         if ((event.getEntity() instanceof Animals
                 && land.getFlagAndInherit(FlagList.ANIMAL_SPAWN.getFlagType()).getValueBoolean() == false)
@@ -286,6 +289,41 @@ public class WorldListener extends CommonListener implements Listener {
                 || event.getEntity() instanceof Slime
                 || event.getEntity() instanceof Flying)
                 && land.getFlagAndInherit(FlagList.MOB_SPAWN.getFlagType()).getValueBoolean() == false)) {
+            event.setCancelled(true);
+        }
+    }
+
+    /**
+     * On leaves decay.
+     *
+     * @param event the event
+     */
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onLeavesDecay(LeavesDecayEvent event) {
+
+        IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(event.getBlock().getLocation());
+
+        if (land.getFlagAndInherit(FlagList.LEAF_DECAY.getFlagType()).getValueBoolean() == false) {
+            event.setCancelled(true);
+        }
+    }
+
+    /**
+     * On block from to.
+     *
+     * @param event the event
+     */
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onBlockFromTo(BlockFromToEvent event) {
+
+        IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(event.getBlock().getLocation());
+        Material ml = event.getBlock().getType();
+
+        // Liquid flow
+        if (((ml == Material.LAVA || ml == Material.STATIONARY_LAVA)
+        		&& land.getFlagAndInherit(FlagList.LAVA_FLOW.getFlagType()).getValueBoolean() == false)
+        		|| ((ml == Material.WATER || ml == Material.STATIONARY_WATER)
+                		&& land.getFlagAndInherit(FlagList.WATER_FLOW.getFlagType()).getValueBoolean() == false)) {
             event.setCancelled(true);
         }
     }
@@ -303,7 +341,7 @@ public class WorldListener extends CommonListener implements Listener {
                 && (event.getCause() == DamageCause.BLOCK_EXPLOSION || event.getCause() == DamageCause.ENTITY_EXPLOSION
                 || event.getCause() == DamageCause.PROJECTILE)) {
             // Check for ItemFrame
-            Factoid.getLog().write("Cancel HangingBreak : " + event.getEntity() + ", Cause: " + event.getCause());
+            Factoid.getThisPlugin().iLog().write("Cancel HangingBreak : " + event.getEntity() + ", Cause: " + event.getCause());
             event.setCancelled(true);
         }
     }

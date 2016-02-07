@@ -24,14 +24,17 @@ import java.util.TreeMap;
 
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
+import me.tabinol.factoid.commands.CommandEntities;
+import me.tabinol.factoid.commands.CommandExec;
+import me.tabinol.factoid.commands.InfoCommand;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoid.lands.approve.Approve;
 import me.tabinol.factoid.lands.approve.ApproveList;
-import me.tabinol.factoid.lands.areas.CuboidArea;
+import me.tabinol.factoidapi.lands.areas.ICuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions;
-import me.tabinol.factoid.playercontainer.PlayerContainer;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 
 import org.bukkit.ChatColor;
 
@@ -39,6 +42,7 @@ import org.bukkit.ChatColor;
 /**
  * The Class CommandApprove.
  */
+@InfoCommand(name="approve", allowConsole=true, forceParameter=true)
 public class CommandApprove extends CommandExec {
 
     /**
@@ -49,7 +53,7 @@ public class CommandApprove extends CommandExec {
      */
     public CommandApprove(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity, true, true);
+        super(entity);
     }
 
     /* (non-Javadoc)
@@ -59,7 +63,7 @@ public class CommandApprove extends CommandExec {
     public void commandExecute() throws FactoidCommandException {
 
         String curArg = entity.argList.getNext();
-        ApproveList approveList = Factoid.getLands().getApproveList();
+        ApproveList approveList = Factoid.getThisPlugin().iLands().getApproveList();
         boolean isApprover = entity.sender.hasPermission("factoid.collisionapprove");
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
@@ -69,7 +73,7 @@ public class CommandApprove extends CommandExec {
             	throw new FactoidCommandException("Approve", entity.sender, "GENERAL.MISSINGPERMISSION");
             }
             approveList.removeAll();
-            entity.sender.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COLLISION.GENERAL.CLEAR"));
+            entity.sender.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.GENERAL.CLEAR"));
             
         } else if (curArg.equalsIgnoreCase("list")) {
 
@@ -87,7 +91,7 @@ public class CommandApprove extends CommandExec {
             for(Map.Entry<Date,Approve> approveEntry : approveTree.descendingMap().entrySet()) {
                 Approve app = approveEntry.getValue();
                 if (app != null && (isApprover || app.getOwner().hasAccess(entity.player))) {
-                    stList.append(ChatColor.WHITE + Factoid.getLanguage().getMessage("COLLISION.SHOW.LIST",
+                    stList.append(ChatColor.WHITE + Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.LIST",
                             ChatColor.BLUE + df.format(app.getDateTime().getTime()) + ChatColor.WHITE,
                             ChatColor.BLUE + app.getLandName() + ChatColor.WHITE,
                             app.getOwner().getPrint() + ChatColor.WHITE,
@@ -99,7 +103,7 @@ public class CommandApprove extends CommandExec {
             if (t == 0) {
 
                 // List empty
-                entity.sender.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COLLISION.SHOW.LISTROWNULL"));
+                entity.sender.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.LISTROWNULL"));
             } else {
 
                 // List not empty
@@ -126,14 +130,13 @@ public class CommandApprove extends CommandExec {
                 throw new FactoidCommandException("Approve", entity.sender, "GENERAL.MISSINGPERMISSION");
             }
 
-            Land land = Factoid.getLands().getLand(param);
+            ILand land = Factoid.getThisPlugin().iLands().getLand(param);
             Collisions.LandAction action = approve.getAction();
             int removeId = approve.getRemovedAreaId();
-            CuboidArea newArea = approve.getNewArea();
-            Land parent = approve.getParent();
+            ICuboidArea newArea = approve.getNewArea();
+            ILand parent = approve.getParent();
             Double price = approve.getPrice();
-            boolean mustPay = approve.isMustPay();
-            PlayerContainer owner = approve.getOwner();
+            IPlayerContainer owner = approve.getOwner();
 
             if (curArg.equalsIgnoreCase("info") || curArg.equalsIgnoreCase("confirm")) {
 
@@ -143,20 +146,20 @@ public class CommandApprove extends CommandExec {
                 }
                 
                 // Info on the specified land (Collision)
-                checkCollision(param, land, action, removeId, newArea, parent, owner, price, mustPay, false);
+                checkCollision(param, land, null, action, removeId, newArea, parent, owner, price, false);
 
                 if (curArg.equalsIgnoreCase("confirm")) {
 
                     // Create the action (if it is possible)
                     approveList.removeApprove(approve);
                     approve.createAction();
-                    entity.sender.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COLLISION.GENERAL.DONE"));
+                    entity.sender.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.GENERAL.DONE"));
                 }
             } else if (curArg.equalsIgnoreCase("cancel")) {
 
                 // Remove in approve list
                 approveList.removeApprove(approve);
-                entity.sender.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COLLISION.GENERAL.REMOVE"));
+                entity.sender.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.GENERAL.REMOVE"));
             } else {
                 throw new FactoidCommandException("Approve", entity.sender, "GENERAL.MISSINGPERMISSION");
             }

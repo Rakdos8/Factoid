@@ -20,7 +20,10 @@ package me.tabinol.factoid.playercontainer;
 import java.util.UUID;
 
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoidapi.lands.ILand;
+import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainerPlayer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -31,7 +34,8 @@ import org.bukkit.entity.Player;
 /**
  * The Class PlayerContainerPlayer.
  */
-public class PlayerContainerPlayer extends PlayerContainer {
+public class PlayerContainerPlayer extends PlayerContainer 
+	implements IPlayerContainerPlayer {
 
     /** The minecraft uuid. */
     private final UUID minecraftUUID;
@@ -44,7 +48,7 @@ public class PlayerContainerPlayer extends PlayerContainer {
      */
     public PlayerContainerPlayer(UUID minecraftUUID) {
 
-        super("ID-" + minecraftUUID.toString(), PlayerContainerType.PLAYER, false);
+        super("ID-" + minecraftUUID.toString(), EPlayerContainerType.PLAYER, false);
         this.minecraftUUID = minecraftUUID;
     }
 
@@ -52,7 +56,7 @@ public class PlayerContainerPlayer extends PlayerContainer {
      * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
      */
     @Override
-    public boolean equals(PlayerContainer container2) {
+    public boolean equals(IPlayerContainer container2) {
         
         return container2 instanceof PlayerContainerPlayer &&
                 minecraftUUID.equals(((PlayerContainerPlayer) container2).minecraftUUID);
@@ -78,6 +82,12 @@ public class PlayerContainerPlayer extends PlayerContainer {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public boolean hasAccess(Player player, ILand land) {
+        
+        return hasAccess(player);
     }
 
     /* (non-Javadoc)
@@ -112,7 +122,7 @@ public class PlayerContainerPlayer extends PlayerContainer {
     	}
     	
     	// Pass 2 get from Factoid cache
-    	playerName = Factoid.getPlayersCache().getNameFromUUID(minecraftUUID);
+    	playerName = Factoid.getThisPlugin().iPlayersCache().getNameFromUUID(minecraftUUID);
     	if(playerName != null) {
     		return playerName;
     	}
@@ -130,7 +140,7 @@ public class PlayerContainerPlayer extends PlayerContainer {
      * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
      */
     @Override
-    public void setLand(Land land) {
+    public void setLand(ILand land) {
 
     }
     

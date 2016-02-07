@@ -18,7 +18,10 @@
 package me.tabinol.factoid.playercontainer;
 
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoidapi.lands.ILand;
+import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainerGroup;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -27,7 +30,8 @@ import org.bukkit.entity.Player;
 /**
  * The Class PlayerContainerGroup.
  */
-public class PlayerContainerGroup extends PlayerContainer {
+public class PlayerContainerGroup extends PlayerContainer 
+	implements IPlayerContainerGroup {
     
     /**
      * Instantiates a new player container group.
@@ -36,14 +40,14 @@ public class PlayerContainerGroup extends PlayerContainer {
      */
     public PlayerContainerGroup(String groupName) {
         
-        super(groupName, PlayerContainerType.GROUP, true);
+        super(groupName, EPlayerContainerType.GROUP, true);
     }
     
     /* (non-Javadoc)
      * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
      */
     @Override
-    public boolean equals(PlayerContainer container2) {
+    public boolean equals(IPlayerContainer container2) {
         
         return container2 instanceof PlayerContainerGroup &&
                 name.equalsIgnoreCase(container2.getName());
@@ -65,12 +69,18 @@ public class PlayerContainerGroup extends PlayerContainer {
     public boolean hasAccess(Player player) {
         
         if(player != null) {
-            return Factoid.getDependPlugin().getPermission().playerInGroup(player, name);
+            return Factoid.getThisPlugin().iDependPlugin().getPermission().playerInGroup(player, name);
         } else {
             return false;
         }
     }
     
+    @Override
+    public boolean hasAccess(Player player, ILand land) {
+        
+        return hasAccess(player);
+    }
+
     /* (non-Javadoc)
      * @see me.tabinol.factoid.playercontainer.PlayerContainer#getPrint()
      */
@@ -84,7 +94,7 @@ public class PlayerContainerGroup extends PlayerContainer {
      * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
      */
     @Override
-    public void setLand(Land land) {
+    public void setLand(ILand land) {
         
     }
 }

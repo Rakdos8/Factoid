@@ -20,14 +20,15 @@ package me.tabinol.factoid.factions;
 import java.util.Collection;
 import java.util.TreeSet;
 import java.util.UUID;
-import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 
+import me.tabinol.factoid.Factoid;
+import me.tabinol.factoidapi.factions.IFaction;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainerPlayer;
 
 /**
  * The Class Faction.
  */
-public class Faction {
+public class Faction implements IFaction {
 
     /** The name. */
     private String name;
@@ -36,7 +37,7 @@ public class Faction {
     private final UUID uuid;
     
     /** The players. */
-    private TreeSet<PlayerContainerPlayer> players;
+    private TreeSet<IPlayerContainerPlayer> players;
     
     /** The auto save. */
     private boolean autoSave = true;
@@ -51,7 +52,7 @@ public class Faction {
 
         this.name = name.toLowerCase();
         this.uuid = uuid;
-        this.players = new TreeSet<PlayerContainerPlayer>();
+        this.players = new TreeSet<IPlayerContainerPlayer>();
         doSave();
     }
 
@@ -80,11 +81,11 @@ public class Faction {
      *
      * @param player the player
      */
-    public void addPlayer(PlayerContainerPlayer player) {
+    public void addPlayer(IPlayerContainerPlayer player) {
 
         players.add(player);
         doSave();
-        Factoid.getLog().write(player.toString() + " is added in faction " + name);
+        Factoid.getThisPlugin().iLog().write(player.toString() + " is added in faction " + name);
     }
 
     /**
@@ -93,11 +94,11 @@ public class Faction {
      * @param player the player
      * @return true, if successful
      */
-    public boolean removePlayer(PlayerContainerPlayer player) {
+    public boolean removePlayer(IPlayerContainerPlayer player) {
 
         if (players.remove(player)) {
             doSave();
-            Factoid.getLog().write(player.toString() + " is removed in faction " + name);
+            Factoid.getThisPlugin().iLog().write(player.toString() + " is removed in faction " + name);
             return true;
         }
 
@@ -110,7 +111,7 @@ public class Faction {
      * @param player the player
      * @return true, if is player in list
      */
-    public boolean isPlayerInList(PlayerContainerPlayer player) {
+    public boolean isPlayerInList(IPlayerContainerPlayer player) {
 
         return players.contains(player);
     }
@@ -120,7 +121,7 @@ public class Faction {
      *
      * @return the players
      */
-    public Collection<PlayerContainerPlayer> getPlayers() {
+    public Collection<IPlayerContainerPlayer> getPlayers() {
 
         return players;
     }
@@ -140,8 +141,8 @@ public class Faction {
      */
     public void forceSave() {
         
-        Factoid.getStorageThread().saveFaction(this);
-        Factoid.getLog().write("Faction " + name + " is saved.");
+        Factoid.getThisPlugin().iStorageThread().saveFaction(this);
+        Factoid.getThisPlugin().iLog().write("Faction " + name + " is saved.");
     }
     
     /**

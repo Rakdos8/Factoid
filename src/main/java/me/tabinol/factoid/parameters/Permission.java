@@ -17,13 +17,15 @@
  */
 package me.tabinol.factoid.parameters;
 
+import me.tabinol.factoidapi.parameters.IPermission;
+
 import org.bukkit.ChatColor;
 
 
 /**
  * The Class Permission.
  */
-public class Permission {
+public class Permission implements IPermission {
 
     /** The perm type. */
     PermissionType permType;
@@ -48,6 +50,11 @@ public class Permission {
         this.heritable = heritable;
     }
 
+    public Permission copyOf() {
+    	
+    	return new Permission(permType, value, heritable);
+    }
+    
     /**
      * Gets the perm type.
      *

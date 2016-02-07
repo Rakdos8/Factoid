@@ -18,13 +18,14 @@
 package me.tabinol.factoid.parameters;
 
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.utilities.StringChanges;
+import me.tabinol.factoidapi.utilities.StringChanges;
+import me.tabinol.factoidapi.parameters.ILandFlag;
 
 
 /**
  * The Class LandFlag.
  */
-public class LandFlag {
+public class LandFlag implements ILandFlag {
     
     /** The flag type. */
     private FlagType flagType;
@@ -53,19 +54,24 @@ public class LandFlag {
         this.heritable = heritable;
         
         if(!flagType.isRegistered()) {
-        	Factoid.getParameters().unRegisteredFlags.add(this);
+        	Factoid.getThisPlugin().iParameters().unRegisteredFlags.add(this);
         }
     }
 
+    public LandFlag copyOf() {
+    	
+    	return new LandFlag(flagType, value.copyOf(), heritable);
+    }
+    
     /**
      * Equals.
      *
      * @param lf2 the lf2
      * @return true, if successful
      */
-    public boolean equals(LandFlag lf2) {
+    public boolean equals(ILandFlag lf2) {
         
-        return flagType == lf2.flagType;
+        return flagType == lf2.getFlagType();
     }
     
     /**
@@ -150,7 +156,7 @@ public class LandFlag {
     public static LandFlag getFromString(String str) {
     	
     	String[] multiStr = StringChanges.splitKeepQuote(str, ":");
-    	FlagType ft = Factoid.getParameters().getFlagTypeNoValid(multiStr[0]);
+    	FlagType ft = Factoid.getThisPlugin().iParameters().getFlagTypeNoValid(multiStr[0]);
     	Object value = FlagValue.getFromString(multiStr[1], ft);
     	
     	return new LandFlag(ft, value, Boolean.parseBoolean(multiStr[2]));

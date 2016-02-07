@@ -17,6 +17,9 @@
  */
 package me.tabinol.factoid.config.vanish;
 
+import me.tabinol.factoid.BKVersion;
+import me.tabinol.factoid.Factoid;
+
 import org.bukkit.entity.Player;
 
 
@@ -33,6 +36,7 @@ public class DummyVanish implements Vanish {
     @Override
     public boolean isVanished(Player player) {
         
-        return false;
+        return Factoid.getThisPlugin().iConf().isSpectatorIsVanish() 
+        		&& BKVersion.isSpectatorMode(player);
     }
 }

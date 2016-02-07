@@ -17,9 +17,11 @@
  */
 package me.tabinol.factoid.economy;
 
+import java.util.HashSet;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.SignException;
-import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoidapi.lands.ILand;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -39,7 +41,7 @@ import org.bukkit.inventory.ItemStack;
 public class EcoSign {
 
 	/** The land. */
-	private final Land land;
+	private final ILand land;
 
 	/** The location. */
 	private final Location location;
@@ -58,20 +60,22 @@ public class EcoSign {
 	 * @param player            the player
 	 * @throws SignException the sign exception
 	 */
-	public EcoSign(Land land, Player player) throws SignException {
+	public EcoSign(ILand land, Player player) throws SignException {
 
 		@SuppressWarnings("deprecation")
-		Block targetBlock = player.getTargetBlock(null, 10);
+		Block targetBlock = player.getTargetBlock((HashSet<Byte>) null, 10);
+		Block testBlock;
 		this.land = land;
 
 		if(targetBlock == null) {
 			throw new SignException();
 		}
 		
-		if (targetBlock.getRelative(BlockFace.UP).getType() == Material.AIR) {
+		testBlock = targetBlock.getRelative(BlockFace.UP);
+		if (testBlock.getType() == Material.AIR && land.isLocationInside(testBlock.getLocation())) {
 
 			// If the block as air upside, put the block on top of it
-			location = targetBlock.getRelative(BlockFace.UP).getLocation();
+			location = testBlock.getLocation();
 			facing = signFacing(player.getLocation().getYaw());
 			isWallSign = false;
 		
@@ -79,11 +83,12 @@ public class EcoSign {
 			
 			// A Wall Sign
 			facing  = wallFacing(player.getLocation().getYaw());
-			if(targetBlock.getRelative(facing).getType() != Material.AIR) {
+			testBlock = targetBlock.getRelative(facing);
+			if(testBlock.getType() != Material.AIR) {
 				// Error no place to put the wall sign
 				throw new SignException();
 			}
-			location = targetBlock.getRelative(facing).getLocation();
+			location = testBlock.getLocation();
 			isWallSign = true;
 		}
 		
@@ -92,7 +97,7 @@ public class EcoSign {
 			throw new SignException();
 		}
 		
-		Factoid.getLog().write("SignToCreate: PlayerYaw: " + player.getLocation().getYaw() +
+		Factoid.getThisPlugin().iLog().write("SignToCreate: PlayerYaw: " + player.getLocation().getYaw() +
 				", Location: " + location.toString() + ", Facing: " + facing.name() +
 				", isWallSign: " + isWallSign);
 	}
@@ -104,7 +109,7 @@ public class EcoSign {
 	 * @param location the location
 	 * @throws SignException the sign exception
 	 */
-	public EcoSign(Land land, Location location) throws SignException {
+	public EcoSign(ILand land, Location location) throws SignException {
 		
 		this.land = land;
 		this.location = location;
@@ -140,19 +145,18 @@ public class EcoSign {
 	 * Creates the sign for sale.
 	 *
 	 * @param price            the price
-	 * @return true, if successful
 	 * @throws SignException the sign exception
 	 */
-	public boolean createSignForSale(double price) throws SignException {
+	public void createSignForSale(double price) throws SignException {
 
 		String[] lines = new String[4];
 		lines[0] = ChatColor.GREEN
-				+ Factoid.getLanguage().getMessage("SIGN.SALE.FORSALE");
+				+ Factoid.getThisPlugin().iLanguage().getMessage("SIGN.SALE.FORSALE");
 		lines[1] = ChatColor.GREEN + land.getName();
 		lines[2] = "";
-		lines[3] = ChatColor.BLUE + Factoid.getPlayerMoney().toFormat(price);
+		lines[3] = ChatColor.BLUE + Factoid.getThisPlugin().iPlayerMoney().toFormat(price);
 
-		return createSign(lines);
+		createSign(lines);
 	}
 
 	/**
@@ -162,51 +166,49 @@ public class EcoSign {
 	 * @param renew            the renew
 	 * @param autoRenew            the auto renew
 	 * @param tenantName            the tenant name
-	 * @return true, if successful
 	 * @throws SignException the sign exception
 	 */
-	public boolean createSignForRent(double price, int renew,
+	public void createSignForRent(double price, int renew,
 			boolean autoRenew, String tenantName) throws SignException {
 
 		String[] lines = new String[4];
 
 		if (tenantName != null) {
 			lines[0] = ChatColor.RED
-					+ Factoid.getLanguage().getMessage("SIGN.RENT.RENTED");
+					+ Factoid.getThisPlugin().iLanguage().getMessage("SIGN.RENT.RENTED");
 			lines[1] = ChatColor.RED + tenantName;
 		} else {
 			lines[0] = ChatColor.GREEN
-					+ Factoid.getLanguage().getMessage("SIGN.RENT.FORRENT");
+					+ Factoid.getThisPlugin().iLanguage().getMessage("SIGN.RENT.FORRENT");
 			lines[1] = ChatColor.GREEN + land.getName();
 		}
 
 		if (autoRenew) {
 			lines[2] = ChatColor.BLUE
-					+ Factoid.getLanguage().getMessage("SIGN.RENT.AUTORENEW");
+					+ Factoid.getThisPlugin().iLanguage().getMessage("SIGN.RENT.AUTORENEW");
 		} else {
 			lines[2] = "";
 		}
 
-		lines[3] = ChatColor.BLUE + Factoid.getPlayerMoney().toFormat(price)
+		lines[3] = ChatColor.BLUE + Factoid.getThisPlugin().iPlayerMoney().toFormat(price)
 				+ "/" + renew;
 
-		return createSign(lines);
+		createSign(lines);
 	}
 
 	/**
 	 * Creates the sign.
 	 *
 	 * @param lines            the lines
-	 * @return true, if successful
 	 * @throws SignException the sign exception
 	 */
-	public boolean createSign(String[] lines) throws SignException {
+	public void createSign(String[] lines) throws SignException {
 
 		Block blockPlace = location.getBlock();
 
 		// Impossible to create the sign here
-		if (Factoid.getLands().getLand(location) != land) {
-			return false;
+		if (Factoid.getThisPlugin().iLands().getLand(location) != land) {
+			throw new SignException();
 		}
 
 		// Check if the facing block is solid
@@ -243,8 +245,6 @@ public class EcoSign {
 		((org.bukkit.material.Sign) sign.getData()).setFacingDirection(facing);
 		
 		sign.update();
-		
-		return true;
 	}
 
 	/**

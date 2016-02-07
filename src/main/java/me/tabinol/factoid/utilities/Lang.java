@@ -18,9 +18,7 @@
 package me.tabinol.factoid.utilities;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -36,7 +34,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * The Class Lang.
  */
-public class Lang extends Thread {
+public class Lang {
 
     /** The Constant ACTUAL_VERSION. */
     public static final int ACTUAL_VERSION = Factoid.getMavenAppProperties().getPropertyInt("langVersion");
@@ -67,10 +65,10 @@ public class Lang extends Thread {
      * Reload config.
      */
     public final void reloadConfig() {
-        this.lang = Factoid.getConf().getLang();
+        this.lang = Factoid.getThisPlugin().iConf().getLang();
         this.langFile = new File(plugin.getDataFolder() + "/lang/", lang + ".yml");
-        if (Factoid.getConf().getLang() != null) {
-            Make();
+        if (Factoid.getThisPlugin().iConf().getLang() != null) {
+            copyLang();
             loadYamls();
         }
     }
@@ -170,36 +168,15 @@ public class Lang extends Thread {
     }
 
     /**
-     * Make.
+     * Copyt the language file.
      */
-    private void Make() {
+    private void copyLang() {
         try {
             if (!langFile.exists()) {
                 langFile.getParentFile().mkdirs();
-                copy(plugin.getResource("lang/" + lang + ".yml"), langFile);
+                FileCopy.copyTextFromJav(plugin.getResource("lang/" + lang + ".yml"), langFile);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Copy.
-     *
-     * @param in the in
-     * @param file the file
-     */
-    private void copy(InputStream in, File file) {
-        try {
-            OutputStream out = new FileOutputStream(file);
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = in.read(buf)) > 0) {
-                out.write(buf, 0, len);
-            }
-            out.close();
-            in.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -224,12 +201,13 @@ public class Lang extends Thread {
     /**
      * Gets the help.
      *
+     * @param mainCommand the main command
      * @param commandName the command name
      * @return the help
      */
-    public String getHelp(String commandName) {
+    public String getHelp(String mainCommand, String commandName) {
         
-        ConfigurationSection helpSec = langconfig.getConfigurationSection("HELP." + commandName);
+        ConfigurationSection helpSec = langconfig.getConfigurationSection("HELP." + mainCommand + "." + commandName);
         
         // No help for this command?
         if(helpSec == null) {

@@ -15,20 +15,25 @@
  You should have received a copy of the GNU General Public License
  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package me.tabinol.factoid.commands.executor;
+package me.tabinol.factoid.commands;
 
 import java.util.Calendar;
 
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.commands.executor.CommandCancel;
+import me.tabinol.factoid.commands.executor.CommandHelp;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoid.lands.approve.Approve;
-import me.tabinol.factoid.lands.areas.CuboidArea;
+import me.tabinol.factoidapi.lands.areas.ICuboidArea;
+import me.tabinol.factoidapi.lands.types.IType;
 import me.tabinol.factoid.lands.collisions.Collisions;
-import me.tabinol.factoid.parameters.PermissionType;
-import me.tabinol.factoid.playercontainer.PlayerContainer;
+import me.tabinol.factoid.playercontainer.PlayerContainerOwner;
+import me.tabinol.factoidapi.parameters.IPermissionType;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -38,13 +43,13 @@ import org.bukkit.inventory.ItemStack;
 /**
  * The Class CommandExec.
  */
-public abstract class CommandExec implements CommandInterface {
+public abstract class CommandExec {
 
     /** The entity. */
     protected final CommandEntities entity;
     
     /** The land. */
-    protected Land land;
+    protected ILand land;
     
     /** The is executable. */
     private boolean isExecutable = true;
@@ -56,12 +61,9 @@ public abstract class CommandExec implements CommandInterface {
      * Instantiates a new command exec.
      *
      * @param entity the entity
-     * @param canFromConsole the can from console
-     * @param needsMoreParameter the needs more parameter
      * @throws FactoidCommandException the factoid command exception
      */
-    protected CommandExec(CommandEntities entity,
-            boolean canFromConsole, boolean needsMoreParameter) throws FactoidCommandException {
+    protected CommandExec(CommandEntities entity) throws FactoidCommandException {
 
         this.entity = entity;
 
@@ -76,19 +78,28 @@ public abstract class CommandExec implements CommandInterface {
             land = entity.playerConf.getSelection().getLand();
         }
 
-        if (entity.player == null && !canFromConsole) {
+        if (entity.player == null && !entity.infoCommand.allowConsole()) {
 
             // Send a message if this command is player only
-            throw new FactoidCommandException("Impossible to do from console", entity.sender, "CONSOLE");
+            throw new FactoidCommandException("Impossible to do from console", Bukkit.getConsoleSender(), "CONSOLE");
         }
 
         // Show help if there is no more parameter and the command needs one
-        if (needsMoreParameter && entity.argList != null && entity.argList.isLast()) {
-            new CommandHelp(entity.sender, entity.command.name()).commandExecute();
+        if (entity.infoCommand.forceParameter() && entity.argList != null && entity.argList.isLast()) {
+            new CommandHelp(entity.onCommand, entity.sender, 
+            		entity.infoCommand.mainCommand()[0], entity.infoCommand.name()).commandExecute();
             isExecutable = false;
         }
     }
 
+    /**
+     * Command execute.
+     *
+     * @throws FactoidCommandException the factoid command exception
+     */
+    public abstract void commandExecute() throws FactoidCommandException;
+    
+    
     /**
      * Checks if is executable.
      *
@@ -175,14 +186,14 @@ public abstract class CommandExec implements CommandInterface {
      * @throws FactoidCommandException the factoid command exception
      */
     protected void checkPermission(boolean mustBeAdminMod, boolean mustBeOwner,
-            PermissionType neededPerm, String bukkitPermission) throws FactoidCommandException {
+            IPermissionType neededPerm, String bukkitPermission) throws FactoidCommandException {
 
         boolean canDo = false;
 
         if (mustBeAdminMod && entity.playerConf.isAdminMod()) {
             canDo = true;
         }
-        if (mustBeOwner && (land == null || (land !=null && land.getOwner().hasAccess(entity.player)))) {
+        if (mustBeOwner && (land == null || (land !=null && new PlayerContainerOwner(land).hasAccess(entity.player)))) {
             canDo = true;
         }
         if (neededPerm != null && land.checkPermissionAndInherit(entity.player, neededPerm)) {
@@ -204,6 +215,7 @@ public abstract class CommandExec implements CommandInterface {
      *
      * @param landName the land name
      * @param land the land
+     * @param type the type
      * @param action the action
      * @param removeId the remove id
      * @param newArea the new area
@@ -214,9 +226,9 @@ public abstract class CommandExec implements CommandInterface {
      * @return true, if successful
      * @throws FactoidCommandException the factoid command exception
      */
-    protected boolean checkCollision(String landName, Land land, Collisions.LandAction action,
-            int removeId, CuboidArea newArea, Land parent, PlayerContainer owner, 
-            double price, boolean mustPay, boolean addForApprove) throws FactoidCommandException {
+    protected boolean checkCollision(String landName, ILand land, IType type, Collisions.LandAction action,
+            int removeId, ICuboidArea newArea, ILand parent, IPlayerContainer owner, 
+            double price, boolean addForApprove) throws FactoidCommandException {
 
         // allowApprove: false: The command can absolutely not be done if there is error!
         Collisions coll = new Collisions(landName, land, action, removeId, newArea, parent,
@@ -227,14 +239,14 @@ public abstract class CommandExec implements CommandInterface {
             entity.sender.sendMessage(coll.getPrints());
 
             if (addForApprove) {
-                if (Factoid.getConf().getAllowCollision() == Config.AllowCollisionType.APPROVE && allowApprove == true) {
-                    entity.sender.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage("COLLISION.GENERAL.NEEDAPPROVE", landName));
-                    Factoid.getLog().write("land " + landName + " has collision and needs approval.");
-                    Factoid.getLands().getApproveList().addApprove(new Approve(landName, action, removeId, newArea,
-                            owner, parent, price, mustPay, Calendar.getInstance()));
+                if (Factoid.getThisPlugin().iConf().getAllowCollision() == Config.AllowCollisionType.APPROVE && allowApprove == true) {
+                    entity.sender.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.GENERAL.NEEDAPPROVE", landName));
+                    Factoid.getThisPlugin().iLog().write("land " + landName + " has collision and needs approval.");
+                    Factoid.getThisPlugin().iLands().getApproveList().addApprove(new Approve(landName, type, action, removeId, newArea,
+                            owner, parent, price, Calendar.getInstance()));
                     new CommandCancel(entity.playerConf, true).commandExecute();
                     return true;
-                } else if (Factoid.getConf().getAllowCollision() == Config.AllowCollisionType.FALSE || allowApprove == false) {
+                } else if (Factoid.getThisPlugin().iConf().getAllowCollision() == Config.AllowCollisionType.FALSE || allowApprove == false) {
                     throw new FactoidCommandException("Land collision", entity.sender, "COLLISION.GENERAL.CANNOTDONE");
                 }
             }
@@ -249,7 +261,7 @@ public abstract class CommandExec implements CommandInterface {
     protected void getLandFromCommandIfNoLandSelected() {
 
         if (land == null && !entity.argList.isLast()) {
-            land = Factoid.getLands().getLand(entity.argList.getNext());
+            land = Factoid.getThisPlugin().iLands().getLand(entity.argList.getNext());
         }
     }
     

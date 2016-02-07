@@ -17,6 +17,9 @@
  */
 package me.tabinol.factoid.config.vanish;
 
+import me.tabinol.factoid.BKVersion;
+import me.tabinol.factoid.Factoid;
+
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 
@@ -36,7 +39,7 @@ public class VanishNoPacket implements Vanish {
      */
     public VanishNoPacket() {
 
-        // vanishNoPacket = (VanishPlugin) Factoid.getDependPlugin().getVanishNoPacket();
+        // vanishNoPacket = (VanishPlugin) Factoid.getThisPlugin().iDependPlugin().getVanishNoPacket();
     }
 
     /* (non-Javadoc)
@@ -45,7 +48,12 @@ public class VanishNoPacket implements Vanish {
     @Override
     public boolean isVanished(Player player) {
 
-        // return vanishNoPacket.getManager().isVanished(player);
+        if((Factoid.getThisPlugin().iConf().isSpectatorIsVanish() 
+        		&& BKVersion.isSpectatorMode(player))) {
+        	return true;
+        }
+    	
+    	// return vanishNoPacket.getManager().isVanished(player);
         for(MetadataValue value : player.getMetadata("vanished")) {
             return value.asBoolean();
         }

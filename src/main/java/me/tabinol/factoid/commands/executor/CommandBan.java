@@ -18,26 +18,27 @@
 package me.tabinol.factoid.commands.executor;
 
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.commands.ArgList;
 import me.tabinol.factoid.commands.ChatPage;
+import me.tabinol.factoid.commands.CommandEntities;
+import me.tabinol.factoid.commands.CommandThreadExec;
+import me.tabinol.factoid.commands.InfoCommand;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.parameters.PermissionList;
-import me.tabinol.factoid.playercontainer.PlayerContainer;
-import me.tabinol.factoid.playercontainer.PlayerContainerType;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 import me.tabinol.factoid.playerscache.PlayerCacheEntry;
+import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 
 /**
  * The Class CommandBan.
  */
+@InfoCommand(name="ban", forceParameter=true)
 public class CommandBan extends CommandThreadExec {
 
 	private String fonction;
-	private PlayerContainer pc;
 
 	/**
      * Instantiates a new command ban.
@@ -47,7 +48,7 @@ public class CommandBan extends CommandThreadExec {
      */
     public CommandBan(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity, false, true);
+        super(entity);
     }
 
     /* (non-Javadoc)
@@ -64,21 +65,21 @@ public class CommandBan extends CommandThreadExec {
         if (fonction.equalsIgnoreCase("add")) {
 
             pc = entity.argList.getPlayerContainerFromArg(land,
-                    new PlayerContainerType[]{PlayerContainerType.EVERYBODY,
-                        PlayerContainerType.OWNER, PlayerContainerType.VISITOR,
-                        PlayerContainerType.RESIDENT});
-            Factoid.getPlayersCache().getUUIDWithNames(this, pc);
+                    new EPlayerContainerType[]{EPlayerContainerType.EVERYBODY,
+                        EPlayerContainerType.OWNER, EPlayerContainerType.VISITOR,
+                        EPlayerContainerType.RESIDENT});
+            Factoid.getThisPlugin().iPlayersCache().getUUIDWithNames(this, pc);
 
         } else if (fonction.equalsIgnoreCase("remove")) {
 
             pc = entity.argList.getPlayerContainerFromArg(land, null);
-            Factoid.getPlayersCache().getUUIDWithNames(this, pc);
+            Factoid.getThisPlugin().iPlayersCache().getUUIDWithNames(this, pc);
 
         } else if (fonction.equalsIgnoreCase("list")) {
 
             StringBuilder stList = new StringBuilder();
             if (!land.getBanneds().isEmpty()) {
-                for (PlayerContainer pc : land.getBanneds()) {
+                for (IPlayerContainer pc : land.getBanneds()) {
                     if (stList.length() != 0) {
                         stList.append(" ");
                     }
@@ -86,7 +87,7 @@ public class CommandBan extends CommandThreadExec {
                 }
                 stList.append(Config.NEWLINE);
             } else {
-                entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.LISTROWNULL"));
+                entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.BANNED.LISTROWNULL"));
             }
             new ChatPage("COMMAND.BANNED.LISTSTART", stList.toString(), entity.player, land.getName()).getPage(1);
         
@@ -99,10 +100,10 @@ public class CommandBan extends CommandThreadExec {
      * @see me.tabinol.factoid.commands.executor.CommandThreadExec#commandThreadExecute(me.tabinol.factoid.playerscache.PlayerCacheEntry[])
      */
     @Override
-    public void commandThreadExecute(PlayerCacheEntry[] playerCacheEntry)
+    public synchronized void commandThreadExecute(PlayerCacheEntry[] playerCacheEntry)
     		throws FactoidCommandException {
 	
-    	pc = convertPcIfNeeded(playerCacheEntry, pc);
+    	convertPcIfNeeded(playerCacheEntry);
 
     	if (fonction.equalsIgnoreCase("add")) {
 
@@ -111,25 +112,18 @@ public class CommandBan extends CommandThreadExec {
     		}
     		land.addBanned(pc);
 
-    		// Check for kick the player if he is online and in the land
-    		for (Player pl : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
-    			if (land.isPlayerinLandNoVanish(pl, entity.player) && pc.hasAccess(pl)) {
-    				new CommandKick(entity.player, new ArgList(new String[]{pl.getName()}, entity.player), land).commandExecute();
-    			}
-    		}
-
-    		entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.ISDONE", 
+    		entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.BANNED.ISDONE", 
     				pc.getPrint() + ChatColor.YELLOW, land.getName()));
-    		Factoid.getLog().write("Ban added: " + pc.toString());
+    		Factoid.getThisPlugin().iLog().write("Ban added: " + pc.toString());
 
     	} else if (fonction.equalsIgnoreCase("remove")) {
 
     		if (!land.removeBanned(pc)) {
     			throw new FactoidCommandException("Banned", entity.player, "COMMAND.BANNED.REMOVENOTEXIST");
     		}
-    		entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.BANNED.REMOVEISDONE", 
+    		entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.BANNED.REMOVEISDONE", 
     				pc.getPrint() + ChatColor.YELLOW, land.getName()));
-    		Factoid.getLog().write("Ban removed: " + pc.toString());
+    		Factoid.getThisPlugin().iLog().write("Ban removed: " + pc.toString());
     	}
     }
 }

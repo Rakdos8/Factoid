@@ -18,8 +18,8 @@
 package me.tabinol.factoid.storage;
 
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.factions.Faction;
-import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoidapi.factions.IFaction;
+import me.tabinol.factoidapi.lands.ILand;
 
 
 /**
@@ -62,12 +62,12 @@ public abstract class Storage implements StorageInt {
      */
     private void saveAll() {
 
-        for (Land land : Factoid.getLands().getLands()) {
+        for (ILand land : Factoid.getThisPlugin().iLands().getLands()) {
 
             land.forceSave();
         }
 
-        for (Faction faction : Factoid.getFactions().getFactions()) {
+        for (IFaction faction : Factoid.getThisPlugin().iFactions().getFactions()) {
 
             faction.forceSave();
         }

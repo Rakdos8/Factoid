@@ -66,6 +66,18 @@ public enum FlagList {
     
     /** The animal spawn. */
     ANIMAL_SPAWN(new Boolean(true)),
+    
+    /** The leaves decay */
+    LEAF_DECAY(new Boolean(true)),
+    
+    /** The crop trample */
+    CROP_TRAMPLE(new Boolean(true)),
+
+    /** The lava flow */
+    LAVA_FLOW(new Boolean(true)),
+
+    /** The water flow */
+    WATER_FLOW(new Boolean(true)),
 
     /** The full pvp. */
     FULL_PVP(new Boolean(true)),
@@ -86,7 +98,16 @@ public enum FlagList {
     EXCLUDE_COMMANDS(new String[] {}),
     
     /**  The spawn and teleport point. */
-    SPAWN(new String(""));
+    SPAWN(new String("")),
+    
+    /** Inherit from parent owner */
+    INHERIT_OWNER(new Boolean(true)),
+    
+    /** Inherit from parent residents */
+    INHERIT_RESIDENTS(new Boolean(true)),
+    
+    /** Inherit from parent tenant */
+    INHERIT_TENANT(new Boolean(true));
 
     /** The base value. */
     final FlagValue baseValue;

@@ -17,28 +17,32 @@
  */
 package me.tabinol.factoid.playercontainer;
 
-import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoidapi.lands.ILand;
+import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainerNobody;
+
 import org.bukkit.entity.Player;
 
 
 /**
  * The Class PlayerContainerNobody.
  */
-public class PlayerContainerNobody extends PlayerContainer {
+public class PlayerContainerNobody extends PlayerContainer implements IPlayerContainerNobody {
 
     /**
      * Instantiates a new player container nobody.
      */
     public PlayerContainerNobody() {
         
-        super("", PlayerContainerType.NOBODY, false);
+        super("", EPlayerContainerType.NOBODY, false);
     }
     
     /* (non-Javadoc)
      * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
      */
     @Override
-    public boolean equals(PlayerContainer container2) {
+    public boolean equals(IPlayerContainer container2) {
         
         return container2 instanceof PlayerContainerNobody;
     }
@@ -61,11 +65,17 @@ public class PlayerContainerNobody extends PlayerContainer {
         return false;
     }
 
+    @Override
+    public boolean hasAccess(Player player, ILand land) {
+        
+        return false;
+    }
+
     /* (non-Javadoc)
      * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
      */
     @Override
-    public void setLand(Land land) {
+    public void setLand(ILand land) {
         
     }
 }

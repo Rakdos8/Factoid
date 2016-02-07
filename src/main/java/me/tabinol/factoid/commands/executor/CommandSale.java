@@ -22,16 +22,21 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.commands.CommandEntities;
+import me.tabinol.factoid.commands.CommandExec;
+import me.tabinol.factoid.commands.InfoCommand;
 import me.tabinol.factoid.economy.EcoSign;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.exceptions.SignException;
+import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.parameters.PermissionList;
 
+@InfoCommand(name="sale", forceParameter=true)
 public class CommandSale extends CommandExec {
 
     public CommandSale(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity, false, true);
+        super(entity);
     }
     
     /* (non-Javadoc)
@@ -67,14 +72,14 @@ public class CommandSale extends CommandExec {
 				removeSignFromHand();
 				if(!ecoSign.getLocation().getBlock().equals(land.getSaleSignLoc().getBlock())) {
 					ecoSign.removeSign(land.getSaleSignLoc());
-					land.setSaleSignLoc(ecoSign.getLocation());
+					((Land) land).setSaleSignLoc(ecoSign.getLocation());
 				}
 			} catch (SignException e) {
 				throw new FactoidCommandException("Error in the command", entity.player, "COMMAND.ECONOMY.ERRORCREATESIGN");
 			}
         	
-            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ECONOMY.RECREATE"));
-            Factoid.getLog().write("Sign recreated for land " + land.getName() + " by: " + entity.playerName);
+            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ECONOMY.RECREATE"));
+            Factoid.getThisPlugin().iLog().write("Sign recreated for land " + land.getName() + " by: " + entity.playerName);
             
             return;
         }
@@ -99,9 +104,9 @@ public class CommandSale extends CommandExec {
 		} catch (SignException e) {
 			throw new FactoidCommandException("Error in the command", entity.player, "COMMAND.ECONOMY.ERRORCREATESIGN");
 		}
-        land.setForSale(true, salePrice, ecoSign.getLocation());
-        entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ECONOMY.SIGNDONE"));
-        Factoid.getLog().write("The land " + land.getName() + " is set to for sale by: " + entity.playerName);
+        ((Land) land).setForSale(true, salePrice, ecoSign.getLocation());
+        entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ECONOMY.SIGNDONE"));
+        Factoid.getThisPlugin().iLog().write("The land " + land.getName() + " is set to for sale by: " + entity.playerName);
     }
 
 

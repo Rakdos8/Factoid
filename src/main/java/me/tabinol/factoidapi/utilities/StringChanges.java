@@ -15,7 +15,7 @@
  You should have received a copy of the GNU General Public License
  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package me.tabinol.factoid.utilities;
+package me.tabinol.factoidapi.utilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,15 +26,16 @@ import org.bukkit.World;
 
 
 /**
- * The Class StringChanges.
+ * The Class StringChanges. This is for static methods for String conversion
+ * or modification.
  */
 public class StringChanges {
 
     /**
-     * To lower.
+     * To lower. Convert a String list to lower case.
      *
-     * @param list the list
-     * @return the list
+     * @param list the String list
+     * @return the converted String list
      */
     public static List<String> toLower(List<String> list) {
 
@@ -52,10 +53,10 @@ public class StringChanges {
     }
 
     /**
-     * To quote.
+     * To quote. Adds quote to a String
      *
-     * @param str the str
-     * @return the string
+     * @param str the String without quote
+     * @return the quoted String
      */
     public static String toQuote(String str) {
 
@@ -71,10 +72,10 @@ public class StringChanges {
     }
 
     /**
-     * From quote.
+     * From quote. Remove quote from a String.
      *
-     * @param str the str
-     * @return the string
+     * @param str the quoted String
+     * @return the string removed from quote
      */
     public static String fromQuote(String str) {
 
@@ -86,11 +87,11 @@ public class StringChanges {
     }
 
     /**
-     * Split keep quote.
+     * Split a String and make caution with quotes.
      *
-     * @param str the str
-     * @param split the split
-     * @return the string[]
+     * @param str the string to split
+     * @param split the split character
+     * @return the multiple String split
      */
     public static String[] splitKeepQuote(String str, String split) {
 
@@ -118,10 +119,10 @@ public class StringChanges {
     }
 
     /**
-     * Checks if is start quote.
+     * Checks if the string starts with a quote.
      *
-     * @param str the str
-     * @return true, if is start quote
+     * @param str the String
+     * @return true, if the String starts with a quote
      */
     private static boolean isStartQuote(String str) {
 
@@ -132,10 +133,10 @@ public class StringChanges {
     }
 
     /**
-     * Checks if is end quote.
+     * Checks if the String ends with a quote.
      *
-     * @param str the str
-     * @return true, if is end quote
+     * @param str the String
+     * @return true, if the String end with a quote
      */
     private static boolean isEndQuote(String str) {
 
@@ -146,10 +147,10 @@ public class StringChanges {
     }
     
     /**
-     * Split add void.
+     * Split the String and adds a empty at the end of the array.
      *
      * @param string the string
-     * @param split the split
+     * @param split the split character
      * @return the string[]
      */
     public static String[] splitAddVoid(String string, String split) {
@@ -167,7 +168,7 @@ public class StringChanges {
     /**
      * To integer.
      *
-     * @param n the n
+     * @param n the string
      * @return the int
      */
     public static int toInteger(String n){
@@ -181,7 +182,7 @@ public class StringChanges {
     /**
      * Checks if is int.
      *
-     * @param n the n
+     * @param n the string
      * @return true, if is int
      */
     public static boolean isInt(String n)
@@ -197,7 +198,7 @@ public class StringChanges {
     /**
      * To double.
      *
-     * @param n the n
+     * @param n the string
      * @return the double
      */
     public static double toDouble(String n){
@@ -211,7 +212,7 @@ public class StringChanges {
     /**
      * Checks if is double.
      *
-     * @param n the n
+     * @param n the string
      * @return true, if is double
      */
     public static boolean isDouble(String n)
@@ -227,7 +228,7 @@ public class StringChanges {
     /**
      * To long.
      *
-     * @param n the n
+     * @param n the long
      * @return the long
      */
     public static long toLong(String n){
@@ -241,7 +242,7 @@ public class StringChanges {
     /**
      * Checks if is long.
      *
-     * @param n the n
+     * @param n the long
      * @return true, if is long
      */
     public static boolean isLong(String n)
@@ -255,10 +256,11 @@ public class StringChanges {
     }
     
     /**
-     * First upper then lower.
+     * Convert the string. The first character will be upper case and the rest
+     * will be lower case.
      *
-     * @param str the str
-     * @return the string
+     * @param str the string
+     * @return the string converted
      */
     public static String FirstUpperThenLower(String str) {
         
@@ -280,7 +282,7 @@ public class StringChanges {
     /**
      * String to location.
      *
-     * @param locStr the loc str
+     * @param locStr the string
      * @return the location
      */
     public static Location stringToLocation(String locStr) {

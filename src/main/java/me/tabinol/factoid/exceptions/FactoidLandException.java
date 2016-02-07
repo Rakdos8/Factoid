@@ -20,14 +20,15 @@ package me.tabinol.factoid.exceptions;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions;
+import me.tabinol.factoidapi.exceptions.AFactoidLandException;
 
 
 /**
  * The Class FactoidLandException.
  */
-public class FactoidLandException extends Exception {
+public class FactoidLandException extends AFactoidLandException {
     
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4561559858019587492L;
@@ -52,6 +53,6 @@ public class FactoidLandException extends Exception {
         }
         bf.append(", Action: ").append(action.toString()).append(", Error: ").append(error.toString());
 
-        Factoid.getLog().write(bf.toString());
+        Factoid.getThisPlugin().iLog().write(bf.toString());
     }
 }

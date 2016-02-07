@@ -17,6 +17,8 @@
  */
 package me.tabinol.factoid.lands.areas;
 
+import me.tabinol.factoidapi.lands.areas.ICuboidArea;
+
 
 /**
  * The Class AreaIndex.
@@ -27,7 +29,7 @@ public class AreaIndex implements Comparable<AreaIndex> {
     private int indexNb;
     
     /** The area. */
-    private CuboidArea area;
+    private me.tabinol.factoidapi.lands.areas.ICuboidArea area;
     
     /**
      * Instantiates a new area index.
@@ -35,7 +37,7 @@ public class AreaIndex implements Comparable<AreaIndex> {
      * @param indexNb the index nb
      * @param area the area
      */
-    public AreaIndex(int indexNb, CuboidArea area) {
+    public AreaIndex(int indexNb, ICuboidArea area) {
         
         this.indexNb = indexNb;
         this.area = area;
@@ -73,7 +75,7 @@ public class AreaIndex implements Comparable<AreaIndex> {
         if(indexNb > t.indexNb) {
             return 1;
         }
-        return area.compareTo(t.area);
+        return ((CuboidArea) area).compareTo((CuboidArea) t.area);
     }
     
     /**
@@ -93,6 +95,6 @@ public class AreaIndex implements Comparable<AreaIndex> {
      */
     public CuboidArea getArea() {
         
-        return area;
+        return (CuboidArea) area;
     }
 }

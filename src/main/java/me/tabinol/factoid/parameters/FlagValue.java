@@ -19,7 +19,8 @@ package me.tabinol.factoid.parameters;
 
 import java.util.ArrayList;
 
-import me.tabinol.factoid.utilities.StringChanges;
+import me.tabinol.factoidapi.utilities.StringChanges;
+import me.tabinol.factoidapi.parameters.IFlagValue;
 
 import org.bukkit.ChatColor;
 
@@ -27,7 +28,7 @@ import org.bukkit.ChatColor;
  * The Class FlagValue.
  * Represent a flag value : Boolean, Double, String and String[]
  */
-public class FlagValue {
+public class FlagValue implements IFlagValue {
 	
 	/** The value. */
 	private Object value;
@@ -42,6 +43,24 @@ public class FlagValue {
 		this.value = value;
 	}
 	
+	
+	public FlagValue copyOf() {
+		
+		if(value instanceof Boolean) {
+			return new FlagValue(Boolean.valueOf((Boolean)value));
+		} else if(value instanceof Double) {
+			return new FlagValue(Double.valueOf((Double)value));
+		} else if(value instanceof String) {
+			return new FlagValue(String.valueOf((String)value));
+		} else if(value instanceof String[]) {
+			String[] newStr = new String[((String[]) value).length];
+			for(int t = 0; t < ((String[]) value).length; t ++) {
+				newStr[t] = String.valueOf(((String[]) value)[t]);
+			}
+			return new FlagValue(newStr);
+		}
+		return new FlagValue(value);
+	}
 	/**
 	 * Sets the value.
 	 *
@@ -158,7 +177,7 @@ public class FlagValue {
         		String[] strs = str.split(" ");
         		value = new FlagValue(Double.parseDouble(strs[0]));
         	} else if (ft.getDefaultValue().getValue() instanceof String) {
-        		value = new FlagValue(str);
+        		value = new FlagValue(StringChanges.fromQuote(str));
         	} else if (ft.getDefaultValue().getValue() instanceof String[]) {
         		ArrayList<String> result = new ArrayList<String>();
         		String[] strs = StringChanges.splitKeepQuote(str, ";");

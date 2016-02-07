@@ -20,12 +20,14 @@ package me.tabinol.factoid.lands.approve;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.FactoidLandException;
-import me.tabinol.factoid.lands.Land;
-import me.tabinol.factoid.lands.areas.CuboidArea;
+import me.tabinol.factoidapi.lands.ILand;
+import me.tabinol.factoidapi.lands.areas.ICuboidArea;
+import me.tabinol.factoidapi.lands.types.IType;
 import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
-import me.tabinol.factoid.playercontainer.PlayerContainer;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 
 
 /**
@@ -39,23 +41,23 @@ public class Approve {
     /** The land name. */
     private final String landName;
     
+    /** The type */
+    private final IType type;
+    
     /** The removed area id. */
     private final int removedAreaId;
     
     /** The new area. */
-    private final CuboidArea newArea;
+    private final ICuboidArea newArea;
     
     /** The owner. */
-    private final PlayerContainer owner;
+    private final IPlayerContainer owner;
     
     /** The parent. */
-    private final Land parent;
+    private final ILand parent;
     
     /** The price. */
     private final double price;
-    
-    /** If the owner has to pay */
-    private final boolean mustPay;
     
     /** The date time. */
     private final Calendar dateTime;
@@ -64,29 +66,28 @@ public class Approve {
      * Instantiates a new approve.
      *
      * @param landName the land name
+     * @param type the type
      * @param action the action
      * @param removedAreaId the removed area id
      * @param newArea the new area
      * @param owner the owner
      * @param parent the parent
      * @param price the price
-     * @param mustPay If the owner has to pay
      * @param dateTime the date time
      */
-    public Approve(String landName, LandAction action, int removedAreaId, 
-            CuboidArea newArea, PlayerContainer owner, Land parent, double price,
-            boolean mustPay, Calendar dateTime) {
+    public Approve(String landName, IType type, LandAction action, int removedAreaId, 
+            ICuboidArea newArea, IPlayerContainer owner, ILand parent, double price,
+            Calendar dateTime) {
         
         this.action = action;
         this.landName = landName.toLowerCase();
+        this.type = type;
         this.removedAreaId = removedAreaId;
         this.newArea = newArea;
         this.owner = owner;
         this.parent = parent;
         this.price = price;
         this.dateTime = dateTime;
-        this.mustPay = mustPay;
-        
     }
 
     /**
@@ -110,6 +111,16 @@ public class Approve {
     }
     
     /**
+     * Gets the type.
+     *
+     * @return the type
+     */
+    public IType getType() {
+    	
+    	return type;
+    }
+    
+    /**
      * Gets the removed area id.
      *
      * @return the removed area id
@@ -124,7 +135,7 @@ public class Approve {
      *
      * @return the new area
      */
-    public CuboidArea getNewArea() {
+    public ICuboidArea getNewArea() {
         
         return newArea;
     }
@@ -134,7 +145,7 @@ public class Approve {
      *
      * @return the owner
      */
-    public PlayerContainer getOwner() {
+    public IPlayerContainer getOwner() {
         
         return owner;
     }
@@ -144,7 +155,7 @@ public class Approve {
      *
      * @return the parent
      */
-    public Land getParent() {
+    public ILand getParent() {
         
         return parent;
     }
@@ -157,16 +168,6 @@ public class Approve {
     public double getPrice() {
         
         return price;
-    }
-    
-    /**
-     * Checks if is must pay.
-     *
-     * @return true, if is must pay
-     */
-    public boolean isMustPay() {
-    	
-    	return mustPay;
     }
     
     /**
@@ -185,23 +186,25 @@ public class Approve {
     public void createAction() {
         
         if(action == LandAction.AREA_ADD) {
-            Factoid.getLands().getLand(landName).addArea(newArea, price, mustPay);
+            Factoid.getThisPlugin().iLands().getLand(landName).addArea(newArea, price);
         } else if(action == LandAction.AREA_REMOVE) {
-            Factoid.getLands().getLand(landName).removeArea(removedAreaId);
+            Factoid.getThisPlugin().iLands().getLand(landName).removeArea(removedAreaId);
         } else if(action == LandAction.AREA_MODIFY) {
-            Factoid.getLands().getLand(landName).replaceArea(removedAreaId, newArea, price, mustPay);
+            Factoid.getThisPlugin().iLands().getLand(landName).replaceArea(removedAreaId, newArea, price);
         } else if(action == LandAction.LAND_ADD) {
             try {
-                Factoid.getLands().createLand(landName, owner, newArea, parent, price);
+                Factoid.getThisPlugin().iLands().createLand(landName, owner, newArea, parent, price, type);
             } catch (FactoidLandException ex) {
                 Logger.getLogger(Approve.class.getName()).log(Level.SEVERE, "On land create", ex);
             }
         } else if(action == LandAction.LAND_REMOVE) {
             try {
-                Factoid.getLands().removeLand(landName);
+                Factoid.getThisPlugin().iLands().removeLand(landName);
             } catch (FactoidLandException ex) {
                 Logger.getLogger(Approve.class.getName()).log(Level.SEVERE, "On land remove", ex);
             }
+        } else if(action == LandAction.LAND_PARENT) {
+        	Factoid.getThisPlugin().iLands().getLand(landName).setParent(parent);
         }
     }
 }

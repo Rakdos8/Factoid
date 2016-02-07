@@ -17,8 +17,7 @@
  */
 package me.tabinol.factoid.utilities;
 
-import java.util.TreeMap;
-
+import java.util.HashMap;
 import me.tabinol.factoid.Factoid;
 
 import org.bukkit.scheduler.BukkitRunnable;
@@ -30,7 +29,7 @@ import org.bukkit.scheduler.BukkitRunnable;
  * @param <K> the key type
  * @param <V> the value type
  */
-public class ExpirableTreeMap<K, V> extends TreeMap<K, V> {
+public class ExpirableHashMap<K, V> extends HashMap<K, V> {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -8255110767996977825L;
@@ -43,7 +42,7 @@ public class ExpirableTreeMap<K, V> extends TreeMap<K, V> {
 	 *
 	 * @param delay the delay (in ticks)
 	 */
-	public ExpirableTreeMap(long delay) {
+	public ExpirableHashMap(long delay) {
 		
 		super();
 		this.delay = delay;

@@ -12,6 +12,12 @@ commands:
       usage: /factoid help
       permission: factoid.use
       permission-message: you don't have permission for that!
+   faction:
+      description: Factoid Command
+      aliases: [fn]
+      usage: /faction help
+      permission: factoid.faction.use
+      permission-message: you don't have permission for that!
 permissions:
     factoid.*:
         description: Factoid Command Permission
@@ -20,8 +26,16 @@ permissions:
             factoid.adminmod: true
             factoid.adminmod.auto: true
             factoid.collisionapprove: true
+            factoid.socialspy: true
+            factoid.bypassban: true
             factoid.use: true
             factoid.reload: true
+            factoid.faction.*: true
+    factoid.faction.*:
+        description: Factoid Factions Command Permission
+        default: op
+        children:
+            factoid.faction.use: true
     factoid.adminmod:
         description: Can use Admin Mod
         default: op
@@ -33,9 +47,19 @@ permissions:
     factoid.collisionapprove:
         description: Can approve land creation collisions
         default: op
+    factoid.socialspy:
+        description: Can read conversations from all lands
+        default: op
+    factoid.bypassban:
+        description: Ban and kick does not affect this player
+        default: op
     factoid.use:
         description: Can use factoid command
         default: op
     factoid.reload:
         description: Can reload the plugin
         default: op
+    factoid.faction.use:
+        description: Can use faction command
+        default: op
+        

@@ -21,9 +21,12 @@ package me.tabinol.factoid.config.players;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.commands.ConfirmEntry;
-import me.tabinol.factoid.lands.DummyLand;
+import me.tabinol.factoidapi.config.players.IPlayerConfEntry;
+import me.tabinol.factoidapi.lands.IDummyLand;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainerPlayer;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoid.selection.PlayerSelection;
+
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -32,7 +35,7 @@ import org.bukkit.entity.Player;
 /**
  * The Class PlayerConfEntry.
  */
-public class PlayerConfEntry {
+public class PlayerConfEntry implements IPlayerConfEntry {
 
     /** The sender. */
     private final CommandSender sender; // The player (or sender)
@@ -56,7 +59,7 @@ public class PlayerConfEntry {
     private long lastMoveUpdate = 0; // Time of lastupdate for PlayerEvents
     
     /** The last land. */
-    private DummyLand lastLand = null; // Last Land for player
+    private IDummyLand lastLand = null; // Last Land for player
     
     /** The last loc. */
     private Location lastLoc = null; // Present location
@@ -68,7 +71,7 @@ public class PlayerConfEntry {
     private PlayerAutoCancelSelect cancelSelect = null; // Auto cancel selection system
     
     /** The pcp. */
-    private PlayerContainerPlayer pcp; // PlayerContainerPlayer for this player
+    private IPlayerContainerPlayer pcp; // PlayerContainerPlayer for this player
 
     /**
      * Instantiates a new player conf entry.
@@ -89,32 +92,29 @@ public class PlayerConfEntry {
         }
     }
 
-    /**
-     * Gets the player container.
-     *
-     * @return the player container
-     */
-    public PlayerContainerPlayer getPlayerContainer() {
+    /* (non-Javadoc)
+	 * @see me.tabinol.factoid.config.players.IPlayerConfEntry#getPlayerContainer()
+	 */
+    @Override
+	public IPlayerContainerPlayer getPlayerContainer() {
         
         return pcp;
     }
     
-    /**
-     * Gets the sender.
-     *
-     * @return the sender
-     */
-    public CommandSender getSender() {
+    /* (non-Javadoc)
+	 * @see me.tabinol.factoid.config.players.IPlayerConfEntry#getSender()
+	 */
+    @Override
+	public CommandSender getSender() {
 
         return sender;
     }
 
-    /**
-     * Gets the player.
-     *
-     * @return the player
-     */
-    public Player getPlayer() {
+    /* (non-Javadoc)
+	 * @see me.tabinol.factoid.config.players.IPlayerConfEntry#getPlayer()
+	 */
+    @Override
+	public Player getPlayer() {
 
         return player;
     }
@@ -129,12 +129,11 @@ public class PlayerConfEntry {
         return playerSelection;
     }
 
-    /**
-     * Checks if is admin mod.
-     *
-     * @return true, if is admin mod
-     */
-    public boolean isAdminMod() {
+    /* (non-Javadoc)
+	 * @see me.tabinol.factoid.config.players.IPlayerConfEntry#isAdminMod()
+	 */
+    @Override
+	public boolean isAdminMod() {
 
         // Security for adminmod
         if (adminMod == true && !sender.hasPermission("factoid.adminmod")) {
@@ -195,12 +194,11 @@ public class PlayerConfEntry {
         chatPage = page;
     }
 
-    /**
-     * Gets the last move update.
-     *
-     * @return the last move update
-     */
-    public long getLastMoveUpdate() {
+    /* (non-Javadoc)
+	 * @see me.tabinol.factoid.config.players.IPlayerConfEntry#getLastMoveUpdate()
+	 */
+    @Override
+	public long getLastMoveUpdate() {
 
         return lastMoveUpdate;
     }
@@ -215,12 +213,11 @@ public class PlayerConfEntry {
         lastMoveUpdate = lastMove;
     }
 
-    /**
-     * Gets the last land.
-     *
-     * @return the last land
-     */
-    public DummyLand getLastLand() {
+    /* (non-Javadoc)
+	 * @see me.tabinol.factoid.config.players.IPlayerConfEntry#getLastLand()
+	 */
+    @Override
+	public IDummyLand getLastLand() {
 
         return lastLand;
     }
@@ -230,17 +227,16 @@ public class PlayerConfEntry {
      *
      * @param land the new last land
      */
-    public void setLastLand(DummyLand land) {
+    public void setLastLand(IDummyLand land) {
 
         lastLand = land;
     }
 
-    /**
-     * Gets the last loc.
-     *
-     * @return the last loc
-     */
-    public Location getLastLoc() {
+    /* (non-Javadoc)
+	 * @see me.tabinol.factoid.config.players.IPlayerConfEntry#getLastLoc()
+	 */
+    @Override
+	public Location getLastLoc() {
 
         return lastLoc;
     }
@@ -283,7 +279,7 @@ public class PlayerConfEntry {
      */
     public void setAutoCancelSelect(boolean value) {
 
-        Long timeTick = Factoid.getConf().getSelectAutoCancel();
+        Long timeTick = Factoid.getThisPlugin().iConf().getSelectAutoCancel();
 
         if (timeTick == 0) {
             return;

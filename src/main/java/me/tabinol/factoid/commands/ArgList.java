@@ -19,16 +19,16 @@ package me.tabinol.factoid.commands;
 
 // Work with command arguments
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoid.parameters.FlagType;
 import me.tabinol.factoid.parameters.FlagValue;
 import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.parameters.Permission;
 import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
-import me.tabinol.factoid.playercontainer.PlayerContainerType;
+import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
+
 import org.bukkit.command.CommandSender;
 
 
@@ -164,12 +164,12 @@ public class ArgList {
             throw new FactoidCommandException("Flag error", player, "COMMAND.FLAGS.FLAGNULL");
         }
 
-        flagType = Factoid.getParameters().getFlagType(curArg.toUpperCase());
+        flagType = Factoid.getThisPlugin().iParameters().getFlagType(curArg.toUpperCase());
         if (flagType == null) {
             throw new FactoidCommandException("Flag error", player, "COMMAND.FLAGS.FLAGNULL");
         }
 
-        if (!isAdminmod && !(isOwner && Factoid.getConf().getOwnerConfigFlag().contains(flagType))) {
+        if (!isAdminmod && !(isOwner && Factoid.getThisPlugin().iConf().getOwnerConfigFlag().contains(flagType))) {
             throw new FactoidCommandException("Flag error", player, "GENERAL.MISSINGPERMISSION");
         }
 
@@ -209,8 +209,8 @@ public class ArgList {
      * @return the player container from arg
      * @throws FactoidCommandException the factoid command exception
      */
-    public PlayerContainer getPlayerContainerFromArg(Land land,
-            PlayerContainerType[] bannedPCTList) throws FactoidCommandException {
+    public PlayerContainer getPlayerContainerFromArg(ILand land,
+            EPlayerContainerType[] bannedPCTList) throws FactoidCommandException {
 
         String curArg = getNext();
         String param = null;
@@ -220,16 +220,16 @@ public class ArgList {
             throw new FactoidCommandException("PlayerContainer Error", player, "COMMAND.CONTAINERTYPE.TYPENULL");
         }
 
-        PlayerContainerType pcType = PlayerContainerType.getFromString(curArg);
+        EPlayerContainerType pcType = EPlayerContainerType.getFromString(curArg);
 
         if (pcType == null) {
             // Type player if it is the player directly
-            pcType = PlayerContainerType.PLAYER;
+            pcType = EPlayerContainerType.PLAYER;
             param = curArg;
         }
 
         if (bannedPCTList != null) {
-            for (PlayerContainerType bPCT : bannedPCTList) {
+            for (EPlayerContainerType bPCT : bannedPCTList) {
                 if (pcType == bPCT) {
                     throw new FactoidCommandException("PlayerContainer Error", player, "COMMAND.CONTAINERTYPE.NOTPERMITTED");
                 }
@@ -248,7 +248,7 @@ public class ArgList {
             pc = PlayerContainer.create(land, pcType, "");
         }
 
-        if (pcType == PlayerContainerType.PLAYER && pc == null) {
+        if (pcType == EPlayerContainerType.PLAYER && pc == null) {
 
             // this player doesn't exist
             throw new FactoidCommandException("Player not exist Error", player, "COMMAND.CONTAINER.PLAYERNOTEXIST");
@@ -274,12 +274,12 @@ public class ArgList {
             throw new FactoidCommandException("Permission Error", player, "COMMAND.PERMISSIONTYPE.TYPENULL");
         }
 
-        pt = Factoid.getParameters().getPermissionType(curArg.toUpperCase());
+        pt = Factoid.getThisPlugin().iParameters().getPermissionType(curArg.toUpperCase());
         if (pt == null) {
             throw new FactoidCommandException("Permission Error", player, "COMMAND.PERMISSIONTYPE.INVALID");
         }
 
-        if (!isAdminmod && !(isOwner && Factoid.getConf().getOwnerConfigPerm().contains(pt))) {
+        if (!isAdminmod && !(isOwner && Factoid.getThisPlugin().iConf().getOwnerConfigPerm().contains(pt))) {
             throw new FactoidCommandException("Permission Error", player, "GENERAL.MISSINGPERMISSION");
         }
 

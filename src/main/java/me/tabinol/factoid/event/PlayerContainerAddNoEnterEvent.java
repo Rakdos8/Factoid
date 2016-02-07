@@ -19,12 +19,15 @@ package me.tabinol.factoid.event;
 
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
+
 import org.bukkit.event.HandlerList;
 
 
 /**
  * The Class PlayerContainerAddNoEnterEvent.
+ * @deprecated Use FactoidAPI
  */
+@Deprecated
 public class PlayerContainerAddNoEnterEvent extends LandEvent {
 
     /** The Constant handlers. */

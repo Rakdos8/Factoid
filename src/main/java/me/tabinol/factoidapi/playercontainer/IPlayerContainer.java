@@ -15,16 +15,18 @@
  You should have received a copy of the GNU General Public License
  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package me.tabinol.factoid.playercontainer;
+package me.tabinol.factoidapi.playercontainer;
 
-import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoidapi.lands.ILand;
+
 import org.bukkit.entity.Player;
 
 
 /**
- * The Interface PlayerContainerInterface.
+ * The Interface PlayerContainerInterface. Represent a player container of
+ * any types.
  */
-public interface PlayerContainerInterface {
+public interface IPlayerContainer {
     
     /**
      * Gets the name.
@@ -38,33 +40,25 @@ public interface PlayerContainerInterface {
      *
      * @return the container type
      */
-    public PlayerContainerType getContainerType();
-    
+    public EPlayerContainerType getContainerType();
+
     /**
      * Equals.
      *
      * @param container2 the container2
      * @return true, if successful
      */
-    public boolean equals(PlayerContainer container2);
-    
-    /**
-     * Compare to.
-     *
-     * @param t the t
-     * @return the int
-     */
-    public int compareTo(PlayerContainer t);
+    public boolean equals(IPlayerContainer container2);
     
     /**
      * Copy of.
      *
      * @return the player container
      */
-    public PlayerContainer copyOf();
+    public IPlayerContainer copyOf();
     
     /**
-     * Checks for access.
+     * Checks if the player has access or is member of this player container.
      *
      * @param player the player
      * @return true, if successful
@@ -72,17 +66,22 @@ public interface PlayerContainerInterface {
     public boolean hasAccess(Player player);
     
     /**
-     * Gets the prints the.
+     * Check if the player has access or is member of this player container.
+     * The land option is for assume the player to check if the player is
+     * owner/resident/... of this specific land. This method is only used
+     * from a DummyLand (Default or World)
+     * 
+     * @param player the player
+     * @param land from what land?
+     * @return true, if successful
+     */
+    public boolean hasAccess(Player player, ILand land);
+    
+    /**
+     * Gets the printable output.
      *
-     * @return the prints the
+     * @return the printable output
      */
     public String getPrint();
     
-    /**
-     * Sets the land.
-     *
-     * @param land the new land
-     */
-    public void setLand(Land land);
-            
 }

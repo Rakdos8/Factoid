@@ -19,8 +19,10 @@ package me.tabinol.factoid.commands.executor;
 
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ArgList;
+import me.tabinol.factoid.commands.CommandEntities;
+import me.tabinol.factoid.commands.CommandExec;
+import me.tabinol.factoid.commands.InfoCommand;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.parameters.PermissionList;
 
 import org.bukkit.ChatColor;
@@ -30,6 +32,7 @@ import org.bukkit.entity.Player;
 /**
  * The Class CommandKick.
  */
+@InfoCommand(name="kick", forceParameter=true)
 public class CommandKick extends CommandExec {
 
     /** The arg list. */
@@ -46,29 +49,12 @@ public class CommandKick extends CommandExec {
      */
     public CommandKick(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity, false, true);
+        super(entity);
         argList = entity.argList;
         player = entity.player;
 
     }
     
-    // From other command
-    /**
-     * Instantiates a new command kick.
-     *
-     * @param player the player
-     * @param argList the arg list
-     * @param land the land
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandKick(Player player, ArgList argList, Land land) throws FactoidCommandException {
-        
-        super(null, false, false);
-        this.argList = argList;
-        this.player = player;
-        this.land = land;
-    }
-
     /* (non-Javadoc)
      * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
      */
@@ -95,14 +81,15 @@ public class CommandKick extends CommandExec {
 
         // Player not in land?
         if (playerKick == null || !land.isPlayerinLandNoVanish(playerKick, player)
-                || Factoid.getPlayerConf().get(playerKick).isAdminMod()) {
+                || Factoid.getThisPlugin().iPlayerConf().get(playerKick).isAdminMod()
+                || playerKick.hasPermission("factoid.bypassban")) {
             throw new FactoidCommandException("Kicked", player, "COMMAND.KICK.NOTINLAND");
         }
         
         //Kick the player
-        playerKick.teleport(player.getLocation().getWorld().getSpawnLocation());
-        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.KICK.DONE", playerKickName, land.getName()));
-        playerKick.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.KICK.KICKED", land.getName()));
-        Factoid.getLog().write("Player " + playerKick + " kicked from " + land.getName() + ".");
+        playerKick.teleport(playerKick.getLocation().getWorld().getSpawnLocation());
+        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.KICK.DONE", playerKickName, land.getName()));
+        playerKick.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.KICK.KICKED", land.getName()));
+        Factoid.getThisPlugin().iLog().write("Player " + playerKick + " kicked from " + land.getName() + ".");
     }
 }

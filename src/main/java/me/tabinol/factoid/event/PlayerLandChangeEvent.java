@@ -19,6 +19,7 @@ package me.tabinol.factoid.event;
 
 import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.Land;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -27,7 +28,9 @@ import org.bukkit.event.HandlerList;
 
 /**
  * The Class PlayerLandChangeEvent.
+ * @deprecated Use FactoidAPI
  */
+@Deprecated
 public class PlayerLandChangeEvent extends LandEvent implements Cancellable {
     
     /** The Constant handlers. */

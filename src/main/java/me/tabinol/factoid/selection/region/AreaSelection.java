@@ -23,8 +23,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.lands.DummyLand;
-import me.tabinol.factoid.lands.areas.CuboidArea;
+import me.tabinol.factoidapi.lands.IDummyLand;
+import me.tabinol.factoidapi.lands.ILand;
+import me.tabinol.factoidapi.lands.areas.ICuboidArea;
 import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
 
@@ -41,7 +42,7 @@ import org.bukkit.event.Listener;
 public class AreaSelection extends RegionSelection implements Listener {
 
     /** The area. */
-    CuboidArea area;
+    ICuboidArea area;
     
     /** The is collision. */
     boolean isCollision = false;
@@ -54,6 +55,9 @@ public class AreaSelection extends RegionSelection implements Listener {
     
     /** The is from land. */
     private boolean isFromLand = false;
+    
+    /** Parent detected */
+    private IDummyLand parentDetected = null;
 
     /**
      * Instantiates a new area selection.
@@ -61,7 +65,7 @@ public class AreaSelection extends RegionSelection implements Listener {
      * @param player the player
      * @param area the area
      */
-    public AreaSelection(Player player, CuboidArea area) {
+    public AreaSelection(Player player, ICuboidArea area) {
 
         super(SelectionType.AREA, player);
         this.area = area;
@@ -77,7 +81,7 @@ public class AreaSelection extends RegionSelection implements Listener {
      * @param area the area
      * @param isFromLand the is from land
      */
-    public AreaSelection(Player player, CuboidArea area, boolean isFromLand) {
+    public AreaSelection(Player player, ICuboidArea area, boolean isFromLand) {
 
         super(SelectionType.AREA, player);
         this.area = area;
@@ -108,22 +112,44 @@ public class AreaSelection extends RegionSelection implements Listener {
         int diffZ = area.getZ2() - area.getZ1();
 
         // Do not show a too big select to avoid crash or severe lag
-        int maxSize = Factoid.getConf().getMaxVisualSelect();
-        int maxDisPlayer = Factoid.getConf().getMaxVisualSelectFromPlayer();
+        int maxSize = Factoid.getThisPlugin().iConf().getMaxVisualSelect();
+        int maxDisPlayer = Factoid.getThisPlugin().iConf().getMaxVisualSelectFromPlayer();
         Location playerLoc = player.getLocation();
         if (diffX > maxSize || diffZ > maxSize
                 || abs(area.getX1() - playerLoc.getBlockX()) > maxDisPlayer
                 || abs(area.getX2() - playerLoc.getBlockX()) > maxDisPlayer
                 || abs(area.getZ1() - playerLoc.getBlockZ()) > maxDisPlayer
                 || abs(area.getZ2() - playerLoc.getBlockZ()) > maxDisPlayer) {
-            Factoid.getLog().write("Selection disabled!");
+            Factoid.getThisPlugin().iLog().write("Selection disabled!");
             return;
         }
         
-        // Detect the curent land from the first postion
-        DummyLand actualLand = Factoid.getLands().getLandOrOutsideArea(new Location(
+        // Detect the curent land from the 8 points
+        IDummyLand Land1 = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(new Location(
         		area.getWord(), area.getX1(), area.getY1(), area.getZ1()));
-        boolean canCreate = actualLand.checkPermissionAndInherit(player, PermissionList.LAND_CREATE.getPermissionType()); 
+        IDummyLand Land2 = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(new Location(
+        		area.getWord(), area.getX1(), area.getY1(), area.getZ2()));
+        IDummyLand Land3 = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(new Location(
+        		area.getWord(), area.getX2(), area.getY1(), area.getZ1()));
+        IDummyLand Land4 = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(new Location(
+        		area.getWord(), area.getX2(), area.getY1(), area.getZ2()));
+        IDummyLand Land5 = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(new Location(
+        		area.getWord(), area.getX1(), area.getY2(), area.getZ1()));
+        IDummyLand Land6 = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(new Location(
+        		area.getWord(), area.getX1(), area.getY2(), area.getZ2()));
+        IDummyLand Land7 = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(new Location(
+        		area.getWord(), area.getX2(), area.getY2(), area.getZ1()));
+        IDummyLand Land8 = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(new Location(
+        		area.getWord(), area.getX2(), area.getY2(), area.getZ2()));
+        
+        if(Land1 == Land2 && Land1 == Land3 && Land1 == Land4 && Land1 == Land5 && Land1 == Land6
+        		&& Land1 == Land7 && Land1 == Land8) {
+        	parentDetected = Land1;
+        } else {
+        	parentDetected = Factoid.getThisPlugin().iLands().getOutsideArea(Land1.getWorldName());
+        }
+        
+        boolean canCreate = parentDetected.checkPermissionAndInherit(player, PermissionList.LAND_CREATE.getPermissionType());
 
         //MakeSquare
         for (int posX = area.getX1(); posX <= area.getX2(); posX++) {
@@ -137,9 +163,9 @@ public class AreaSelection extends RegionSelection implements Listener {
                     if (!isFromLand) {
 
                         // Active Selection
-                        DummyLand testCuboidarea = Factoid.getLands().getLandOrOutsideArea(newloc);
-                        if (actualLand == testCuboidarea 
-                        		&& (canCreate == true || Factoid.getPlayerConf().get(player).isAdminMod())) {
+                        IDummyLand testCuboidarea = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(newloc);
+                        if (parentDetected == testCuboidarea 
+                        		&& (canCreate == true || Factoid.getThisPlugin().iPlayerConf().get(player).isAdminMod())) {
                             this.player.sendBlockChange(newloc, Material.SPONGE, this.by);
                         } else {
                             this.player.sendBlockChange(newloc, Material.REDSTONE_BLOCK, this.by);
@@ -197,7 +223,7 @@ public class AreaSelection extends RegionSelection implements Listener {
      *
      * @return the cuboid area
      */
-    public CuboidArea getCuboidArea() {
+    public ICuboidArea getCuboidArea() {
         
         return area;
     }
@@ -212,9 +238,17 @@ public class AreaSelection extends RegionSelection implements Listener {
         return isCollision;
     }
     
-     // Get the nearest block from player before air
+    public ILand getParentDetected() {
+    	
+    	if(parentDetected instanceof ILand) {
+    		return (ILand) parentDetected;
+    	} else {
+    		return null;
+    	}
+    }
+    
     /**
-      * Gets the y near player.
+      * Gets the y near player before air.
       *
       * @param x the x
       * @param z the z

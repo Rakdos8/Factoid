@@ -18,13 +18,18 @@
 package me.tabinol.factoid.commands.executor;
 
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.commands.CommandEntities;
+import me.tabinol.factoid.commands.CommandExec;
+import me.tabinol.factoid.commands.InfoCommand;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
+
 import org.bukkit.ChatColor;
 
 
 /**
  * The Class CommandAdminmod.
  */
+@InfoCommand(name="adminmod")
 public class CommandAdminmod extends CommandExec {
 
     /**
@@ -35,7 +40,7 @@ public class CommandAdminmod extends CommandExec {
      */
     public CommandAdminmod(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity, true, false);
+        super(entity);
     }
 
     /* (non-Javadoc)
@@ -48,9 +53,9 @@ public class CommandAdminmod extends CommandExec {
         
         if (entity.playerConf.isAdminMod()) {
             entity.playerConf.setAdminMod(false);
-            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ADMINMOD.QUIT"));
+            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ADMINMOD.QUIT"));
         } else {
-            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ADMINMOD.JOIN"));
+            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ADMINMOD.JOIN"));
             entity.playerConf.setAdminMod(true);
         }
     }

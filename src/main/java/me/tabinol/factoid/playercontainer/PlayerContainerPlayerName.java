@@ -1,6 +1,8 @@
 package me.tabinol.factoid.playercontainer;
 
-import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoidapi.lands.ILand;
+import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -18,14 +20,14 @@ public class PlayerContainerPlayerName extends PlayerContainer {
      */
     public PlayerContainerPlayerName(String name) {
 
-        super(name, PlayerContainerType.PLAYERNAME, false);
+        super(name, EPlayerContainerType.PLAYERNAME, false);
     }
 
     /* (non-Javadoc)
      * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
      */
     @Override
-    public boolean equals(PlayerContainer container2) {
+    public boolean equals(IPlayerContainer container2) {
         
         return container2 instanceof PlayerContainerPlayerName &&
                 name.equals(((PlayerContainerPlayer) container2).name);
@@ -49,6 +51,12 @@ public class PlayerContainerPlayerName extends PlayerContainer {
          return false;
     }
 
+    @Override
+    public boolean hasAccess(Player player, ILand land) {
+        
+        return hasAccess(player);
+    }
+
     /* (non-Javadoc)
      * @see me.tabinol.factoid.playercontainer.PlayerContainer#getPrint()
      */
@@ -67,7 +75,7 @@ public class PlayerContainerPlayerName extends PlayerContainer {
      * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
      */
     @Override
-    public void setLand(Land land) {
+    public void setLand(ILand land) {
 
     }
 }

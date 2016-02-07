@@ -27,12 +27,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoidapi.FactoidAPI;
+import me.tabinol.factoidapi.lands.ILand;
+import me.tabinol.factoidapi.lands.types.IType;
 import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
-import me.tabinol.factoid.playercontainer.PlayerContainerType;
-import me.tabinol.factoid.utilities.StringChanges;
+import me.tabinol.factoidapi.utilities.StringChanges;
+import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -74,18 +76,22 @@ public class ApproveList {
 
         landNames.add(approve.getLandName());
         ConfigurationSection section = approveConfig.createSection(approve.getLandName());
+        if(approve.getType() != null) {
+        	section.set("Type", approve.getType().getName());
+        }
         section.set("Action", approve.getAction().toString());
         section.set("RemovedAreaId", approve.getRemovedAreaId());
-        section.set("NewArea", approve.getNewArea().toString());
+        if (approve.getNewArea() != null) {
+        	section.set("NewArea", approve.getNewArea().toString());
+        }
         section.set("Owner", approve.getOwner().toString());
         if (approve.getParent() != null) {
             section.set("Parent", approve.getParent().getName());
         }
         section.set("Price", approve.getPrice());
-        section.set("MustPay", approve.isMustPay());
         section.set("DateTime", approve.getDateTime().getTimeInMillis());
         saveFile();
-        Factoid.getApproveNotif().notifyForApprove(approve.getLandName(), approve.getOwner().getPrint());
+        Factoid.getThisPlugin().iApproveNotif().notifyForApprove(approve.getLandName(), approve.getOwner().getPrint());
     }
 
     /**
@@ -142,41 +148,52 @@ public class ApproveList {
      */
     public Approve getApprove(String landName) {
 
-        Factoid.getLog().write("Get approve for: " + landName);
+        Factoid.getThisPlugin().iLog().write("Get approve for: " + landName);
         ConfigurationSection section = approveConfig.getConfigurationSection(landName);
 
         if (section == null) {
-            Factoid.getLog().write("Error Section null");
+            Factoid.getThisPlugin().iLog().write("Error Section null");
             return null;
+        }
+        
+        String typeName = section.getString("Type");
+        IType type = null;
+        if(typeName != null) {
+        	type = FactoidAPI.iTypes().addOrGetType(typeName);
         }
 
         String[] ownerS = StringChanges.splitAddVoid(section.getString("Owner"), ":");
-        PlayerContainer pc = PlayerContainer.create(null, PlayerContainerType.getFromString(ownerS[0]), ownerS[1]);
-        Land parent = null;
+        PlayerContainer pc = PlayerContainer.create(null, EPlayerContainerType.getFromString(ownerS[0]), ownerS[1]);
+        ILand parent = null;
+        CuboidArea newArea = null;
+        
         if (section.contains("Parent")) {
-            parent = Factoid.getLands().getLand(section.getString("Parent"));
+            parent = Factoid.getThisPlugin().iLands().getLand(section.getString("Parent"));
             
             // If the parent does not exist
             if (parent == null) {
-                Factoid.getLog().write("Error, parent not found");
+                Factoid.getThisPlugin().iLog().write("Error, parent not found");
                 return null;
             }
+        }
+        
+        if(section.contains("NewArea")) {
+        	newArea = CuboidArea.getFromString(section.getString("NewArea"));
         }
         
         LandAction action = LandAction.valueOf(section.getString("Action"));
         
         // If the land was deleted
-        if(action != LandAction.LAND_ADD && Factoid.getLands().getLand(landName) == null) {
+        if(action != LandAction.LAND_ADD && Factoid.getThisPlugin().iLands().getLand(landName) == null) {
         	return null;
         }
 
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(section.getLong("DateTime"));
 
-        return new Approve(landName, action,
-                section.getInt("RemovedAreaId"),
-                CuboidArea.getFromString(section.getString("NewArea")), pc,
-                parent, section.getDouble("Price"), section.getBoolean("MustPay"), cal);
+        return new Approve(landName, type, action,
+                section.getInt("RemovedAreaId"), newArea, pc,
+                parent, section.getDouble("Price"), cal);
     }
 
     /**
@@ -196,7 +213,7 @@ public class ApproveList {
      */
     public void removeApprove(String landName) {
         
-    	Factoid.getLog().write("Remove Approve from list: " + landName);
+    	Factoid.getThisPlugin().iLog().write("Remove Approve from list: " + landName);
 
         approveConfig.set(landName, null);
         landNames.remove(landName);
@@ -208,7 +225,7 @@ public class ApproveList {
      */
     public void removeAll() {
 
-        Factoid.getLog().write("Remove all Approves from list.");
+        Factoid.getThisPlugin().iLog().write("Remove all Approves from list.");
 
         // Delete file
         if (approveFile.exists()) {
@@ -228,7 +245,7 @@ public class ApproveList {
      */
     private void loadFile() {
 
-        Factoid.getLog().write("Loading Approve list file");
+        Factoid.getThisPlugin().iLog().write("Loading Approve list file");
 
         if (!approveFile.exists()) {
             try {
@@ -256,7 +273,7 @@ public class ApproveList {
      */
     private void saveFile() {
 
-        Factoid.getLog().write("Saving Approve list file");
+        Factoid.getThisPlugin().iLog().write("Saving Approve list file");
 
         try {
             approveConfig.save(approveFile);

@@ -20,28 +20,31 @@ package me.tabinol.factoid.factions;
 import java.util.Collection;
 import java.util.TreeMap;
 import java.util.UUID;
+
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
+import me.tabinol.factoidapi.factions.IFaction;
+import me.tabinol.factoidapi.factions.IFactions;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainerPlayer;
 
 
 /**
  * The Class Factions.
  */
-public class Factions {
+public class Factions implements IFactions {
 
     /** The faction list. */
-    private final TreeMap<String, Faction> factionList;
+    private final TreeMap<String, IFaction> factionList;
     
     /** The faction uuid list. */
-    private final TreeMap<UUID, Faction> factionUUIDList;
+    private final TreeMap<UUID, IFaction> factionUUIDList;
 
     /**
      * Instantiates a new factions.
      */
     public Factions() {
 
-        factionList = new TreeMap<String, Faction>();
-        factionUUIDList = new TreeMap<UUID, Faction>();
+        factionList = new TreeMap<String, IFaction>();
+        factionUUIDList = new TreeMap<UUID, IFaction>();
     }
 
     /**
@@ -79,7 +82,7 @@ public class Factions {
 
         factionList.put(factionName, faction);
         factionUUIDList.put(uuid, faction);
-        Factoid.getLog().write("add faction: " + faction.getName());
+        Factoid.getThisPlugin().iLog().write("add faction: " + faction.getName());
 
         return faction;
     }
@@ -90,14 +93,14 @@ public class Factions {
      * @param faction the faction
      * @return true, if successful
      */
-    public boolean removeFaction(Faction faction) {
+    public boolean removeFaction(IFaction faction) {
 
         if (!factionList.containsKey(faction.getName())) {
             return false;
         }
-        Factoid.getStorageThread().removeFaction(faction);
+        Factoid.getThisPlugin().iStorageThread().removeFaction((Faction) faction);
         factionList.remove(faction.getName());
-        Factoid.getLog().write("remove faction: " + faction.getName());
+        Factoid.getThisPlugin().iLog().write("remove faction: " + faction.getName());
         return true;
     }
 
@@ -125,7 +128,7 @@ public class Factions {
      */
     public Faction getFaction(String factionName) {
 
-        return factionList.get(factionName.toLowerCase());
+        return (Faction) factionList.get(factionName.toLowerCase());
     }
 
     /**
@@ -134,11 +137,11 @@ public class Factions {
      * @param player the player
      * @return the player faction
      */
-    public Faction getPlayerFaction(PlayerContainerPlayer player) {
+    public Faction getPlayerFaction(IPlayerContainerPlayer player) {
 
-        for (Faction faction : factionList.values()) {
+        for (IFaction faction : factionList.values()) {
             if (faction.isPlayerInList(player)) {
-                return faction;
+                return (Faction) faction;
             }
         }
 
@@ -150,7 +153,7 @@ public class Factions {
      *
      * @return the factions
      */
-    public Collection<Faction> getFactions() {
+    public Collection<IFaction> getFactions() {
 
         return factionList.values();
     }

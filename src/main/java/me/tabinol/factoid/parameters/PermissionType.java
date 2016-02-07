@@ -17,11 +17,13 @@
  */
 package me.tabinol.factoid.parameters;
 
+import me.tabinol.factoidapi.parameters.IPermissionType;
+
 
 /**
  * The Class PermissionType.
  */
-public class PermissionType extends ParameterType {
+public class PermissionType extends ParameterType implements IPermissionType {
     
     /** The default value. */
     private boolean defaultValue;

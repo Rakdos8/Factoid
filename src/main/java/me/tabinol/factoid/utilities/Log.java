@@ -29,7 +29,7 @@ import me.tabinol.factoid.Factoid;
 /**
  * The Class Log.
  */
-public class Log extends Thread {
+public class Log {
 
     /** The Folder. */
     public File Folder;
@@ -42,7 +42,7 @@ public class Log extends Thread {
      */
     public Log() {
 
-        this.debug = Factoid.getConf().isDebug();
+        this.debug = Factoid.getThisPlugin().iConf().isDebug();
         this.Folder = Factoid.getThisPlugin().getDataFolder();
     }
 
@@ -70,7 +70,8 @@ public class Log extends Thread {
                 fileWriter = new FileWriter(filename, true);
                 bufWriter = new BufferedWriter(fileWriter);
                 bufWriter.newLine();
-                bufWriter.write("[Factoid][v." + Factoid.getVersion() + "][" + Dates.time() + "]" + text);
+                bufWriter.write("[Factoid][v." + Factoid.getThisPlugin().getDescription().getVersion()
+                		+ "][" + Dates.time() + "]" + text);
                 bufWriter.close();
             } catch (IOException ex) {
                 Logger.getLogger(Log.class.getName()).log(Level.SEVERE, null, ex);

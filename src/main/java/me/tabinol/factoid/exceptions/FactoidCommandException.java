@@ -44,12 +44,12 @@ public class FactoidCommandException extends Exception {
         
         super(logMsg);
         if (sender != null) {
-            Factoid.getLog().write("Player: " + sender.getName() + ", Lang Msg: " + langMsg + ", " + logMsg);
+            Factoid.getThisPlugin().iLog().write("Player: " + sender.getName() + ", Lang Msg: " + langMsg + ", " + logMsg);
         } else {
-            Factoid.getLog().write(logMsg);
+            Factoid.getThisPlugin().iLog().write(logMsg);
         }
         if (sender != null) {
-            sender.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getLanguage().getMessage(langMsg, param));
+            sender.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage(langMsg, param));
         }
     }
 }

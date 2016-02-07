@@ -14,8 +14,10 @@
 
  You should have received a copy of the GNU General Public License
  along with this program. If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 package me.tabinol.factoid;
+
+import org.bukkit.plugin.java.JavaPlugin;
 
 import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.config.Config;
@@ -26,337 +28,404 @@ import me.tabinol.factoid.economy.PlayerMoney;
 import me.tabinol.factoid.factions.Factions;
 import me.tabinol.factoid.lands.Lands;
 import me.tabinol.factoid.lands.approve.ApproveNotif;
+import me.tabinol.factoid.lands.areas.CuboidArea;
+import me.tabinol.factoid.lands.types.Types;
+import me.tabinol.factoid.listeners.ChatListener;
 import me.tabinol.factoid.listeners.LandListener;
 import me.tabinol.factoid.listeners.PlayerListener;
+import me.tabinol.factoid.listeners.PlayerListener18;
 import me.tabinol.factoid.listeners.PvpListener;
 import me.tabinol.factoid.listeners.WorldListener;
 import me.tabinol.factoid.parameters.Parameters;
+import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playerscache.PlayersCache;
 import me.tabinol.factoid.scoreboard.ScoreBoard;
 import me.tabinol.factoid.storage.StorageThread;
 import me.tabinol.factoid.utilities.Lang;
 import me.tabinol.factoid.utilities.Log;
 import me.tabinol.factoid.utilities.MavenAppProperties;
-
-import org.bukkit.plugin.java.JavaPlugin;
-
+import me.tabinol.factoidapi.FactoidAPI;
+import me.tabinol.factoidapi.IFactoid;
+import me.tabinol.factoidapi.lands.ILand;
+import me.tabinol.factoidapi.lands.areas.ICuboidArea;
+import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
 
 /**
  * The Class Factoid.
  */
-public class Factoid extends JavaPlugin {
+public class Factoid extends JavaPlugin implements IFactoid {
 
-	/**  The Economy schedule interval. */
+	/** The Economy schedule interval. */
 	public static final int ECO_SCHEDULE_INTERVAL = 20 * 60 * 5;
-	
+
+	/** The maven app properties. */
+	private static MavenAppProperties mavenAppProperties;
+
+	/** The this plugin. */
+	private static Factoid thisPlugin;
+
+	/** The factions. */
+	protected static Factions factions;
+
+	/** The types */
+	protected static Types types;
+
+	/** The lands. */
+	protected static Lands lands;
+
+	/** The parameters. */
+	protected static Parameters parameters;
+
+	/** The player conf. */
+	protected PlayerStaticConfig playerConf;
+
 	/** The Command listener. */
-    private OnCommand CommandListener;
-    
-    /** The player listener. */
-    private PlayerListener playerListener;
-    
-    /** The player listener. */
-    private PvpListener pvpListener;
+	private OnCommand CommandListener;
 
-    /** The world listener. */
-    private WorldListener worldListener;
-    
-    /** The land listener. */
-    private LandListener landListener;
-    
-    /**  The economy scheduler. */
-    private EcoScheduler ecoScheduler;
-    
-    /** The maven app properties. */
-    private static MavenAppProperties mavenAppProperties;
-    
-    /** The approve notif. */
-    private static ApproveNotif approveNotif;
-    
-    /** The storage thread. */
-    private static StorageThread storageThread = null;
-    
-    /** The log. */
-    private static Log log;
-    
-    /** The this plugin. */
-    private static Factoid thisPlugin;
-    
-    /** The conf. */
-    private static Config conf;
-    
-    /** The player conf. */
-    private static PlayerStaticConfig playerConf;
-    
-    /** The language. */
-    private static Lang language;
-    
-    /** The factions. */
-    private static Factions factions;
-    
-    /** The parameters. */
-    private static Parameters parameters;
-    
-    /** The lands. */
-    private static Lands lands;
-    
-    /** The version. */
-    private static String version;
-    
-    /** The depend plugin. */
-    private static DependPlugin dependPlugin;
-    
-    /** The player money. */
-    private static PlayerMoney playerMoney;
-    
-    /** The Scoreboard. */
-    private static ScoreBoard Scoreboard;
-    
-    /** The players cache. */
-    private static PlayersCache playersCache;
-    
-    /* (non-Javadoc)
-     * @see org.bukkit.plugin.java.JavaPlugin#onEnable()
-     */
-    @Override
-    public void onEnable() {
+	/** The player listener. */
+	private PlayerListener playerListener;
 
-        mavenAppProperties = new MavenAppProperties();
-        mavenAppProperties.loadProperties();
-        // Static access to «this» Factoid
-        thisPlugin = this;
-        version = this.getDescription().getVersion();
-        parameters = new Parameters();
-        conf = new Config();
-        log = new Log();
-        dependPlugin = new DependPlugin();
-        if (conf.useEconomy() == true && dependPlugin.getEconomy() != null) {
-            playerMoney = new PlayerMoney();
-        } else {
-            playerMoney = null;
-        }
-        playerConf = new PlayerStaticConfig();
-        playerConf.addAll();
-        language = new Lang();
-        storageThread = new StorageThread();
-        factions = new Factions();
-        lands = new Lands();
-        storageThread.loadAllAndStart();
-        worldListener = new WorldListener();
-        playerListener = new PlayerListener();
-        pvpListener = new PvpListener();
-        landListener = new LandListener();
-        CommandListener = new OnCommand();
-        Scoreboard = new ScoreBoard();
-        approveNotif = new ApproveNotif();
-        approveNotif.runApproveNotifLater();
-        ecoScheduler = new EcoScheduler();
-        ecoScheduler.runTaskTimer(this, ECO_SCHEDULE_INTERVAL, ECO_SCHEDULE_INTERVAL);
-        playersCache = new PlayersCache();
-        playersCache.start();
-        getServer().getPluginManager().registerEvents(worldListener, this);
-        getServer().getPluginManager().registerEvents(playerListener, this);
-        getServer().getPluginManager().registerEvents(pvpListener, this);
-        getServer().getPluginManager().registerEvents(landListener, this);
-        getCommand("factoid").setExecutor(CommandListener);
-        log.write(Factoid.getLanguage().getMessage("ENABLE"));
-    }
+	/** The player listener 18. */
+	private PlayerListener18 playerListener18;
 
-    /**
-     * Reload.
-     */
-    public void reload() {
+	/** The player listener. */
+	private PvpListener pvpListener;
 
-        // No reload of Parameters to avoid Deregistering external parameters
-        conf.reloadConfig();
-        if (conf.useEconomy() == true && dependPlugin.getEconomy() != null) {
-            playerMoney = new PlayerMoney();
-        } else {
-            playerMoney = null;
-        }
-        log.setDebug(conf.isDebug());
-        language.reloadConfig();
-        factions = new Factions();
-        lands = new Lands();
-        storageThread.stopNextRun();
-        storageThread= new StorageThread();
-        storageThread.loadAllAndStart();
-        approveNotif.stopNextRun();
-        approveNotif.runApproveNotifLater();
-    }
+	/** The world listener. */
+	private WorldListener worldListener;
 
-    /* (non-Javadoc)
-     * @see org.bukkit.plugin.java.JavaPlugin#onDisable()
-     */
-    @Override
-    public void onDisable() {
+	/** The land listener. */
+	private LandListener landListener;
 
-        log.write(Factoid.getLanguage().getMessage("DISABLE"));
-        playersCache.stopNextRun();
-        approveNotif.stopNextRun();
-        storageThread.stopNextRun();
-        playerConf.removeAll();
-        log.interrupt();
-        language.interrupt();
-    }
+	/** The chat listener. */
+	private ChatListener chatListener;
 
-    /**
-     * Gets the this plugin.
-     *
-     * @return the this plugin
-     */
-    public static Factoid getThisPlugin() {
+	/** The economy scheduler. */
+	private EcoScheduler ecoScheduler;
 
-        return thisPlugin;
-    }
+	/** The approve notif. */
+	private ApproveNotif approveNotif;
 
-    /**
-     * Gets the conf.
-     *
-     * @return the conf
-     */
-    public static Config getConf() {
+	/** The storage thread. */
+	private StorageThread storageThread = null;
 
-        return conf;
-    }
+	/** The log. */
+	private Log log;
 
-    /**
-     * Gets the player conf.
-     *
-     * @return the player conf
-     */
-    public static PlayerStaticConfig getPlayerConf() {
+	/** The conf. */
+	private Config conf;
 
-        return playerConf;
-    }
+	/** The language. */
+	private Lang language;
 
-    /**
-     * Gets the language.
-     *
-     * @return the language
-     */
-    public static Lang getLanguage() {
+	/** The depend plugin. */
+	private DependPlugin dependPlugin;
 
-        return language;
-    }
+	/** The player money. */
+	private PlayerMoney playerMoney;
 
-    /**
-     * Gets the scoreboard.
-     *
-     * @return the scoreboard
-     */
-    public static ScoreBoard getScoreboard() {
+	/** The Scoreboard. */
+	private ScoreBoard Scoreboard;
 
-        return Scoreboard;
-    }
+	/** The players cache. */
+	private PlayersCache playersCache;
 
-    /**
-     * Gets the log.
-     *
-     * @return the log
-     */
-    public static Log getLog() {
+	/**
+	 * Gets the maven app properties.
+	 *
+	 * @return the maven app properties
+	 */
+	public static MavenAppProperties getMavenAppProperties() {
 
-        return log;
-    }
+		return mavenAppProperties;
+	}
 
-    /**
-     * Gets the factions.
-     *
-     * @return the factions
-     */
-    public static Factions getFactions() {
+	/**
+	 * Gets the this plugin.
+	 *
+	 * @return the this plugin
+	 */
+	public static Factoid getThisPlugin() {
 
-        return factions;
-    }
-    
-    /**
-     * Gets the parameters.
-     *
-     * @return the parameters
-     */
-    public static Parameters getParameters() {
-        
-        return parameters;
-    }
+		return thisPlugin;
+	}
 
-    /**
-     * Gets the lands.
-     *
-     * @return the lands
-     */
-    public static Lands getLands() {
+	/**
+	 * Gets the factions.
+	 *
+	 * @return the factions
+	 * @deprecated Please use FactoidAPI
+	 */
+	@Deprecated
+	public static Factions getFactions() {
 
-        return lands;
-    }
+		return factions;
+	}
 
-    /**
-     * Gets the storage.
-     *
-     * @return the storage
-     */
-    public static StorageThread getStorageThread() {
+	/**
+	 * Gets the parameters.
+	 *
+	 * @return the parameters
+	 * @deprecated Please use FactoidAPI
+	 */
+	@Deprecated
+	public static Parameters getParameters() {
 
-        return storageThread;
-    }
+		return parameters;
+	}
 
-    /**
-     * Gets the version.
-     *
-     * @return the version
-     */
-    public static String getVersion() {
+	/**
+	 * Gets the lands.
+	 *
+	 * @return the lands
+	 * @deprecated Please use FactoidAPI
+	 */
+	@Deprecated
+	public static Lands getLands() {
 
-        return version;
-    }
+		return lands;
+	}
 
-    /**
-     * Gets the depend plugin.
-     *
-     * @return the depend plugin
-     */
-    public static DependPlugin getDependPlugin() {
+	/* (non-Javadoc)
+	 * @see org.bukkit.plugin.java.JavaPlugin#onEnable() */
+	@Override
+	public void onEnable() {
 
-        return dependPlugin;
-    }
+		mavenAppProperties = new MavenAppProperties();
+		mavenAppProperties.loadProperties();
+		// Static access to «this» Factoid
+		thisPlugin = this;
+		BKVersion.initVersion();
+		FactoidAPI.initFactoidPluginAccess();
+		parameters = new Parameters();
+		types = new Types();
+		conf = new Config();
+		log = new Log();
+		dependPlugin = new DependPlugin();
+		if ((conf.useEconomy() == true) && (dependPlugin.getEconomy() != null)) {
+			playerMoney = new PlayerMoney();
+		}
+		else {
+			playerMoney = null;
+		}
+		playerConf = new PlayerStaticConfig();
+		playerConf.addAll();
+		language = new Lang();
+		storageThread = new StorageThread();
+		factions = new Factions();
+		lands = new Lands();
+		storageThread.loadAllAndStart();
+		worldListener = new WorldListener();
+		playerListener = new PlayerListener();
+		if (BKVersion.isPlayerInteractAtEntityEventExist()) {
+			playerListener18 = new PlayerListener18();
+		}
+		pvpListener = new PvpListener();
+		landListener = new LandListener();
+		chatListener = new ChatListener();
+		CommandListener = new OnCommand();
+		Scoreboard = new ScoreBoard();
+		approveNotif = new ApproveNotif();
+		approveNotif.runApproveNotifLater();
+		ecoScheduler = new EcoScheduler();
+		ecoScheduler.runTaskTimer(this, ECO_SCHEDULE_INTERVAL, ECO_SCHEDULE_INTERVAL);
+		playersCache = new PlayersCache();
+		playersCache.start();
+		getServer().getPluginManager().registerEvents(worldListener, this);
+		getServer().getPluginManager().registerEvents(playerListener, this);
+		if (BKVersion.isPlayerInteractAtEntityEventExist()) {
+			getServer().getPluginManager().registerEvents(playerListener18, this);
+		}
+		getServer().getPluginManager().registerEvents(pvpListener, this);
+		getServer().getPluginManager().registerEvents(landListener, this);
+		getServer().getPluginManager().registerEvents(chatListener, this);
+		getCommand("factoid").setExecutor(CommandListener);
+		getCommand("faction").setExecutor(CommandListener);
+		log.write(iLanguage().getMessage("ENABLE"));
+	}
 
-    /**
-     * Gets the approve notif.
-     *
-     * @return the approve notif
-     */
-    public static ApproveNotif getApproveNotif() {
+	/**
+	 * Reload.
+	 */
+	public void reload() {
 
-        return approveNotif;
-    }
+		types = new Types();
+		// No reload of Parameters to avoid Deregistering external parameters
+		conf.reloadConfig();
+		if ((conf.useEconomy() == true) && (dependPlugin.getEconomy() != null)) {
+			playerMoney = new PlayerMoney();
+		}
+		else {
+			playerMoney = null;
+		}
+		log.setDebug(conf.isDebug());
+		language.reloadConfig();
+		factions = new Factions();
+		lands = new Lands();
+		storageThread.stopNextRun();
+		storageThread = new StorageThread();
+		storageThread.loadAllAndStart();
+		approveNotif.stopNextRun();
+		approveNotif.runApproveNotifLater();
+	}
 
-    /**
-     * Gets the maven app properties.
-     *
-     * @return the maven app properties
-     */
-    public static MavenAppProperties getMavenAppProperties() {
+	/* (non-Javadoc)
+	 * @see org.bukkit.plugin.java.JavaPlugin#onDisable() */
+	@Override
+	public void onDisable() {
 
-        return mavenAppProperties;
-    }
+		log.write(iLanguage().getMessage("DISABLE"));
+		playersCache.stopNextRun();
+		approveNotif.stopNextRun();
+		storageThread.stopNextRun();
+		playerConf.removeAll();
+	}
 
-    /**
-     * Gets the player money.
-     *
-     * @return the player money
-     */
-    public static PlayerMoney getPlayerMoney() {
+	/**
+	 * I conf.
+	 *
+	 * @return the config
+	 */
+	public Config iConf() {
 
-        return playerMoney;
-    }
-    
-    /**
-     * Gets the players cache.
-     *
-     * @return the players cache
-     */
-    public static PlayersCache getPlayersCache() {
-    	
-    	return playersCache;
-    }
+		return conf;
+	}
+
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoidapi.IFactoid#iPlayerConf() */
+	@Override
+	public PlayerStaticConfig iPlayerConf() {
+
+		return playerConf;
+	}
+
+	/**
+	 * I language.
+	 *
+	 * @return the lang
+	 */
+	public Lang iLanguage() {
+
+		return language;
+	}
+
+	/**
+	 * I scoreboard.
+	 *
+	 * @return the score board
+	 */
+	public ScoreBoard iScoreboard() {
+
+		return Scoreboard;
+	}
+
+	/**
+	 * I log.
+	 *
+	 * @return the log
+	 */
+	public Log iLog() {
+
+		return log;
+	}
+
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoidapi.IFactoid#iFactions() */
+	@Override
+	public Factions iFactions() {
+
+		return factions;
+	}
+
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoidapi.IFactoid#iParameters() */
+	@Override
+	public Parameters iParameters() {
+
+		return parameters;
+	}
+
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoidapi.IFactoid#iLands() */
+	@Override
+	public Lands iLands() {
+
+		return lands;
+	}
+
+	@Override
+	public Types iTypes() {
+
+		return types;
+	}
+
+	/**
+	 * I storage thread.
+	 *
+	 * @return the storage thread
+	 */
+	public StorageThread iStorageThread() {
+
+		return storageThread;
+	}
+
+	/**
+	 * I depend plugin.
+	 *
+	 * @return the depend plugin
+	 */
+	public DependPlugin iDependPlugin() {
+
+		return dependPlugin;
+	}
+
+	/**
+	 * I approve notif.
+	 *
+	 * @return the approve notif
+	 */
+	public ApproveNotif iApproveNotif() {
+
+		return approveNotif;
+	}
+
+	/**
+	 * I player money.
+	 *
+	 * @return the player money
+	 */
+	public PlayerMoney iPlayerMoney() {
+
+		return playerMoney;
+	}
+
+	/**
+	 * I players cache.
+	 *
+	 * @return the players cache
+	 */
+	public PlayersCache iPlayersCache() {
+
+		return playersCache;
+	}
+
+	/* Creators to forward */
+
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoidapi.IFactoid#createPlayerContainer(me.tabinol.factoidapi.lands.ILand,
+	 * me.tabinol.factoidapi.playercontainer.EPlayerContainerType, java.lang.String) */
+	@Override
+	public PlayerContainer createPlayerContainer(final ILand land, final EPlayerContainerType pct, final String name) {
+
+		return PlayerContainer.create(land, pct, name);
+	}
+
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoidapi.IFactoid#createCuboidArea(java.lang.String, int, int, int, int, int, int) */
+	@Override
+	public ICuboidArea createCuboidArea(final String worldName, final int x1, final int y1, final int z1, final int x2, final int y2, final int z2) {
+
+		return new CuboidArea(worldName, x1, y1, z1, x2, y2, z2);
+	}
+
 }

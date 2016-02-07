@@ -19,13 +19,16 @@ package me.tabinol.factoid.event;
 
 import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.Land;
+
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 
 /**
  * The Class LandEvent.
+ * @deprecated Use FactoidAPI
  */
+@Deprecated
 public class LandEvent extends Event {
 
     /** The Constant handlers. */

@@ -15,11 +15,12 @@
  You should have received a copy of the GNU General Public License
  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package me.tabinol.factoid.commands.executor;
+package me.tabinol.factoid.commands;
 
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.playercontainer.PlayerContainer;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
+import me.tabinol.factoid.playercontainer.PlayerContainerPlayerName;
 import me.tabinol.factoid.playerscache.PlayerCacheEntry;
 
 
@@ -28,18 +29,17 @@ import me.tabinol.factoid.playerscache.PlayerCacheEntry;
  */
 public abstract class CommandThreadExec extends CommandExec {
 	
+	protected IPlayerContainer pc;
+
 	/**
 	 * Instantiates a new command thread exec.
 	 *
 	 * @param entity the entity
-	 * @param canFromConsole the can from console
-	 * @param needsMoreParameter the needs more parameter
 	 * @throws FactoidCommandException the factoid command exception
 	 */
-	public CommandThreadExec(CommandEntities entity,
-            boolean canFromConsole, boolean needsMoreParameter) throws FactoidCommandException {
+	public CommandThreadExec(CommandEntities entity) throws FactoidCommandException {
 	
-	super(entity, canFromConsole, needsMoreParameter);
+	super(entity);
 	}
 	
 	/**
@@ -52,28 +52,21 @@ public abstract class CommandThreadExec extends CommandExec {
 			throws FactoidCommandException;
 	
 	/**
-	 * Convert pc if needed.
+	 * Convert only if the PlayerContainer is a PlayerContainerPlayerName
+	 * It takes the result from the UUID request.
 	 *
 	 * @param playerCacheEntry the player cache entry
-	 * @param pc the pc
-	 * @return the player container
 	 * @throws FactoidCommandException the factoid command exception
 	 */
-	protected PlayerContainer convertPcIfNeeded(PlayerCacheEntry[] playerCacheEntry, PlayerContainer pc)
+	protected void convertPcIfNeeded(PlayerCacheEntry[] playerCacheEntry)
 			throws FactoidCommandException {
 		
-		PlayerContainer newPc;
-		
-		if(playerCacheEntry.length == 1) {
-			if(playerCacheEntry[0] != null) {
-				newPc = new PlayerContainerPlayer(playerCacheEntry[0].getUUID());
+		if(pc instanceof PlayerContainerPlayerName) {
+			if(playerCacheEntry.length == 1 && playerCacheEntry[0] != null) {
+				pc = new PlayerContainerPlayer(playerCacheEntry[0].getUUID());
 			} else {
 				throw new FactoidCommandException("Player not exist Error", entity.player, "COMMAND.CONTAINER.PLAYERNOTEXIST");
 			}
-		} else {
-			newPc = pc;
 		}
-		
-		return newPc;
 	}
 }

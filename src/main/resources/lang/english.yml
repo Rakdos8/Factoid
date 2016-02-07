@@ -6,118 +6,128 @@ CONSOLE: "Hey Console! Wait...what?"
 HELP:
   NOHELP: "No help avalaible for this command."
   LISTSTART: "-Command list-"
-  GENERAL:
-    1: "Type \"/factoid help\" <command> for specific command help."
-    2: "-General commands-"
-    3: "/factoid select : Select a land."
-    4: "/factoid info : Land information."
-    5: "/factoid adminmod : Set/Unset admin mod."
-    6: "/factoid reload : Reload the plugin."
-    7: "/factoid approve : Approve or not a change."
-    8: "/factoid list : Land list."
-    9: "/factoid tp : Teleport to a land."
-    10: "-Land commands (a land must be selected)-"
-    11: "/factoid area : Area of the land."
-    12: "/factoid ban : Banned from the land."
-    13: "/factoid cancel : Cancel an action."
-    14: "/factoid create : Create a land."
-    15: "/factoid expand : Expand the land."
-    16: "/factoid flag : Flags of the land."
-    17: "/factoid kick : (*) Kick a player from a land."
-    18: "/factoid money : Argent du terrain."
-    19: "/factoid notify : (*) Set/Unset land notification."
-    20: "/factoid owner : Owner of the land."
-    21: "/factoid page : View a command result page."
-    22: "/factoid permission : Permissions of the land."
-    23: "/factoid priority : Priority of the land."
-    24: "/factoid remove : Delete a land."
-    25: "/factoid rename : Rename a land."
-    26: "/factoid rent : Set the land for rent."
-    27: "/factoid resident : Resident of the land."
-    28: "/factoid sale : Set the land for sale."
-    29: "/factoid setspawn : Create a spawn location."
-    30: "/factoid who : (*) Show players on a land."
-    31: "(*) If the land is not selected, the name can be the last parameter."
-  SELECT:
-    1: "/factoid select <here/land name> : Select a land for modification."
-    2: "/factoid select : Start the visual selection."
-    3: "/factoid select done : Set a visual selection done."
-    4: "/factoid select worldedit : Select the WorldEdit selection."
-    5: "/factoid select info : Informations about the selection."
-  INFO:
-    1: "/factoid INFO [land] : Show global informations of the curent land."
-  ADMINMOD:
-    1: "/factoid adminmod : Activate or disactivate admin mod."
-  RELOAD:
-    1: "/factoid reload : Reload the plugin configuration."
-  APPROVE:
-    1: "/factoid approve list : List actions to approve."
-    2: "/factoid approve info <land> : Information of the action."
-    3: "/factoid approve confirm <land> : Approve an action."
-    4: "/factoid approve cancel <land> : Cancel an action."
-    5: "/factoid approve clear : Remove all approve list."
-  AREA:
-    1: "/factoid area list : List areas."
-    2: "/factoid area add : Add an area."
-    3: "/factoid area remove <area nb> : Remove an area."
-    4: "/factoid area replace : Replace an area."
-  BAN:
-    1: "/factoid ban list : List banned players/containers."
-    2: "/factoid ban add <player container> : Ban a player/container"
-    3: "/factoid ban remove <player container> : Remove a banned player/cont."
-  CANCEL:
-    1: "/factoid cancel : Cancel a selection or an action."
-  CREATE:
-    1: "/factoid create <land name> [parent]/[noparent] : Create a land. Parent detected automatically."
-  DEFAULT:
-    1: "/factoid default : Reset land configuration to default."
-  EXPAND:
-    1: "/factoid expand : Expand the land selection."
-    2: "/factoid expand done : Stop the land expanding."
-  FLAG:
-    1: "/factoid flag list : List flags."
-    2: "/factoid flag set <flag> <value> : Add a flag."
-    3: "/factoid flag unset <flag> : Remove a flag."
-  KICK:
-    1: "/factoid kick [player] <land> : Kick a player from a land."
-  LIST:
-    1: "/factoid list [player] / world [world name] : Lands list."
-  MONEY:
-    1: "/factoid money balance : Show the money balance of the land."
-    2: "/factoid money deposit <amount> : Deposit money."
-    3: "/factoid money withdraw <amount> : Withdraw money."
-  NOTIFY:
-    1: "/factoid notify <land> : Set/Unset land notification."
-  OWNER:
-    1: "/factoid owner <player container> : Change the owner of the land."
-  PAGE:
-    1: "/factoid page <page number> : Show a page for a long result."
-  PERMISSION:
-    1: "/factoid permission list : List permissions."
-    2: "/factoid permission set <player container> <perm> <value> : Add a permission."
-    3: "/factoid permission unset unset <player container> <perm> : Remove a permission."
-  PRIORITY:
-    1: "/factoid priority <number> : Change the land priority."
-  REMOVE:
-    1: "/factoid remove : Delete a land."
-  RENAME:
-    1: "/factoid rename <new name> : Rename a land."
-  RENT:
-    1: "/factoid rent <price> <nb of days> [autorenew true/false] : Set the land for rent."
-    2: "/factoid rent recreate : Move or recreate a lost sign."
-  RESIDENT:
-    1: "/factoid resident list : List residents."
-    2: "/factoid resident add <player container> : Add a resident."
-    3: "/factoid resident remove <player container> : Remove a resident."
-  SALE:
-    1: "/factoid sale <price> : Set the land for sale."
-    2: "/factoid sale recreate : Move or recreate a lost sign."
-  SETSPAWN:
-    1: "/factoid setspawn : Create a spawn location."
-  TP:
-    1: "/factoid tp <terrain> : Teleport you to the land."
-  WHO:
-    1: "/factoid who [land] : Show players on a land."
+  FACTOID:
+    GENERAL:
+      1: "Type \"/factoid help\" <command> for specific command help."
+      2: "-General commands-"
+      3: "/factoid select : Select a land."
+      4: "/factoid info : Land information."
+      5: "/factoid adminmod : Set/Unset admin mod."
+      6: "/factoid reload : Reload the plugin."
+      7: "/factoid approve : Approve or not a change."
+      8: "/factoid list : Land list."
+      9: "/factoid tp : Teleport to a land."
+      10: "-Land commands (a land must be selected)-"
+      11: "/factoid area : Area of the land."
+      12: "/factoid ban : Banned from the land."
+      13: "/factoid cancel : Cancel an action."
+      14: "/factoid create : Create a land."
+      15: "/factoid expand : Expand the land."
+      16: "/factoid flag : Flags of the land."
+      17: "/factoid kick : (*) Kick a player from a land."
+      18: "/factoid money : Argent du terrain."
+      19: "/factoid notify : (*) Set/Unset land notification."
+      20: "/factoid owner : Owner of the land."
+      21: "/factoid page : View a command result page."
+      22: "/factoid parent : Set the parent."
+      23: "/factoid permission : Permissions of the land."
+      24: "/factoid priority : Priority of the land."
+      25: "/factoid remove : Delete a land."
+      26: "/factoid rename : Rename a land."
+      27: "/factoid rent : Set the land for rent."
+      28: "/factoid resident : Resident of the land."
+      29: "/factoid sale : Set the land for sale."
+      30: "/factoid setspawn : Create a spawn location."
+      31: "/factoid type : Set the type of the land."
+      32: "/factoid who : (*) Show players on a land."
+      33: "(*) If the land is not selected, the name can be the last parameter."
+    SELECT:
+      1: "/factoid select <here/land name> : Select a land for modification."
+      2: "/factoid select : Start the visual selection."
+      3: "/factoid select done : Set a visual selection done."
+      4: "/factoid select worldedit : Select the WorldEdit selection."
+      5: "/factoid select info : Informations about the selection."
+    INFO:
+      1: "/factoid INFO [land] : Show global informations of the curent land."
+    ADMINMOD:
+      1: "/factoid adminmod : Activate or disactivate admin mod."
+    RELOAD:
+      1: "/factoid reload : Reload the plugin configuration."
+    APPROVE:
+      1: "/factoid approve list : List actions to approve."
+      2: "/factoid approve info <land> : Information of the action."
+      3: "/factoid approve confirm <land> : Approve an action."
+      4: "/factoid approve cancel <land> : Cancel an action."
+      5: "/factoid approve clear : Remove all approve list."
+    AREA:
+      1: "/factoid area list : List areas."
+      2: "/factoid area add : Add an area."
+      3: "/factoid area remove <area nb> : Remove an area."
+      4: "/factoid area replace : Replace an area."
+    BAN:
+      1: "/factoid ban list : List banned players/containers."
+      2: "/factoid ban add <player container> : Ban a player/container"
+      3: "/factoid ban remove <player container> : Remove a banned player/cont."
+    CANCEL:
+      1: "/factoid cancel : Cancel a selection or an action."
+    CREATE:
+      1: "/factoid create <land name> [parent]/[noparent] : Create a land. Parent detected automatically."
+    DEFAULT:
+      1: "/factoid default : Reset land configuration to default."
+    EXPAND:
+      1: "/factoid expand : Expand the land selection."
+      2: "/factoid expand done : Stop the land expanding."
+    FLAG:
+      1: "/factoid flag list : List flags."
+      2: "/factoid flag set <flag> <value> : Add a flag."
+      3: "/factoid flag unset <flag> : Remove a flag."
+    KICK:
+      1: "/factoid kick [player] <land> : Kick a player from a land."
+    LIST:
+      1: "/factoid list [player] / world [world name] / type <type> : Lands list."
+    MONEY:
+      1: "/factoid money balance : Show the money balance of the land."
+      2: "/factoid money deposit <amount> : Deposit money."
+      3: "/factoid money withdraw <amount> : Withdraw money."
+    NOTIFY:
+      1: "/factoid notify <land> : Set/Unset land notification."
+    OWNER:
+      1: "/factoid owner <player container> : Change the owner of the land."
+    PAGE:
+      1: "/factoid page <page number> : Show a page for a long result."
+    PARENT:
+      1: "/factoid parent <parent land name> : Set or replace the parent."
+      2: "/factoid parent unset : Remove the parent."
+    PERMISSION:
+      1: "/factoid permission list : List permissions."
+      2: "/factoid permission set <player container> <perm> <value> : Add a permission."
+      3: "/factoid permission unset unset <player container> <perm> : Remove a permission."
+    PRIORITY:
+      1: "/factoid priority <number> : Change the land priority."
+    REMOVE:
+      1: "/factoid remove : Delete a land."
+    RENAME:
+      1: "/factoid rename <new name> : Rename a land."
+    RENT:
+      1: "/factoid rent <price> <nb of days> [autorenew true/false] : Set the land for rent."
+      2: "/factoid rent recreate : Move or recreate a lost sign."
+    RESIDENT:
+      1: "/factoid resident list : List residents."
+      2: "/factoid resident add <player container> : Add a resident."
+      3: "/factoid resident remove <player container> : Remove a resident."
+    SALE:
+      1: "/factoid sale <price> : Set the land for sale."
+      2: "/factoid sale recreate : Move or recreate a lost sign."
+    SETSPAWN:
+      1: "/factoid setspawn : Create a spawn location."
+    TP:
+      1: "/factoid tp <terrain> : Teleport you to the land."
+    TYPE:
+      1: "/factoid type list : List available land types."
+      2: "/factoid type <type> : Set the land type."
+      3: "/factoid type remove : Remove the land types."
+    WHO:
+      1: "/factoid who [land] : Show players on a land."
 
 SCOREBOARD:
   LANDINFO: "Players List"
@@ -126,6 +136,9 @@ GENERAL:
   MISSINGPERMISSIONHERE: "Sorry, you don't have the permission here."
   ERROR: "An Error Occur Please contact an Administrator."
   MISSINGINFO: "Some information is missing. Check your command again."
+  FROMDEFAULTTYPE: "Inheritance from default type '%':"
+  FROMPARENT: "Inheritance from parent '%':"
+  FROMWORLD: "Inheritance from world '%':"
   QUIT:
     EXPENDMODE: "Quit the Expand Mode before."
     FLAGSMODE: "Quit the Flags Mode before."
@@ -152,7 +165,7 @@ COLLISION:
     NOTIFY: "% action(s) waiting for approval."
   GENERAL:
     NEEDAPPROVE: "Your operation is listed for approval. \"/factoid approve cancel %\" if you want to cancel."
-    CANNOTDONE: "Collision problem! Your action can't be done."
+    CANNOTDONE: "Problem detected! Your action can't be done."
     DONE: "This action is approved."
     REMOVE: "The action is removed from the approve list."
     CLEAR: "The list is now cleared."
@@ -163,7 +176,7 @@ COMMAND:
     INVALID: "Spawn location is unreadable."
     OUTSIDE: "You are outside of the land."
     CREATED: "The spawn location is now here."
-  NOTEXIST: "This command does not exist. You can do \"/factoid help\""
+  NOTEXIST: "This command does not exist. You can do \"/% help\""
   CONFIRM: "To confirm your choice, type \"/factoid confirm\" or to cancel type \"/factoid cancel\"."
   NOCONFIRM: "Nothing to confirm."
   PAGE:
@@ -172,6 +185,12 @@ COMMAND:
     INVALID: "The page number is invalid!"
   LAND:
     LISTSTART: "-Lands list-"
+    TYPENOTEXIST: "This type is invalid!"
+  TYPES:
+    LISTSTART: "-Types list-"
+    REMOVEISDONE: "The type is removed from the land %."
+    INVALID: "This type is invlaid!"
+    ISDONE: "The type % is set to land %."
   AREA:
     LISTSTART: "-Areas list of '%'-"
   SELECT:
@@ -182,14 +201,9 @@ COMMAND:
     LAND:
       NOCOLLISION: "Your selection has no collision."
       COLLISION: "Your selection has a collision with an another Land."
-#    AREA:
-#      NOCOLLISION: "Your selection has no collision."
-#      COLLISION: "Your selection has a collision with an another Area."
     CANCEL: "You have cancelled your selection."
     CANTDONE: "You cannot 'Done' a selection which's already a Land."
     CANTDONEWORLDEDIT: "You cannot 'Done' a WorldEdit selection. You can Create your land."
-#    NEWLAND: "You have selected a new Land."
-#    NEWAREA: "You have selected a new Area."
     SELECTEDLAND: "You have selected the land '%'"
     SELECTEDAREA: "You have selected the area '%'"
     WORLDEDIT:
@@ -232,7 +246,6 @@ COMMAND:
     FLAGNULL: "This Flag doesn't exist."
     ISDONE: "you have set '%' to '%'."
     LISTSTART: "-Flags of '%'-"
-    LISTROWNULL: "No Flags."
     REMOVENOTEXIST: "Not in flag list."
     REMOVEISDONE: "you have removed '%' from flag list."
   CONTAINERTYPE:
@@ -253,7 +266,6 @@ COMMAND:
     PLAYERCONTAINERTYPENULL: "This type doesn't exist."
     ISDONE: "you have set the permission '%' to '%' for '%'"
     LISTSTART: "-Permissions of '%'-"
-    LISTROWNULL: "No Permissions."
     NOENTERNOTINSPAWN: "You can't disable the LAND_ENTER permission where the world spawn is."
     REMOVENOTEXIST: "Not in permission list."
     REMOVEISDONE: "you have removed '%' from permission list."
@@ -294,7 +306,8 @@ COMMAND:
       PRIORITY: "Priority: %, "
       FORSALE: "For sale!"
       FORRENT: "For rent!"
-      PARENT: "Parent: % "
+      TYPE: "Type: %"
+      PARENT: ", Parent: % "
       OWNER: "Owner: %"
       TENANT: ", Tenant: %"
       ACTIVEAREA: "You are on area: %"
@@ -342,6 +355,11 @@ COMMAND:
     ALREADYSALE: "The sign is already created. Use '/factoid sale recreate' to recreate or move the sign"
     ALREADYRENT: "The sign is already created. Use '/factoid rent recreate' to recreate or move the sign"
     MUSTHAVEISIGN: "You must have a sign in your hand."
+  PARENT:
+    INVALID: "The parent name is invalid!"
+    NOTCHILD: "The parent can not be a child!"
+    REMOVEDONE: "The parent of this land is removed."
+    DONE: "The parent of this land is now '%'."
 ACTION:
   BANNED: "You are banned from the land %!"
   NOENTRY: "You can not enter in the land %!"
@@ -354,3 +372,5 @@ SIGN:
     FORRENT: "-For rent-"
     RENTED: "-Rented-"
     AUTORENEW: "Auto renew"
+CHAT:
+  OUTSIDE: "You are outside a land!"

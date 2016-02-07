@@ -17,12 +17,22 @@
  */
 package me.tabinol.factoid.commands.executor;
 
+import java.util.LinkedList;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
+import me.tabinol.factoid.commands.CommandEntities;
+import me.tabinol.factoid.commands.CommandExec;
+import me.tabinol.factoid.commands.InfoCommand;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.parameters.FlagType;
-import me.tabinol.factoid.parameters.LandFlag;
+import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.lands.Lands;
+import me.tabinol.factoidapi.FactoidAPI;
+import me.tabinol.factoidapi.lands.IDummyLand;
+import me.tabinol.factoidapi.lands.ILand;
+import me.tabinol.factoidapi.parameters.IFlagType;
+import me.tabinol.factoidapi.parameters.ILandFlag;
 
 import org.bukkit.ChatColor;
 
@@ -30,7 +40,11 @@ import org.bukkit.ChatColor;
 /**
  * The Class CommandFlag.
  */
+@InfoCommand(name="flag", forceParameter=true)
 public class CommandFlag extends CommandExec {
+	
+	private LinkedList<IDummyLand> precDL; // Listed Precedent lands (no duplicates)
+	private StringBuilder stList;
 
     /**
      * Instantiates a new command flag.
@@ -40,7 +54,7 @@ public class CommandFlag extends CommandExec {
      */
     public CommandFlag(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity, false, true);
+        super(entity);
     }
 
     /* (non-Javadoc)
@@ -55,10 +69,10 @@ public class CommandFlag extends CommandExec {
         /*
         if (entity.argList.length() < 2) {
 
-            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.JOINMODE"));
-            Factoid.getLog().write("PlayerSetFlagUI for " + entity.playerName);
-            entity.player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.HINT"));
-            CuboidArea area = Factoid.getLands().getCuboidArea(entity.player.getLocation());
+            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.FLAGS.JOINMODE"));
+            Factoid.getThisPlugin().iLog().write("PlayerSetFlagUI for " + entity.playerName);
+            entity.player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.FLAGS.HINT"));
+            CuboidArea area = Factoid.getThisPlugin().iLands().getCuboidArea(entity.player.getLocation());
             LandSetFlag setting = new LandSetFlag(entity.player, area);
             entity.playerConf.setSetFlagUI(setting);
             
@@ -70,46 +84,91 @@ public class CommandFlag extends CommandExec {
 
             // Permission check is on getFlagFromArg
             
-            LandFlag landFlag = entity.argList.getFlagFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.player));
+            ILandFlag landFlag = entity.argList.getFlagFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.player));
             
             if(!landFlag.getFlagType().isRegistered()) {
             	throw new FactoidCommandException("Flag not registered", entity.player, "COMMAND.FLAGS.FLAGNULL");
             }
             
-            land.addFlag(landFlag);
+            ((Land)land).addFlag(landFlag);
             entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + 
-            Factoid.getLanguage().getMessage("COMMAND.FLAGS.ISDONE", landFlag.getFlagType().toString(), 
+            Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.FLAGS.ISDONE", landFlag.getFlagType().toString(), 
                     landFlag.getValue().getValuePrint() + ChatColor.YELLOW));
-            Factoid.getLog().write("Flag set: " + landFlag.getFlagType().toString() + ", value: " + 
-                    landFlag.getValue().getValueString());
+            Factoid.getThisPlugin().iLog().write("Flag set: " + landFlag.getFlagType().toString() + ", value: " + 
+                    landFlag.getValue().getValue().toString());
 
         } else if (curArg.equalsIgnoreCase("unset")) {
         
-            FlagType flagType = entity.argList.getFlagTypeFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.player));
+            IFlagType flagType = entity.argList.getFlagTypeFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.player));
             if (!land.removeFlag(flagType)) {
                 throw new FactoidCommandException("Flags", entity.player, "COMMAND.FLAGS.REMOVENOTEXIST");
             }
-            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.REMOVEISDONE", flagType.toString()));
-            Factoid.getLog().write("Flag unset: " + flagType.toString());
+            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.FLAGS.REMOVEISDONE", flagType.toString()));
+            Factoid.getThisPlugin().iLog().write("Flag unset: " + flagType.toString());
         
         } else if (curArg.equalsIgnoreCase("list")) {
 
-            StringBuilder stList = new StringBuilder();
-            if (!land.getFlags().isEmpty()) {
-                for (LandFlag flag : land.getFlags()) {
-                    if (stList.length() != 0) {
-                        stList.append(" ");
-                    }
-                    stList.append(flag.getFlagType().getPrint()).append(":").append(flag.getValue().getValuePrint());
-                }
-                stList.append(Config.NEWLINE);
-            } else {
-                entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.FLAGS.LISTROWNULL"));
-            }
+        	precDL = new LinkedList<IDummyLand>();
+        	stList = new StringBuilder();
+        	
+        	// For the actual land
+        	importDisplayFlagsFrom(land, false);
+        	
+        	// For default Type
+        	if(land.getType() != null) {
+            	stList.append(ChatColor.DARK_GRAY + Factoid.getThisPlugin().iLanguage().getMessage("GENERAL.FROMDEFAULTTYPE",
+        				land.getType().getName())).append(Config.NEWLINE);
+            	importDisplayFlagsFrom(((Lands) FactoidAPI.iLands()).getDefaultConf(land.getType()), false);
+        	}
+        	
+        	// For parent (if exist)
+        	ILand parLand = land;
+        	while((parLand = parLand.getParent()) != null) {
+        		stList.append(ChatColor.DARK_GRAY + Factoid.getThisPlugin().iLanguage().getMessage("GENERAL.FROMPARENT",
+        				ChatColor.GREEN + parLand.getName() + ChatColor.DARK_GRAY)).append(Config.NEWLINE);
+        		importDisplayFlagsFrom(parLand, true);
+        	}
+        	
+        	// For world
+        	stList.append(ChatColor.DARK_GRAY + Factoid.getThisPlugin().iLanguage().getMessage("GENERAL.FROMWORLD",
+    				land.getWorldName())).append(Config.NEWLINE);
+        	importDisplayFlagsFrom(((Lands) FactoidAPI.iLands()).getOutsideArea(land.getWorldName()), true);
+                
             new ChatPage("COMMAND.FLAGS.LISTSTART", stList.toString(), entity.player, land.getName()).getPage(1);
 
         } else {
             throw new FactoidCommandException("Missing information command", entity.player, "GENERAL.MISSINGINFO");
         }
+    }
+    
+    private void importDisplayFlagsFrom(IDummyLand land, boolean onlyInherit) {
+    	
+    	StringBuilder stSubList = new StringBuilder();
+    	for (ILandFlag flag : land.getFlags()) {
+            if (stSubList.length() != 0 && !stSubList.toString().endsWith(" ")) {
+                stSubList.append(" ");
+            }
+            if((!onlyInherit || flag.isHeritable()) && !flagInList(flag)) {
+                stSubList.append(flag.getFlagType().getPrint()).append(":").append(flag.getValue().getValuePrint());
+            }
+        }
+        
+    	if(stSubList.length() > 0) {
+        	stList.append(stSubList).append(Config.NEWLINE);
+        	precDL.add(land);
+    	}
+    }
+    
+    private boolean flagInList(ILandFlag flag) {
+    	
+    	for(IDummyLand listLand : precDL) {
+    		for(ILandFlag listFlag : listLand.getFlags()) {
+    			if(flag.getFlagType() == listFlag.getFlagType()) {
+    				return true;
+    			}
+    		}
+    	}
+    	
+    	return false;
     }
 }

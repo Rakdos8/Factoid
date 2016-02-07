@@ -1,5 +1,5 @@
 /*
- Factoid: Lands and Factions plugin for Minecraft server
+< Factoid: Lands and Factions plugin for Minecraft server
  Copyright (C) 2014 Kaz00, Tabinol
 
  This program is free software: you can redistribute it and/or modify
@@ -22,14 +22,15 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
-import me.tabinol.factoid.lands.Land;
-import me.tabinol.factoid.lands.Lands;
-import me.tabinol.factoid.lands.areas.CuboidArea;
-import me.tabinol.factoid.playercontainer.PlayerContainer;
-import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
-import me.tabinol.factoid.playercontainer.PlayerContainerType;
+import me.tabinol.factoidapi.lands.ILand;
+import me.tabinol.factoidapi.lands.ILands;
+import me.tabinol.factoidapi.lands.areas.ICuboidArea;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainerPlayer;
+import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
 
 
 /**
@@ -50,6 +51,9 @@ public class Collisions {
         
         /** The land remove. */
         LAND_REMOVE,
+        
+        /** The land parent. */
+        LAND_PARENT,
         
         /** The area add. */
         AREA_ADD,
@@ -113,13 +117,13 @@ public class Collisions {
     private final List<CollisionsEntry> coll;
     
     /** The lands. */
-    private final Lands lands;
+    private final ILands lands;
     
     /** The land name. */
     private final String landName;
     
     /** The land. */
-    private final Land land;
+    private final ILand land;
     
     /** The action. */
     private final LandAction action;
@@ -128,10 +132,10 @@ public class Collisions {
     private final int removedAreaId;
     
     /** The new area. */
-    private final CuboidArea newArea;
+    private final ICuboidArea newArea;
     
     /** The parent. */
-    private final Land parent;
+    private final ILand parent;
     
     /** The allow approve. */
     private boolean allowApprove;
@@ -149,11 +153,11 @@ public class Collisions {
      * @param price the price
      * @param checkApproveList the check approve list
      */
-    public Collisions(String landName, Land land, LandAction action, int removedAreaId, CuboidArea newArea, Land parent,
-            PlayerContainer owner, double price, boolean checkApproveList) {
+    public Collisions(String landName, ILand land, LandAction action, int removedAreaId, ICuboidArea newArea, ILand parent,
+            IPlayerContainer owner, double price, boolean checkApproveList) {
 
         coll = new ArrayList<CollisionsEntry>();
-        lands = Factoid.getLands();
+        lands = Factoid.getThisPlugin().iLands();
         this.landName = landName;
         this.land = land;
         this.action = action;
@@ -164,13 +168,24 @@ public class Collisions {
         // Pass 1 check if there is a collision
         if (action == LandAction.LAND_ADD || action == LandAction.AREA_ADD || action == LandAction.AREA_MODIFY) {
             checkCollisions();
-
-            // Pass 2 check if the the cuboid is inside the parent
-            if (parent != null) {
-                checkIfInsideParent();
-            }
         }
-
+        
+        // Pass 2 check if the the cuboid is inside the parent
+        if(parent != null) {
+        	if (action == LandAction.LAND_ADD || action == LandAction.AREA_ADD 
+        			|| action == LandAction.AREA_MODIFY) {
+        		checkIfInsideParent(newArea);
+        	} else if(action == LandAction.LAND_PARENT) {
+        		Iterator<ICuboidArea> areaIt = land.getAreas().iterator();
+        		boolean exitLoop = false;
+        		while(areaIt.hasNext() && !exitLoop) {
+        			if(!checkIfInsideParent(areaIt.next())) {
+        				exitLoop = true;
+        			}
+        		}
+        	}
+        }
+        
         // Pass 3 check if children are not out of land
         if ((action == LandAction.AREA_MODIFY || action == LandAction.AREA_REMOVE)
                 && !land.getChildren().isEmpty()) {
@@ -188,29 +203,30 @@ public class Collisions {
         }
 
         // Pass 6 check if the name is already in Approve List
-        if (!checkApproveList && lands.getApproveList().isInApprove(landName)) {
-            coll.add(new CollisionsEntry(LandError.IN_APPROVE_LIST, null, 0));
+        if (!checkApproveList && 
+        		((me.tabinol.factoid.lands.Lands) lands).getApproveList().isInApprove(landName)) {
+        	coll.add(new CollisionsEntry(LandError.IN_APPROVE_LIST, null, 0));
         }
         
-        if(owner.getContainerType() == PlayerContainerType.PLAYER) {
+        if(owner.getContainerType() == EPlayerContainerType.PLAYER) {
         	
         	// Pass 7 check if the player has enough money
         	if(price > 0 && newArea != null) {
-        		double playerBalance = Factoid.getPlayerMoney().getPlayerBalance(
-        				((PlayerContainerPlayer)owner).getOfflinePlayer(), newArea.getWorldName());
+        		double playerBalance = Factoid.getThisPlugin().iPlayerMoney().getPlayerBalance(
+        				((IPlayerContainerPlayer)owner).getOfflinePlayer(), newArea.getWorldName());
         		if(playerBalance < price) {
         			coll.add(new CollisionsEntry(LandError.NOT_ENOUGH_MONEY, null, 0));
         		}
         	}
         
         	// Pass 8 check if the land has more than the maximum number of areas
-        	if(action == LandAction.AREA_ADD && land.getAreas().size() >= Factoid.getConf().getMaxAreaPerLand()) {
+        	if(action == LandAction.AREA_ADD && land.getAreas().size() >= Factoid.getThisPlugin().iConf().getMaxAreaPerLand()) {
         		coll.add(new CollisionsEntry(LandError.MAX_AREA_FOR_LAND, land, 0));
         	}
         
         	// Pass 9 check if the player has more than the maximum number of land
         	if(action == LandAction.LAND_ADD && owner != null 
-        			&& Factoid.getLands().getLands(owner).size() >= Factoid.getConf().getMaxLandPerPlayer()) {
+        			&& Factoid.getThisPlugin().iLands().getLands(owner).size() >= Factoid.getThisPlugin().iConf().getMaxLandPerPlayer()) {
         		coll.add(new CollisionsEntry(LandError.MAX_LAND_FOR_PLAYER, null, 0));
         	}
         }
@@ -235,7 +251,7 @@ public class Collisions {
      */
     private void checkCollisions() {
 
-        for (Land land2 : lands.getLands()) {
+        for (ILand land2 : lands.getLands()) {
             if (land != land2 && !isDescendants(land, land2) && !isDescendants(land2, parent)) {
                 for (int areaId2 : land2.getAreasKey()) {
                     if (newArea.isCollision(land2.getArea(areaId2))) {
@@ -253,7 +269,7 @@ public class Collisions {
      * @param land2 the land2
      * @return true, if is descendants
      */
-    private boolean isDescendants(Land land1, Land land2) {
+    private boolean isDescendants(ILand land1, ILand land2) {
         
         if(land1 == null || land2 == null) {
             return false;
@@ -266,14 +282,18 @@ public class Collisions {
     }
     
     /**
-     * Check if inside parent.
+     * Check if inside parent and adds an error if not.
+     * @param area the area to check
+     * @return true if inside the parent
      */
-    private void checkIfInsideParent() {
+    private boolean checkIfInsideParent(ICuboidArea area) {
 
-        if (checkIfAreaOutsideParent(newArea, parent.getAreas())) {
+        if (checkIfAreaOutsideParent(area, parent.getAreas())) {
             coll.add(new CollisionsEntry(LandError.OUT_OF_PARENT, parent, 0));
+            return false;
         }
 
+        return true;
     }
 
     /**
@@ -281,7 +301,7 @@ public class Collisions {
      */
     private void checkIfChildrenOutside() {
 
-        HashSet<CuboidArea> areaList = new HashSet<CuboidArea>();
+        HashSet<ICuboidArea> areaList = new HashSet<ICuboidArea>();
 
         // If this is a Land remove, the list must be empty
         if (action != LandAction.LAND_REMOVE) {
@@ -292,8 +312,8 @@ public class Collisions {
             areaList.add(newArea);
         }
 
-        for (Land child : land.getChildren()) {
-            for (CuboidArea childArea : child.getAreas()) {
+        for (ILand child : land.getChildren()) {
+            for (ICuboidArea childArea : child.getAreas()) {
                 if (checkIfAreaOutsideParent(childArea, areaList)) {
                     coll.add(new CollisionsEntry(LandError.CHILD_OUT_OF_BORDER, child, 0));
                 }
@@ -306,7 +326,7 @@ public class Collisions {
      */
     private void checkIfLandHasChildren() {
 
-        for (Land child : land.getChildren()) {
+        for (ILand child : land.getChildren()) {
             coll.add(new CollisionsEntry(LandError.HAS_CHILDREN, child, 0));
         }
     }
@@ -329,17 +349,17 @@ public class Collisions {
      * @param parentAreas the parent areas
      * @return true, if successful
      */
-    private boolean checkIfAreaOutsideParent(CuboidArea childArea, Collection<CuboidArea> parentAreas) {
+    private boolean checkIfAreaOutsideParent(ICuboidArea childArea, Collection<ICuboidArea> parentAreas) {
 
         // area = this new area, areas2 = areas of parents
-        Collection<CuboidArea> childAreas = new HashSet<CuboidArea>();
+        Collection<ICuboidArea> childAreas = new HashSet<ICuboidArea>();
         childAreas.add(childArea);
-        Iterator<CuboidArea> iterator = parentAreas.iterator();
+        Iterator<ICuboidArea> iterator = parentAreas.iterator();
 
         while (iterator.hasNext()) {
-            CuboidArea parentArea = iterator.next();
-            Collection<CuboidArea> childAreasNew = new HashSet<CuboidArea>();
-            for (CuboidArea areaC : childAreas) {
+            ICuboidArea parentArea = iterator.next();
+            Collection<ICuboidArea> childAreasNew = new HashSet<ICuboidArea>();
+            for (ICuboidArea areaC : childAreas) {
                 childAreasNew.addAll(parentArea.getOutside(areaC));
             }
 

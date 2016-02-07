@@ -19,17 +19,23 @@ package me.tabinol.factoid.commands.executor;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.commands.CommandEntities;
+import me.tabinol.factoid.commands.CommandExec;
+import me.tabinol.factoid.commands.InfoCommand;
 import me.tabinol.factoid.config.BannedWords;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.exceptions.FactoidLandException;
 import me.tabinol.factoid.lands.collisions.Collisions;
+
 import org.bukkit.ChatColor;
 
 
 /**
  * The Class CommandRename.
  */
+@InfoCommand(name="rename", forceParameter=true)
 public class CommandRename extends CommandExec {
 
     /**
@@ -40,7 +46,7 @@ public class CommandRename extends CommandExec {
      */
     public CommandRename(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity, false, true);
+        super(entity);
     }
 
     /* (non-Javadoc)
@@ -58,20 +64,23 @@ public class CommandRename extends CommandExec {
         }
 
         // Check for collision
-        if (checkCollision(curArg, land, Collisions.LandAction.LAND_RENAME, 0, 
-                null, land.getParent(), land.getOwner(), 0, !entity.playerConf.isAdminMod(), true)) {
+        if (checkCollision(curArg, land, null, Collisions.LandAction.LAND_RENAME, 0, 
+                null, land.getParent(), land.getOwner(), 0, true)) {
             return;
         }
 
         String oldName = land.getName();
 
         try {
-            Factoid.getLands().renameLand(oldName, curArg);
+            Factoid.getThisPlugin().iLands().renameLand(oldName, curArg);
         } catch (FactoidLandException ex) {
             Logger.getLogger(CommandRename.class.getName()).log(Level.SEVERE, "On land rename", ex);
             throw new FactoidCommandException("On land rename", entity.player, "GENERAL.ERROR");
         }
-        entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.RENAME.ISDONE", oldName, curArg));
-        Factoid.getLog().write(entity.playerName + " has renamed " + oldName + " to " + curArg);
+        entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.RENAME.ISDONE", oldName, curArg));
+        Factoid.getThisPlugin().iLog().write(entity.playerName + " has renamed " + oldName + " to " + curArg);
+
+        // Cancel the selection
+        new CommandCancel(entity.playerConf, true).commandExecute();
     }
 }

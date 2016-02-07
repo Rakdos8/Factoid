@@ -18,8 +18,12 @@
 package me.tabinol.factoid.playercontainer;
 
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.factions.Faction;
-import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoidapi.factions.IFaction;
+import me.tabinol.factoidapi.lands.ILand;
+import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainerFaction;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -27,19 +31,19 @@ import org.bukkit.entity.Player;
 /**
  * The Class PlayerContainerFaction.
  */
-public class PlayerContainerFaction extends PlayerContainer {
+public class PlayerContainerFaction extends PlayerContainer implements IPlayerContainerFaction {
 
     /** The faction. */
-    private Faction faction;
+    private IFaction faction;
 
     /**
      * Instantiates a new player container faction.
      *
      * @param faction the faction
      */
-    public PlayerContainerFaction(Faction faction) {
+    public PlayerContainerFaction(IFaction faction) {
 
-        super(faction.getName(), PlayerContainerType.FACTION, true);
+        super(faction.getName(), EPlayerContainerType.FACTION, true);
         this.faction = faction;
     }
 
@@ -48,7 +52,7 @@ public class PlayerContainerFaction extends PlayerContainer {
      *
      * @return the faction
      */
-    public Faction getFaction() {
+    public IFaction getFaction() {
 
         return faction;
     }
@@ -57,7 +61,7 @@ public class PlayerContainerFaction extends PlayerContainer {
      * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
      */
     @Override
-    public boolean equals(PlayerContainer container2) {
+    public boolean equals(IPlayerContainer container2) {
 
         return container2 instanceof PlayerContainerFaction
                 && name.equalsIgnoreCase(container2.getName());
@@ -78,7 +82,13 @@ public class PlayerContainerFaction extends PlayerContainer {
     @Override
     public boolean hasAccess(Player player) {
 
-        return faction.isPlayerInList(Factoid.getPlayerConf().get(player).getPlayerContainer());
+        return faction.isPlayerInList(Factoid.getThisPlugin().iPlayerConf().get(player).getPlayerContainer());
+    }
+
+    @Override
+    public boolean hasAccess(Player player, ILand land) {
+        
+        return hasAccess(player);
     }
 
     /* (non-Javadoc)
@@ -94,7 +104,7 @@ public class PlayerContainerFaction extends PlayerContainer {
      * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
      */
     @Override
-    public void setLand(Land land) {
+    public void setLand(ILand land) {
 
     }
 }

@@ -88,10 +88,10 @@ public class ChatPage {
         
         // Check if there is a parameter
         if (param != null) {
-            sender.sendMessage(ChatColor.GRAY + Factoid.getLanguage().getMessage(header,
+            sender.sendMessage(ChatColor.GRAY + Factoid.getThisPlugin().iLanguage().getMessage(header,
                     ChatColor.GREEN + param + ChatColor.GRAY));
         } else {
-            sender.sendMessage(ChatColor.GRAY + Factoid.getLanguage().getMessage(header));
+            sender.sendMessage(ChatColor.GRAY + Factoid.getThisPlugin().iLanguage().getMessage(header));
         }
         
         // Send lines to sender
@@ -99,12 +99,12 @@ public class ChatPage {
         
         // If there is one or multiple page, put the number of page at the bottom
         if (totalPages > 1) {
-            sender.sendMessage(ChatColor.GRAY + Factoid.getLanguage().getMessage("COMMAND.PAGE.MULTIPAGE",
+            sender.sendMessage(ChatColor.GRAY + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.PAGE.MULTIPAGE",
                     "" + pageNumber, "" + totalPages));
-            Factoid.getPlayerConf().get(sender).setChatPage(this);
+            Factoid.getThisPlugin().iPlayerConf().get(sender).setChatPage(this);
         } else {
-            sender.sendMessage(ChatColor.GRAY + Factoid.getLanguage().getMessage("COMMAND.PAGE.ONEPAGE"));
-            Factoid.getPlayerConf().get(sender).setChatPage(null);
+            sender.sendMessage(ChatColor.GRAY + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.PAGE.ONEPAGE"));
+            Factoid.getThisPlugin().iPlayerConf().get(sender).setChatPage(null);
         }
 
     }

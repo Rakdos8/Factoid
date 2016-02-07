@@ -20,6 +20,7 @@ package me.tabinol.factoid.listeners;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import me.tabinol.factoid.BKVersion;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ArgList;
 import me.tabinol.factoid.commands.executor.CommandCancel;
@@ -30,19 +31,26 @@ import me.tabinol.factoid.commands.executor.CommandSelect;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.config.players.PlayerConfEntry;
 import me.tabinol.factoid.config.players.PlayerStaticConfig;
-import me.tabinol.factoid.event.PlayerLandChangeEvent;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.parameters.FlagList;
 import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoid.selection.region.PlayerMoveListen;
 import me.tabinol.factoid.selection.region.RegionSelection;
-import me.tabinol.factoid.utilities.StringChanges;
+import me.tabinol.factoidapi.FactoidAPI;
+import me.tabinol.factoidapi.config.players.IPlayerConfEntry;
+import me.tabinol.factoidapi.event.PlayerLandChangeEvent;
+import me.tabinol.factoidapi.lands.IDummyLand;
+import me.tabinol.factoidapi.lands.ILand;
+import me.tabinol.factoidapi.parameters.IParameters.SpecialPermPrefix;
+import me.tabinol.factoidapi.utilities.StringChanges;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -57,9 +65,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.event.entity.PotionSplashEvent;
@@ -70,7 +81,6 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -85,14 +95,7 @@ import org.bukkit.plugin.PluginManager;
 
 
 /**
- * The listener interface for receiving player events. The class that is
- * interested in processing a player event implements this interface, and the
- * object created with that class is registered with a component using the
- * component's <code>addPlayerListener<code> method. When
- * the player event occurs, that object's appropriate
- * method is invoked.
- * 
- * @see PlayerEvent
+ * Players listener
  */
 public class PlayerListener extends CommonListener implements Listener {
 
@@ -117,8 +120,8 @@ public class PlayerListener extends CommonListener implements Listener {
 	public PlayerListener() {
 
 		super();
-		conf = Factoid.getConf();
-		playerConf = Factoid.getPlayerConf();
+		conf = Factoid.getThisPlugin().iConf();
+		playerConf = Factoid.getThisPlugin().iPlayerConf();
 		timeCheck = DEFAULT_TIME_LAPS;
 		pm = Factoid.getThisPlugin().getServer().getPluginManager();
 	}
@@ -135,28 +138,13 @@ public class PlayerListener extends CommonListener implements Listener {
 		Player player = event.getPlayer();
 
 		// Update players cache
-		Factoid.getPlayersCache().updatePlayer(player.getUniqueId(), player.getName());
+		Factoid.getThisPlugin().iPlayersCache().updatePlayer(player.getUniqueId(), player.getName());
 		
 		// Create a new static config
 		PlayerConfEntry entry = playerConf.add(player);
 
 		updatePosInfo(event, entry, player.getLocation(), true);
 
-		// Note pour kaz00 : L'endroit correct pour mettre ceci serait
-		// dans public void onPlayerLandChange(PlayerLandChangeEvent event)
-		// (LandListener.java)
-		// J'ai réglé un bug de joueur «null» et je l'ai désactiver pour ne pas
-		// le voit tout de suite en prod. Tu le l'activera si tu veux travailler
-		// dessus.
-		/*
-		 * Land landScoreboard =
-		 * Factoid.getLands().getLand(player.getLocation()); if (landScoreboard
-		 * != null) { for (Player playerInLand :
-		 * landScoreboard.getPlayersInLand()) {
-		 * Factoid.getScoreboard().sendScoreboard
-		 * (landScoreboard.getPlayersInLand(), playerInLand,
-		 * landScoreboard.getName()); } }
-		 */
 		// Check if AdminMod is auto
 		if (player.hasPermission("factoid.adminmod.auto")) {
 			playerConf.get(player).setAdminMod(true);
@@ -176,8 +164,8 @@ public class PlayerListener extends CommonListener implements Listener {
 		Player player = event.getPlayer();
 
 		// Remove player from the land
-		DummyLand land = playerConf.get(player).getLastLand();
-		if (land instanceof Land) {
+		IDummyLand land = playerConf.get(player).getLastLand();
+		if (land instanceof ILand) {
 			((Land) land).removePlayerInLand(player);
 		}
 
@@ -197,7 +185,7 @@ public class PlayerListener extends CommonListener implements Listener {
 		Location loc = event.getTo();
 		Player player = event.getPlayer();
 		PlayerConfEntry entry = playerConf.get(player);
-		DummyLand land;
+		IDummyLand land;
 
 		// BugFix Citizens plugin
 		if (entry == null) {
@@ -210,7 +198,7 @@ public class PlayerListener extends CommonListener implements Listener {
 			entry.setTpCancel(false);
 		}
 
-		land = Factoid.getLands().getLandOrOutsideArea(player.getLocation());
+		land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(player.getLocation());
 
 		// TP With ender pearl
 		if (!playerConf.get(event.getPlayer()).isAdminMod()
@@ -261,22 +249,24 @@ public class PlayerListener extends CommonListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 
-		DummyLand land;
+		IDummyLand land;
 		Material ml = event.getClickedBlock().getType();
 		Player player = event.getPlayer();
 		Action action = event.getAction();
 		PlayerConfEntry entry;
 		Location loc = event.getClickedBlock().getLocation();
 
-		Factoid.getLog().write(
+		Factoid.getThisPlugin().iLog().write(
 				"PlayerInteract player name: " + event.getPlayer().getName()
-						+ ", Action: " + event.getAction());
+						+ ", Action: " + event.getAction()
+						+ ", Material: " + ml.name());
 
 		// For infoItem
 		if (player.getItemInHand() != null && action == Action.LEFT_CLICK_BLOCK
 				&& player.getItemInHand().getTypeId() == conf.getInfoItem()) {
 			try {
-				new CommandInfo(player, Factoid.getLands().getCuboidArea(
+				new CommandInfo(player, 
+						(CuboidArea) Factoid.getThisPlugin().iLands().getCuboidArea(
 						event.getClickedBlock().getLocation()))
 						.commandExecute();
 			} catch (FactoidCommandException ex) {
@@ -319,24 +309,24 @@ public class PlayerListener extends CommonListener implements Listener {
 		} else if ((action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK)
 				&& (ml == Material.SIGN_POST || ml == Material.WALL_SIGN)) {
 
-			Land trueLand = Factoid.getLands().getLand(loc);
+			ILand trueLand = Factoid.getThisPlugin().iLands().getLand(loc);
 
 			
 			if (trueLand != null) {
 
-			    Factoid.getLog().write("EcoSignClick: ClickLoc: " + loc + ", SignLoc" + trueLand.getSaleSignLoc());
+			    Factoid.getThisPlugin().iLog().write("EcoSignClick: ClickLoc: " + loc + ", SignLoc" + trueLand.getSaleSignLoc());
 			    
 				try {
 					if (trueLand.getSaleSignLoc() != null
 							&& trueLand.getSaleSignLoc().getBlock().equals(loc.getBlock())) {
 						event.setCancelled(true);
-						new CommandEcosign(playerConf.get(player), trueLand,
+						new CommandEcosign(playerConf.get(player), (Land) trueLand,
 								action, SignType.SALE).commandExecute();
 						
 					} else if (trueLand.getRentSignLoc() != null
 							&& trueLand.getRentSignLoc().getBlock().equals(loc.getBlock())) {
 						event.setCancelled(true);
-						new CommandEcosign(playerConf.get(player), trueLand,
+						new CommandEcosign(playerConf.get(player), (Land)trueLand,
 								action, SignType.RENT).commandExecute();
 					}
 				} catch (FactoidCommandException ex) {
@@ -347,22 +337,25 @@ public class PlayerListener extends CommonListener implements Listener {
 			// Citizen bug, check if entry exist before
 		} else if ((entry = playerConf.get(player)) != null
 				&& !entry.isAdminMod()) {
-			land = Factoid.getLands().getLandOrOutsideArea(loc);
-			if ((land instanceof Land && ((Land) land).isBanned(player))
+			land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(loc);
+			if ((land instanceof ILand && ((ILand) land).isBanned(player))
 					|| (((action == Action.RIGHT_CLICK_BLOCK // BEGIN of USE
-					&& (ml == Material.WOODEN_DOOR || ml == Material.TRAP_DOOR
+					&& (BKVersion.isDoor(ml)
 							|| ml == Material.STONE_BUTTON
 							|| ml == Material.WOOD_BUTTON
 							|| ml == Material.LEVER
-							|| ml == Material.TRAPPED_CHEST || ml == Material.FENCE_GATE)) || (action == Action.PHYSICAL && (ml == Material.WOOD_PLATE
+							|| ml == Material.TRAPPED_CHEST
+							|| ml == Material.ENCHANTMENT_TABLE || ml == Material.ANVIL
+							|| ml == Material.MOB_SPAWNER || ml == Material.DAYLIGHT_DETECTOR
+							|| ml == Material.DAYLIGHT_DETECTOR_INVERTED)) 
+							|| (action == Action.PHYSICAL && (ml == Material.WOOD_PLATE
 							|| ml == Material.STONE_PLATE || ml == Material.STRING))) && !checkPermission(
 								land, player,
 								PermissionList.USE.getPermissionType())) // End
 																		// of
 																		// "USE"
 					|| (action == Action.RIGHT_CLICK_BLOCK
-							&& (ml == Material.WOODEN_DOOR
-									|| ml == Material.TRAP_DOOR || ml == Material.FENCE_GATE) && !checkPermission(
+							&& BKVersion.isDoor(ml) && !checkPermission(
 								land, player,
 								PermissionList.USE_DOOR.getPermissionType()))
 					|| (action == Action.RIGHT_CLICK_BLOCK
@@ -385,20 +378,31 @@ public class PlayerListener extends CommonListener implements Listener {
 										.getPermissionType()))
 					|| (action == Action.PHYSICAL && ml == Material.STRING && !checkPermission(
 							land, player,
-							PermissionList.USE_STRING.getPermissionType()))) {
+							PermissionList.USE_STRING.getPermissionType()))
+					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.MOB_SPAWNER
+					        && !checkPermission(land, player, PermissionList.USE_MOBSPAWNER.getPermissionType()))
+					|| (action == Action.RIGHT_CLICK_BLOCK && (ml == Material.DAYLIGHT_DETECTOR || ml == Material.DAYLIGHT_DETECTOR_INVERTED)
+					        && !checkPermission(land, player, PermissionList.USE_LIGHTDETECTOR.getPermissionType()))
+					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.ENCHANTMENT_TABLE
+							&& !checkPermission(land, player, PermissionList.USE_ENCHANTTABLE.getPermissionType()))
+					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.ANVIL
+						&& !checkPermission(land, player, PermissionList.USE_ANVIL.getPermissionType()))) {
 
 				if (action != Action.PHYSICAL) {
 					messagePermission(player);
 				}
 				event.setCancelled(true);
+
 			} else if (action == Action.RIGHT_CLICK_BLOCK
 					&& (((ml == Material.CHEST
 							|| ml == Material.ENDER_CHEST // Begin of OPEN
 							|| ml == Material.WORKBENCH
 							|| ml == Material.BREWING_STAND
+							|| ml == Material.BURNING_FURNACE
 							|| ml == Material.FURNACE || ml == Material.BEACON
-							|| ml == Material.DROPPER || ml == Material.HOPPER) && !checkPermission(
-								land, player,
+							|| ml == Material.DROPPER || ml == Material.HOPPER
+							|| ml == Material.DISPENSER || ml == Material.JUKEBOX) 
+							&& !checkPermission(land, player,
 								PermissionList.OPEN.getPermissionType())) // End
 																			// of
 																			// OPEN
@@ -417,7 +421,7 @@ public class PlayerListener extends CommonListener implements Listener {
 							|| (ml == Material.BREWING_STAND && !checkPermission(
 									land, player,
 									PermissionList.OPEN_BREW.getPermissionType()))
-							|| (ml == Material.FURNACE && !checkPermission(
+							|| ((ml == Material.FURNACE || ml == Material.BURNING_FURNACE) && !checkPermission(
 									land, player,
 									PermissionList.OPEN_FURNACE
 											.getPermissionType()))
@@ -425,18 +429,49 @@ public class PlayerListener extends CommonListener implements Listener {
 									player,
 									PermissionList.OPEN_BEACON
 											.getPermissionType()))
+							|| (ml == Material.DISPENSER && !checkPermission(land,
+									player,
+									PermissionList.OPEN_DISPENSER
+											.getPermissionType()))
 							|| (ml == Material.DROPPER && !checkPermission(
 									land, player,
 									PermissionList.OPEN_DROPPER
 											.getPermissionType())) || (ml == Material.HOPPER && !checkPermission(
 							land, player,
-							PermissionList.OPEN_HOPPER.getPermissionType())))
+							PermissionList.OPEN_HOPPER.getPermissionType()))
+							|| (ml == Material.JUKEBOX && !checkPermission(
+									land, player,
+									PermissionList.OPEN_JUKEBOX.getPermissionType())))
 					// For dragon egg fix
 					|| (ml == Material.DRAGON_EGG && (!checkPermission(land,
 							event.getPlayer(),
 							PermissionList.BUILD.getPermissionType()) || !checkPermission(
 							land, event.getPlayer(),
 							PermissionList.BUILD_DESTROY.getPermissionType())))) {
+				messagePermission(player);
+				event.setCancelled(true);
+				
+				// For armor stand
+			} else if(player.getItemInHand() != null
+					&& action == Action.RIGHT_CLICK_BLOCK
+					&& BKVersion.isArmorStand(player.getItemInHand().getType())
+					&& ((land instanceof ILand && ((ILand) land).isBanned(event.getPlayer()))
+						|| !checkPermission(land, event.getPlayer(),
+								PermissionList.BUILD.getPermissionType())
+						|| !checkPermission(land, event.getPlayer(),
+								PermissionList.BUILD_PLACE.getPermissionType()))) {
+				messagePermission(player);
+				event.setCancelled(true);
+
+				// For head place fix (do not spawn a wither)
+			} else if(player.getItemInHand() != null
+					&& action == Action.RIGHT_CLICK_BLOCK
+					&& player.getItemInHand().getType() == Material.SKULL_ITEM
+					&& ((land instanceof ILand && ((ILand) land).isBanned(event.getPlayer()))
+						|| !checkPermission(land, event.getPlayer(),
+								PermissionList.BUILD.getPermissionType())
+						|| !checkPermission(land, event.getPlayer(),
+								PermissionList.BUILD_PLACE.getPermissionType()))) {
 				messagePermission(player);
 				event.setCancelled(true);
 			}
@@ -452,18 +487,34 @@ public class PlayerListener extends CommonListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockPlace(BlockPlaceEvent event) {
 
-		if (!playerConf.get(event.getPlayer()).isAdminMod()) {
+		// Check for fire init
+		Player player = event.getPlayer();
+		
+		if(event.getBlock().getType() == Material.FIRE) {
+			if(checkForPutFire(event, player)) {
+				event.setCancelled(true);
+			}
+		} else if (!playerConf.get(player).isAdminMod()) {
 
-			DummyLand land = Factoid.getLands().getLandOrOutsideArea(
+			IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(
 					event.getBlock().getLocation());
+			Material mat = event.getBlock().getType(); 
 
-			if ((land instanceof Land && ((Land) land).isBanned(event
-					.getPlayer()))
-					|| !checkPermission(land, event.getPlayer(),
-							PermissionList.BUILD.getPermissionType())
-					|| !checkPermission(land, event.getPlayer(),
-							PermissionList.BUILD_PLACE.getPermissionType())) {
-				messagePermission(event.getPlayer());
+			if (land instanceof ILand && ((ILand) land).isBanned(player)) {
+				// Player banned!!
+				messagePermission(player);
+				event.setCancelled(true);
+			
+			} else if(!checkPermission(land, player, PermissionList.BUILD.getPermissionType())
+					|| !checkPermission(land, player, PermissionList.BUILD_PLACE.getPermissionType())) {
+				if(checkPermission(land, player, 
+						FactoidAPI.iParameters().getSpecialPermission(SpecialPermPrefix.PLACE, mat))) {
+					messagePermission(player);
+					event.setCancelled(true);
+				}
+			} else if(!checkPermission(land, player, 
+					FactoidAPI.iParameters().getSpecialPermission(SpecialPermPrefix.NOPLACE, mat))) {
+				messagePermission(player);
 				event.setCancelled(true);
 			}
 		}
@@ -480,11 +531,11 @@ public class PlayerListener extends CommonListener implements Listener {
 
 		if (!playerConf.get(event.getPlayer()).isAdminMod()) {
 
-			DummyLand land = Factoid.getLands().getLandOrOutsideArea(
+			IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(
 					event.getEntity().getLocation());
 			Player player = event.getPlayer();
 
-			if ((land instanceof Land && ((Land) land).isBanned(player))
+			if ((land instanceof ILand && ((ILand) land).isBanned(player))
 					|| !checkPermission(land, player,
 							PermissionList.BUILD.getPermissionType())
 					|| !checkPermission(land, player,
@@ -507,10 +558,10 @@ public class PlayerListener extends CommonListener implements Listener {
 				&& event.getRightClicked() instanceof ItemFrame) {
 
 			Player player = (Player) event.getPlayer();
-			DummyLand land = Factoid.getLands().getLandOrOutsideArea(
+			IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(
 					event.getRightClicked().getLocation());
 
-			if ((land instanceof Land && ((Land) land).isBanned(player))
+			if ((land instanceof ILand && ((ILand) land).isBanned(player))
 					|| !checkPermission(land, player,
 							PermissionList.BUILD.getPermissionType())
 					|| !checkPermission(land, player,
@@ -530,44 +581,31 @@ public class PlayerListener extends CommonListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockBreak(BlockBreakEvent event) {
 
-		if (!playerConf.get(event.getPlayer()).isAdminMod()) {
+		Player player = event.getPlayer();
+		
+		if (!playerConf.get(player).isAdminMod()) {
 
-			DummyLand land = Factoid.getLands().getLandOrOutsideArea(
+			IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(
 					event.getBlock().getLocation());
+			Material mat = event.getBlock().getType();
 
-			if ((land instanceof Land && ((Land) land).isBanned(event
-					.getPlayer()))
-					|| !checkPermission(land, event.getPlayer(),
-							PermissionList.BUILD.getPermissionType())
-					|| !checkPermission(land, event.getPlayer(),
-							PermissionList.BUILD_DESTROY.getPermissionType())) {
-				messagePermission(event.getPlayer());
+			if (land instanceof ILand && (((ILand) land).isBanned(player)
+					|| hasEcoSign((Land) land, event.getBlock()))) {
+				// Player banned (or ecosign)
+				messagePermission(player);
 				event.setCancelled(true);
-			}
-		}
-	}
-
-	/**
-	 * On player bucket fill.
-	 * 
-	 * @param event
-	 *            the event
-	 */
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onPlayerBucketFill(PlayerBucketFillEvent event) {
-
-		if (!playerConf.get(event.getPlayer()).isAdminMod()) {
-
-			DummyLand land = Factoid.getLands().getLandOrOutsideArea(
-					event.getBlockClicked().getLocation());
-
-			if ((land instanceof Land && ((Land) land).isBanned(event
-					.getPlayer()))
-					|| !checkPermission(land, event.getPlayer(),
+			} else if (!checkPermission(land, player,
 							PermissionList.BUILD.getPermissionType())
-					|| !checkPermission(land, event.getPlayer(),
+					|| !checkPermission(land, player,
 							PermissionList.BUILD_DESTROY.getPermissionType())) {
-				messagePermission(event.getPlayer());
+				if(checkPermission(land, player,
+						FactoidAPI.iParameters().getSpecialPermission(SpecialPermPrefix.DESTROY, mat))) {
+					messagePermission(player);
+					event.setCancelled(true);
+				}
+			} else if(!checkPermission(land, player,
+						FactoidAPI.iParameters().getSpecialPermission(SpecialPermPrefix.NODESTROY, mat))) {
+				messagePermission(player);
 				event.setCancelled(true);
 			}
 		}
@@ -588,10 +626,10 @@ public class PlayerListener extends CommonListener implements Listener {
 				&& !playerConf.get((player = (Player) event.getRemover()))
 						.isAdminMod()) {
 
-			DummyLand land = Factoid.getLands().getLandOrOutsideArea(
+			IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(
 					event.getEntity().getLocation());
 
-			if ((land instanceof Land && ((Land) land).isBanned(player))
+			if ((land instanceof ILand && ((ILand) land).isBanned(player))
 					|| !checkPermission(land, player,
 							PermissionList.BUILD.getPermissionType())
 					|| !checkPermission(land, player,
@@ -612,10 +650,10 @@ public class PlayerListener extends CommonListener implements Listener {
 	public void onPlayerDropItem(PlayerDropItemEvent event) {
 
 		Player player = event.getPlayer();
-		PlayerConfEntry entry = playerConf.get(player);
+		IPlayerConfEntry entry = playerConf.get(player);
 
 		if (entry != null && !entry.isAdminMod()) {
-			DummyLand land = Factoid.getLands().getLandOrOutsideArea(
+			IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(
 					player.getLocation());
 
 			if (!checkPermission(land, event.getPlayer(),
@@ -636,7 +674,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
 
 		if (!playerConf.get(event.getPlayer()).isAdminMod()) {
-			DummyLand land = Factoid.getLands().getLandOrOutsideArea(
+			IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(
 					event.getPlayer().getLocation());
 
 			if (!checkPermission(land, event.getPlayer(),
@@ -657,10 +695,10 @@ public class PlayerListener extends CommonListener implements Listener {
 	public void onPlayerBedEnter(PlayerBedEnterEvent event) {
 
 		if (!playerConf.get(event.getPlayer()).isAdminMod()) {
-			DummyLand land = Factoid.getLands().getLandOrOutsideArea(
+			IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(
 					event.getBed().getLocation());
 
-			if ((land instanceof Land && ((Land) land).isBanned(event
+			if ((land instanceof ILand && ((ILand) land).isBanned(event
 					.getPlayer()))
 					|| (!checkPermission(land, event.getPlayer(),
 							PermissionList.SLEEP.getPermissionType()))) {
@@ -679,71 +717,82 @@ public class PlayerListener extends CommonListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 
-		PlayerConfEntry entry;
+		IPlayerConfEntry entry;
+		Player player = getSourcePlayer(event.getDamager());
 
-		// Check if a player break a ItemFrame
-		if (event.getDamager() instanceof Player
-				&& (entry = playerConf.get((Player) event.getDamager())) != null // Citizens
-																					// bugfix
-				&& !entry.isAdminMod() && event.getEntity() instanceof Hanging) {
-
-			Player player = (Player) event.getDamager();
-			DummyLand land = Factoid.getLands().getLandOrOutsideArea(
+		// Check for non-player kill
+		if (player != null) {
+			IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(
 					event.getEntity().getLocation());
+			Entity entity = event.getEntity();
+			EntityType et = entity.getType();
 
-			if ((land instanceof Land && ((Land) land).isBanned(player))
-					|| !checkPermission(land, player,
-							PermissionList.BUILD.getPermissionType())
-					|| !checkPermission(land, player,
-							PermissionList.BUILD_DESTROY.getPermissionType())) {
+			// kill an entity (none player)
+			if ((entry = playerConf.get(player)) != null // Citizens bugfix
+					&& !entry.isAdminMod()
+					&& ((land instanceof ILand && ((ILand) land)
+							.isBanned(player))
+							|| ((BKVersion.isArmorStand(et) || entity instanceof Hanging)
+									&& (!checkPermission(land, player,
+											PermissionList.BUILD.getPermissionType())
+									|| !checkPermission(land, player,
+											PermissionList.BUILD_DESTROY.getPermissionType())))
+							|| (entity instanceof Animals && !checkPermission(
+									land, player,
+									PermissionList.ANIMAL_KILL
+											.getPermissionType()))
+							|| (entity instanceof Monster && !checkPermission(
+									land, player,
+									PermissionList.MOB_KILL
+											.getPermissionType()))
+							|| (et == EntityType.VILLAGER && !checkPermission(
+									land, player,
+									PermissionList.VILLAGER_KILL
+											.getPermissionType()))
+							|| (et == EntityType.IRON_GOLEM && !checkPermission(
+									land, player,
+									PermissionList.VILLAGER_GOLEM_KILL
+											.getPermissionType()))
+							|| (et == EntityType.HORSE && !checkPermission(
+									land, player,
+									PermissionList.HORSE_KILL
+											.getPermissionType())) || (entity instanceof Tameable
+							&& ((Tameable) entity).isTamed() == true
+							&& ((Tameable) entity).getOwner() != player && !checkPermission(
+								land, player,
+								PermissionList.TAMED_KILL
+										.getPermissionType())))) {
 				messagePermission(player);
 				event.setCancelled(true);
-			}
-		} else {
-			Player player = getSourcePlayer(event.getDamager());
+			} 
+		}
+	}
 
-			// Check for non-player kill
-			if (player != null) {
-				DummyLand land = Factoid.getLands().getLandOrOutsideArea(
-						event.getEntity().getLocation());
-				Entity entity = event.getEntity();
-				EntityType et = entity.getType();
+	/**
+	 * On player bucket fill.
+	 * 
+	 * @param event
+	 *            the event
+	 */
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onPlayerBucketFill(PlayerBucketFillEvent event) {
 
-				// kill an entity (none player)
-				if ((entry = playerConf.get(player)) != null // Citizens
-																	// bugfix
-						&& !entry.isAdminMod()
-						&& ((land instanceof Land && ((Land) land)
-								.isBanned(player))
-								|| (entity instanceof Animals && !checkPermission(
-										land, player,
-										PermissionList.ANIMAL_KILL
-												.getPermissionType()))
-								|| (entity instanceof Monster && !checkPermission(
-										land, player,
-										PermissionList.MOB_KILL
-												.getPermissionType()))
-								|| (et == EntityType.VILLAGER && !checkPermission(
-										land, player,
-										PermissionList.VILLAGER_KILL
-												.getPermissionType()))
-								|| (et == EntityType.IRON_GOLEM && !checkPermission(
-										land, player,
-										PermissionList.VILLAGER_GOLEM_KILL
-												.getPermissionType()))
-								|| (et == EntityType.HORSE && !checkPermission(
-										land, player,
-										PermissionList.HORSE_KILL
-												.getPermissionType())) || (entity instanceof Tameable
-								&& ((Tameable) entity).isTamed() == true
-								&& ((Tameable) entity).getOwner() != player && !checkPermission(
-									land, player,
-									PermissionList.TAMED_KILL
-											.getPermissionType())))) {
+		if (!playerConf.get(event.getPlayer()).isAdminMod()) {
 
-					messagePermission(player);
-					event.setCancelled(true);
-				} 
+			IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(
+					event.getBlockClicked().getLocation());
+			Material mt = event.getBlockClicked().getType();
+
+			if ((land instanceof ILand && ((ILand) land).isBanned(event
+					.getPlayer()))
+					|| (mt == Material.LAVA_BUCKET && !checkPermission(land,
+							event.getPlayer(),
+							PermissionList.BUCKET_LAVA.getPermissionType()))
+					|| (mt == Material.WATER_BUCKET && !checkPermission(land,
+							event.getPlayer(),
+							PermissionList.BUCKET_WATER.getPermissionType()))) {
+				messagePermission(event.getPlayer());
+				event.setCancelled(true);
 			}
 		}
 	}
@@ -758,11 +807,12 @@ public class PlayerListener extends CommonListener implements Listener {
 	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
 
 		if (!playerConf.get(event.getPlayer()).isAdminMod()) {
-			DummyLand land = Factoid.getLands().getLandOrOutsideArea(
-					event.getBlockClicked().getLocation());
+			Block block = event.getBlockClicked().getRelative(event.getBlockFace());
+			IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(
+					block.getLocation());
 			Material mt = event.getBucket();
 
-			if ((land instanceof Land && ((Land) land).isBanned(event
+			if ((land instanceof ILand && ((ILand) land).isBanned(event
 					.getPlayer()))
 					|| (mt == Material.LAVA_BUCKET && !checkPermission(land,
 							event.getPlayer(),
@@ -775,14 +825,40 @@ public class PlayerListener extends CommonListener implements Listener {
 			}
 		}
 	}
+	
+    /**
+     * On entity change block.
+     *
+     * @param event the event
+     */
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onEntityChangeBlock(EntityChangeBlockEvent event) {
+
+        // Crop trample
+		IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(
+				event.getBlock().getLocation());
+        Material matFrom = event.getBlock().getType();
+        Material matTo = event.getTo();
+		Player player;
+		
+		if(event.getEntity() instanceof Player
+				&& playerConf.get(player = (Player) event.getEntity()) != null // Citizens bugfix
+		&& ((land instanceof ILand && ((ILand) land).isBanned(player))
+				|| (matFrom == Material.SOIL
+				&& matTo == Material.DIRT
+				&& !checkPermission(land, player,
+						PermissionList.CROP_TRAMPLE.getPermissionType())))) {
+			event.setCancelled(true);
+		}
+    }
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	// Must be after Essentials
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 
 		Player player = event.getPlayer();
-		PlayerConfEntry entry = playerConf.get(player);
-		DummyLand land = Factoid.getLands().getLandOrOutsideArea(
+		IPlayerConfEntry entry = playerConf.get(player);
+		IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(
 				player.getLocation());
 		String strLoc;
 		Location loc;
@@ -824,20 +900,8 @@ public class PlayerListener extends CommonListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockIgnite(BlockIgniteEvent event) {
 
-		if (event.getPlayer() != null
-				&& !playerConf.get(event.getPlayer()).isAdminMod()) {
-
-			DummyLand land = Factoid.getLands().getLandOrOutsideArea(
-					event.getBlock().getLocation());
-
-			if ((land instanceof Land && ((Land) land).isBanned(event
-					.getPlayer()))
-					|| (!checkPermission(land, event.getPlayer(),
-							PermissionList.FIRE.getPermissionType()))) {
-				messagePermission(event.getPlayer());
-				event.setCancelled(true);
-				return;
-			}
+		if(checkForPutFire(event, event.getPlayer())) {
+			event.setCancelled(true);
 		}
 	}
 
@@ -853,7 +917,7 @@ public class PlayerListener extends CommonListener implements Listener {
 		if (event.getEntity() != null
 				&& event.getEntity().getShooter() instanceof Player) {
 
-			DummyLand land = Factoid.getLands().getLandOrOutsideArea(
+			IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(
 					event.getPotion().getLocation());
 			Player player = (Player) event.getEntity().getShooter();
 
@@ -877,7 +941,7 @@ public class PlayerListener extends CommonListener implements Listener {
 		
 		Entity entity = event.getEntity();
 		Player player;
-		PlayerConfEntry entry;
+		IPlayerConfEntry entry;
 		
 		if(entity != null && event.getEntity() instanceof Player
 				&& (event.getRegainReason() == RegainReason.REGEN
@@ -885,7 +949,7 @@ public class PlayerListener extends CommonListener implements Listener {
 				&& (entry = playerConf.get((player = (Player) event.getEntity()))) != null
 				&& !entry.isAdminMod()) {
 		
-			DummyLand land = Factoid.getLands().getLandOrOutsideArea(player.getLocation());
+			IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(player.getLocation());
 			
 			if (!checkPermission(land, player, PermissionList.FOOD_HEAL.getPermissionType())) {
 				event.setCancelled(true);
@@ -902,12 +966,12 @@ public class PlayerListener extends CommonListener implements Listener {
 	public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
 		
 		Player player = event.getPlayer();
-		PlayerConfEntry entry;
+		IPlayerConfEntry entry;
 		
 		if((entry = playerConf.get(player)) != null
 				&& !entry.isAdminMod()) {
 		
-			DummyLand land = Factoid.getLands().getLandOrOutsideArea(player.getLocation());
+			IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(player.getLocation());
 			
 			if (!checkPermission(land, player, PermissionList.EAT.getPermissionType())) {
 				messagePermission(player);
@@ -929,7 +993,7 @@ public class PlayerListener extends CommonListener implements Listener {
 
 		if (!playerConf.get(event.getPlayer()).isAdminMod()) {
 
-			DummyLand land = Factoid.getLands().getLandOrOutsideArea(
+			IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(
 					player.getLocation());
 			String[] excludedCommands = land
 					.getFlagAndInherit(FlagList.EXCLUDE_COMMANDS.getFlagType()).getValueStringList();
@@ -943,13 +1007,58 @@ public class PlayerListener extends CommonListener implements Listener {
 						event.setCancelled(true);
 						player.sendMessage(ChatColor.RED
 								+ "[Factoid] "
-								+ Factoid.getLanguage().getMessage(
+								+ Factoid.getThisPlugin().iLanguage().getMessage(
 										"GENERAL.MISSINGPERMISSIONHERE"));
 						return;
 					}
 				}
 			}
 		}
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onEntityDamage(EntityDamageEvent event) {
+
+		if(event.getEntityType() != EntityType.PLAYER) {
+			return;
+		}
+		
+		Player player = (Player) event.getEntity();
+		
+		if(playerConf.get(player) != null) {
+		
+			IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(player.getLocation());
+			
+			if (!checkPermission(land, player, PermissionList.GOD.getPermissionType())) {
+				event.setCancelled(true);
+			}
+		}
+	}
+
+	/**
+	 * Check when a player deposits fire
+	 *
+	 * @param event the event
+	 * @param player the player
+	 * @return if the event must be cancelled
+	 */
+	private boolean checkForPutFire(BlockEvent event, Player player) {
+		
+		if (player != null
+				&& !playerConf.get(player).isAdminMod()) {
+
+			IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(
+					event.getBlock().getLocation());
+
+			if ((land instanceof ILand && ((ILand) land).isBanned(player))
+					|| (!checkPermission(land, player,
+							PermissionList.FIRE.getPermissionType()))) {
+				messagePermission(player);
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	/**
@@ -964,19 +1073,21 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * @param newPlayer
 	 *            the new player
 	 */
+	@SuppressWarnings("deprecation")
 	private void updatePosInfo(Event event, PlayerConfEntry entry,
 			Location loc, boolean newPlayer) {
 
-		DummyLand land;
-		DummyLand landOld;
+		IDummyLand land;
+		IDummyLand landOld;
 		PlayerLandChangeEvent landEvent;
+		me.tabinol.factoid.event.PlayerLandChangeEvent oldLandEvent = null;
 		Boolean isTp;
 		Player player = entry.getPlayer();
 
-		land = Factoid.getLands().getLandOrOutsideArea(loc);
+		land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(loc);
 
 		if (newPlayer) {
-			entry.setLastLand(landOld = land);
+			entry.setLastLand((DummyLand) (landOld = land));
 		} else {
 			landOld = entry.getLastLand();
 		}
@@ -984,10 +1095,19 @@ public class PlayerListener extends CommonListener implements Listener {
 			isTp = event instanceof PlayerTeleportEvent;
 			// First parameter : If it is a new player, it is null, if not new
 			// player, it is "landOld"
-			landEvent = new PlayerLandChangeEvent(newPlayer ? null : landOld,
-					land, player, entry.getLastLoc(), loc, isTp);
+			landEvent = new PlayerLandChangeEvent(newPlayer ? null : (DummyLand) landOld,
+					(DummyLand) land, player, entry.getLastLoc(), loc, isTp);
 			pm.callEvent(landEvent);
-			if (landEvent.isCancelled()) {
+			
+			// Deprecated old land change event
+			if(!landEvent.isCancelled()) {
+				oldLandEvent = new me.tabinol.factoid.event.PlayerLandChangeEvent(
+						newPlayer ? null : (DummyLand) landOld,
+						(DummyLand) land, player, entry.getLastLoc(), loc, isTp);
+				pm.callEvent(oldLandEvent);
+			}
+			
+			if (landEvent.isCancelled() || oldLandEvent.isCancelled()) {
 				if (isTp) {
 					((PlayerTeleportEvent) event).setCancelled(true);
 					return;
@@ -1003,14 +1123,14 @@ public class PlayerListener extends CommonListener implements Listener {
 				entry.setTpCancel(true);
 				return;
 			}
-			entry.setLastLand(land);
+			entry.setLastLand((me.tabinol.factoid.lands.DummyLand) land);
 
 			// Update player in the lands
-			if (landOld instanceof Land && landOld != land) {
-				((Land) landOld).removePlayerInLand(player);
+			if (landOld instanceof ILand && landOld != land) {
+				((me.tabinol.factoid.lands.Land) landOld).removePlayerInLand(player);
 			}
-			if (land instanceof Land) {
-				((Land) land).addPlayerInLand(player);
+			if (land instanceof ILand) {
+				((me.tabinol.factoid.lands.Land) land).addPlayerInLand(player);
 			}
 		}
 		entry.setLastLoc(loc);

@@ -18,13 +18,15 @@
 package me.tabinol.factoid.commands.executor;
 
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.config.players.PlayerConfEntry;
+import me.tabinol.factoid.commands.CommandExec;
 import me.tabinol.factoid.economy.EcoSign;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.exceptions.SignException;
-import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoidapi.config.players.IPlayerConfEntry;
+import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoid.parameters.PermissionList;
-import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainerPlayer;
+import me.tabinol.factoid.lands.Land;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -40,15 +42,15 @@ public class CommandEcosign extends CommandExec {
 	private final Player player;
 
 	/** The player conf. */
-	private final PlayerConfEntry playerConf;
+	private final IPlayerConfEntry playerConf;
 	private final Action action;
 	private final SignType signType;
 
 	// Called from PlayerListener (right or leftclick)
-	public CommandEcosign(PlayerConfEntry entry, Land land, Action action,
+	public CommandEcosign(IPlayerConfEntry entry, ILand land, Action action,
 			SignType signType) throws FactoidCommandException {
 
-		super(null, false, false);
+		super(null);
 		this.player = entry.getPlayer();
 		playerConf = entry;
 		this.land = land;
@@ -69,16 +71,16 @@ public class CommandEcosign extends CommandExec {
 						PermissionList.ECO_LAND_BUY.getPermissionType())) {
 					throw new FactoidCommandException("No permission to do this action", player, "GENERAL.MISSINGPERMISSION");
 				}
-				if (Factoid.getPlayerMoney().getPlayerBalance(player,
+				if (Factoid.getThisPlugin().iPlayerMoney().getPlayerBalance(player,
 						land.getWorldName()) < land.getSalePrice()) {
 					throw new FactoidCommandException("Not enough money to buy a land", player, "COMMAND.ECONOMY.NOTENOUGHMONEY");
 				}
-				Factoid.getPlayerMoney().getFromPlayer(player,
+				Factoid.getThisPlugin().iPlayerMoney().getFromPlayer(player,
 						land.getWorldName(), land.getSalePrice());
-				if (land.getOwner() instanceof PlayerContainerPlayer) {
-					Factoid.getPlayerMoney()
+				if (land.getOwner() instanceof IPlayerContainerPlayer) {
+					Factoid.getThisPlugin().iPlayerMoney()
 							.giveToPlayer(
-									((PlayerContainerPlayer) land.getOwner())
+									((IPlayerContainerPlayer) land.getOwner())
 											.getOfflinePlayer(),
 									land.getWorldName(), land.getSalePrice());
 				}
@@ -88,11 +90,11 @@ public class CommandEcosign extends CommandExec {
 					// Real Error
 					e.printStackTrace();
 				}
-				land.setForSale(false, 0, null);
+				((Land) land).setForSale(false, 0, null);
 				land.setOwner(playerConf.getPlayerContainer());
-		        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ECONOMY.BUYLAND",
+		        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ECONOMY.BUYLAND",
 		        		land.getName()));
-		        Factoid.getLog().write("The land " + land.getName() + " is purchased by : " + player.getName());
+		        Factoid.getThisPlugin().iLog().write("The land " + land.getName() + " is purchased by : " + player.getName());
 			} else {
 
 				// Rent and unrent
@@ -101,7 +103,7 @@ public class CommandEcosign extends CommandExec {
 								|| playerConf.isAdminMod())) {
 
 					// Unrent
-					land.unSetRented();
+					((Land) land).unSetRented();
 					try {
 						new EcoSign(land, land.getRentSignLoc()).createSignForRent(
 								land.getRentPrice(), land.getRentRenew(),
@@ -110,9 +112,9 @@ public class CommandEcosign extends CommandExec {
 						// Real Error
 						e.printStackTrace();
 					}
-			        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ECONOMY.UNRENTLAND",
+			        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ECONOMY.UNRENTLAND",
 			        		land.getName()));
-			        Factoid.getLog().write("The land " + land.getName() + " is unrented by : " + player.getName());
+			        Factoid.getThisPlugin().iLog().write("The land " + land.getName() + " is unrented by : " + player.getName());
 				
 				} else if (!land.isRented()) {
 
@@ -121,21 +123,21 @@ public class CommandEcosign extends CommandExec {
 							PermissionList.ECO_LAND_RENT.getPermissionType())) {
 						throw new FactoidCommandException("No permission to do this action", player, "GENERAL.MISSINGPERMISSION");
 					}
-					if (Factoid.getPlayerMoney().getPlayerBalance(player,
+					if (Factoid.getThisPlugin().iPlayerMoney().getPlayerBalance(player,
 							land.getWorldName()) < land.getRentPrice()) {
 						throw new FactoidCommandException("Not enough money to rent a land", player, "COMMAND.ECONOMY.NOTENOUGHMONEY");
 					}
-					Factoid.getPlayerMoney().getFromPlayer(player,
+					Factoid.getThisPlugin().iPlayerMoney().getFromPlayer(player,
 							land.getWorldName(), land.getRentPrice());
-					if (land.getOwner() instanceof PlayerContainerPlayer) {
-						Factoid.getPlayerMoney()
+					if (land.getOwner() instanceof IPlayerContainerPlayer) {
+						Factoid.getThisPlugin().iPlayerMoney()
 								.giveToPlayer(
-										((PlayerContainerPlayer) land
+										((IPlayerContainerPlayer) land
 												.getOwner()).getOfflinePlayer(),
 										land.getWorldName(),
 										land.getRentPrice());
 					}
-					land.setRented(playerConf.getPlayerContainer());
+					((Land) land).setRented(playerConf.getPlayerContainer());
 					try {
 						new EcoSign(land, land.getRentSignLoc()).createSignForRent(
 								land.getRentPrice(), land.getRentRenew(),
@@ -144,9 +146,9 @@ public class CommandEcosign extends CommandExec {
 						// Real Error
 						e.printStackTrace();
 					}
-			        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ECONOMY.RENTLAND",
+			        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ECONOMY.RENTLAND",
 			        		land.getName()));
-			        Factoid.getLog().write("The land " + land.getName() + " is rented by : " + player.getName());
+			        Factoid.getThisPlugin().iLog().write("The land " + land.getName() + " is rented by : " + player.getName());
 				}
 			}
 		} else {
@@ -163,10 +165,10 @@ public class CommandEcosign extends CommandExec {
 						// Real Error
 						e.printStackTrace();
 					}
-					land.setForSale(false, 0, null);
-			        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ECONOMY.UNFORSALE", 
+					((Land) land).setForSale(false, 0, null);
+			        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ECONOMY.UNFORSALE", 
 			        		land.getName()));
-			        Factoid.getLog().write("The land " + land.getName() + " is no longer for sale by : " + player.getName());
+			        Factoid.getThisPlugin().iLog().write("The land " + land.getName() + " is no longer for sale by : " + player.getName());
 				} else {
 
 					// Destroy rent sign
@@ -176,11 +178,11 @@ public class CommandEcosign extends CommandExec {
 						// Real Error
 						e.printStackTrace();
 					}
-					land.unSetRented();
-					land.unSetForRent();
-			        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.ECONOMY.UNFORRENT",
+					((Land) land).unSetRented();
+					((Land) land).unSetForRent();
+			        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ECONOMY.UNFORRENT",
 			        		land.getName()));
-			        Factoid.getLog().write("The land " + land.getName() + " is no longer for rent by : " + player.getName());
+			        Factoid.getThisPlugin().iLog().write("The land " + land.getName() + " is no longer for rent by : " + player.getName());
 				}
 			}
 		}

@@ -17,13 +17,14 @@
  */
 package me.tabinol.factoid.parameters;
 
+import me.tabinol.factoidapi.parameters.IFlagType;
 
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class FlagType.
  */
-public class FlagType extends ParameterType {
+public class FlagType extends ParameterType implements IFlagType {
 
     /** The default value. */
     private FlagValue defaultValue;

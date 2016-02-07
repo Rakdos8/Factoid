@@ -17,7 +17,7 @@
  */
 package me.tabinol.factoid.commands;
 
-import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoidapi.lands.ILand;
 
 
 /**
@@ -45,7 +45,7 @@ public class ConfirmEntry {
     public final ConfirmType confirmType;
     
     /** The land. */
-    public final Land land;
+    public final ILand land;
     
     /** The area nb. */
     public final int areaNb;
@@ -57,7 +57,7 @@ public class ConfirmEntry {
      * @param land the land
      * @param areaNb the area nb
      */
-    public ConfirmEntry(ConfirmType confirmType, Land land, int areaNb) {
+    public ConfirmEntry(ConfirmType confirmType, ILand land, int areaNb) {
 
         this.confirmType = confirmType;
         this.land = land;

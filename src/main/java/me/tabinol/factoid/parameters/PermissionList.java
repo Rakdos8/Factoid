@@ -73,6 +73,12 @@ public enum PermissionList {
     /** The open dropper. */
     OPEN_DROPPER(true),
     
+    /** The open dispenser. */
+    OPEN_DISPENSER(true),
+    
+    /** The open jukebox. */
+    OPEN_JUKEBOX(true),
+    
     /** The use. */
     USE(true),
     
@@ -93,6 +99,18 @@ public enum PermissionList {
     
     /** The use string. */
     USE_STRING(true),
+    
+    /** The use enchanting table **/
+    USE_ENCHANTTABLE(true),
+    
+    /** The use anvil **/
+    USE_ANVIL(true),
+    
+    /** The mob spawner **/
+    USE_MOBSPAWNER(true),
+    
+    /** For daylight detector **/
+    USE_LIGHTDETECTOR(true), 
     
     /** The animal kill. */
     ANIMAL_KILL(true),
@@ -185,7 +203,16 @@ public enum PermissionList {
     TP(false),
     
     /**  The payer respawn at the land spawn. */
-    TP_DEATH(false);
+    TP_DEATH(false),
+    
+    /** The player is death on enter. */
+    LAND_DEATH(false),
+    
+    /** The crop trample */
+    CROP_TRAMPLE(true),
+    
+    /** The god */
+    GOD(false);
 
     /** The base value. */
     final boolean baseValue;

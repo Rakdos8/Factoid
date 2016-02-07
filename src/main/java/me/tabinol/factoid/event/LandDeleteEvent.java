@@ -24,7 +24,9 @@ import org.bukkit.event.HandlerList;
 
 /**
  * The Class LandDeleteEvent.
+ * @deprecated Use FactoidAPI
  */
+@Deprecated
 public class LandDeleteEvent extends LandEvent implements Cancellable {
 
     /** The Constant handlers. */

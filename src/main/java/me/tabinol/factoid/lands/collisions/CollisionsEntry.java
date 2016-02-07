@@ -18,7 +18,7 @@
 package me.tabinol.factoid.lands.collisions;
 
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoid.lands.collisions.Collisions.LandError;
 
 
@@ -31,7 +31,7 @@ public class CollisionsEntry {
     private final LandError error;
     
     /** The land. */
-    private final Land land;
+    private final ILand land;
     
     /** The area id. */
     private final int areaId;
@@ -43,7 +43,7 @@ public class CollisionsEntry {
      * @param land the land
      * @param areaId the area id
      */
-    public CollisionsEntry(LandError error, Land land, int areaId) {
+    public CollisionsEntry(LandError error, ILand land, int areaId) {
 
         this.error = error;
         this.land = land;
@@ -65,7 +65,7 @@ public class CollisionsEntry {
      *
      * @return the land
      */
-    public Land getLand() {
+    public ILand getLand() {
 
         return land;
     }
@@ -88,25 +88,25 @@ public class CollisionsEntry {
     public String getPrint() {
 
         if (error == LandError.COLLISION) {
-            return Factoid.getLanguage().getMessage("COLLISION.SHOW.COLLISION", land.getName(), areaId + "");
+            return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.COLLISION", land.getName(), areaId + "");
         } else if (error == LandError.OUT_OF_PARENT) {
-            return Factoid.getLanguage().getMessage("COLLISION.SHOW.OUT_OF_PARENT", land.getName());
+            return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.OUT_OF_PARENT", land.getName());
         } else if (error == LandError.CHILD_OUT_OF_BORDER) {
-            return Factoid.getLanguage().getMessage("COLLISION.SHOW.CHILD_OUT_OF_BORDER", land.getName());
+            return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.CHILD_OUT_OF_BORDER", land.getName());
         } else if (error == LandError.HAS_CHILDREN) {
-            return Factoid.getLanguage().getMessage("COLLISION.SHOW.HAS_CHILDREN", land.getName());
+            return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.HAS_CHILDREN", land.getName());
         } else if (error == LandError.NAME_IN_USE) {
-            return Factoid.getLanguage().getMessage("COLLISION.SHOW.NAME_IN_USE");
+            return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.NAME_IN_USE");
         } else if (error == LandError.IN_APPROVE_LIST) {
-            return Factoid.getLanguage().getMessage("COLLISION.SHOW.IN_APPROVE_LIST");
+            return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.IN_APPROVE_LIST");
         } else if (error == LandError.NOT_ENOUGH_MONEY) {
-            return Factoid.getLanguage().getMessage("COLLISION.SHOW.NOT_ENOUGH_MONEY");
+            return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.NOT_ENOUGH_MONEY");
         } else if (error == LandError.MAX_AREA_FOR_LAND) {
-            return Factoid.getLanguage().getMessage("COLLISION.SHOW.MAX_AREA_FOR_LAND", land.getName());
+            return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.MAX_AREA_FOR_LAND", land.getName());
         } else if (error == LandError.MAX_LAND_FOR_PLAYER) {
-            return Factoid.getLanguage().getMessage("COLLISION.SHOW.MAX_LAND_FOR_PLAYER");
+            return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.MAX_LAND_FOR_PLAYER");
         } else if (error == LandError.MUST_HAVE_AT_LEAST_ONE_AREA) {
-        	return Factoid.getLanguage().getMessage("COLLISION.SHOW.MUST_HAVE_AT_LEAST_ONE_AREA");
+        	return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.MUST_HAVE_AT_LEAST_ONE_AREA");
         }
         
 

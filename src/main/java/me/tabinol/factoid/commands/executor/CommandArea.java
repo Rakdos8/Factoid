@@ -21,12 +21,16 @@ import java.util.Map;
 
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
+import me.tabinol.factoid.commands.CommandEntities;
+import me.tabinol.factoid.commands.CommandExec;
 import me.tabinol.factoid.commands.ConfirmEntry;
+import me.tabinol.factoid.commands.InfoCommand;
 import me.tabinol.factoid.commands.ConfirmEntry.ConfirmType;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.lands.areas.CuboidArea;
+import me.tabinol.factoidapi.lands.areas.ICuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
+import me.tabinol.factoid.lands.Land;
 
 import org.bukkit.ChatColor;
 
@@ -34,6 +38,7 @@ import org.bukkit.ChatColor;
 /**
  * The Class CommandArea.
  */
+@InfoCommand(name="area", forceParameter=true)
 public class CommandArea extends CommandExec {
 
     /**
@@ -44,7 +49,7 @@ public class CommandArea extends CommandExec {
      */
     public CommandArea(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity, false, true);
+        super(entity);
     }
 
     /* (non-Javadoc)
@@ -60,20 +65,20 @@ public class CommandArea extends CommandExec {
             checkPermission(true, true, null, null);
             checkSelections(true, true);
 
-            CuboidArea area = entity.playerConf.getSelection().getCuboidArea();
+            ICuboidArea area = entity.playerConf.getSelection().getCuboidArea();
             double price = entity.playerConf.getSelection().getAreaAddPrice();
 
             // Check for collision
-            if (checkCollision(land.getName(), land, LandAction.AREA_ADD, 0, area, land.getParent(), 
-            		land.getOwner(), price, !entity.playerConf.isAdminMod(), true)) {
+            if (checkCollision(land.getName(), land, null, LandAction.AREA_ADD, 0, area, land.getParent(), 
+            		land.getOwner(), price, true)) {
                 return;
             }
 
             // Add Area
-            land.addArea(area, price, !entity.playerConf.isAdminMod());
+            ((Land) land).addArea(area, price);
 
-            entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.AREA.ISDONE", land.getName()));
-            Factoid.getLog().write(entity.playerName + " have create an area named " + land.getName() + " at position " + land.getAreas().toString());
+            entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CREATE.AREA.ISDONE", land.getName()));
+            Factoid.getThisPlugin().iLog().write(entity.playerName + " have create an area named " + land.getName() + " at position " + land.getAreas().toString());
             new CommandCancel(entity.playerConf, false).commandExecute();
             entity.playerConf.getSelection().refreshLand();
 
@@ -87,7 +92,7 @@ public class CommandArea extends CommandExec {
             int areaNb = 0;
 
             // check here if there is an area to replace
-            CuboidArea areaToReplace = entity.playerConf.getSelection().getAreaToReplace();
+            ICuboidArea areaToReplace = entity.playerConf.getSelection().getAreaToReplace();
             if (areaToReplace != null) {
                 areaNb = areaToReplace.getKey();
             }
@@ -116,8 +121,8 @@ public class CommandArea extends CommandExec {
             if (curArg.equalsIgnoreCase("remove")) {
 
                 // Check for collision
-                if (checkCollision(curArg, land, LandAction.AREA_REMOVE, areaNb, null, land.getParent(), 
-                		land.getOwner(), 0, !entity.playerConf.isAdminMod(), true)) {
+                if (checkCollision(curArg, land, null, LandAction.AREA_REMOVE, areaNb, null, land.getParent(), 
+                		land.getOwner(), 0, true)) {
                     return;
                 }
 
@@ -128,27 +133,27 @@ public class CommandArea extends CommandExec {
 
                 entity.playerConf.setConfirm(new ConfirmEntry(
                         ConfirmType.REMOVE_AREA, land, areaNb));
-                entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CONFIRM"));
+                entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CONFIRM"));
 
             } else {
 
                 //Only for a replace
                 checkSelections(true, true);
 
-                CuboidArea area = entity.playerConf.getSelection().getCuboidArea();
+                ICuboidArea area = entity.playerConf.getSelection().getCuboidArea();
                 double price = entity.playerConf.getSelection().getAreaReplacePrice(areaNb);
 
                 // Check for collision
-                if (checkCollision(land.getName(), land, LandAction.AREA_MODIFY, areaNb, area, land.getParent(), 
-                		land.getOwner(), price, !entity.playerConf.isAdminMod(), true)) {
+                if (checkCollision(land.getName(), land, null, LandAction.AREA_MODIFY, areaNb, area, land.getParent(), 
+                		land.getOwner(), price,  true)) {
                     return;
                 }
 
                 // Replace Area
-                land.replaceArea(areaNb, area, price, !entity.playerConf.isAdminMod());
+                ((Land) land).replaceArea(areaNb, area, price);
 
-                entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CREATE.AREA.ISDONE", land.getName()));
-                Factoid.getLog().write(entity.playerName + " have create an area named " + land.getName() + " at position " + land.getAreas().toString());
+                entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CREATE.AREA.ISDONE", land.getName()));
+                Factoid.getThisPlugin().iLog().write(entity.playerName + " have create an area named " + land.getName() + " at position " + land.getAreas().toString());
                 new CommandCancel(entity.playerConf, false).commandExecute();
                 entity.playerConf.getSelection().refreshLand();
             }
@@ -157,7 +162,7 @@ public class CommandArea extends CommandExec {
 
         	checkSelections(true, null);
         	StringBuilder stList = new StringBuilder();
-            for (Map.Entry<Integer, CuboidArea> entry : land.getIdsAndAreas().entrySet()) {
+            for (Map.Entry<Integer, ICuboidArea> entry : land.getIdsAndAreas().entrySet()) {
                 stList.append("ID: " + entry.getKey() + ", " + entry.getValue().getPrint() + Config.NEWLINE);
             }
             new ChatPage("COMMAND.AREA.LISTSTART", stList.toString(), entity.sender, land.getName()).getPage(1);

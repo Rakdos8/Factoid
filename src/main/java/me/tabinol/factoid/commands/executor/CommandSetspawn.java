@@ -21,11 +21,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.commands.CommandEntities;
+import me.tabinol.factoid.commands.CommandExec;
+import me.tabinol.factoid.commands.InfoCommand;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
+import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.parameters.FlagList;
 import me.tabinol.factoid.parameters.LandFlag;
-import me.tabinol.factoid.utilities.StringChanges;
+import me.tabinol.factoidapi.utilities.StringChanges;
 
+@InfoCommand(name="setspawn")
 public class CommandSetspawn extends CommandExec {
 
     /**
@@ -36,7 +41,7 @@ public class CommandSetspawn extends CommandExec {
      */
     public CommandSetspawn(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity, false, false);
+        super(entity);
     }
 
     /* (non-Javadoc)
@@ -60,9 +65,9 @@ public class CommandSetspawn extends CommandExec {
         
         // Set flag
         LandFlag flag = new LandFlag(FlagList.SPAWN.getFlagType(), posStr, true);
-        land.addFlag(flag);
+        ((Land) land).addFlag(flag);
         
-        entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.TP.CREATED"));
+        entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.TP.CREATED"));
 	}
 
 }

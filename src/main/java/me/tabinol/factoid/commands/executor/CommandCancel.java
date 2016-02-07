@@ -18,9 +18,13 @@
 package me.tabinol.factoid.commands.executor;
 
 import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.commands.CommandEntities;
+import me.tabinol.factoid.commands.CommandExec;
+import me.tabinol.factoid.commands.InfoCommand;
 import me.tabinol.factoid.config.players.PlayerConfEntry;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -28,6 +32,7 @@ import org.bukkit.entity.Player;
 /**
  * The Class CommandCancel.
  */
+@InfoCommand(name="cancel")
 public class CommandCancel extends CommandExec {
 
     /** The player. */
@@ -47,7 +52,7 @@ public class CommandCancel extends CommandExec {
      */
     public CommandCancel(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity, false, false);
+        super(entity);
         player = entity.player;
         playerConf = entity.playerConf;
         fromAutoCancel = false;
@@ -63,7 +68,7 @@ public class CommandCancel extends CommandExec {
      */
     public CommandCancel(PlayerConfEntry entry, boolean fromAutoCancel) throws FactoidCommandException {
 
-        super(null, false, false);
+        super(null);
         this.player = entry.getPlayer();
         playerConf = entry;
         this.fromAutoCancel = fromAutoCancel;
@@ -77,8 +82,8 @@ public class CommandCancel extends CommandExec {
 
         if (playerConf.getConfirm() != null) {
             playerConf.setConfirm(null);
-            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CANCEL.ACTION"));
-            Factoid.getLog().write(player.getName() + " cancel for action");
+            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CANCEL.ACTION"));
+            Factoid.getThisPlugin().iLog().write(player.getName() + " cancel for action");
             
             if(!fromAutoCancel) {
                 return;
@@ -88,8 +93,8 @@ public class CommandCancel extends CommandExec {
         if (playerConf.getSelection().getSelection(SelectionType.AREA) != null) {
 
             playerConf.getSelection().removeSelection(SelectionType.AREA);
-            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.SELECT.CANCEL"));
-            Factoid.getLog().write(player.getName() + ": Select cancel");
+            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.CANCEL"));
+            Factoid.getThisPlugin().iLog().write(player.getName() + ": Select cancel");
 
             if(!fromAutoCancel) {
                 return;
@@ -100,7 +105,7 @@ public class CommandCancel extends CommandExec {
         if (playerConf.getSetFlagUI() != null) {
 
             playerConf.setSetFlagUI(null);
-            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CANCEL.FLAGS"));
+            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CANCEL.FLAGS"));
 
             if(!fromAutoCancel) {
                 return;
@@ -111,7 +116,7 @@ public class CommandCancel extends CommandExec {
         if (playerConf.getSelection().getSelection(SelectionType.LAND) != null) {
 
             playerConf.getSelection().removeSelection(SelectionType.LAND);
-            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getLanguage().getMessage("COMMAND.CANCEL.SELECT"));
+            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CANCEL.SELECT"));
 
             // Cancel selection (it is the last think selected)
             playerConf.setAutoCancelSelect(false);

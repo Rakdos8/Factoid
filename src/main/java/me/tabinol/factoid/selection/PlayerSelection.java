@@ -21,11 +21,11 @@ import java.util.Collection;
 import java.util.EnumMap;
 
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.config.players.PlayerConfEntry;
-import me.tabinol.factoid.lands.Land;
-import me.tabinol.factoid.lands.areas.CuboidArea;
+import me.tabinol.factoidapi.config.players.IPlayerConfEntry;
+import me.tabinol.factoidapi.lands.ILand;
+import me.tabinol.factoidapi.lands.areas.ICuboidArea;
 import me.tabinol.factoid.parameters.FlagList;
-import me.tabinol.factoid.parameters.FlagType;
+import me.tabinol.factoidapi.parameters.IFlagType;
 import me.tabinol.factoid.selection.region.AreaSelection;
 import me.tabinol.factoid.selection.region.LandSelection;
 import me.tabinol.factoid.selection.region.RegionSelection;
@@ -49,20 +49,20 @@ public class PlayerSelection {
     }
 
     /** The player conf entry. */
-    private final PlayerConfEntry playerConfEntry;
+    private final IPlayerConfEntry playerConfEntry;
     
     /** The selection list. */
     private final EnumMap<SelectionType, RegionSelection> selectionList; // SelectionList for the player
     
     /** The area to replace. */
-    CuboidArea areaToReplace; // If it is an areaToReplace with an expand
+    ICuboidArea areaToReplace; // If it is an areaToReplace with an expand
 
     /**
      * Instantiates a new player selection.
      *
      * @param playerConfEntry the player conf entry
      */
-    public PlayerSelection(PlayerConfEntry playerConfEntry) {
+    public PlayerSelection(IPlayerConfEntry playerConfEntry) {
 
         this.playerConfEntry = playerConfEntry;
         selectionList = new EnumMap<SelectionType, RegionSelection>(SelectionType.class);
@@ -136,7 +136,7 @@ public class PlayerSelection {
      */
     public void refreshLand() {
     	
-    	Land land = getLand();
+    	ILand land = getLand();
     	
     	if(land !=null) {
     		removeSelection(SelectionType.LAND);
@@ -149,7 +149,7 @@ public class PlayerSelection {
      *
      * @return the land
      */
-    public Land getLand() {
+    public ILand getLand() {
 
         LandSelection sel = (LandSelection) selectionList.get(SelectionType.LAND);
         if (sel != null) {
@@ -164,7 +164,7 @@ public class PlayerSelection {
      *
      * @return the cuboid area
      */
-    public CuboidArea getCuboidArea() {
+    public ICuboidArea getCuboidArea() {
 
         AreaSelection sel = (AreaSelection) selectionList.get(SelectionType.AREA);
         if (sel != null) {
@@ -179,7 +179,7 @@ public class PlayerSelection {
      *
      * @param areaToReplace the new area to replace
      */
-    public void setAreaToReplace(CuboidArea areaToReplace) {
+    public void setAreaToReplace(ICuboidArea areaToReplace) {
 
         this.areaToReplace = areaToReplace;
     }
@@ -189,7 +189,7 @@ public class PlayerSelection {
      *
      * @return the area to replace
      */
-    public CuboidArea getAreaToReplace() {
+    public ICuboidArea getAreaToReplace() {
 
         return areaToReplace;
     }
@@ -205,14 +205,14 @@ public class PlayerSelection {
             return 0;
         }
 
-        Land land = getLand();
-        CuboidArea area = getCuboidArea();
+        ILand land = getLand();
+        ICuboidArea area = getCuboidArea();
         Double priceFlag;
-        FlagType flagType = FlagList.ECO_BLOCK_PRICE.getFlagType();
+        IFlagType flagType = FlagList.ECO_BLOCK_PRICE.getFlagType();
         
         // Get land price
         if (land == null) {
-            priceFlag = Factoid.getLands().getOutsideArea(area.getWorldName())
+            priceFlag = Factoid.getThisPlugin().iLands().getOutsideArea(area.getWorldName())
             		.getFlagAndInherit(flagType).getValueDouble();
                     
         } else {
@@ -238,10 +238,10 @@ public class PlayerSelection {
             return 0;
         }
 
-        Land land = getLand();
-        CuboidArea area = getCuboidArea();
+        ILand land = getLand();
+        ICuboidArea area = getCuboidArea();
         double priceFlag;
-        FlagType flagType = FlagList.ECO_BLOCK_PRICE.getFlagType();
+        IFlagType flagType = FlagList.ECO_BLOCK_PRICE.getFlagType();
 
         if(land == null) {
             return 0;
@@ -249,7 +249,7 @@ public class PlayerSelection {
 
         // The area is from parent ask parent
         if (land.getParent() == null) {
-            priceFlag = Factoid.getLands().getOutsideArea(area.getWorldName())
+            priceFlag = Factoid.getThisPlugin().iLands().getOutsideArea(area.getWorldName())
             		.getFlagAndInherit(flagType).getValueDouble();
         } else {
             priceFlag = land.getParent().getFlagAndInherit(flagType).getValueDouble();
@@ -290,7 +290,9 @@ public class PlayerSelection {
     private boolean isPlayerMustPay() {
         
         // Is Economy?
-        if (Factoid.getPlayerMoney() == null) {
+        if (Factoid.getThisPlugin().iPlayerMoney() == null
+        		|| !Factoid.getThisPlugin().iConf().useEconomy()
+        		|| playerConfEntry.isAdminMod()) {
             return false;
         }
 
