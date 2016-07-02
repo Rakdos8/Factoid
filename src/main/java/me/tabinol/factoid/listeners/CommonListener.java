@@ -18,11 +18,6 @@
 
 package me.tabinol.factoid.listeners;
 
-import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.lands.Land;
-import me.tabinol.factoidapi.lands.IDummyLand;
-import me.tabinol.factoidapi.parameters.IPermissionType;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,14 +28,19 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 
+import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoidapi.lands.IDummyLand;
+import me.tabinol.factoidapi.parameters.IPermissionType;
+
 /**
  * Common methods for Listeners
  */
 public class CommonListener {
-	
+
 	/**
 	 * Check permission.
-	 * 
+	 *
 	 * @param land
 	 *			the land
 	 * @param player
@@ -49,33 +49,29 @@ public class CommonListener {
 	 *			the pt
 	 * @return true, if successful
 	 */
-	protected boolean checkPermission(IDummyLand land, Player player,
-			IPermissionType pt) {
-
+	protected boolean checkPermission(final IDummyLand land, final Player player, final IPermissionType pt) {
 		return land.checkPermissionAndInherit(player, pt) == pt
 				.getDefaultValue();
 	}
 
 	/**
 	 * Message permission.
-	 * 
+	 *
 	 * @param player
 	 *			the player
 	 */
-	protected void messagePermission(Player player) {
-
+	protected void messagePermission(final Player player) {
 		player.sendMessage(ChatColor.GRAY + "[Factoid] "
 				+ Factoid.getThisPlugin().iLanguage().getMessage("GENERAL.MISSINGPERMISSION"));
 	}
-	
+
 	/**
 	 * Gets the source player from entity or projectile
 	 *
 	 * @param entity the entity
 	 * @return the source player
 	 */
-	protected Player getSourcePlayer(Entity entity) {
-		
+	protected Player getSourcePlayer(final Entity entity) {
 		Projectile damagerProjectile;
 
 		// Check if the damager is a player
@@ -89,20 +85,19 @@ public class CommonListener {
 				return (Player) damagerProjectile.getShooter();
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * Check is the block to destroy is attached to an eco sign
 	 * @param land the land
 	 * @param block the block
 	 * @return true if the sign is attached
 	 */
-	protected boolean hasEcoSign(Land land, Block block) {
-		
+	protected boolean hasEcoSign(final Land land, final Block block) {
 		return (land.getSaleSignLoc() != null && hasEcoSign(land, block, land.getSaleSignLoc()))
-				|| (land.getRentSignLoc() != null && hasEcoSign(land, block, land.getRentSignLoc())); 
+				|| (land.getRentSignLoc() != null && hasEcoSign(land, block, land.getRentSignLoc()));
 	}
 
 	/**
@@ -112,8 +107,7 @@ public class CommonListener {
 	 * @param ecoSignLoc the eco sign location
 	 * @return true if the sign is attached
 	 */
-	private boolean hasEcoSign(Land land, Block block, Location ecoSignLoc) {
-		
+	private boolean hasEcoSign(final Land land, final Block block, final Location ecoSignLoc) {
 		if((block.getRelative(BlockFace.UP).getLocation().equals(ecoSignLoc) && block.getRelative(BlockFace.UP).getType() == Material.SIGN_POST)
 				|| isEcoSignAttached(block, BlockFace.NORTH, ecoSignLoc)
 				|| isEcoSignAttached(block, BlockFace.SOUTH, ecoSignLoc)
@@ -121,19 +115,18 @@ public class CommonListener {
 				|| isEcoSignAttached(block, BlockFace.WEST, ecoSignLoc)) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
-	private boolean isEcoSignAttached(Block block, BlockFace face, Location ecoSignLoc) {
-		
-		Block checkBlock = block.getRelative(face);
-		
-		if(checkBlock.getLocation().equals(ecoSignLoc) && checkBlock.getType() == Material.WALL_SIGN 
+
+	private boolean isEcoSignAttached(final Block block, final BlockFace face, final Location ecoSignLoc) {
+		final Block checkBlock = block.getRelative(face);
+
+		if(checkBlock.getLocation().equals(ecoSignLoc) && checkBlock.getType() == Material.WALL_SIGN
 				&& ((org.bukkit.material.Sign) checkBlock.getState().getData()).getFacing() == face) {
 			return true;
 		}
-		
+
 		return false;
 	}
 }

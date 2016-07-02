@@ -19,13 +19,13 @@ package me.tabinol.factoid.config;
 
 import java.util.TreeSet;
 
+import org.bukkit.configuration.file.FileConfiguration;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.parameters.FlagType;
 import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoidapi.FactoidAPI;
 import me.tabinol.factoidapi.lands.types.IType;
-
-import org.bukkit.configuration.file.FileConfiguration;
 
 
 // TODO: Auto-generated Javadoc
@@ -38,66 +38,66 @@ public class Config {
 	/** The Constant NEWLINE. */
 	public static final String NEWLINE = "\n";
 	//public static final String NEWLINE = System.getProperty("line.separator");
-	
+
 	/** The Constant GLOBAL. */
 	public static final String GLOBAL = "_global_";
-	
+
 	/** The this plugin. */
 	private final Factoid thisPlugin;
-	
+
 	/** The config. */
 	private FileConfiguration config;
 	// Configuration
 	/** The debug. */
 	private boolean debug;
-	
+
 	/**
 	 * Checks if is debug.
 	 *
 	 * @return true, if is debug
 	 */
 	public boolean isDebug() { return debug; }
-	
+
 	/** The lang. */
 	private String lang;
-	
+
 	/**
 	 * Gets the lang.
 	 *
 	 * @return the lang
 	 */
 	public String getLang() { return lang; }
-	
+
 	/** The use economy. */
 	private boolean useEconomy;
-	
+
 	/**
 	 * Use economy.
 	 *
 	 * @return true, if successful
 	 */
 	public boolean useEconomy() { return useEconomy; }
-	
+
 	/** The info item. */
 	private int infoItem;
-	
+
 	/**
 	 * Gets the info item.
 	 *
 	 * @return the info item
 	 */
 	public int getInfoItem() { return infoItem; }
-	
+
 	/** The select item. */
 	private int selectItem;
-	
+
 	/**
 	 * Gets the select item.
 	 *
 	 * @return the select item
 	 */
 	public int getSelectItem() { return selectItem; }
-	
+
 	/**
 	 * The Enum AllowCollisionType.
 	 */
@@ -105,27 +105,27 @@ public class Config {
 
 		/** The true. */
 		TRUE,
-		
+
 		/** The approve. */
 		APPROVE,
-		
+
 		/** The false. */
 		FALSE;
 	}
-	
+
 	/** The allow collision. */
 	private AllowCollisionType allowCollision;
-	
+
 	/**
 	 * Gets the allow collision.
 	 *
 	 * @return the allow collision
 	 */
 	public AllowCollisionType getAllowCollision() { return allowCollision; }
-	
+
 	/** The land chat. */
 	private boolean isLandChat;
-	
+
 	/**
 	 * Gets if land chat is activated.
 	 *
@@ -135,47 +135,47 @@ public class Config {
 
 	/** The is spectator is vanish. */
 	private boolean isSpectatorIsVanish;
-	
+
 	/**
 	 * Checks if is spectator is vanish.
 	 *
 	 * @return true, if is spectator is vanish
 	 */
 	public boolean isSpectatorIsVanish() { return isSpectatorIsVanish; }
-	
+
 	/** The approve notify time. */
 	private long approveNotifyTime;
-	
+
 	/**
 	 * Gets the approve notify time.
 	 *
 	 * @return the approve notify time
 	 */
 	public long getApproveNotifyTime() { return approveNotifyTime; }
-	
+
 	/** The select auto cancel. */
 	private long selectAutoCancel;
-	
+
 	/**
 	 * Gets the select auto cancel.
 	 *
 	 * @return the select auto cancel
 	 */
 	public long getSelectAutoCancel() { return selectAutoCancel; }
-	
+
 	/** The max visual select. */
 	private int maxVisualSelect;
-	
+
 	/**
 	 * Gets the max visual select.
 	 *
 	 * @return the max visual select
 	 */
 	public int getMaxVisualSelect() { return maxVisualSelect; }
-	
+
 	/** The max visual select from player. */
 	private int maxVisualSelectFromPlayer;
-	
+
 	/**
 	 * Gets the max visual select from player.
 	 *
@@ -185,57 +185,57 @@ public class Config {
 
 	/** The max area per land. */
 	private int maxAreaPerLand;
-	
+
 	/**
 	 * Gets the max area per land.
 	 *
 	 * @return the max area per land
 	 */
 	public int getMaxAreaPerLand() { return maxAreaPerLand; }
-	
+
 	/** The max land per player. */
 	private int maxLandPerPlayer;
-	
+
 	/**
 	 * Gets the max land per player.
 	 *
 	 * @return the max land per player
 	 */
 	public int getMaxLandPerPlayer() { return maxLandPerPlayer; }
-	
+
 	/** The default x size. */
 	private int defaultXSize;
-	
+
 	/**
 	 * Gets the default x size.
 	 *
 	 * @return the default x size
 	 */
 	public int getDefaultXSize() { return defaultXSize; }
-  
+
 	/** The default z size. */
 	private int defaultZSize;
-	
+
 	/**
 	 * Gets the default z size.
 	 *
 	 * @return the default z size
 	 */
 	public int getDefaultZSize() { return defaultZSize; }
-  
+
 	/** The default bottom. */
 	private int defaultBottom;
-	
+
 	/**
 	 * Gets the default bottom.
 	 *
 	 * @return the default bottom
 	 */
 	public int getDefaultBottom() { return defaultBottom; }
-  
+
 	/** The default top. */
 	private int defaultTop;
-	
+
 	/**
 	 * Gets the default top.
 	 *
@@ -243,40 +243,40 @@ public class Config {
 	 */
 	public int getDefaultTop() { return defaultTop; }
 
-	
+
 	/** The beacon light. */
 	private boolean beaconLight;
-	
+
 	/**
 	 * Checks if is beacon light.
 	 *
 	 * @return true, if is beacon light
 	 */
 	public boolean isBeaconLight() { return beaconLight; }
-	
+
 	/** The override explosions. */
 	private boolean overrideExplosions;
-	
+
 	/**
 	 * Checks if is override explosions.
 	 *
 	 * @return true, if is override explosions
 	 */
 	public boolean isOverrideExplosions() { return overrideExplosions; }
-	
+
 	/** The owner config flag. */
 	private TreeSet<FlagType> ownerConfigFlag; // Flags a owner can set
-	
+
 	/**
 	 * Gets the owner config flag.
 	 *
 	 * @return the owner config flag
 	 */
 	public TreeSet<FlagType> getOwnerConfigFlag() { return ownerConfigFlag; }
-	
+
 	/** The owner config perm. */
 	private TreeSet<PermissionType> ownerConfigPerm; // Permissions a owner can set
-	
+
 	/**
 	 * Gets the owner config perm.
 	 *
@@ -286,23 +286,23 @@ public class Config {
 
 	/** The type admin mod. */
 	private IType typeAdminMod;
-	
+
 	/**
 	 * Gets the type admin mod.
 	 *
 	 * @return the type admin mod
 	 */
-	public IType getTypeAdminMod() { return typeAdminMod; } 
-	
+	public IType getTypeAdminMod() { return typeAdminMod; }
+
 	/** The type none admin mod. */
 	private IType typeNoneAdminMod;
-	
+
 	/**
 	 * Gets the type none admin mod.
 	 *
 	 * @return the type none admin mod
 	 */
-	public IType getTypeNoneAdminMod() { return typeNoneAdminMod; } 
+	public IType getTypeNoneAdminMod() { return typeNoneAdminMod; }
 
 	/**
 	 * Instantiates a new config.
@@ -344,7 +344,7 @@ public class Config {
 		// Remove error if the parameter is not here (AllowCollision)
 		try {
 			allowCollision = AllowCollisionType.valueOf(config.getString("land.AllowCollision", "approve").toUpperCase());
-		} catch (NullPointerException ex) {
+		} catch (final NullPointerException ex) {
 			allowCollision = AllowCollisionType.APPROVE;
 		}
 		isLandChat = config.getBoolean("land.LandChat", true);
@@ -364,30 +364,30 @@ public class Config {
 
 		config.addDefault("land.OwnerCanSet.Flags", new String[] {"MESSAGE_JOIN", "MESSAGE_QUIT"});
 		ownerConfigFlag = new TreeSet<FlagType>();
-		for (String value : config.getStringList("land.OwnerCanSet.Flags")) {
+		for (final String value : config.getStringList("land.OwnerCanSet.Flags")) {
 			ownerConfigFlag.add(Factoid.getThisPlugin().iParameters().getFlagTypeNoValid(value.toUpperCase()));
 		}
 		config.addDefault("land.OwnerCanSet.Permissions", new String[] {"BUILD", "OPEN", "USE"});
 		ownerConfigPerm = new TreeSet<PermissionType>();
-		for (String value : config.getStringList("land.OwnerCanSet.Permissions")) {
+		for (final String value : config.getStringList("land.OwnerCanSet.Permissions")) {
 			ownerConfigPerm.add(Factoid.getThisPlugin().iParameters().getPermissionTypeNoValid(value.toUpperCase()));
 		}
-		
+
 		// Add types
-		for(String typeName : config.getStringList("land.Types.List")) {
+		for(final String typeName : config.getStringList("land.Types.List")) {
 			FactoidAPI.iTypes().addOrGetType(typeName);
 		}
 		typeAdminMod = FactoidAPI.iTypes().addOrGetType(getStringOrNull("land.Types.OnCreate.AdminMod", "admin"));
 		typeNoneAdminMod = FactoidAPI.iTypes().addOrGetType(getStringOrNull("land.Types.OnCreate.NoneAdminMod", "player"));
 	}
-	
-	private String getStringOrNull(String path, String defaultSt) {
-		
+
+	private String getStringOrNull(final String path, final String defaultSt) {
+
 		String result = config.getString(path, defaultSt);
 		if(result.equalsIgnoreCase("-null-")) {
 			result = null;
 		}
-		
+
 		return result;
 	}
 }

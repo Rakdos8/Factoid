@@ -19,25 +19,25 @@ package me.tabinol.factoid.commands;
 
 import java.util.Calendar;
 
-import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.commands.executor.CommandCancel;
-import me.tabinol.factoid.commands.executor.CommandHelp;
-import me.tabinol.factoid.config.Config;
-import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoidapi.lands.ILand;
-import me.tabinol.factoid.lands.approve.Approve;
-import me.tabinol.factoidapi.lands.areas.ICuboidArea;
-import me.tabinol.factoidapi.lands.types.IType;
-import me.tabinol.factoid.lands.collisions.Collisions;
-import me.tabinol.factoid.playercontainer.PlayerContainerOwner;
-import me.tabinol.factoidapi.parameters.IPermissionType;
-import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+
+import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.commands.executor.CommandCancel;
+import me.tabinol.factoid.commands.executor.CommandHelp;
+import me.tabinol.factoid.config.Config;
+import me.tabinol.factoid.exceptions.FactoidCommandException;
+import me.tabinol.factoid.lands.approve.Approve;
+import me.tabinol.factoid.lands.collisions.Collisions;
+import me.tabinol.factoid.playercontainer.PlayerContainerOwner;
+import me.tabinol.factoidapi.lands.ILand;
+import me.tabinol.factoidapi.lands.areas.ICuboidArea;
+import me.tabinol.factoidapi.lands.types.IType;
+import me.tabinol.factoidapi.parameters.IPermissionType;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 
 
 /**
@@ -47,13 +47,13 @@ public abstract class CommandExec {
 
 	/** The entity. */
 	protected final CommandEntities entity;
-	
+
 	/** The land. */
 	protected ILand land;
-	
+
 	/** The is executable. */
 	private boolean isExecutable = true;
-	
+
 	/** The reset select cancel. */
 	public boolean resetSelectCancel = false; // If reset select cancel is done (1 time only)
 
@@ -63,7 +63,7 @@ public abstract class CommandExec {
 	 * @param entity the entity
 	 * @throws FactoidCommandException the factoid command exception
 	 */
-	protected CommandExec(CommandEntities entity) throws FactoidCommandException {
+	protected CommandExec(final CommandEntities entity) throws FactoidCommandException {
 
 		this.entity = entity;
 
@@ -86,7 +86,7 @@ public abstract class CommandExec {
 
 		// Show help if there is no more parameter and the command needs one
 		if (entity.infoCommand.forceParameter() && entity.argList != null && entity.argList.isLast()) {
-			new CommandHelp(entity.onCommand, entity.sender, 
+			new CommandHelp(entity.onCommand, entity.sender,
 					entity.infoCommand.mainCommand()[0], entity.infoCommand.name()).commandExecute();
 			isExecutable = false;
 		}
@@ -98,8 +98,8 @@ public abstract class CommandExec {
 	 * @throws FactoidCommandException the factoid command exception
 	 */
 	public abstract void commandExecute() throws FactoidCommandException;
-	
-	
+
+
 	/**
 	 * Checks if is executable.
 	 *
@@ -118,7 +118,7 @@ public abstract class CommandExec {
 	 * @param mustBeAreaSelected the must be area selected
 	 * @throws FactoidCommandException the factoid command exception
 	 */
-	protected void checkSelections(Boolean mustBeSelectMode, Boolean mustBeAreaSelected) throws FactoidCommandException {
+	protected void checkSelections(final Boolean mustBeSelectMode, final Boolean mustBeAreaSelected) throws FactoidCommandException {
 
 		// No check if entity is null (if it is not from a command)
 		if (entity == null) {
@@ -156,8 +156,8 @@ public abstract class CommandExec {
 	 * @param startSelectCancel the start select cancel
 	 * @throws FactoidCommandException the factoid command exception
 	 */
-	private void checkSelection(boolean result, boolean neededResult, String messageTrue, String messageFalse,
-			boolean startSelectCancel) throws FactoidCommandException {
+	private void checkSelection(final boolean result, final boolean neededResult, final String messageTrue, final String messageFalse,
+			final boolean startSelectCancel) throws FactoidCommandException {
 
 		if (result != neededResult) {
 			if (result == true) {
@@ -185,8 +185,8 @@ public abstract class CommandExec {
 	 * @param bukkitPermission the bukkit permission
 	 * @throws FactoidCommandException the factoid command exception
 	 */
-	protected void checkPermission(boolean mustBeAdminMod, boolean mustBeOwner,
-			IPermissionType neededPerm, String bukkitPermission) throws FactoidCommandException {
+	protected void checkPermission(final boolean mustBeAdminMod, final boolean mustBeOwner,
+			final IPermissionType neededPerm, final String bukkitPermission) throws FactoidCommandException {
 
 		boolean canDo = false;
 
@@ -226,14 +226,14 @@ public abstract class CommandExec {
 	 * @return true, if successful
 	 * @throws FactoidCommandException the factoid command exception
 	 */
-	protected boolean checkCollision(String landName, ILand land, IType type, Collisions.LandAction action,
-			int removeId, ICuboidArea newArea, ILand parent, IPlayerContainer owner, 
-			double price, boolean addForApprove) throws FactoidCommandException {
+	protected boolean checkCollision(final String landName, final ILand land, final IType type, final Collisions.LandAction action,
+			final int removeId, final ICuboidArea newArea, final ILand parent, final IPlayerContainer owner,
+			final double price, final boolean addForApprove) throws FactoidCommandException {
 
 		// allowApprove: false: The command can absolutely not be done if there is error!
-		Collisions coll = new Collisions(landName, land, action, removeId, newArea, parent,
+		final Collisions coll = new Collisions(landName, land, action, removeId, newArea, parent,
 				owner, price, !addForApprove);
-		boolean allowApprove = coll.getAllowApprove();
+		final boolean allowApprove = coll.getAllowApprove();
 
 		if (coll.hasCollisions()) {
 			entity.sender.sendMessage(coll.getPrints());
@@ -264,12 +264,12 @@ public abstract class CommandExec {
 			land = Factoid.getThisPlugin().iLands().getLand(entity.argList.getNext());
 		}
 	}
-	
+
 	/**
 	 * Removes the sign from hand.
 	 */
 	protected void removeSignFromHand() {
-		
+
 		if(entity.player.getGameMode() != GameMode.CREATIVE) {
 			if(entity.player.getItemInHand().getAmount() == 1) {
 				entity.player.setItemInHand(new ItemStack(Material.AIR));
