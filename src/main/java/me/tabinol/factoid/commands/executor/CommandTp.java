@@ -36,48 +36,48 @@ import me.tabinol.factoidapi.utilities.StringChanges;
 @InfoCommand(name="tp", forceParameter=true)
 public class CommandTp extends CommandExec {
 
-    /**
-     * Instantiates a new command tp.
-     *
-     * @param entity the entity
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandTp(CommandEntities entity) throws FactoidCommandException {
+	/**
+	 * Instantiates a new command tp.
+	 *
+	 * @param entity the entity
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	public CommandTp(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity);
-    }
-    
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
-     */
-    @Override
-    public void commandExecute() throws FactoidCommandException {
+		super(entity);
+	}
+	
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+	 */
+	@Override
+	public void commandExecute() throws FactoidCommandException {
 
-        String curArg = entity.argList.getNext();
-        land = Factoid.getThisPlugin().iLands().getLand(curArg);
-        
-        // Land not found
-        if(land == null) {
-        	throw new FactoidCommandException("On land tp player", entity.player, "COMMAND.TP.LANDNOTFOUND");
-        }
-        
-        // Check adminmod or permission TP
-        checkPermission(true, false, PermissionList.TP.getPermissionType(), null);
+		String curArg = entity.argList.getNext();
+		land = Factoid.getThisPlugin().iLands().getLand(curArg);
+		
+		// Land not found
+		if(land == null) {
+			throw new FactoidCommandException("On land tp player", entity.player, "COMMAND.TP.LANDNOTFOUND");
+		}
+		
+		// Check adminmod or permission TP
+		checkPermission(true, false, PermissionList.TP.getPermissionType(), null);
 
-        // Try to get Location
-        IFlagValue value = land.getFlagAndInherit(FlagList.SPAWN.getFlagType());
-        
-        if(value.getValueString().isEmpty()) {
-        	throw new FactoidCommandException("On land tp player", entity.player, "COMMAND.TP.NOSPAWN");
-        }
-        
-        Location location = StringChanges.stringToLocation(value.getValueString());
-        
-        if(location == null) {
-        	throw new FactoidCommandException("On land tp player", entity.player, "COMMAND.TP.INVALID");
-        }
-        
-        // Teleport player
-        entity.player.teleport(location);
-    }
+		// Try to get Location
+		IFlagValue value = land.getFlagAndInherit(FlagList.SPAWN.getFlagType());
+		
+		if(value.getValueString().isEmpty()) {
+			throw new FactoidCommandException("On land tp player", entity.player, "COMMAND.TP.NOSPAWN");
+		}
+		
+		Location location = StringChanges.stringToLocation(value.getValueString());
+		
+		if(location == null) {
+			throw new FactoidCommandException("On land tp player", entity.player, "COMMAND.TP.INVALID");
+		}
+		
+		// Teleport player
+		entity.player.teleport(location);
+	}
 }

@@ -22,5 +22,5 @@ package me.tabinol.factoidapi.playercontainer;
  * system.
  */
 public interface IPlayerContainerGroup extends IPlayerContainer {
-    
+	
 }

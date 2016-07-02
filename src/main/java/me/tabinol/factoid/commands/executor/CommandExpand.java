@@ -37,77 +37,77 @@ import org.bukkit.ChatColor;
 @InfoCommand(name="expand")
 public class CommandExpand extends CommandExec {
 
-    /**
-     * Instantiates a new command expand.
-     *
-     * @param entity the entity
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandExpand(CommandEntities entity) throws FactoidCommandException {
+	/**
+	 * Instantiates a new command expand.
+	 *
+	 * @param entity the entity
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	public CommandExpand(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity);
-    }
+		super(entity);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
-     */
-    @Override
-    public void commandExecute() throws FactoidCommandException {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+	 */
+	@Override
+	public void commandExecute() throws FactoidCommandException {
 
-        checkSelections(null, null);
-        // checkPermission(false, false, null, null);
+		checkSelections(null, null);
+		// checkPermission(false, false, null, null);
 
-        ILand land = entity.playerConf.getSelection().getLand();
-        String curArg = entity.argList.getNext();
+		ILand land = entity.playerConf.getSelection().getLand();
+		String curArg = entity.argList.getNext();
 
-        if (curArg == null) {
+		if (curArg == null) {
 
-            if (entity.playerConf.getSelection().getSelection(SelectionType.AREA) instanceof ExpandAreaSelection) {
-                throw new FactoidCommandException("Player Expand", entity.player, "COMMAND.EXPAND.ALREADY");
-            }
+			if (entity.playerConf.getSelection().getSelection(SelectionType.AREA) instanceof ExpandAreaSelection) {
+				throw new FactoidCommandException("Player Expand", entity.player, "COMMAND.EXPAND.ALREADY");
+			}
 
-            entity.player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.EXPAND.JOINMODE"));
-            entity.player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.EXPAND.HINT", ChatColor.ITALIC.toString(), ChatColor.RESET.toString(), ChatColor.DARK_GRAY.toString()));
-            Factoid.getThisPlugin().iLog().write(entity.player.getName() + " have join ExpandMode.");
+			entity.player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.EXPAND.JOINMODE"));
+			entity.player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.EXPAND.HINT", ChatColor.ITALIC.toString(), ChatColor.RESET.toString(), ChatColor.DARK_GRAY.toString()));
+			Factoid.getThisPlugin().iLog().write(entity.player.getName() + " have join ExpandMode.");
 
-            // Check the selection before (if exist)
-            ICuboidArea area = entity.playerConf.getSelection().getCuboidArea();
+			// Check the selection before (if exist)
+			ICuboidArea area = entity.playerConf.getSelection().getCuboidArea();
 
-            if (area == null && land != null && (area = land.getArea(1)) != null) {
+			if (area == null && land != null && (area = land.getArea(1)) != null) {
 
-                // Expand an existing area?
-                entity.playerConf.getSelection().setAreaToReplace(area);
-            }
+				// Expand an existing area?
+				entity.playerConf.getSelection().setAreaToReplace(area);
+			}
 
-            if (area == null) {
-                entity.playerConf.getSelection().addSelection(new ExpandAreaSelection(entity.player));
-            } else {
-                entity.playerConf.getSelection().addSelection(new ExpandAreaSelection(entity.player, area.copyOf()));
-            }
+			if (area == null) {
+				entity.playerConf.getSelection().addSelection(new ExpandAreaSelection(entity.player));
+			} else {
+				entity.playerConf.getSelection().addSelection(new ExpandAreaSelection(entity.player, area.copyOf()));
+			}
 
-        } else if (curArg.equalsIgnoreCase("done")) {
+		} else if (curArg.equalsIgnoreCase("done")) {
 
-            // Expand done
-            entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.EXPAND.COMPLETE"));
-            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.EXPAND.QUITMODE"));
-            Factoid.getThisPlugin().iLog().write(entity.playerName + " have quit ExpandMode.");
+			// Expand done
+			entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.EXPAND.COMPLETE"));
+			entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.EXPAND.QUITMODE"));
+			Factoid.getThisPlugin().iLog().write(entity.playerName + " have quit ExpandMode.");
 
-            ICuboidArea area = entity.playerConf.getSelection().getCuboidArea();
-            if (area != null) {
+			ICuboidArea area = entity.playerConf.getSelection().getCuboidArea();
+			if (area != null) {
 
-                entity.playerConf.getSelection().addSelection(new AreaSelection(entity.player, area));
+				entity.playerConf.getSelection().addSelection(new AreaSelection(entity.player, area));
 
-                if (!((AreaSelection) entity.playerConf.getSelection().getSelection(SelectionType.AREA)).getCollision()) {
-                    entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY
-                            + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.LAND.NOCOLLISION"));
-                } else {
-                    entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.RED
-                            + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.LAND.COLLISION"));
-                }
-            }
+				if (!((AreaSelection) entity.playerConf.getSelection().getSelection(SelectionType.AREA)).getCollision()) {
+					entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY
+							+ Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.LAND.NOCOLLISION"));
+				} else {
+					entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.RED
+							+ Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.LAND.COLLISION"));
+				}
+			}
 
-        } else {
-            throw new FactoidCommandException("Missing information command", entity.player, "GENERAL.MISSINGINFO");
-        }
-    }
+		} else {
+			throw new FactoidCommandException("Missing information command", entity.player, "GENERAL.MISSINGINFO");
+		}
+	}
 }

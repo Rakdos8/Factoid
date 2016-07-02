@@ -47,108 +47,108 @@ import org.bukkit.ChatColor;
 @InfoCommand(name="create", forceParameter=true)
 public class CommandCreate extends CommandExec {
 
-    /**
-     * Instantiates a new command create.
-     *
-     * @param entity the entity
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandCreate(CommandEntities entity) throws FactoidCommandException {
+	/**
+	 * Instantiates a new command create.
+	 *
+	 * @param entity the entity
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	public CommandCreate(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity);
-    }
+		super(entity);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
-     */
-    @Override
-    public void commandExecute() throws FactoidCommandException {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+	 */
+	@Override
+	public void commandExecute() throws FactoidCommandException {
 
-        checkSelections(null, true);
-        // checkPermission(false, false, null, null);
+		checkSelections(null, true);
+		// checkPermission(false, false, null, null);
 
-        AreaSelection select = (AreaSelection) entity.playerConf.getSelection().getSelection(SelectionType.AREA);
+		AreaSelection select = (AreaSelection) entity.playerConf.getSelection().getSelection(SelectionType.AREA);
 
-        ICuboidArea area = select.getCuboidArea();
-        Double price = entity.playerConf.getSelection().getLandCreatePrice();
-        ILand parent;
+		ICuboidArea area = select.getCuboidArea();
+		Double price = entity.playerConf.getSelection().getLandCreatePrice();
+		ILand parent;
 
-        // Quit select mod
-        // entity.playerConf.setAreaSelection(null);
-        // entity.playerConf.setLandSelected(null);
-        // select.resetSelection();
+		// Quit select mod
+		// entity.playerConf.setAreaSelection(null);
+		// entity.playerConf.setLandSelected(null);
+		// select.resetSelection();
 
-        String curArg = entity.argList.getNext();
+		String curArg = entity.argList.getNext();
 
-        // Check if is is a banned word
-        if (BannedWords.isBannedWord(curArg.toUpperCase())) {
-            throw new FactoidCommandException("CommandCreate", entity.player, "COMMAND.CREATE.HINTUSE");
-        }
+		// Check if is is a banned word
+		if (BannedWords.isBannedWord(curArg.toUpperCase())) {
+			throw new FactoidCommandException("CommandCreate", entity.player, "COMMAND.CREATE.HINTUSE");
+		}
 
-        // Check for parent
-        if (!entity.argList.isLast()) {
+		// Check for parent
+		if (!entity.argList.isLast()) {
 
-            String curString = entity.argList.getNext();
-            
-            if(curString.equalsIgnoreCase("noparent")) {
-            	
-            	parent = null;
-            }
-        	
-            else {
-        	
-            	parent = Factoid.getThisPlugin().iLands().getLand(curString);
+			String curString = entity.argList.getNext();
+			
+			if(curString.equalsIgnoreCase("noparent")) {
+				
+				parent = null;
+			}
+			
+			else {
+			
+				parent = Factoid.getThisPlugin().iLands().getLand(curString);
 
-            	if (parent == null) {
-            		throw new FactoidCommandException("CommandCreate", entity.player, "COMMAND.CREATE.PARENTNOTEXIST");
-            	}
-            }
-        } else {
+				if (parent == null) {
+					throw new FactoidCommandException("CommandCreate", entity.player, "COMMAND.CREATE.PARENTNOTEXIST");
+				}
+			}
+		} else {
 
-        	// Autodetect parent
-            parent = select.getParentDetected();
-        }
+			// Autodetect parent
+			parent = select.getParentDetected();
+		}
 
-        // Not complicated! The player must be AdminMod, or access to create (in world) 
-        // or access to create in parent if it is a subland.
-        if (!entity.playerConf.isAdminMod()
-                && ((parent == null && !Factoid.getThisPlugin().iLands().getOutsideArea(area.getWorldName()).checkPermissionAndInherit(entity.player, PermissionList.LAND_CREATE.getPermissionType()))
-                || (parent != null && !parent.checkPermissionAndInherit(entity.player, PermissionList.LAND_CREATE.getPermissionType())))) {
-            throw new FactoidCommandException("CommandCreate", entity.player, "GENERAL.MISSINGPERMISSION");
-        }
+		// Not complicated! The player must be AdminMod, or access to create (in world) 
+		// or access to create in parent if it is a subland.
+		if (!entity.playerConf.isAdminMod()
+				&& ((parent == null && !Factoid.getThisPlugin().iLands().getOutsideArea(area.getWorldName()).checkPermissionAndInherit(entity.player, PermissionList.LAND_CREATE.getPermissionType()))
+				|| (parent != null && !parent.checkPermissionAndInherit(entity.player, PermissionList.LAND_CREATE.getPermissionType())))) {
+			throw new FactoidCommandException("CommandCreate", entity.player, "GENERAL.MISSINGPERMISSION");
+		}
 
-        // If the player is adminmod, the owner is nobody, and set type
-        IPlayerContainer owner;
-        IType type;
-        if(entity.playerConf.isAdminMod()) {
-            owner = new PlayerContainerNobody();
-            type = Factoid.getThisPlugin().iConf().getTypeAdminMod();
-        } else {
-            owner = entity.playerConf.getPlayerContainer();
-            type = Factoid.getThisPlugin().iConf().getTypeNoneAdminMod();
-        }
+		// If the player is adminmod, the owner is nobody, and set type
+		IPlayerContainer owner;
+		IType type;
+		if(entity.playerConf.isAdminMod()) {
+			owner = new PlayerContainerNobody();
+			type = Factoid.getThisPlugin().iConf().getTypeAdminMod();
+		} else {
+			owner = entity.playerConf.getPlayerContainer();
+			type = Factoid.getThisPlugin().iConf().getTypeNoneAdminMod();
+		}
 
-        // Check for collision
-        if (checkCollision(curArg, null, type, LandAction.LAND_ADD, 0, area, parent, owner, price, true)) {
-            new CommandCancel(entity.playerConf, true).commandExecute();
-            return;
-        }
+		// Check for collision
+		if (checkCollision(curArg, null, type, LandAction.LAND_ADD, 0, area, parent, owner, price, true)) {
+			new CommandCancel(entity.playerConf, true).commandExecute();
+			return;
+		}
 
-        // Create Land
-        ILand land = null;
-        
-        try {
-            land = Factoid.getThisPlugin().iLands().createLand(curArg, owner, area, parent, price, type);
-        } catch (FactoidLandException ex) {
-            Logger.getLogger(CommandCreate.class.getName()).log(Level.SEVERE, "On land create", ex);
-        }
+		// Create Land
+		ILand land = null;
+		
+		try {
+			land = Factoid.getThisPlugin().iLands().createLand(curArg, owner, area, parent, price, type);
+		} catch (FactoidLandException ex) {
+			Logger.getLogger(CommandCreate.class.getName()).log(Level.SEVERE, "On land create", ex);
+		}
 
-        entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CREATE.DONE"));
-        Factoid.getThisPlugin().iLog().write(entity.playerName + " have create a land named " + land.getName() + " at position " + land.getAreas().toString());
-        
-        // Cancel and select the land
-        new CommandCancel(entity.playerConf, true).commandExecute();
-        new CommandSelect(entity.player, new ArgList(new String[] {land.getName()}, 
-                entity.player), null).commandExecute();
-    }
+		entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CREATE.DONE"));
+		Factoid.getThisPlugin().iLog().write(entity.playerName + " have create a land named " + land.getName() + " at position " + land.getAreas().toString());
+		
+		// Cancel and select the land
+		new CommandCancel(entity.playerConf, true).commandExecute();
+		new CommandSelect(entity.player, new ArgList(new String[] {land.getName()}, 
+				entity.player), null).commandExecute();
+	}
 }

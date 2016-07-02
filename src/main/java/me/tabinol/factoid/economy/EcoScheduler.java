@@ -30,24 +30,24 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class EcoScheduler extends BukkitRunnable {
 
-    /* (non-Javadoc)
-     * @see java.lang.Runnable#run()
-     */
-    public void run() {
-    	
-    	Calendar now = Calendar.getInstance();
-    	
-    	// Check for rent renew
-    	for(ILand land : Factoid.getThisPlugin().iLands().getForRent()) {
-    		
-    		long nextPaymentTime = land.getLastPaymentTime().getTime() + (86400000 * land.getRentRenew());
-    		
-    		if(land.isRented() && nextPaymentTime < now.getTimeInMillis()) {
-    			
-    			//Check if the tenant has enough money or time limit whit no auto renew 
-    			if(Factoid.getThisPlugin().iPlayerMoney().getPlayerBalance(land.getTenant().getOfflinePlayer(), land.getWorldName()) < land.getRentPrice()
-    					|| !land.getRentAutoRenew()) {
-    				
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
+	public void run() {
+		
+		Calendar now = Calendar.getInstance();
+		
+		// Check for rent renew
+		for(ILand land : Factoid.getThisPlugin().iLands().getForRent()) {
+			
+			long nextPaymentTime = land.getLastPaymentTime().getTime() + (86400000 * land.getRentRenew());
+			
+			if(land.isRented() && nextPaymentTime < now.getTimeInMillis()) {
+				
+				//Check if the tenant has enough money or time limit whit no auto renew 
+				if(Factoid.getThisPlugin().iPlayerMoney().getPlayerBalance(land.getTenant().getOfflinePlayer(), land.getWorldName()) < land.getRentPrice()
+						|| !land.getRentAutoRenew()) {
+					
 					// Unrent
 					((Land) land).unSetRented();
 					try {
@@ -58,18 +58,18 @@ public class EcoScheduler extends BukkitRunnable {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-    			} else {
-    			
-    				// renew rent
-    				Factoid.getThisPlugin().iPlayerMoney().getFromPlayer(land.getTenant().getOfflinePlayer(), 
-    					land.getWorldName(), land.getRentPrice());
-    				if(land.getOwner() instanceof IPlayerContainerPlayer) {
-        				Factoid.getThisPlugin().iPlayerMoney().giveToPlayer(((IPlayerContainerPlayer)land.getOwner()).getOfflinePlayer(), 
-        					land.getWorldName(), land.getRentPrice());
-    				}
-    				((Land) land).setLastPaymentTime(new Timestamp(now.getTime().getTime()));
-    			}
-    		}
-    	}
-    }
+				} else {
+				
+					// renew rent
+					Factoid.getThisPlugin().iPlayerMoney().getFromPlayer(land.getTenant().getOfflinePlayer(), 
+						land.getWorldName(), land.getRentPrice());
+					if(land.getOwner() instanceof IPlayerContainerPlayer) {
+						Factoid.getThisPlugin().iPlayerMoney().giveToPlayer(((IPlayerContainerPlayer)land.getOwner()).getOfflinePlayer(), 
+							land.getWorldName(), land.getRentPrice());
+					}
+					((Land) land).setLastPaymentTime(new Timestamp(now.getTime().getTime()));
+				}
+			}
+		}
+	}
 }

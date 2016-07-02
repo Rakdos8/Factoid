@@ -28,52 +28,52 @@ import org.bukkit.entity.Player;
  */
 public class ExpandAreaSelection extends ActiveAreaSelection implements PlayerMoveListen {
 
-    /**
-     * Instantiates a new expand area selection.
-     *
-     * @param player the player
-     */
-    public ExpandAreaSelection(Player player) {
+	/**
+	 * Instantiates a new expand area selection.
+	 *
+	 * @param player the player
+	 */
+	public ExpandAreaSelection(Player player) {
 
-        super(player);
-    }
+		super(player);
+	}
 
-    // When we know the area
-    /**
-     * Instantiates a new expand area selection.
-     *
-     * @param player the player
-     * @param area the area
-     */
-    public ExpandAreaSelection(Player player, ICuboidArea area) {
+	// When we know the area
+	/**
+	 * Instantiates a new expand area selection.
+	 *
+	 * @param player the player
+	 * @param area the area
+	 */
+	public ExpandAreaSelection(Player player, ICuboidArea area) {
 
-        super(player, area);
-    }
+		super(player, area);
+	}
 
-    // Called from player listenner
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.selection.region.ActiveAreaSelection#playerMove()
-     */
-    @Override
-    public void playerMove() {
+	// Called from player listenner
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.selection.region.ActiveAreaSelection#playerMove()
+	 */
+	@Override
+	public void playerMove() {
 
-        removeSelection();
-        Location playerLoc = player.getLocation();
-        
-        // Check where the player is outside the land
-        if(playerLoc.getBlockX() - 1 < area.getX1()) {
-            ((CuboidArea) area).setX1(playerLoc.getBlockX() - 1);
-        }
-        if(playerLoc.getBlockX() + 1 > area.getX2()) {
-        	((CuboidArea) area).setX2(playerLoc.getBlockX() + 1);
-        }
-        if(playerLoc.getBlockZ() - 1 < area.getZ1()) {
-        	((CuboidArea) area).setZ1(playerLoc.getBlockZ() - 1);
-        }
-        if(playerLoc.getBlockZ() + 1 > area.getZ2()) {
-        	((CuboidArea) area).setZ2(playerLoc.getBlockZ() + 1);
-        }
-        
-        makeVisualSelection();
-    }
+		removeSelection();
+		Location playerLoc = player.getLocation();
+		
+		// Check where the player is outside the land
+		if(playerLoc.getBlockX() - 1 < area.getX1()) {
+			((CuboidArea) area).setX1(playerLoc.getBlockX() - 1);
+		}
+		if(playerLoc.getBlockX() + 1 > area.getX2()) {
+			((CuboidArea) area).setX2(playerLoc.getBlockX() + 1);
+		}
+		if(playerLoc.getBlockZ() - 1 < area.getZ1()) {
+			((CuboidArea) area).setZ1(playerLoc.getBlockZ() - 1);
+		}
+		if(playerLoc.getBlockZ() + 1 > area.getZ2()) {
+			((CuboidArea) area).setZ2(playerLoc.getBlockZ() + 1);
+		}
+		
+		makeVisualSelection();
+	}
 }

@@ -28,54 +28,54 @@ import org.bukkit.event.HandlerList;
  */
 public class LandDeleteEvent extends LandEvent implements Cancellable {
 
-    /** The Constant handlers. */
-    private static final HandlerList handlers = new HandlerList();
-    
-    /** The event is cancelled. */
-    protected boolean cancelled = false;
+	/** The Constant handlers. */
+	private static final HandlerList handlers = new HandlerList();
+	
+	/** The event is cancelled. */
+	protected boolean cancelled = false;
 
-    /**
-     * Instantiates a new land delete event.
-     *
-     * @param deletedLand the deleted land
-     */
-    public LandDeleteEvent(final ILand deletedLand) {
+	/**
+	 * Instantiates a new land delete event.
+	 *
+	 * @param deletedLand the deleted land
+	 */
+	public LandDeleteEvent(final ILand deletedLand) {
 
-        super(deletedLand);
-    }
+		super(deletedLand);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoidapi.event.LandEvent#getHandlers()
-     */
-    @Override
-    public HandlerList getHandlers() {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoidapi.event.LandEvent#getHandlers()
+	 */
+	@Override
+	public HandlerList getHandlers() {
 
-        return handlers;
-    }
+		return handlers;
+	}
 
-    /**
-     * Gets the handler list.
-     *
-     * @return the handler list
-     */
-    public static HandlerList getHandlerList() {
+	/**
+	 * Gets the handler list.
+	 *
+	 * @return the handler list
+	 */
+	public static HandlerList getHandlerList() {
 
-        return handlers;
-    }
-    
-    /* (non-Javadoc)
-     * @see org.bukkit.event.Cancellable#isCancelled()
-     */
-    public boolean isCancelled() {
-        
-        return cancelled;
-    }
+		return handlers;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.bukkit.event.Cancellable#isCancelled()
+	 */
+	public boolean isCancelled() {
+		
+		return cancelled;
+	}
 
-    /* (non-Javadoc)
-     * @see org.bukkit.event.Cancellable#setCancelled(boolean)
-     */
-    public void setCancelled(boolean bln) {
-        
-        cancelled = bln;
-    }
+	/* (non-Javadoc)
+	 * @see org.bukkit.event.Cancellable#setCancelled(boolean)
+	 */
+	public void setCancelled(boolean bln) {
+		
+		cancelled = bln;
+	}
 }

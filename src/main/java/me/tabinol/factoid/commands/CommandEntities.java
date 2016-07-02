@@ -27,59 +27,59 @@ import org.bukkit.entity.Player;
  * Contains general information for commandExecutor.
  */
 public class CommandEntities {
-    
-    /** The main command. */
-    public final MainCommand mainCommand;
+	
+	/** The main command. */
+	public final MainCommand mainCommand;
 	
 	/** The command. */
-    public final InfoCommand infoCommand;
-    
-    /** The sender. */
-    public final CommandSender sender;
-    
-    /** The arg list. */
-    public final ArgList argList;
-    
-    /** The player. */
-    public final Player player;
-    
-    /** The player name. */
-    public final String playerName;
-    
-    /** The player conf. */
-    public final PlayerConfEntry playerConf;
-    
-    /** The on command. */
-    public final OnCommand onCommand;
+	public final InfoCommand infoCommand;
+	
+	/** The sender. */
+	public final CommandSender sender;
+	
+	/** The arg list. */
+	public final ArgList argList;
+	
+	/** The player. */
+	public final Player player;
+	
+	/** The player name. */
+	public final String playerName;
+	
+	/** The player conf. */
+	public final PlayerConfEntry playerConf;
+	
+	/** The on command. */
+	public final OnCommand onCommand;
 
-    /**
-     * Instantiates a new command entities.
-     *
-     * @param mainCommand the main command
-     * @param infoCommand the info command
-     * @param sender the sender
-     * @param argList the arg list
-     * @param onCommand the on command
-     */
-    public CommandEntities(MainCommand mainCommand, InfoCommand infoCommand, 
-    		CommandSender sender, ArgList argList, OnCommand onCommand) {
-        
-        this.mainCommand = mainCommand;
-    	this.infoCommand = infoCommand;
-        this.sender = sender;
-        this.argList = argList;
-        this.onCommand = onCommand;
+	/**
+	 * Instantiates a new command entities.
+	 *
+	 * @param mainCommand the main command
+	 * @param infoCommand the info command
+	 * @param sender the sender
+	 * @param argList the arg list
+	 * @param onCommand the on command
+	 */
+	public CommandEntities(MainCommand mainCommand, InfoCommand infoCommand, 
+			CommandSender sender, ArgList argList, OnCommand onCommand) {
+		
+		this.mainCommand = mainCommand;
+		this.infoCommand = infoCommand;
+		this.sender = sender;
+		this.argList = argList;
+		this.onCommand = onCommand;
 
-        if (sender instanceof Player) {
-            player = (Player) sender;
-        } else {
-            player = null;
-        }
-        
-        playerName = sender.getName();
-        playerConf = Factoid.getThisPlugin().iPlayerConf().get(sender);
-    }
-    
-    
+		if (sender instanceof Player) {
+			player = (Player) sender;
+		} else {
+			player = null;
+		}
+		
+		playerName = sender.getName();
+		playerConf = Factoid.getThisPlugin().iPlayerConf().get(sender);
+	}
+	
+	
 
 }

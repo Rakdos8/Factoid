@@ -29,140 +29,140 @@ import org.bukkit.World;
  */
 public interface ICuboidArea {
 
-    /**
-     * Equals.
-     *
-     * @param area2 the area2
-     * @return true, if successful
-     */
-    public boolean equals(ICuboidArea area2);
-    
-    /**
-     * Copy of.
-     *
-     * @return the cuboid area
-     */
-    public ICuboidArea copyOf();
-    
-    /**
-     * Convert the cuboid area to string.
-     *
-     * @return the stirng
-     */
-    @Override
-    public String toString();
-    
-    /**
-     * Gets the prints the.
-     *
-     * @return the prints the
-     */
-    public String getPrint();
-    
-    /**
-     * Gets the key. If the cuboid area is not part of a land, the value is 0.
-     *
-     * @return the key
-     */
-    public Integer getKey();
-    
-    /**
-     * Gets the total block number of blocks.
-     *
-     * @return the total block
-     */
-    public long getTotalBlock();
-    
-    /**
-     * Checks if there is a collision.
-     *
-     * @param area2 the area2
-     * @return true, if is collision
-     */
-    public boolean isCollision(ICuboidArea area2);
-    
-    /**
-     * Checks if is the location is inside the cuboid area.
-     *
-     * @param loc the loc
-     * @return true, if is location inside
-     */
-    public boolean isLocationInside(Location loc);
-    
-    /**
-     * Check if there is a collision and create an area of the collision.
-     * @param area2 The second area to compare
-     * @return the CuboidArea collision or null if there is no collision
-     */
-    public ICuboidArea getCollisionArea(ICuboidArea area2);    
-    
-    /**
-     * Create a collection of outside areas. THE RETURN VALUE IS NOT EXACT!
-     * @param area2 Area to compare
-     * @return A collection of outside areas
-     */
-    public Collection<ICuboidArea> getOutside(ICuboidArea area2);    
-    
-    /**
-     * Gets the land.
-     *
-     * @return the land or null if the cuboid area is not from a land.
-     */
-    public ILand getLand();
-    
-    /**
-     * Gets the world name.
-     *
-     * @return the world name
-     */
-    public String getWorldName();
-    
-    /**
-     * Gets the word.
-     *
-     * @return the word
-     */
-    public World getWord();
-    
-    /**
-     * Gets the x1.
-     *
-     * @return the x1
-     */
-    public int getX1();
-    
-    /**
-     * Gets the y1.
-     *
-     * @return the y1
-     */
-    public int getY1();
-    
-    /**
-     * Gets the z1.
-     *
-     * @return the z1
-     */
-    public int getZ1();
-    
-    /**
-     * Gets the x2.
-     *
-     * @return the x2
-     */
-    public int getX2();
-    
-    /**
-     * Gets the y2.
-     *
-     * @return the y2
-     */
-    public int getY2();
-    
-    /**
-     * Gets the z2.
-     *
-     * @return the z2
-     */
-    public int getZ2();
+	/**
+	 * Equals.
+	 *
+	 * @param area2 the area2
+	 * @return true, if successful
+	 */
+	public boolean equals(ICuboidArea area2);
+	
+	/**
+	 * Copy of.
+	 *
+	 * @return the cuboid area
+	 */
+	public ICuboidArea copyOf();
+	
+	/**
+	 * Convert the cuboid area to string.
+	 *
+	 * @return the stirng
+	 */
+	@Override
+	public String toString();
+	
+	/**
+	 * Gets the prints the.
+	 *
+	 * @return the prints the
+	 */
+	public String getPrint();
+	
+	/**
+	 * Gets the key. If the cuboid area is not part of a land, the value is 0.
+	 *
+	 * @return the key
+	 */
+	public Integer getKey();
+	
+	/**
+	 * Gets the total block number of blocks.
+	 *
+	 * @return the total block
+	 */
+	public long getTotalBlock();
+	
+	/**
+	 * Checks if there is a collision.
+	 *
+	 * @param area2 the area2
+	 * @return true, if is collision
+	 */
+	public boolean isCollision(ICuboidArea area2);
+	
+	/**
+	 * Checks if is the location is inside the cuboid area.
+	 *
+	 * @param loc the loc
+	 * @return true, if is location inside
+	 */
+	public boolean isLocationInside(Location loc);
+	
+	/**
+	 * Check if there is a collision and create an area of the collision.
+	 * @param area2 The second area to compare
+	 * @return the CuboidArea collision or null if there is no collision
+	 */
+	public ICuboidArea getCollisionArea(ICuboidArea area2);	
+	
+	/**
+	 * Create a collection of outside areas. THE RETURN VALUE IS NOT EXACT!
+	 * @param area2 Area to compare
+	 * @return A collection of outside areas
+	 */
+	public Collection<ICuboidArea> getOutside(ICuboidArea area2);	
+	
+	/**
+	 * Gets the land.
+	 *
+	 * @return the land or null if the cuboid area is not from a land.
+	 */
+	public ILand getLand();
+	
+	/**
+	 * Gets the world name.
+	 *
+	 * @return the world name
+	 */
+	public String getWorldName();
+	
+	/**
+	 * Gets the word.
+	 *
+	 * @return the word
+	 */
+	public World getWord();
+	
+	/**
+	 * Gets the x1.
+	 *
+	 * @return the x1
+	 */
+	public int getX1();
+	
+	/**
+	 * Gets the y1.
+	 *
+	 * @return the y1
+	 */
+	public int getY1();
+	
+	/**
+	 * Gets the z1.
+	 *
+	 * @return the z1
+	 */
+	public int getZ1();
+	
+	/**
+	 * Gets the x2.
+	 *
+	 * @return the x2
+	 */
+	public int getX2();
+	
+	/**
+	 * Gets the y2.
+	 *
+	 * @return the y2
+	 */
+	public int getY2();
+	
+	/**
+	 * Gets the z2.
+	 *
+	 * @return the z2
+	 */
+	public int getZ2();
 }

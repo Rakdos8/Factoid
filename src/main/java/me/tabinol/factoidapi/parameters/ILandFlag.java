@@ -22,47 +22,47 @@ package me.tabinol.factoidapi.parameters;
  */
 public interface ILandFlag {
 
-    /**
-     * Copy of.
-     *
-     * @return a copy of this object
-     */
-    public ILandFlag copyOf();
+	/**
+	 * Copy of.
+	 *
+	 * @return a copy of this object
+	 */
+	public ILandFlag copyOf();
 
-    /**
-     * Equals.
-     *
-     * @param lf2 the lf2
-     * @return true, if successful
-     */
-    public boolean equals(ILandFlag lf2);
-    
-    /**
-     * Gets the flag type.
-     *
-     * @return the flag type
-     */
-    public IFlagType getFlagType();
-    
-    /**
-     * Gets the value.
-     *
-     * @return the value
-     */
-    public IFlagValue getValue();
-    
-    /**
-     * Checks if is heritable.
-     *
-     * @return true, if is heritable
-     */
-    public boolean isHeritable();
-    
-    /**
-     * To string.
-     *
-     * @return the string
-     */
-    @Override
-    public String toString();
+	/**
+	 * Equals.
+	 *
+	 * @param lf2 the lf2
+	 * @return true, if successful
+	 */
+	public boolean equals(ILandFlag lf2);
+	
+	/**
+	 * Gets the flag type.
+	 *
+	 * @return the flag type
+	 */
+	public IFlagType getFlagType();
+	
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
+	public IFlagValue getValue();
+	
+	/**
+	 * Checks if is heritable.
+	 *
+	 * @return true, if is heritable
+	 */
+	public boolean isHeritable();
+	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
+	@Override
+	public String toString();
 }

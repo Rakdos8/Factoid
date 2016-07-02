@@ -56,8 +56,8 @@ public class EcoSign {
 	/**
 	 * Instantiates a new eco sign.
 	 *
-	 * @param land            the land
-	 * @param player            the player
+	 * @param land			the land
+	 * @param player			the player
 	 * @throws SignException the sign exception
 	 */
 	public EcoSign(ILand land, Player player) throws SignException {
@@ -144,7 +144,7 @@ public class EcoSign {
 	/**
 	 * Creates the sign for sale.
 	 *
-	 * @param price            the price
+	 * @param price			the price
 	 * @throws SignException the sign exception
 	 */
 	public void createSignForSale(double price) throws SignException {
@@ -162,10 +162,10 @@ public class EcoSign {
 	/**
 	 * Creates the sign for rent.
 	 *
-	 * @param price            the price
-	 * @param renew            the renew
-	 * @param autoRenew            the auto renew
-	 * @param tenantName            the tenant name
+	 * @param price			the price
+	 * @param renew			the renew
+	 * @param autoRenew			the auto renew
+	 * @param tenantName			the tenant name
 	 * @throws SignException the sign exception
 	 */
 	public void createSignForRent(double price, int renew,
@@ -199,7 +199,7 @@ public class EcoSign {
 	/**
 	 * Creates the sign.
 	 *
-	 * @param lines            the lines
+	 * @param lines			the lines
 	 * @throws SignException the sign exception
 	 */
 	public void createSign(String[] lines) throws SignException {

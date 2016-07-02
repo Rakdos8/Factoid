@@ -33,34 +33,34 @@ import org.bukkit.ChatColor;
 @InfoCommand(name="notify")
 public class CommandNotify extends CommandExec {
 
-    /**
-     * Instantiates a new command notify.
-     *
-     * @param entity the entity
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandNotify(CommandEntities entity) throws FactoidCommandException {
+	/**
+	 * Instantiates a new command notify.
+	 *
+	 * @param entity the entity
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	public CommandNotify(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity);
-    }
+		super(entity);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
-     */
-    @Override
-    public void commandExecute() throws FactoidCommandException {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+	 */
+	@Override
+	public void commandExecute() throws FactoidCommandException {
 
-        getLandFromCommandIfNoLandSelected();
-        checkSelections(true, null);
-        checkPermission(true, true, PermissionList.LAND_NOTIFY.getPermissionType(), null);
+		getLandFromCommandIfNoLandSelected();
+		checkSelections(true, null);
+		checkPermission(true, true, PermissionList.LAND_NOTIFY.getPermissionType(), null);
 
-        
-        if (land.isPlayerNotify(entity.playerConf.getPlayerContainer())) {
-            land.removePlayerNotify(entity.playerConf.getPlayerContainer());
-            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.NOTIFY.QUIT", land.getName()));
-        } else {
-            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.NOTIFY.JOIN", land.getName()));
-            land.addPlayerNotify(entity.playerConf.getPlayerContainer());
-        }
-    }
+		
+		if (land.isPlayerNotify(entity.playerConf.getPlayerContainer())) {
+			land.removePlayerNotify(entity.playerConf.getPlayerContainer());
+			entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.NOTIFY.QUIT", land.getName()));
+		} else {
+			entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.NOTIFY.JOIN", land.getName()));
+			land.addPlayerNotify(entity.playerConf.getPlayerContainer());
+		}
+	}
 }

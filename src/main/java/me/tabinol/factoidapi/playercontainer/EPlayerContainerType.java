@@ -23,112 +23,112 @@ package me.tabinol.factoidapi.playercontainer;
  * containers.
  */
 public enum EPlayerContainerType {
-    
-    // Order is important here The first is the permission checked first
-    /** The undefined (do not use). */
-    UNDEFINED(0,"UNDEFINED", false),
-    
-    /** The land owner. */
-    OWNER(1,"Owner", false),
-    
-    /** The player. */
-    PLAYER(2,"Player", true),
-    
-    /** The land resident. */
-    RESIDENT(3,"Resident", false),
-    
-    /** The land tenant. */
-    TENANT(4, "Tenant", false),
-    
-    /** The land visitor. */
-    VISITOR(5, "Visitor", false),
-    
-    /** The group from permision system. */
-    GROUP(6,"Group", true),
-    
-    /** The Bukkit permission. */
-    PERMISSION(7, "Permission", true),
-    
-    /** The faction. */
-    FACTION(8,"Faction", true),
-    
-    /** The faction territory (siege). */
-    FACTION_TERRITORY(9, "FactionTerritory", false),
-    
-    /** Everybody. */
-    EVERYBODY(10,"Everybody", false),
-    
-    /** Nobody. */
-    NOBODY(11,"Nobody", false),
-    
-    /** Player Name, Only for UUID resolve and replace to a true player. (INTERNAL) */
-    PLAYERNAME(12, "PlayerName", false);
-    
-    /** The value. */
-    private final int value;
-    
-    /** The player container name. */
-    private final String pcName;
-    
-    /** Has parameter. */
-    private final boolean hasParameter;
-    
-    /**
-     * Instantiates a new player container type.
-     *
-     * @param value the value
-     * @param pcName the pc name
-     * @param hasParameter the has parameter
-     */
-    private EPlayerContainerType(final int value, final String pcName, final boolean hasParameter) {
-        
-        this.value = value;
-        this.pcName = pcName;
-        this.hasParameter = hasParameter;
-    }
-    
-    /**
-     * Gets the value.
-     *
-     * @return the value
-     */
-    public int getValue() {
-        
-        return value;
-    }
-    
-    /**
-     * Checks for parameter.
-     *
-     * @return true, if successful
-     */
-    public boolean hasParameter() {
-        
-        return hasParameter;
-    }
-    
-    /* (non-Javadoc)
-     * @see java.lang.Enum#toString()
-     */
-    @Override
-    public String toString() {
-        
-        return pcName;
-    }
-    
-    /**
-     * Gets the player container from string.
-     *
-     * @param pcName the player container name (UPPER CASE)
-     * @return the player container type
-     */
-    public static EPlayerContainerType getFromString(String pcName) {
-        
-        for(EPlayerContainerType pct : values()) {
-            if(pct.toString().equalsIgnoreCase(pcName)) {
-                return pct;
-            }
-        }
-        return null;
-    }
+	
+	// Order is important here The first is the permission checked first
+	/** The undefined (do not use). */
+	UNDEFINED(0,"UNDEFINED", false),
+	
+	/** The land owner. */
+	OWNER(1,"Owner", false),
+	
+	/** The player. */
+	PLAYER(2,"Player", true),
+	
+	/** The land resident. */
+	RESIDENT(3,"Resident", false),
+	
+	/** The land tenant. */
+	TENANT(4, "Tenant", false),
+	
+	/** The land visitor. */
+	VISITOR(5, "Visitor", false),
+	
+	/** The group from permision system. */
+	GROUP(6,"Group", true),
+	
+	/** The Bukkit permission. */
+	PERMISSION(7, "Permission", true),
+	
+	/** The faction. */
+	FACTION(8,"Faction", true),
+	
+	/** The faction territory (siege). */
+	FACTION_TERRITORY(9, "FactionTerritory", false),
+	
+	/** Everybody. */
+	EVERYBODY(10,"Everybody", false),
+	
+	/** Nobody. */
+	NOBODY(11,"Nobody", false),
+	
+	/** Player Name, Only for UUID resolve and replace to a true player. (INTERNAL) */
+	PLAYERNAME(12, "PlayerName", false);
+	
+	/** The value. */
+	private final int value;
+	
+	/** The player container name. */
+	private final String pcName;
+	
+	/** Has parameter. */
+	private final boolean hasParameter;
+	
+	/**
+	 * Instantiates a new player container type.
+	 *
+	 * @param value the value
+	 * @param pcName the pc name
+	 * @param hasParameter the has parameter
+	 */
+	private EPlayerContainerType(final int value, final String pcName, final boolean hasParameter) {
+		
+		this.value = value;
+		this.pcName = pcName;
+		this.hasParameter = hasParameter;
+	}
+	
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
+	public int getValue() {
+		
+		return value;
+	}
+	
+	/**
+	 * Checks for parameter.
+	 *
+	 * @return true, if successful
+	 */
+	public boolean hasParameter() {
+		
+		return hasParameter;
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Enum#toString()
+	 */
+	@Override
+	public String toString() {
+		
+		return pcName;
+	}
+	
+	/**
+	 * Gets the player container from string.
+	 *
+	 * @param pcName the player container name (UPPER CASE)
+	 * @return the player container type
+	 */
+	public static EPlayerContainerType getFromString(String pcName) {
+		
+		for(EPlayerContainerType pct : values()) {
+			if(pct.toString().equalsIgnoreCase(pcName)) {
+				return pct;
+			}
+		}
+		return null;
+	}
 }

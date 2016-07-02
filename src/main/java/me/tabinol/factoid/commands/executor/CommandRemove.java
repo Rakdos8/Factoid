@@ -34,34 +34,34 @@ import org.bukkit.ChatColor;
 @InfoCommand(name="remove")
 public class CommandRemove extends CommandExec {
 
-    /**
-     * Instantiates a new command remove.
-     *
-     * @param entity the entity
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandRemove(CommandEntities entity) throws FactoidCommandException {
+	/**
+	 * Instantiates a new command remove.
+	 *
+	 * @param entity the entity
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	public CommandRemove(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity);
-    }
+		super(entity);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
-     */
-    @Override
-    public void commandExecute() throws FactoidCommandException {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+	 */
+	@Override
+	public void commandExecute() throws FactoidCommandException {
 
-        checkSelections(true, null);
-        checkPermission(true, true, null, null);
+		checkSelections(true, null);
+		checkPermission(true, true, null, null);
 
-        // Check for collision
-        if (checkCollision(land.getName(), land, null, Collisions.LandAction.LAND_REMOVE, 
-                0, null, land.getParent(), land.getOwner(), 0, true)) {
-            return;
-        }
+		// Check for collision
+		if (checkCollision(land.getName(), land, null, Collisions.LandAction.LAND_REMOVE, 
+				0, null, land.getParent(), land.getOwner(), 0, true)) {
+			return;
+		}
 
-        new CommandCancel(entity.playerConf, true).commandExecute();
-        entity.playerConf.setConfirm(new ConfirmEntry(ConfirmEntry.ConfirmType.REMOVE_LAND, land, 0));
-        entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CONFIRM"));
-    }
+		new CommandCancel(entity.playerConf, true).commandExecute();
+		entity.playerConf.setConfirm(new ConfirmEntry(ConfirmEntry.ConfirmType.REMOVE_LAND, land, 0));
+		entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CONFIRM"));
+	}
 }

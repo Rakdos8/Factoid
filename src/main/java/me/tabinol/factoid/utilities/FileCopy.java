@@ -26,31 +26,31 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Scanner;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class FileCopy.
  */
 public class FileCopy {
 
-    /**
-     * Copy text from jar.
-     *
-     * @param in the file from (FileInputStream)
-     * @param fileTo the file to (File)
-     * @throws IOException Signals that an I/O exception has occurred.
-     */
-    public static void copyTextFromJav(InputStream in, File fileTo) throws IOException {
+	/**
+	 * Copy text from jar.
+	 *
+	 * @param in the file from (FileInputStream)
+	 * @param fileTo the file to (File)
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	public static void copyTextFromJav(final InputStream in, final File fileTo) throws IOException {
+		try(final Scanner scan = new Scanner(in, "UTF8");
+			final OutputStream out = new FileOutputStream(fileTo);
+			final BufferedWriter outbw = new BufferedWriter(new OutputStreamWriter(out))
+		) {
 
-        Scanner scan = new Scanner(in, "UTF8");
-        OutputStream out = new FileOutputStream(fileTo);
-        BufferedWriter outbw = new BufferedWriter(new OutputStreamWriter(out));
-        
-        while (scan.hasNext()) {
-            outbw.write(scan.nextLine());
-            outbw.newLine();
-        }
-        
-        outbw.close();
-        scan.close();
-    }
+			while (scan.hasNext()) {
+				outbw.write(scan.nextLine());
+				outbw.newLine();
+			}
+
+			outbw.close();
+			scan.close();
+		}
+	}
 }

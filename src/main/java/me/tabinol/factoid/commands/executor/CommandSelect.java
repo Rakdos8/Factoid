@@ -44,196 +44,196 @@ import org.bukkit.entity.Player;
 @InfoCommand(name="select")
 public class CommandSelect extends CommandExec {
 
-    /** The player. */
-    private final Player player;
-    
-    /** The location. */
-    private final Location location;
-    
-    /** The player conf. */
-    private final PlayerConfEntry playerConf;
-    
-    /** The arg list. */
-    private final ArgList argList;
+	/** The player. */
+	private final Player player;
+	
+	/** The location. */
+	private final Location location;
+	
+	/** The player conf. */
+	private final PlayerConfEntry playerConf;
+	
+	/** The arg list. */
+	private final ArgList argList;
 
-    /**
-     * Instantiates a new command select.
-     *
-     * @param entity the entity
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandSelect(CommandEntities entity) throws FactoidCommandException {
+	/**
+	 * Instantiates a new command select.
+	 *
+	 * @param entity the entity
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	public CommandSelect(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity);
-        player = entity.player;
-        location = null;
-        playerConf = entity.playerConf;
-        argList = entity.argList;
-    }
+		super(entity);
+		player = entity.player;
+		location = null;
+		playerConf = entity.playerConf;
+		argList = entity.argList;
+	}
 
-    // Called from player action, not a command
-    /**
-     * Instantiates a new command select.
-     *
-     * @param player the player
-     * @param argList the arg list
-     * @param location the location
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandSelect(Player player, ArgList argList, Location location) throws FactoidCommandException {
+	// Called from player action, not a command
+	/**
+	 * Instantiates a new command select.
+	 *
+	 * @param player the player
+	 * @param argList the arg list
+	 * @param location the location
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	public CommandSelect(Player player, ArgList argList, Location location) throws FactoidCommandException {
 
-        super(null);
-        this.player = player;
-        this.location = location;
-        playerConf = Factoid.getThisPlugin().iPlayerConf().get(player);
-        this.argList = argList;
-    }
+		super(null);
+		this.player = player;
+		this.location = location;
+		playerConf = Factoid.getThisPlugin().iPlayerConf().get(player);
+		this.argList = argList;
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
-     */
-    @Override
-    public void commandExecute() throws FactoidCommandException {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+	 */
+	@Override
+	public void commandExecute() throws FactoidCommandException {
 
-        // Done nothing but for future use
-        checkSelections(null, null);
+		// Done nothing but for future use
+		checkSelections(null, null);
 
-        String curArg;
+		String curArg;
 
-        if (playerConf.getSelection().getCuboidArea() == null) {
-            Factoid.getThisPlugin().iLog().write(player.getName() + " join select mode");
+		if (playerConf.getSelection().getCuboidArea() == null) {
+			Factoid.getThisPlugin().iLog().write(player.getName() + " join select mode");
 
-            if (!argList.isLast()) {
+			if (!argList.isLast()) {
 
-                curArg = argList.getNext();
-                if (curArg.equalsIgnoreCase("worldedit")) {
-                    if (Factoid.getThisPlugin().iDependPlugin().getWorldEdit() == null) {
-                        throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.WORLDEDIT.NOTLOAD");
-                    }
-                    new CommandSelectWorldedit(player, playerConf).MakeSelect();
+				curArg = argList.getNext();
+				if (curArg.equalsIgnoreCase("worldedit")) {
+					if (Factoid.getThisPlugin().iDependPlugin().getWorldEdit() == null) {
+						throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.WORLDEDIT.NOTLOAD");
+					}
+					new CommandSelectWorldedit(player, playerConf).MakeSelect();
 
-                } else {
+				} else {
 
-                    ILand landtest;
-                    if (curArg.equalsIgnoreCase("here")) {
+					ILand landtest;
+					if (curArg.equalsIgnoreCase("here")) {
 
-                        // add select Here to select the the cuboid
-                        if (location != null) {
+						// add select Here to select the the cuboid
+						if (location != null) {
 
-                            // With an item
-                            landtest = Factoid.getThisPlugin().iLands().getLand(location);
-                        } else {
+							// With an item
+							landtest = Factoid.getThisPlugin().iLands().getLand(location);
+						} else {
 
-                            // Player location
-                            landtest = Factoid.getThisPlugin().iLands().getLand(player.getLocation());
-                        }
+							// Player location
+							landtest = Factoid.getThisPlugin().iLands().getLand(player.getLocation());
+						}
 
-                    } else {
+					} else {
 
-                        landtest = Factoid.getThisPlugin().iLands().getLand(curArg);
-                    }
+						landtest = Factoid.getThisPlugin().iLands().getLand(curArg);
+					}
 
-                    if (landtest == null) {
-                        throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.NOLAND");
+					if (landtest == null) {
+						throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.NOLAND");
 
-                    }
-                    IPlayerContainer owner = landtest.getOwner();
+					}
+					IPlayerContainer owner = landtest.getOwner();
 
-                    if (!owner.hasAccess(player) && !playerConf.isAdminMod()
-                            && !(landtest.checkPermissionAndInherit(player, PermissionList.RESIDENT_MANAGER.getPermissionType())
-                            		&& (landtest.isResident(player) || landtest.isOwner(player)))) {
-                        throw new FactoidCommandException("CommandSelect", player, "GENERAL.MISSINGPERMISSION");
-                    }
-                    if (playerConf.getSelection().getLand() == null) {
+					if (!owner.hasAccess(player) && !playerConf.isAdminMod()
+							&& !(landtest.checkPermissionAndInherit(player, PermissionList.RESIDENT_MANAGER.getPermissionType())
+									&& (landtest.isResident(player) || landtest.isOwner(player)))) {
+						throw new FactoidCommandException("CommandSelect", player, "GENERAL.MISSINGPERMISSION");
+					}
+					if (playerConf.getSelection().getLand() == null) {
 
-                        playerConf.getSelection().addSelection(new LandSelection(player, landtest));
+						playerConf.getSelection().addSelection(new LandSelection(player, landtest));
 
-                        player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.SELECTEDLAND", landtest.getName()));
-                        playerConf.setAutoCancelSelect(true);
-                    } else {
+						player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.SELECTEDLAND", landtest.getName()));
+						playerConf.setAutoCancelSelect(true);
+					} else {
 
-                        player.sendMessage(ChatColor.RED + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.ALREADY"));
-                    }
-                }
-            } else {
+						player.sendMessage(ChatColor.RED + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.ALREADY"));
+					}
+				}
+			} else {
 
-                player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.JOINMODE"));
-                player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.HINT", ChatColor.ITALIC.toString(), ChatColor.RESET.toString(), ChatColor.DARK_GRAY.toString()));
-                ActiveAreaSelection select = new ActiveAreaSelection(player);
-                playerConf.getSelection().addSelection(select);
-                playerConf.setAutoCancelSelect(true);
-            }
-        } else if ((curArg = argList.getNext()) != null && curArg.equalsIgnoreCase("done")) {
+				player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.JOINMODE"));
+				player.sendMessage(ChatColor.DARK_GRAY + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.HINT", ChatColor.ITALIC.toString(), ChatColor.RESET.toString(), ChatColor.DARK_GRAY.toString()));
+				ActiveAreaSelection select = new ActiveAreaSelection(player);
+				playerConf.getSelection().addSelection(select);
+				playerConf.setAutoCancelSelect(true);
+			}
+		} else if ((curArg = argList.getNext()) != null && curArg.equalsIgnoreCase("done")) {
 
-            //if (playerConf.getSelection().getLand() != null) {
-            //    throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.CANTDONE");
-            //}
+			//if (playerConf.getSelection().getLand() != null) {
+			//	throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.CANTDONE");
+			//}
 
-            //if (playerConf.getSelection().getCuboidArea() != null) {
-                doSelectAreaDone();
-            //}
+			//if (playerConf.getSelection().getCuboidArea() != null) {
+				doSelectAreaDone();
+			//}
 
-        } else if (curArg != null && curArg.equalsIgnoreCase("info")) {
+		} else if (curArg != null && curArg.equalsIgnoreCase("info")) {
 
-            doSelectAreaInfo();
+			doSelectAreaInfo();
 
-        } else {
-            throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.ALREADY");
-        }
-    }
+		} else {
+			throw new FactoidCommandException("CommandSelect", player, "COMMAND.SELECT.ALREADY");
+		}
+	}
 
-    /**
-     * Do select area done.
-     *
-     * @throws FactoidCommandException the factoid command exception
-     */
-    private void doSelectAreaDone() throws FactoidCommandException {
+	/**
+	 * Do select area done.
+	 *
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	private void doSelectAreaDone() throws FactoidCommandException {
 
-        checkSelections(null, true);
+		checkSelections(null, true);
 
-        AreaSelection select = (AreaSelection) playerConf.getSelection().getSelection(SelectionType.AREA);
-        playerConf.getSelection().addSelection(new AreaSelection(player, select.getCuboidArea()));
-        playerConf.setAutoCancelSelect(true);
+		AreaSelection select = (AreaSelection) playerConf.getSelection().getSelection(SelectionType.AREA);
+		playerConf.getSelection().addSelection(new AreaSelection(player, select.getCuboidArea()));
+		playerConf.setAutoCancelSelect(true);
 
-        if (!select.getCollision()) {
+		if (!select.getCollision()) {
 
-            player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY
-                    + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.LAND.NOCOLLISION"));
-        } else {
-            player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.RED
-                    + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.LAND.COLLISION"));
-        }
-    }
+			player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY
+					+ Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.LAND.NOCOLLISION"));
+		} else {
+			player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.RED
+					+ Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.LAND.COLLISION"));
+		}
+	}
 
-    /**
-     * Do select area info.
-     *
-     * @throws FactoidCommandException the factoid command exception
-     */
-    private void doSelectAreaInfo() throws FactoidCommandException {
+	/**
+	 * Do select area info.
+	 *
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	private void doSelectAreaInfo() throws FactoidCommandException {
 
-        checkSelections(null, true);
+		checkSelections(null, true);
 
-        double price;
+		double price;
 
-        AreaSelection select = (AreaSelection) playerConf.getSelection().getSelection(SelectionType.AREA);
-        ICuboidArea area = select.getCuboidArea();
+		AreaSelection select = (AreaSelection) playerConf.getSelection().getSelection(SelectionType.AREA);
+		ICuboidArea area = select.getCuboidArea();
 
-        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.INFO.INFO1",
-                area.getPrint()));
-        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.INFO.INFO2",
-                area.getTotalBlock() + ""));
+		player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.INFO.INFO1",
+				area.getPrint()));
+		player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.INFO.INFO2",
+				area.getTotalBlock() + ""));
 
-        // Price (economy)
-        price = playerConf.getSelection().getLandCreatePrice();
-        if (price != 0L) {
-            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.INFO.INFO3",
-                    Factoid.getThisPlugin().iPlayerMoney().toFormat(price)));
-        }
-        price = playerConf.getSelection().getAreaAddPrice();
-        if (price != 0L) {
-            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.INFO.INFO4",
-                    Factoid.getThisPlugin().iPlayerMoney().toFormat(price)));
-        }
-    }
+		// Price (economy)
+		price = playerConf.getSelection().getLandCreatePrice();
+		if (price != 0L) {
+			player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.INFO.INFO3",
+					Factoid.getThisPlugin().iPlayerMoney().toFormat(price)));
+		}
+		price = playerConf.getSelection().getAreaAddPrice();
+		if (price != 0L) {
+			player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.INFO.INFO4",
+					Factoid.getThisPlugin().iPlayerMoney().toFormat(price)));
+		}
+	}
 }

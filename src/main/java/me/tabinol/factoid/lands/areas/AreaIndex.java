@@ -24,77 +24,77 @@ import me.tabinol.factoidapi.lands.areas.ICuboidArea;
  * The Class AreaIndex.
  */
 public class AreaIndex implements Comparable<AreaIndex> {
-    
-    /** The index nb. */
-    private int indexNb;
-    
-    /** The area. */
-    private me.tabinol.factoidapi.lands.areas.ICuboidArea area;
-    
-    /**
-     * Instantiates a new area index.
-     *
-     * @param indexNb the index nb
-     * @param area the area
-     */
-    public AreaIndex(int indexNb, ICuboidArea area) {
-        
-        this.indexNb = indexNb;
-        this.area = area;
-    }
+	
+	/** The index nb. */
+	private int indexNb;
+	
+	/** The area. */
+	private me.tabinol.factoidapi.lands.areas.ICuboidArea area;
+	
+	/**
+	 * Instantiates a new area index.
+	 *
+	 * @param indexNb the index nb
+	 * @param area the area
+	 */
+	public AreaIndex(int indexNb, ICuboidArea area) {
+		
+		this.indexNb = indexNb;
+		this.area = area;
+	}
 
-    /**
-     * Equals.
-     *
-     * @param index2 the index2
-     * @return true, if successful
-     */
-    public boolean equals(AreaIndex index2) {
-        
-        return indexNb == index2.indexNb && area == index2.area;
-    }
-    
-    /**
-     * Copy of.
-     *
-     * @return the area index
-     */
-    public AreaIndex copyOf() {
-        
-        return new AreaIndex(indexNb, area);
-    }
-    
-    /* (non-Javadoc)
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
-    @Override
-    public int compareTo(AreaIndex t) {
-        if(indexNb < t.indexNb) {
-            return -1;
-        }
-        if(indexNb > t.indexNb) {
-            return 1;
-        }
-        return ((CuboidArea) area).compareTo((CuboidArea) t.area);
-    }
-    
-    /**
-     * Gets the index nb.
-     *
-     * @return the index nb
-     */
-    public int getIndexNb() {
-        
-        return indexNb;
-    }
-    
-    /**
-     * Gets the area.
-     *
-     * @return the area
-     */
-    public CuboidArea getArea() {
-        
-        return (CuboidArea) area;
-    }
+	/**
+	 * Equals.
+	 *
+	 * @param index2 the index2
+	 * @return true, if successful
+	 */
+	public boolean equals(AreaIndex index2) {
+		
+		return indexNb == index2.indexNb && area == index2.area;
+	}
+	
+	/**
+	 * Copy of.
+	 *
+	 * @return the area index
+	 */
+	public AreaIndex copyOf() {
+		
+		return new AreaIndex(indexNb, area);
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(AreaIndex t) {
+		if(indexNb < t.indexNb) {
+			return -1;
+		}
+		if(indexNb > t.indexNb) {
+			return 1;
+		}
+		return ((CuboidArea) area).compareTo((CuboidArea) t.area);
+	}
+	
+	/**
+	 * Gets the index nb.
+	 *
+	 * @return the index nb
+	 */
+	public int getIndexNb() {
+		
+		return indexNb;
+	}
+	
+	/**
+	 * Gets the area.
+	 *
+	 * @return the area
+	 */
+	public CuboidArea getArea() {
+		
+		return (CuboidArea) area;
+	}
 }

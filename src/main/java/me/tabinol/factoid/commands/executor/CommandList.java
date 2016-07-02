@@ -41,95 +41,95 @@ import org.bukkit.ChatColor;
 @InfoCommand(name="list")
 public class CommandList extends CommandThreadExec {
 
-    private String worldName = null;
-    private IType type = null;
+	private String worldName = null;
+	private IType type = null;
 
-    /**
-     * Instantiates a new command list.
-     *
-     * @param entity the entity
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandList(CommandEntities entity) throws FactoidCommandException {
+	/**
+	 * Instantiates a new command list.
+	 *
+	 * @param entity the entity
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	public CommandList(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity);
+		super(entity);
 
-    }
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
-     */
-    @Override
-    public void commandExecute() throws FactoidCommandException {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+	 */
+	@Override
+	public void commandExecute() throws FactoidCommandException {
 
-        String curArg = entity.argList.getNext();
+		String curArg = entity.argList.getNext();
 
-        if (curArg != null) {
-            if (curArg.equalsIgnoreCase("world")) {
+		if (curArg != null) {
+			if (curArg.equalsIgnoreCase("world")) {
 
-                // Get worldName
-                worldName = entity.argList.getNext();
-                if (worldName == null) {
-                    // No worldName has parameter
-                    worldName = entity.player.getLocation().getWorld().getName().toLowerCase();
-                }
+				// Get worldName
+				worldName = entity.argList.getNext();
+				if (worldName == null) {
+					// No worldName has parameter
+					worldName = entity.player.getLocation().getWorld().getName().toLowerCase();
+				}
 
-            } else if (curArg.equalsIgnoreCase("type")) {
-            	
-            	// Get the category name
-                String typeName = entity.argList.getNext();
-                
-                if(typeName != null) {
-                	type = FactoidAPI.iTypes().getType(typeName);
-                }
-                
-                if(type == null) {
-                	throw new FactoidCommandException("CommandList", entity.sender, "COMMAND.LAND.TYPENOTEXIST");
-                }
-            	
-            } else {
+			} else if (curArg.equalsIgnoreCase("type")) {
+				
+				// Get the category name
+				String typeName = entity.argList.getNext();
+				
+				if(typeName != null) {
+					type = FactoidAPI.iTypes().getType(typeName);
+				}
+				
+				if(type == null) {
+					throw new FactoidCommandException("CommandList", entity.sender, "COMMAND.LAND.TYPENOTEXIST");
+				}
+				
+			} else {
 
-                // Get the player Container
-                entity.argList.setPos(0);
-                pc = entity.argList.getPlayerContainerFromArg(null, null);
+				// Get the player Container
+				entity.argList.setPos(0);
+				pc = entity.argList.getPlayerContainerFromArg(null, null);
 
-            }
-        }
-        
-        Factoid.getThisPlugin().iPlayersCache().getUUIDWithNames(this, pc);
-    }
+			}
+		}
+		
+		Factoid.getThisPlugin().iPlayersCache().getUUIDWithNames(this, pc);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.commands.executor.CommandThreadExec#commandThreadExecute(me.tabinol.factoid.playerscache.PlayerCacheEntry[])
-     */
-    @Override
-    public void commandThreadExecute(PlayerCacheEntry[] playerCacheEntry)
-    		throws FactoidCommandException {
-        
-    	convertPcIfNeeded(playerCacheEntry);
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.commands.executor.CommandThreadExec#commandThreadExecute(me.tabinol.factoid.playerscache.PlayerCacheEntry[])
+	 */
+	@Override
+	public void commandThreadExecute(PlayerCacheEntry[] playerCacheEntry)
+			throws FactoidCommandException {
+		
+		convertPcIfNeeded(playerCacheEntry);
 
-    	// Check if the player is AdminMod or send only owned lands
-        Collection<ILand> lands;
+		// Check if the player is AdminMod or send only owned lands
+		Collection<ILand> lands;
 
-        if (entity.playerConf.isAdminMod()) {
-            lands = Factoid.getThisPlugin().iLands().getLands();
-        } else {
-            lands = Factoid.getThisPlugin().iLands().getLands(entity.playerConf.getPlayerContainer());
-        }
+		if (entity.playerConf.isAdminMod()) {
+			lands = Factoid.getThisPlugin().iLands().getLands();
+		} else {
+			lands = Factoid.getThisPlugin().iLands().getLands(entity.playerConf.getPlayerContainer());
+		}
 
-        // Get the list of the land
-        StringBuilder stList = new StringBuilder();
-        stList.append(ChatColor.YELLOW);
+		// Get the list of the land
+		StringBuilder stList = new StringBuilder();
+		stList.append(ChatColor.YELLOW);
 
-        for (ILand land : lands) {
-            if (((worldName != null && worldName.equals(land.getWorldName()))
-            		|| (type !=null && type == land.getType())
-            		|| (worldName == null && type == null))
-                    && (pc == null || land.getOwner().equals(pc))) {
-                stList.append(land.getName()).append(" ");
-            }
-        }
+		for (ILand land : lands) {
+			if (((worldName != null && worldName.equals(land.getWorldName()))
+					|| (type !=null && type == land.getType())
+					|| (worldName == null && type == null))
+					&& (pc == null || land.getOwner().equals(pc))) {
+				stList.append(land.getName()).append(" ");
+			}
+		}
 
-        new ChatPage("COMMAND.LAND.LISTSTART", stList.toString(), entity.player, null).getPage(1);
-    }
+		new ChatPage("COMMAND.LAND.LISTSTART", stList.toString(), entity.player, null).getPage(1);
+	}
 }

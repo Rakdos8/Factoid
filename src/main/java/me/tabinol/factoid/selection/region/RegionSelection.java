@@ -26,36 +26,36 @@ import org.bukkit.entity.Player;
  */
 public abstract class RegionSelection {
 
-    /** The selection type. */
-    final SelectionType selectionType;
-    
-    /** The player. */
-    final Player player;
+	/** The selection type. */
+	final SelectionType selectionType;
+	
+	/** The player. */
+	final Player player;
 
-    /**
-     * Instantiates a new region selection.
-     *
-     * @param selectionType the selection type
-     * @param player the player
-     */
-    RegionSelection(SelectionType selectionType, Player player) {
+	/**
+	 * Instantiates a new region selection.
+	 *
+	 * @param selectionType the selection type
+	 * @param player the player
+	 */
+	RegionSelection(SelectionType selectionType, Player player) {
 
-        this.selectionType = selectionType;
-        this.player = player;
-    }
+		this.selectionType = selectionType;
+		this.player = player;
+	}
 
-    /**
-     * Gets the selection type.
-     *
-     * @return the selection type
-     */
-    public SelectionType getSelectionType() {
+	/**
+	 * Gets the selection type.
+	 *
+	 * @return the selection type
+	 */
+	public SelectionType getSelectionType() {
 
-        return selectionType;
-    }
-    
-    /**
-     * Remove any visual and replace blocks.
-     */
-    public abstract void removeSelection();
+		return selectionType;
+	}
+	
+	/**
+	 * Remove any visual and replace blocks.
+	 */
+	public abstract void removeSelection();
 }

@@ -47,238 +47,238 @@ import org.bukkit.configuration.file.YamlConfiguration;
  */
 public class ApproveList {
 
-    /** The approve file. */
-    final private File approveFile;
-    
-    /** The approve config. */
-    private FileConfiguration approveConfig;
-    
-    /** The land names. */
-    final private TreeSet<String> landNames;
+	/** The approve file. */
+	final private File approveFile;
+	
+	/** The approve config. */
+	private FileConfiguration approveConfig;
+	
+	/** The land names. */
+	final private TreeSet<String> landNames;
 
-    /**
-     * Instantiates a new approve list.
-     */
-    public ApproveList() {
+	/**
+	 * Instantiates a new approve list.
+	 */
+	public ApproveList() {
 
-        approveFile = new File(Factoid.getThisPlugin().getDataFolder() + "/approvelist.yml");
-        approveConfig = new YamlConfiguration();
-        landNames = new TreeSet<String>();
-        loadFile();
-    }
+		approveFile = new File(Factoid.getThisPlugin().getDataFolder() + "/approvelist.yml");
+		approveConfig = new YamlConfiguration();
+		landNames = new TreeSet<String>();
+		loadFile();
+	}
 
-    /**
-     * Adds the approve.
-     *
-     * @param approve the approve
-     */
-    public void addApprove(Approve approve) {
+	/**
+	 * Adds the approve.
+	 *
+	 * @param approve the approve
+	 */
+	public void addApprove(Approve approve) {
 
-        landNames.add(approve.getLandName());
-        ConfigurationSection section = approveConfig.createSection(approve.getLandName());
-        if(approve.getType() != null) {
-        	section.set("Type", approve.getType().getName());
-        }
-        section.set("Action", approve.getAction().toString());
-        section.set("RemovedAreaId", approve.getRemovedAreaId());
-        if (approve.getNewArea() != null) {
-        	section.set("NewArea", approve.getNewArea().toString());
-        }
-        section.set("Owner", approve.getOwner().toString());
-        if (approve.getParent() != null) {
-            section.set("Parent", approve.getParent().getName());
-        }
-        section.set("Price", approve.getPrice());
-        section.set("DateTime", approve.getDateTime().getTimeInMillis());
-        saveFile();
-        Factoid.getThisPlugin().iApproveNotif().notifyForApprove(approve.getLandName(), approve.getOwner().getPrint());
-    }
+		landNames.add(approve.getLandName());
+		ConfigurationSection section = approveConfig.createSection(approve.getLandName());
+		if(approve.getType() != null) {
+			section.set("Type", approve.getType().getName());
+		}
+		section.set("Action", approve.getAction().toString());
+		section.set("RemovedAreaId", approve.getRemovedAreaId());
+		if (approve.getNewArea() != null) {
+			section.set("NewArea", approve.getNewArea().toString());
+		}
+		section.set("Owner", approve.getOwner().toString());
+		if (approve.getParent() != null) {
+			section.set("Parent", approve.getParent().getName());
+		}
+		section.set("Price", approve.getPrice());
+		section.set("DateTime", approve.getDateTime().getTimeInMillis());
+		saveFile();
+		Factoid.getThisPlugin().iApproveNotif().notifyForApprove(approve.getLandName(), approve.getOwner().getPrint());
+	}
 
-    /**
-     * Gets the approve list.
-     *
-     * @return the approve list
-     */
-    public TreeMap<String,Approve> getApproveList() {
+	/**
+	 * Gets the approve list.
+	 *
+	 * @return the approve list
+	 */
+	public TreeMap<String,Approve> getApproveList() {
 
-    	TreeMap<String,Approve> approves = new TreeMap<String,Approve>();
-    	TreeMap<String,Approve> approvesToRemove = new TreeMap<String,Approve>();
-    	
-    	// Check if land names are ok
-    	for(String landName : landNames) {
-    		
-        	Approve app = getApprove(landName);
-        	
-        	if(app != null) {
-        		
-        		// Approve ok, put in list
-        		approves.put(landName, app);
-        	} else {
-        		
-        		// Approve not ok, add it to list
-        		approvesToRemove.put(landName, app);
-        	}
-        }
-    	
-    	// Remove wrong approves
-    	for(Map.Entry<String,Approve> appEntry : approvesToRemove.entrySet()) {
-    		
-    		removeApprove(appEntry.getKey());
-    	}
-    	
-    	return approves;
-    }
+		TreeMap<String,Approve> approves = new TreeMap<String,Approve>();
+		TreeMap<String,Approve> approvesToRemove = new TreeMap<String,Approve>();
+		
+		// Check if land names are ok
+		for(String landName : landNames) {
+			
+			Approve app = getApprove(landName);
+			
+			if(app != null) {
+				
+				// Approve ok, put in list
+				approves.put(landName, app);
+			} else {
+				
+				// Approve not ok, add it to list
+				approvesToRemove.put(landName, app);
+			}
+		}
+		
+		// Remove wrong approves
+		for(Map.Entry<String,Approve> appEntry : approvesToRemove.entrySet()) {
+			
+			removeApprove(appEntry.getKey());
+		}
+		
+		return approves;
+	}
 
-    /**
-     * Checks if is in approve.
-     *
-     * @param landName the land name
-     * @return true, if is in approve
-     */
-    public boolean isInApprove(String landName) {
+	/**
+	 * Checks if is in approve.
+	 *
+	 * @param landName the land name
+	 * @return true, if is in approve
+	 */
+	public boolean isInApprove(String landName) {
 
-        return landNames.contains(landName.toLowerCase());
-    }
+		return landNames.contains(landName.toLowerCase());
+	}
 
-    /**
-     * Gets the approve.
-     *
-     * @param landName the land name
-     * @return the approve
-     */
-    public Approve getApprove(String landName) {
+	/**
+	 * Gets the approve.
+	 *
+	 * @param landName the land name
+	 * @return the approve
+	 */
+	public Approve getApprove(String landName) {
 
-        Factoid.getThisPlugin().iLog().write("Get approve for: " + landName);
-        ConfigurationSection section = approveConfig.getConfigurationSection(landName);
+		Factoid.getThisPlugin().iLog().write("Get approve for: " + landName);
+		ConfigurationSection section = approveConfig.getConfigurationSection(landName);
 
-        if (section == null) {
-            Factoid.getThisPlugin().iLog().write("Error Section null");
-            return null;
-        }
-        
-        String typeName = section.getString("Type");
-        IType type = null;
-        if(typeName != null) {
-        	type = FactoidAPI.iTypes().addOrGetType(typeName);
-        }
+		if (section == null) {
+			Factoid.getThisPlugin().iLog().write("Error Section null");
+			return null;
+		}
+		
+		String typeName = section.getString("Type");
+		IType type = null;
+		if(typeName != null) {
+			type = FactoidAPI.iTypes().addOrGetType(typeName);
+		}
 
-        String[] ownerS = StringChanges.splitAddVoid(section.getString("Owner"), ":");
-        PlayerContainer pc = PlayerContainer.create(null, EPlayerContainerType.getFromString(ownerS[0]), ownerS[1]);
-        ILand parent = null;
-        CuboidArea newArea = null;
-        
-        if (section.contains("Parent")) {
-            parent = Factoid.getThisPlugin().iLands().getLand(section.getString("Parent"));
-            
-            // If the parent does not exist
-            if (parent == null) {
-                Factoid.getThisPlugin().iLog().write("Error, parent not found");
-                return null;
-            }
-        }
-        
-        if(section.contains("NewArea")) {
-        	newArea = CuboidArea.getFromString(section.getString("NewArea"));
-        }
-        
-        LandAction action = LandAction.valueOf(section.getString("Action"));
-        
-        // If the land was deleted
-        if(action != LandAction.LAND_ADD && Factoid.getThisPlugin().iLands().getLand(landName) == null) {
-        	return null;
-        }
+		String[] ownerS = StringChanges.splitAddVoid(section.getString("Owner"), ":");
+		PlayerContainer pc = PlayerContainer.create(null, EPlayerContainerType.getFromString(ownerS[0]), ownerS[1]);
+		ILand parent = null;
+		CuboidArea newArea = null;
+		
+		if (section.contains("Parent")) {
+			parent = Factoid.getThisPlugin().iLands().getLand(section.getString("Parent"));
+			
+			// If the parent does not exist
+			if (parent == null) {
+				Factoid.getThisPlugin().iLog().write("Error, parent not found");
+				return null;
+			}
+		}
+		
+		if(section.contains("NewArea")) {
+			newArea = CuboidArea.getFromString(section.getString("NewArea"));
+		}
+		
+		LandAction action = LandAction.valueOf(section.getString("Action"));
+		
+		// If the land was deleted
+		if(action != LandAction.LAND_ADD && Factoid.getThisPlugin().iLands().getLand(landName) == null) {
+			return null;
+		}
 
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(section.getLong("DateTime"));
+		Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(section.getLong("DateTime"));
 
-        return new Approve(landName, type, action,
-                section.getInt("RemovedAreaId"), newArea, pc,
-                parent, section.getDouble("Price"), cal);
-    }
+		return new Approve(landName, type, action,
+				section.getInt("RemovedAreaId"), newArea, pc,
+				parent, section.getDouble("Price"), cal);
+	}
 
-    /**
-     * Removes the approve.
-     *
-     * @param approve the approve
-     */
-    public void removeApprove(Approve approve) {
-    
-    	removeApprove(approve.getLandName());
-    }
+	/**
+	 * Removes the approve.
+	 *
+	 * @param approve the approve
+	 */
+	public void removeApprove(Approve approve) {
+	
+		removeApprove(approve.getLandName());
+	}
 
-    /**
-     * Removes the approve.
-     *
-     * @param landName the land name
-     */
-    public void removeApprove(String landName) {
-        
-    	Factoid.getThisPlugin().iLog().write("Remove Approve from list: " + landName);
+	/**
+	 * Removes the approve.
+	 *
+	 * @param landName the land name
+	 */
+	public void removeApprove(String landName) {
+		
+		Factoid.getThisPlugin().iLog().write("Remove Approve from list: " + landName);
 
-        approveConfig.set(landName, null);
-        landNames.remove(landName);
-        saveFile();
-    }
+		approveConfig.set(landName, null);
+		landNames.remove(landName);
+		saveFile();
+	}
 
-    /**
-     * Removes the all.
-     */
-    public void removeAll() {
+	/**
+	 * Removes the all.
+	 */
+	public void removeAll() {
 
-        Factoid.getThisPlugin().iLog().write("Remove all Approves from list.");
+		Factoid.getThisPlugin().iLog().write("Remove all Approves from list.");
 
-        // Delete file
-        if (approveFile.exists()) {
-            approveFile.delete();
-        }
-        
-        // Delete list
-        landNames.clear();
-        approveConfig = new YamlConfiguration();
-        
-        // Reload file
-        loadFile();
-    }
+		// Delete file
+		if (approveFile.exists()) {
+			approveFile.delete();
+		}
+		
+		// Delete list
+		landNames.clear();
+		approveConfig = new YamlConfiguration();
+		
+		// Reload file
+		loadFile();
+	}
 
-    /**
-     * Load file.
-     */
-    private void loadFile() {
+	/**
+	 * Load file.
+	 */
+	private void loadFile() {
 
-        Factoid.getThisPlugin().iLog().write("Loading Approve list file");
+		Factoid.getThisPlugin().iLog().write("Loading Approve list file");
 
-        if (!approveFile.exists()) {
-            try {
-                approveFile.createNewFile();
-            } catch (IOException ex) {
-                Logger.getLogger(ApproveList.class.getName()).log(Level.SEVERE, "Error on approve file creation", ex);
-            }
-        }
-        try {
-            approveConfig.load(approveFile);
-        } catch (IOException ex) {
-            Logger.getLogger(ApproveList.class.getName()).log(Level.SEVERE, "Error on approve file load", ex);
-        } catch (InvalidConfigurationException ex) {
-            Logger.getLogger(ApproveList.class.getName()).log(Level.SEVERE, "Error on approve file load", ex);
-        }
+		if (!approveFile.exists()) {
+			try {
+				approveFile.createNewFile();
+			} catch (IOException ex) {
+				Logger.getLogger(ApproveList.class.getName()).log(Level.SEVERE, "Error on approve file creation", ex);
+			}
+		}
+		try {
+			approveConfig.load(approveFile);
+		} catch (IOException ex) {
+			Logger.getLogger(ApproveList.class.getName()).log(Level.SEVERE, "Error on approve file load", ex);
+		} catch (InvalidConfigurationException ex) {
+			Logger.getLogger(ApproveList.class.getName()).log(Level.SEVERE, "Error on approve file load", ex);
+		}
 
-        // add land names to list
-        for (String landName : approveConfig.getKeys(false)) {
-            landNames.add(landName);
-        }
-    }
+		// add land names to list
+		for (String landName : approveConfig.getKeys(false)) {
+			landNames.add(landName);
+		}
+	}
 
-    /**
-     * Save file.
-     */
-    private void saveFile() {
+	/**
+	 * Save file.
+	 */
+	private void saveFile() {
 
-        Factoid.getThisPlugin().iLog().write("Saving Approve list file");
+		Factoid.getThisPlugin().iLog().write("Saving Approve list file");
 
-        try {
-            approveConfig.save(approveFile);
-        } catch (IOException ex) {
-            Logger.getLogger(ApproveList.class.getName()).log(Level.SEVERE, "Error on approve file save", ex);
-        }
-    }
+		try {
+			approveConfig.save(approveFile);
+		} catch (IOException ex) {
+			Logger.getLogger(ApproveList.class.getName()).log(Level.SEVERE, "Error on approve file save", ex);
+		}
+	}
 }

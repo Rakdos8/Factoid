@@ -23,12 +23,12 @@ import me.tabinol.factoidapi.lands.ILand;
  * The Interface IPlayerContainerTenant. Represent a land tenant.
  */
 public interface IPlayerContainerTenant extends IPlayerContainer {
-    
-    /**
-     * Gets the land.
-     *
-     * @return the land
-     */
-    public ILand getLand();
-    
+	
+	/**
+	 * Gets the land.
+	 *
+	 * @return the land
+	 */
+	public ILand getLand();
+	
 }

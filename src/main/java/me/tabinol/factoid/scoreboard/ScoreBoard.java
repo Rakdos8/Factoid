@@ -33,74 +33,74 @@ import java.util.HashSet;
  * The Class ScoreBoard.
  */
 public class ScoreBoard extends Thread{
-    
-    /** The manager. */
-    private ScoreboardManager manager;
-    
-    /** The Scoreboard list. */
-    private Map<Player,Scoreboard> ScoreboardList = new HashMap<Player,Scoreboard>();
-    
-    /**
-     * Instantiates a new score board.
-     */
-    public ScoreBoard(){
-        super();
-        this.manager = Factoid.getThisPlugin().getServer().getScoreboardManager();
-    }
-    
-    /**
-     * Send scoreboard.
-     *
-     * @param playerlist the playerlist
-     * @param player the player
-     * @param LandName the land name
-     */
-    @SuppressWarnings("deprecation")
+	
+	/** The manager. */
+	private ScoreboardManager manager;
+	
+	/** The Scoreboard list. */
+	private Map<Player,Scoreboard> ScoreboardList = new HashMap<Player,Scoreboard>();
+	
+	/**
+	 * Instantiates a new score board.
+	 */
+	public ScoreBoard(){
+		super();
+		this.manager = Factoid.getThisPlugin().getServer().getScoreboardManager();
+	}
+	
+	/**
+	 * Send scoreboard.
+	 *
+	 * @param playerlist the playerlist
+	 * @param player the player
+	 * @param LandName the land name
+	 */
+	@SuppressWarnings("deprecation")
 	public void sendScoreboard(HashSet<Player> playerlist, Player player, String LandName){
-        resetScoreboard(player);
-        Scoreboard scoreboard = manager.getNewScoreboard();
-        ScoreboardList.put(player,scoreboard);
-        scoreboard.registerNewObjective("land", "dummy");
-        scoreboard.getObjective("land").setDisplaySlot(DisplaySlot.SIDEBAR);
-        scoreboard.getObjective("land").setDisplayName(Factoid.getThisPlugin().iLanguage().getMessage("SCOREBOARD.LANDINFO"));
-        for(Player p : playerlist){
-            scoreboard.getObjective("land").getScore(p).setScore(0);
-        }
-        scoreboard.getObjective("land").getScore(player).setScore(0);// Note: A voir si preferable de se voir soi meme ou non dans le land.
-        player.setScoreboard(scoreboard);
-    }
-    
-    /**
-     * Gets the scoreboard.
-     *
-     * @param player the player
-     * @return the scoreboard
-     */
-    public Scoreboard getScoreboard(Player player){
-            return ScoreboardList.get(player);
-    }
-    
-    /**
-     * Gets the scoreboard manager.
-     *
-     * @return the scoreboard manager
-     */
-    public ScoreboardManager getScoreboardManager(){
-        return manager;
-    }
+		resetScoreboard(player);
+		Scoreboard scoreboard = manager.getNewScoreboard();
+		ScoreboardList.put(player,scoreboard);
+		scoreboard.registerNewObjective("land", "dummy");
+		scoreboard.getObjective("land").setDisplaySlot(DisplaySlot.SIDEBAR);
+		scoreboard.getObjective("land").setDisplayName(Factoid.getThisPlugin().iLanguage().getMessage("SCOREBOARD.LANDINFO"));
+		for(Player p : playerlist){
+			scoreboard.getObjective("land").getScore(p).setScore(0);
+		}
+		scoreboard.getObjective("land").getScore(player).setScore(0);// Note: A voir si preferable de se voir soi meme ou non dans le land.
+		player.setScoreboard(scoreboard);
+	}
+	
+	/**
+	 * Gets the scoreboard.
+	 *
+	 * @param player the player
+	 * @return the scoreboard
+	 */
+	public Scoreboard getScoreboard(Player player){
+			return ScoreboardList.get(player);
+	}
+	
+	/**
+	 * Gets the scoreboard manager.
+	 *
+	 * @return the scoreboard manager
+	 */
+	public ScoreboardManager getScoreboardManager(){
+		return manager;
+	}
 
-    
-    /**
-     * Reset scoreboard.
-     *
-     * @param player the player
-     */
-    @SuppressWarnings("deprecation")
+	
+	/**
+	 * Reset scoreboard.
+	 *
+	 * @param player the player
+	 */
+	@SuppressWarnings("deprecation")
 	public void resetScoreboard(Player player){
-        if(ScoreboardList.containsKey(player)){
-            ScoreboardList.get(player).getObjective("land").unregister();
-            ScoreboardList.get(player).resetScores(player);
-            ScoreboardList.remove(player);
-        }
-    }
+		if(ScoreboardList.containsKey(player)){
+			ScoreboardList.get(player).getObjective("land").unregister();
+			ScoreboardList.get(player).resetScores(player);
+			ScoreboardList.remove(player);
+		}
+	}
 }

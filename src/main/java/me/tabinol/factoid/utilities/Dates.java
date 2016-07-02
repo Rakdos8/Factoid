@@ -43,8 +43,8 @@ public class Dates {
 	 */
 	public static String date()
 	{
-            String dat = dateFormat.format(actuelle);
-            return dat;
+			String dat = dateFormat.format(actuelle);
+			return dat;
 	}
 	
 	/**
@@ -54,10 +54,10 @@ public class Dates {
 	 */
 	public static String time()
 	{
-            Calendar cal = Calendar.getInstance();
-            cal.getTime();
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-            String dat = sdf.format(cal.getTime());
-            return dat;
+			Calendar cal = Calendar.getInstance();
+			cal.getTime();
+			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+			String dat = sdf.format(cal.getTime());
+			return dat;
 	}
 }

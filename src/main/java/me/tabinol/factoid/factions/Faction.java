@@ -30,128 +30,128 @@ import me.tabinol.factoidapi.playercontainer.IPlayerContainerPlayer;
  */
 public class Faction implements IFaction {
 
-    /** The name. */
-    private String name;
-    
-    /** The uuid. */
-    private final UUID uuid;
-    
-    /** The players. */
-    private TreeSet<IPlayerContainerPlayer> players;
-    
-    /** The auto save. */
-    private boolean autoSave = true;
+	/** The name. */
+	private String name;
+	
+	/** The uuid. */
+	private final UUID uuid;
+	
+	/** The players. */
+	private TreeSet<IPlayerContainerPlayer> players;
+	
+	/** The auto save. */
+	private boolean autoSave = true;
 
-    /**
-     * Instantiates a new faction.
-     *
-     * @param name the name
-     * @param uuid the uuid
-     */
-    public Faction(String name, UUID uuid) {
+	/**
+	 * Instantiates a new faction.
+	 *
+	 * @param name the name
+	 * @param uuid the uuid
+	 */
+	public Faction(String name, UUID uuid) {
 
-        this.name = name.toLowerCase();
-        this.uuid = uuid;
-        this.players = new TreeSet<IPlayerContainerPlayer>();
-        doSave();
-    }
+		this.name = name.toLowerCase();
+		this.uuid = uuid;
+		this.players = new TreeSet<IPlayerContainerPlayer>();
+		doSave();
+	}
 
-    /**
-     * Gets the name.
-     *
-     * @return the name
-     */
-    public String getName() {
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
+	public String getName() {
 
-        return name;
-    }
-    
-    /**
-     * Gets the uuid.
-     *
-     * @return the uuid
-     */
-    public UUID getUUID() {
-        
-        return uuid;
-    }
+		return name;
+	}
+	
+	/**
+	 * Gets the uuid.
+	 *
+	 * @return the uuid
+	 */
+	public UUID getUUID() {
+		
+		return uuid;
+	}
 
-    /**
-     * Adds the player.
-     *
-     * @param player the player
-     */
-    public void addPlayer(IPlayerContainerPlayer player) {
+	/**
+	 * Adds the player.
+	 *
+	 * @param player the player
+	 */
+	public void addPlayer(IPlayerContainerPlayer player) {
 
-        players.add(player);
-        doSave();
-        Factoid.getThisPlugin().iLog().write(player.toString() + " is added in faction " + name);
-    }
+		players.add(player);
+		doSave();
+		Factoid.getThisPlugin().iLog().write(player.toString() + " is added in faction " + name);
+	}
 
-    /**
-     * Removes the player.
-     *
-     * @param player the player
-     * @return true, if successful
-     */
-    public boolean removePlayer(IPlayerContainerPlayer player) {
+	/**
+	 * Removes the player.
+	 *
+	 * @param player the player
+	 * @return true, if successful
+	 */
+	public boolean removePlayer(IPlayerContainerPlayer player) {
 
-        if (players.remove(player)) {
-            doSave();
-            Factoid.getThisPlugin().iLog().write(player.toString() + " is removed in faction " + name);
-            return true;
-        }
+		if (players.remove(player)) {
+			doSave();
+			Factoid.getThisPlugin().iLog().write(player.toString() + " is removed in faction " + name);
+			return true;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    /**
-     * Checks if is player in list.
-     *
-     * @param player the player
-     * @return true, if is player in list
-     */
-    public boolean isPlayerInList(IPlayerContainerPlayer player) {
+	/**
+	 * Checks if is player in list.
+	 *
+	 * @param player the player
+	 * @return true, if is player in list
+	 */
+	public boolean isPlayerInList(IPlayerContainerPlayer player) {
 
-        return players.contains(player);
-    }
+		return players.contains(player);
+	}
 
-    /**
-     * Gets the players.
-     *
-     * @return the players
-     */
-    public Collection<IPlayerContainerPlayer> getPlayers() {
+	/**
+	 * Gets the players.
+	 *
+	 * @return the players
+	 */
+	public Collection<IPlayerContainerPlayer> getPlayers() {
 
-        return players;
-    }
+		return players;
+	}
 
-    /**
-     * Sets the auto save.
-     *
-     * @param autoSave the new auto save
-     */
-    public void setAutoSave(boolean autoSave) {
-        
-        this.autoSave = autoSave;
-    }
-    
-    /**
-     * Force save.
-     */
-    public void forceSave() {
-        
-        Factoid.getThisPlugin().iStorageThread().saveFaction(this);
-        Factoid.getThisPlugin().iLog().write("Faction " + name + " is saved.");
-    }
-    
-    /**
-     * Do save.
-     */
-    private void doSave() {
-        
-        if(autoSave) {
-            forceSave();
-        }
-    }
+	/**
+	 * Sets the auto save.
+	 *
+	 * @param autoSave the new auto save
+	 */
+	public void setAutoSave(boolean autoSave) {
+		
+		this.autoSave = autoSave;
+	}
+	
+	/**
+	 * Force save.
+	 */
+	public void forceSave() {
+		
+		Factoid.getThisPlugin().iStorageThread().saveFaction(this);
+		Factoid.getThisPlugin().iLog().write("Faction " + name + " is saved.");
+	}
+	
+	/**
+	 * Do save.
+	 */
+	private void doSave() {
+		
+		if(autoSave) {
+			forceSave();
+		}
+	}
 }

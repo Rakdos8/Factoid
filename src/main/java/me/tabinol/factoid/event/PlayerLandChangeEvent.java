@@ -32,153 +32,153 @@ import org.bukkit.event.HandlerList;
  */
 @Deprecated
 public class PlayerLandChangeEvent extends LandEvent implements Cancellable {
-    
-    /** The Constant handlers. */
-    private static final HandlerList handlers = new HandlerList();
-    
-    /** The cancelled. */
-    protected boolean cancelled = false;
-    
-    /** The player. */
-    Player player;
-    
-    /** The from loc. */
-    Location fromLoc;
-    
-    /** The to loc. */
-    Location toLoc;
-    
-    /** The last land. */
-    Land lastLand;
-    
-    /** The last dummy land. */
-    DummyLand lastDummyLand;
-    
-    /** The is tp. */
-    boolean isTp;
+	
+	/** The Constant handlers. */
+	private static final HandlerList handlers = new HandlerList();
+	
+	/** The cancelled. */
+	protected boolean cancelled = false;
+	
+	/** The player. */
+	Player player;
+	
+	/** The from loc. */
+	Location fromLoc;
+	
+	/** The to loc. */
+	Location toLoc;
+	
+	/** The last land. */
+	Land lastLand;
+	
+	/** The last dummy land. */
+	DummyLand lastDummyLand;
+	
+	/** The is tp. */
+	boolean isTp;
 
-    /**
-     * Instantiates a new player land change event.
-     *
-     * @param lastDummyLand the last dummy land
-     * @param dummyLand the dummy land
-     * @param player the player
-     * @param fromLoc the from loc
-     * @param toLoc the to loc
-     * @param isTp the is tp
-     */
-    public PlayerLandChangeEvent(final DummyLand lastDummyLand, final DummyLand dummyLand, final Player player, 
-            final Location fromLoc, final Location toLoc, final boolean isTp) {
+	/**
+	 * Instantiates a new player land change event.
+	 *
+	 * @param lastDummyLand the last dummy land
+	 * @param dummyLand the dummy land
+	 * @param player the player
+	 * @param fromLoc the from loc
+	 * @param toLoc the to loc
+	 * @param isTp the is tp
+	 */
+	public PlayerLandChangeEvent(final DummyLand lastDummyLand, final DummyLand dummyLand, final Player player, 
+			final Location fromLoc, final Location toLoc, final boolean isTp) {
 
-        super(dummyLand);
-        this.lastDummyLand = lastDummyLand;
-        
-        if(lastDummyLand instanceof Land) {
-            lastLand = (Land) lastDummyLand;
-        } else {
-            lastLand = null;
-        }
-        
-        this.player = player;
-        this.fromLoc = fromLoc;
-        this.toLoc = toLoc;
-        this.isTp = isTp;
-    }
+		super(dummyLand);
+		this.lastDummyLand = lastDummyLand;
+		
+		if(lastDummyLand instanceof Land) {
+			lastLand = (Land) lastDummyLand;
+		} else {
+			lastLand = null;
+		}
+		
+		this.player = player;
+		this.fromLoc = fromLoc;
+		this.toLoc = toLoc;
+		this.isTp = isTp;
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.event.LandEvent#getHandlers()
-     */
-    @Override
-    public HandlerList getHandlers() {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.event.LandEvent#getHandlers()
+	 */
+	@Override
+	public HandlerList getHandlers() {
 
-        return handlers;
-    }
+		return handlers;
+	}
 
-    /**
-     * Gets the handler list.
-     *
-     * @return the handler list
-     */
-    public static HandlerList getHandlerList() {
+	/**
+	 * Gets the handler list.
+	 *
+	 * @return the handler list
+	 */
+	public static HandlerList getHandlerList() {
 
-        return handlers;
-    }
+		return handlers;
+	}
 
-    /* (non-Javadoc)
-     * @see org.bukkit.event.Cancellable#isCancelled()
-     */
-    @Override
-    public boolean isCancelled() {
-        
-        return cancelled;
-    }
+	/* (non-Javadoc)
+	 * @see org.bukkit.event.Cancellable#isCancelled()
+	 */
+	@Override
+	public boolean isCancelled() {
+		
+		return cancelled;
+	}
 
-    /* (non-Javadoc)
-     * @see org.bukkit.event.Cancellable#setCancelled(boolean)
-     */
-    @Override
-    public void setCancelled(boolean bln) {
-        
-        cancelled = bln;
-    }
-    
-    /**
-     * Gets the player.
-     *
-     * @return the player
-     */
-    public Player getPlayer() {
-        
-        return player;
-    }
-    
-    /**
-     * Gets the last land.
-     *
-     * @return the last land
-     */
-    public Land getLastLand() {
-        
-        return lastLand;
-    }
-    
-    /**
-     * Gets the last land or outside.
-     *
-     * @return the last land or outside
-     */
-    public DummyLand getLastLandOrOutside() {
-        
-        return lastDummyLand;
-    }
-    
-    /**
-     * Gets the from loc.
-     *
-     * @return the from loc
-     */
-    public Location getFromLoc() {
-        
-        return fromLoc;
-    }
+	/* (non-Javadoc)
+	 * @see org.bukkit.event.Cancellable#setCancelled(boolean)
+	 */
+	@Override
+	public void setCancelled(boolean bln) {
+		
+		cancelled = bln;
+	}
+	
+	/**
+	 * Gets the player.
+	 *
+	 * @return the player
+	 */
+	public Player getPlayer() {
+		
+		return player;
+	}
+	
+	/**
+	 * Gets the last land.
+	 *
+	 * @return the last land
+	 */
+	public Land getLastLand() {
+		
+		return lastLand;
+	}
+	
+	/**
+	 * Gets the last land or outside.
+	 *
+	 * @return the last land or outside
+	 */
+	public DummyLand getLastLandOrOutside() {
+		
+		return lastDummyLand;
+	}
+	
+	/**
+	 * Gets the from loc.
+	 *
+	 * @return the from loc
+	 */
+	public Location getFromLoc() {
+		
+		return fromLoc;
+	}
 
-    /**
-     * Gets the to loc.
-     *
-     * @return the to loc
-     */
-    public Location getToLoc() {
-        
-        return toLoc;
-    }
-    
-    /**
-     * Checks if is tp.
-     *
-     * @return true, if is tp
-     */
-    public boolean isTp() {
-        
-        return isTp;
-    }
+	/**
+	 * Gets the to loc.
+	 *
+	 * @return the to loc
+	 */
+	public Location getToLoc() {
+		
+		return toLoc;
+	}
+	
+	/**
+	 * Checks if is tp.
+	 *
+	 * @return true, if is tp
+	 */
+	public boolean isTp() {
+		
+		return isTp;
+	}
 }

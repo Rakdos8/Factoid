@@ -30,65 +30,65 @@ import org.bukkit.scheduler.BukkitTask;
  */
 public abstract class FactoidRunnable extends BukkitRunnable {
 
-    /** The task id. */
-    private BukkitTask taskId = null;
+	/** The task id. */
+	private BukkitTask taskId = null;
 
-    /**
-     * Instantiates a new factoid runnable.
-     */
-    public FactoidRunnable() {
+	/**
+	 * Instantiates a new factoid runnable.
+	 */
+	public FactoidRunnable() {
 
-        super();
-        taskId = null;
-    }
+		super();
+		taskId = null;
+	}
 
-    /**
-     * Run later.
-     *
-     * @param tick the tick
-     * @param multiple the multiple
-     */
-    public void runLater(Long tick, boolean multiple) {
+	/**
+	 * Run later.
+	 *
+	 * @param tick the tick
+	 * @param multiple the multiple
+	 */
+	public void runLater(Long tick, boolean multiple) {
 
-        stopNextRun();
+		stopNextRun();
 
-        if (multiple) {
-            taskId = Bukkit.getServer().getScheduler().runTaskLater(Factoid.getThisPlugin(), (Runnable) this, tick);
-              
-        } else {
-            taskId = Bukkit.getServer().getScheduler().runTaskLater(Factoid.getThisPlugin(), (Runnable) this, tick);
-        }
-    }
+		if (multiple) {
+			taskId = Bukkit.getServer().getScheduler().runTaskLater(Factoid.getThisPlugin(), (Runnable) this, tick);
+			  
+		} else {
+			taskId = Bukkit.getServer().getScheduler().runTaskLater(Factoid.getThisPlugin(), (Runnable) this, tick);
+		}
+	}
 
-    /**
-     * Checks if is active.
-     *
-     * @return true, if is active
-     */
-    public boolean isActive() {
+	/**
+	 * Checks if is active.
+	 *
+	 * @return true, if is active
+	 */
+	public boolean isActive() {
 
-        return taskId != null;
-    }
+		return taskId != null;
+	}
 
-    // *** IF IT IS NOT MULTIPLE RUN, YOU NEED TO SET DONE IN RUN() METHOD ***
-    /**
-     * Sets the one time done.
-     */
-    public void setOneTimeDone() {
+	// *** IF IT IS NOT MULTIPLE RUN, YOU NEED TO SET DONE IN RUN() METHOD ***
+	/**
+	 * Sets the one time done.
+	 */
+	public void setOneTimeDone() {
 
-        taskId = null;
-    }
+		taskId = null;
+	}
 
-    /**
-     * Stop next run.
-     */
-    public void stopNextRun() {
+	/**
+	 * Stop next run.
+	 */
+	public void stopNextRun() {
 
-        if (taskId != null) {
+		if (taskId != null) {
 
-            taskId.cancel();
-            taskId = null;
-        }
-    }
+			taskId.cancel();
+			taskId = null;
+		}
+	}
 
 }

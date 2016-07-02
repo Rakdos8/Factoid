@@ -31,85 +31,85 @@ import org.bukkit.entity.Player;
  */
 public class PlayerContainerTenant extends PlayerContainer
 	implements IPlayerContainerTenant {
-    
-    /** The land. */
-    private ILand land;
-    
-    /**
-     * Instantiates a new player container tenant.
-     *
-     * @param land the land
-     */
-    public PlayerContainerTenant(ILand land) {
-        
-        super("", EPlayerContainerType.TENANT, false);
-        this.land = land;
-    }
-    
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
-     */
-    @Override
-    public boolean equals(IPlayerContainer container2) {
-        
-        return container2 instanceof PlayerContainerTenant &&
-                land == ((PlayerContainerTenant)container2).land;
-    }
+	
+	/** The land. */
+	private ILand land;
+	
+	/**
+	 * Instantiates a new player container tenant.
+	 *
+	 * @param land the land
+	 */
+	public PlayerContainerTenant(ILand land) {
+		
+		super("", EPlayerContainerType.TENANT, false);
+		this.land = land;
+	}
+	
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
+	 */
+	@Override
+	public boolean equals(IPlayerContainer container2) {
+		
+		return container2 instanceof PlayerContainerTenant &&
+				land == ((PlayerContainerTenant)container2).land;
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#copyOf()
-     */
-    @Override
-    public PlayerContainer copyOf() {
-        
-        return new PlayerContainerTenant(land);
-    }
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#copyOf()
+	 */
+	@Override
+	public PlayerContainer copyOf() {
+		
+		return new PlayerContainerTenant(land);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#hasAccess(org.bukkit.entity.Player)
-     */
-    @Override
-    public boolean hasAccess(Player player) {
-        
-    	return hasAccess(player, land);
-    }
-    
-    @Override
-    public boolean hasAccess(Player player, ILand land) {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#hasAccess(org.bukkit.entity.Player)
+	 */
+	@Override
+	public boolean hasAccess(Player player) {
+		
+		return hasAccess(player, land);
+	}
+	
+	@Override
+	public boolean hasAccess(Player player, ILand land) {
 
-    	if(land == null) {
-    		return false;
-    	}
+		if(land == null) {
+			return false;
+		}
 
-    	boolean value = land.isTenant(player);
-        ILand actual = land;
-        ILand parent;
+		boolean value = land.isTenant(player);
+		ILand actual = land;
+		ILand parent;
 
-        while(!value && (parent = actual.getParent()) != null 
-    			&& actual.getFlagAndInherit(FlagList.INHERIT_RESIDENTS.getFlagType()).getValueBoolean() == true) {
-    		
-    		value = parent.isTenant(player);
-    		actual = parent;
-    	}
-    	
-    	return value;
-    }
-    /**
-     * Gets the land.
-     *
-     * @return the land
-     */
-    public ILand getLand() {
-        
-        return land;
-    }
+		while(!value && (parent = actual.getParent()) != null 
+				&& actual.getFlagAndInherit(FlagList.INHERIT_RESIDENTS.getFlagType()).getValueBoolean() == true) {
+			
+			value = parent.isTenant(player);
+			actual = parent;
+		}
+		
+		return value;
+	}
+	/**
+	 * Gets the land.
+	 *
+	 * @return the land
+	 */
+	public ILand getLand() {
+		
+		return land;
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
-     */
-    @Override
-    public void setLand(ILand land) {
-        
-        this.land = land;
-    }
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
+	 */
+	@Override
+	public void setLand(ILand land) {
+		
+		this.land = land;
+	}
 }

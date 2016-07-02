@@ -31,67 +31,67 @@ import org.bukkit.event.HandlerList;
 @Deprecated
 public class LandEvent extends Event {
 
-    /** The Constant handlers. */
-    private static final HandlerList handlers = new HandlerList();
-    
-    /** The dummy land. */
-    private DummyLand dummyLand;
-    
-    /** The land. */
-    private Land land;
+	/** The Constant handlers. */
+	private static final HandlerList handlers = new HandlerList();
+	
+	/** The dummy land. */
+	private DummyLand dummyLand;
+	
+	/** The land. */
+	private Land land;
 
-    /**
-     * Instantiates a new land event.
-     *
-     * @param dummyLand the dummy land
-     */
-    public LandEvent(DummyLand dummyLand) {
+	/**
+	 * Instantiates a new land event.
+	 *
+	 * @param dummyLand the dummy land
+	 */
+	public LandEvent(DummyLand dummyLand) {
 
-        this.dummyLand = dummyLand;
-        
-        if(dummyLand instanceof Land) {
-            land = (Land) dummyLand;
-        } else {
-            land = null;
-        }
-    }
+		this.dummyLand = dummyLand;
+		
+		if(dummyLand instanceof Land) {
+			land = (Land) dummyLand;
+		} else {
+			land = null;
+		}
+	}
 
-    /* (non-Javadoc)
-     * @see org.bukkit.event.Event#getHandlers()
-     */
-    @Override
-    public HandlerList getHandlers() {
+	/* (non-Javadoc)
+	 * @see org.bukkit.event.Event#getHandlers()
+	 */
+	@Override
+	public HandlerList getHandlers() {
 
-        return handlers;
-    }
+		return handlers;
+	}
 
-    /**
-     * Gets the handler list.
-     *
-     * @return the handler list
-     */
-    public static HandlerList getHandlerList() {
+	/**
+	 * Gets the handler list.
+	 *
+	 * @return the handler list
+	 */
+	public static HandlerList getHandlerList() {
 
-        return handlers;
-    }
+		return handlers;
+	}
 
-    /**
-     * Gets the land.
-     *
-     * @return the land
-     */
-    public Land getLand() {
+	/**
+	 * Gets the land.
+	 *
+	 * @return the land
+	 */
+	public Land getLand() {
 
-        return land;
-    }
-    
-    /**
-     * Gets the land or outside.
-     *
-     * @return the land or outside
-     */
-    public DummyLand getLandOrOutside() {
-        
-        return dummyLand;
-    }
+		return land;
+	}
+	
+	/**
+	 * Gets the land or outside.
+	 *
+	 * @return the land or outside
+	 */
+	public DummyLand getLandOrOutside() {
+		
+		return dummyLand;
+	}
 }

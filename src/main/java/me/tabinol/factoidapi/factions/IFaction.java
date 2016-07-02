@@ -27,59 +27,59 @@ import me.tabinol.factoidapi.playercontainer.IPlayerContainerPlayer;
  */
 public interface IFaction {
 
-    /**
-     * Gets the name of the faction.
-     *
-     * @return the name
-     */
-    public String getName();
-    
-    /**
-     * Gets the uuid of the faction.
-     *
-     * @return the uuid
-     */
-    public UUID getUUID();
+	/**
+	 * Gets the name of the faction.
+	 *
+	 * @return the name
+	 */
+	public String getName();
+	
+	/**
+	 * Gets the uuid of the faction.
+	 *
+	 * @return the uuid
+	 */
+	public UUID getUUID();
 
-    /**
-     * Adds a player.
-     *
-     * @param player the player
-     */
-    public void addPlayer(IPlayerContainerPlayer player);
-    
-    /**
-     * Removes a player.
-     *
-     * @param player the player
-     * @return true, if successful
-     */
-    public boolean removePlayer(IPlayerContainerPlayer player);
-    /**
-     * Checks if player is in this faction.
-     *
-     * @param player the player
-     * @return true, if is player in list
-     */
-    public boolean isPlayerInList(IPlayerContainerPlayer player);
-    
-    /**
-     * Gets all players from this faction.
-     *
-     * @return the players
-     */
-    public Collection<IPlayerContainerPlayer> getPlayers();
-    
-    /**
-     * Enable or disable auto save. PLEASE USE WITH CAUTION!
-     *
-     * @param autoSave if auto save or not
-     */
-    public void setAutoSave(boolean autoSave);
-    
-    /**
-     * Force save.
-     */
-    public void forceSave();
-    
+	/**
+	 * Adds a player.
+	 *
+	 * @param player the player
+	 */
+	public void addPlayer(IPlayerContainerPlayer player);
+	
+	/**
+	 * Removes a player.
+	 *
+	 * @param player the player
+	 * @return true, if successful
+	 */
+	public boolean removePlayer(IPlayerContainerPlayer player);
+	/**
+	 * Checks if player is in this faction.
+	 *
+	 * @param player the player
+	 * @return true, if is player in list
+	 */
+	public boolean isPlayerInList(IPlayerContainerPlayer player);
+	
+	/**
+	 * Gets all players from this faction.
+	 *
+	 * @return the players
+	 */
+	public Collection<IPlayerContainerPlayer> getPlayers();
+	
+	/**
+	 * Enable or disable auto save. PLEASE USE WITH CAUTION!
+	 *
+	 * @param autoSave if auto save or not
+	 */
+	public void setAutoSave(boolean autoSave);
+	
+	/**
+	 * Force save.
+	 */
+	public void forceSave();
+	
 }

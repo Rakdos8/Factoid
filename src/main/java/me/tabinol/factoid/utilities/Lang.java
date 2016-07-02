@@ -36,191 +36,191 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class Lang {
 
-    /** The Constant ACTUAL_VERSION. */
-    public static final int ACTUAL_VERSION = Factoid.getMavenAppProperties().getPropertyInt("langVersion");
-    
-    /** The lang. */
-    private String lang = null;
-    
-    /** The lang file. */
-    private File langFile;
-    
-    /** The langconfig. */
-    private final FileConfiguration langconfig;
-    
-    /** The plugin. */
-    private final JavaPlugin plugin;
+	/** The Constant ACTUAL_VERSION. */
+	public static final int ACTUAL_VERSION = Factoid.getMavenAppProperties().getPropertyInt("langVersion");
+	
+	/** The lang. */
+	private String lang = null;
+	
+	/** The lang file. */
+	private File langFile;
+	
+	/** The langconfig. */
+	private final FileConfiguration langconfig;
+	
+	/** The plugin. */
+	private final JavaPlugin plugin;
 
-    /**
-     * Instantiates a new lang.
-     */
-    public Lang() {
-        this.langconfig = new YamlConfiguration();
-        this.plugin = Factoid.getThisPlugin();
-        reloadConfig();
-        checkVersion();
-    }
+	/**
+	 * Instantiates a new lang.
+	 */
+	public Lang() {
+		this.langconfig = new YamlConfiguration();
+		this.plugin = Factoid.getThisPlugin();
+		reloadConfig();
+		checkVersion();
+	}
 
-    /**
-     * Reload config.
-     */
-    public final void reloadConfig() {
-        this.lang = Factoid.getThisPlugin().iConf().getLang();
-        this.langFile = new File(plugin.getDataFolder() + "/lang/", lang + ".yml");
-        if (Factoid.getThisPlugin().iConf().getLang() != null) {
-            copyLang();
-            loadYamls();
-        }
-    }
+	/**
+	 * Reload config.
+	 */
+	public final void reloadConfig() {
+		this.lang = Factoid.getThisPlugin().iConf().getLang();
+		this.langFile = new File(plugin.getDataFolder() + "/lang/", lang + ".yml");
+		if (Factoid.getThisPlugin().iConf().getLang() != null) {
+			copyLang();
+			loadYamls();
+		}
+	}
 
-    // Check if it is the next version, if not, the file will be renamed
-    /**
-     * Check version.
-     */
-    public final void checkVersion() {
+	// Check if it is the next version, if not, the file will be renamed
+	/**
+	 * Check version.
+	 */
+	public final void checkVersion() {
 
-        int fileVersion = langconfig.getInt("VERSION");
+		int fileVersion = langconfig.getInt("VERSION");
 
-        // We must rename the file and activate the new file
-        if (ACTUAL_VERSION != fileVersion) {
-            langFile.renameTo(new File(plugin.getDataFolder() + "/lang/", lang + ".yml.v" + fileVersion));
-            reloadConfig();
-            plugin.getLogger().log(Level.INFO, "There is a new language file. Your old language file was renamed \""
-                    + lang + ".yml.v" + fileVersion + "\".");
-        }
-    }
+		// We must rename the file and activate the new file
+		if (ACTUAL_VERSION != fileVersion) {
+			langFile.renameTo(new File(plugin.getDataFolder() + "/lang/", lang + ".yml.v" + fileVersion));
+			reloadConfig();
+			plugin.getLogger().log(Level.INFO, "There is a new language file. Your old language file was renamed \""
+					+ lang + ".yml.v" + fileVersion + "\".");
+		}
+	}
 
-    /**
-     * Gets the message.
-     *
-     * @param path the path
-     * @param param the param
-     * @return the message
-     */
-    public String getMessage(String path, String... param) {
+	/**
+	 * Gets the message.
+	 *
+	 * @param path the path
+	 * @param param the param
+	 * @return the message
+	 */
+	public String getMessage(String path, String... param) {
 
-        String message = langconfig.getString(path);
+		String message = langconfig.getString(path);
 
-        if (message == null) {
-            return "MESSAGE NOT FOUND FOR PATH: " + path;
-        }
-        if (param.length >= 1) {
-            int occurence = getOccurence(message, '%');
-            if (occurence == param.length) {
-                for (int i = 0; i < occurence; i++) {
-                    message = replace(message, "%", param[i]);
-                    // System.out.print(message);
-                }
-            } else {
-                return "Error! variable missing for Entries.";
-            }
-        }
+		if (message == null) {
+			return "MESSAGE NOT FOUND FOR PATH: " + path;
+		}
+		if (param.length >= 1) {
+			int occurence = getOccurence(message, '%');
+			if (occurence == param.length) {
+				for (int i = 0; i < occurence; i++) {
+					message = replace(message, "%", param[i]);
+					// System.out.print(message);
+				}
+			} else {
+				return "Error! variable missing for Entries.";
+			}
+		}
 
-        return message;
-    }
+		return message;
+	}
 
-    /**
-     * Checks if is message exist.
-     *
-     * @param path the path
-     * @return true, if is message exist
-     */
-    public boolean isMessageExist(String path) {
+	/**
+	 * Checks if is message exist.
+	 *
+	 * @param path the path
+	 * @return true, if is message exist
+	 */
+	public boolean isMessageExist(String path) {
 
-        return langconfig.getString(path) != null;
-    }
+		return langconfig.getString(path) != null;
+	}
 
-    /**
-     * Replace.
-     *
-     * @param s_original the s_original
-     * @param s_cherche the s_cherche
-     * @param s_nouveau the s_nouveau
-     * @return the string
-     */
-    public String replace(String s_original, String s_cherche, String s_nouveau) {
-        if ((s_original == null) || (s_original.equals(""))) {
-            return "";
-        }
-        if ((s_nouveau == null) || (s_nouveau.equals("")) || (s_cherche == null) || (s_cherche.equals(""))) {
-            return new String(s_original);
-        }
+	/**
+	 * Replace.
+	 *
+	 * @param s_original the s_original
+	 * @param s_cherche the s_cherche
+	 * @param s_nouveau the s_nouveau
+	 * @return the string
+	 */
+	public String replace(String s_original, String s_cherche, String s_nouveau) {
+		if ((s_original == null) || (s_original.equals(""))) {
+			return "";
+		}
+		if ((s_nouveau == null) || (s_nouveau.equals("")) || (s_cherche == null) || (s_cherche.equals(""))) {
+			return new String(s_original);
+		}
 
-        StringBuffer s_final;
-        int index = s_original.indexOf(s_cherche);
+		StringBuffer s_final;
+		int index = s_original.indexOf(s_cherche);
 
-        s_final = new StringBuffer(s_original.substring(0, index));
-        s_final.append(s_nouveau);
-        s_final.append(s_original.substring(index + s_cherche.length()));
+		s_final = new StringBuffer(s_original.substring(0, index));
+		s_final.append(s_nouveau);
+		s_final.append(s_original.substring(index + s_cherche.length()));
 
-        return s_final.toString();
-    }
+		return s_final.toString();
+	}
 
-    /**
-     * Load yamls.
-     */
-    private void loadYamls() {
-        try {
-            langconfig.load(langFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	/**
+	 * Load yamls.
+	 */
+	private void loadYamls() {
+		try {
+			langconfig.load(langFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    /**
-     * Copyt the language file.
-     */
-    private void copyLang() {
-        try {
-            if (!langFile.exists()) {
-                langFile.getParentFile().mkdirs();
-                FileCopy.copyTextFromJav(plugin.getResource("lang/" + lang + ".yml"), langFile);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	/**
+	 * Copyt the language file.
+	 */
+	private void copyLang() {
+		try {
+			if (!langFile.exists()) {
+				langFile.getParentFile().mkdirs();
+				FileCopy.copyTextFromJav(plugin.getResource("lang/" + lang + ".yml"), langFile);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    /**
-     * Gets the occurence.
-     *
-     * @param s the s
-     * @param r the r
-     * @return the occurence
-     */
-    private int getOccurence(String s, char r) {
-        int counter = 0;
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == r) {
-                counter++;
-            }
-        }
-        return counter;
-    }
+	/**
+	 * Gets the occurence.
+	 *
+	 * @param s the s
+	 * @param r the r
+	 * @return the occurence
+	 */
+	private int getOccurence(String s, char r) {
+		int counter = 0;
+		for (int i = 0; i < s.length(); i++) {
+			if (s.charAt(i) == r) {
+				counter++;
+			}
+		}
+		return counter;
+	}
 
-    /**
-     * Gets the help.
-     *
-     * @param mainCommand the main command
-     * @param commandName the command name
-     * @return the help
-     */
-    public String getHelp(String mainCommand, String commandName) {
-        
-        ConfigurationSection helpSec = langconfig.getConfigurationSection("HELP." + mainCommand + "." + commandName);
-        
-        // No help for this command?
-        if(helpSec == null) {
-            return null;
-        }
-        
-        Map<String, Object> valueList = helpSec.getValues(false);
-        StringBuilder sb = new StringBuilder();
-        
-        for(int t = 1; t <= valueList.size(); t ++) {
-            sb.append((String) valueList.get(t + "")).append(Config.NEWLINE);
-        }
-        
-        return sb.toString();
-    }
+	/**
+	 * Gets the help.
+	 *
+	 * @param mainCommand the main command
+	 * @param commandName the command name
+	 * @return the help
+	 */
+	public String getHelp(String mainCommand, String commandName) {
+		
+		ConfigurationSection helpSec = langconfig.getConfigurationSection("HELP." + mainCommand + "." + commandName);
+		
+		// No help for this command?
+		if(helpSec == null) {
+			return null;
+		}
+		
+		Map<String, Object> valueList = helpSec.getValues(false);
+		StringBuilder sb = new StringBuilder();
+		
+		for(int t = 1; t <= valueList.size(); t ++) {
+			sb.append((String) valueList.get(t + "")).append(Config.NEWLINE);
+		}
+		
+		return sb.toString();
+	}
 }

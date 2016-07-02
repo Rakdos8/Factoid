@@ -24,13 +24,13 @@ import org.bukkit.entity.Player;
  * The Interface Vanish.
  */
 public interface Vanish {
-    
-    /**
-     * Checks if is vanished.
-     *
-     * @param player the player
-     * @return true, if is vanished
-     */
-    public boolean isVanished(Player player);
-    
+	
+	/**
+	 * Checks if is vanished.
+	 *
+	 * @param player the player
+	 * @return true, if is vanished
+	 */
+	public boolean isVanished(Player player);
+	
 }

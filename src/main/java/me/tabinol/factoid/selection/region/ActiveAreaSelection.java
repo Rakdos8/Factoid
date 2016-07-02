@@ -30,55 +30,55 @@ import org.bukkit.entity.Player;
  */
 public class ActiveAreaSelection extends AreaSelection implements PlayerMoveListen {
 
-    /**
-     * Instantiates a new active area selection.
-     *
-     * @param player the player
-     */
-    public ActiveAreaSelection(Player player) {
+	/**
+	 * Instantiates a new active area selection.
+	 *
+	 * @param player the player
+	 */
+	public ActiveAreaSelection(Player player) {
 
-        super(player);
-        setActiveSelection();
-    }
+		super(player);
+		setActiveSelection();
+	}
 
-    /**
-     * Instantiates a new active area selection.
-     *
-     * @param player the player
-     * @param area the area
-     */
-    public ActiveAreaSelection(Player player, ICuboidArea area) {
+	/**
+	 * Instantiates a new active area selection.
+	 *
+	 * @param player the player
+	 * @param area the area
+	 */
+	public ActiveAreaSelection(Player player, ICuboidArea area) {
 
-        super(player);
-        this.area = area;
-        makeVisualSelection();
-    }
+		super(player);
+		this.area = area;
+		makeVisualSelection();
+	}
 
-    /**
-     * Sets the active selection.
-     */
-    public final void setActiveSelection() {
+	/**
+	 * Sets the active selection.
+	 */
+	public final void setActiveSelection() {
 
-        isCollision = false;
+		isCollision = false;
 
-        Location loc = player.getLocation();
-        int landXr = Factoid.getThisPlugin().iConf().getDefaultXSize() / 2;
-        int landZr = Factoid.getThisPlugin().iConf().getDefaultZSize() / 2;
-        area = new CuboidArea(loc.getWorld().getName(),
-                loc.getBlockX() - landXr, Factoid.getThisPlugin().iConf().getDefaultBottom(), loc.getBlockZ() - landZr,
-                loc.getBlockX() + landXr, Factoid.getThisPlugin().iConf().getDefaultTop(), loc.getBlockZ() + landZr);
+		Location loc = player.getLocation();
+		int landXr = Factoid.getThisPlugin().iConf().getDefaultXSize() / 2;
+		int landZr = Factoid.getThisPlugin().iConf().getDefaultZSize() / 2;
+		area = new CuboidArea(loc.getWorld().getName(),
+				loc.getBlockX() - landXr, Factoid.getThisPlugin().iConf().getDefaultBottom(), loc.getBlockZ() - landZr,
+				loc.getBlockX() + landXr, Factoid.getThisPlugin().iConf().getDefaultTop(), loc.getBlockZ() + landZr);
 
-        makeVisualSelection();
-    }
+		makeVisualSelection();
+	}
 
-    // Called from player listenner
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.selection.region.PlayerMoveListen#playerMove()
-     */
-    @Override
-    public void playerMove() {
+	// Called from player listenner
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.selection.region.PlayerMoveListen#playerMove()
+	 */
+	@Override
+	public void playerMove() {
 
-        removeSelection();
-        setActiveSelection();
-    }
+		removeSelection();
+		setActiveSelection();
+	}
 }

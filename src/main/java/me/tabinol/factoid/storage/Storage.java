@@ -27,49 +27,49 @@ import me.tabinol.factoidapi.lands.ILand;
  */
 public abstract class Storage implements StorageInt {
 
-    /** The Constant LAND_VERSION. */
-    public static final int LAND_VERSION = Factoid.getMavenAppProperties().getPropertyInt("landVersion");
-    
-    /** The Constant FACTION_VERSION. */
-    public static final int FACTION_VERSION = Factoid.getMavenAppProperties().getPropertyInt("factionVersion");
+	/** The Constant LAND_VERSION. */
+	public static final int LAND_VERSION = Factoid.getMavenAppProperties().getPropertyInt("landVersion");
+	
+	/** The Constant FACTION_VERSION. */
+	public static final int FACTION_VERSION = Factoid.getMavenAppProperties().getPropertyInt("factionVersion");
 
-    /** The to resave. */
-    private boolean toResave = false; // If a new version of .conf file, we need to save again
+	/** The to resave. */
+	private boolean toResave = false; // If a new version of .conf file, we need to save again
 
-    /**
-     * Instantiates a new storage.
-     */
-    public Storage() {
-    }
-    
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.storage.StorageInt#loadAll()
-     */
-    @Override
-    public void loadAll() {
+	/**
+	 * Instantiates a new storage.
+	 */
+	public Storage() {
+	}
+	
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.storage.StorageInt#loadAll()
+	 */
+	@Override
+	public void loadAll() {
 
-        loadFactions();
-        loadLands();
+		loadFactions();
+		loadLands();
 
-        // New version, we have to save all
-        if (toResave) {
-            saveAll();
-        }
-    }
+		// New version, we have to save all
+		if (toResave) {
+			saveAll();
+		}
+	}
 
-    /**
-     * Save all.
-     */
-    private void saveAll() {
+	/**
+	 * Save all.
+	 */
+	private void saveAll() {
 
-        for (ILand land : Factoid.getThisPlugin().iLands().getLands()) {
+		for (ILand land : Factoid.getThisPlugin().iLands().getLands()) {
 
-            land.forceSave();
-        }
+			land.forceSave();
+		}
 
-        for (IFaction faction : Factoid.getThisPlugin().iFactions().getFactions()) {
+		for (IFaction faction : Factoid.getThisPlugin().iFactions().getFactions()) {
 
-            faction.forceSave();
-        }
-    }
+			faction.forceSave();
+		}
+	}
 }

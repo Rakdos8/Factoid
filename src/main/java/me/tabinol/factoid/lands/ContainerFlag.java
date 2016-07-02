@@ -26,37 +26,37 @@ import me.tabinol.factoid.playercontainer.PlayerContainer;
  * The Class ContainerFlag.
  */
 public class ContainerFlag {
-    
-    /** The pc. */
-    PlayerContainer pc;
-    
-    /** The flags. */
-    HashSet <LandFlag> flags;
-    
-    /**
-     * Instantiates a new container flag.
-     *
-     * @param pc the pc
-     * @param flags the flags
-     */
-    public ContainerFlag(PlayerContainer pc, HashSet <LandFlag> flags) {
-        
-        this.pc = pc;
-        if(flags == null) {
-            this.flags = new HashSet<LandFlag>();
-        } else {
-            this.flags = flags;
-        }
-    }
-    
-    /**
-     * Equals.
-     *
-     * @param cf2 the cf2
-     * @return true, if successful
-     */
-    public boolean equals(ContainerFlag cf2) {
-        
-        return pc.equals(cf2.pc);
-    }
+	
+	/** The pc. */
+	PlayerContainer pc;
+	
+	/** The flags. */
+	HashSet <LandFlag> flags;
+	
+	/**
+	 * Instantiates a new container flag.
+	 *
+	 * @param pc the pc
+	 * @param flags the flags
+	 */
+	public ContainerFlag(PlayerContainer pc, HashSet <LandFlag> flags) {
+		
+		this.pc = pc;
+		if(flags == null) {
+			this.flags = new HashSet<LandFlag>();
+		} else {
+			this.flags = flags;
+		}
+	}
+	
+	/**
+	 * Equals.
+	 *
+	 * @param cf2 the cf2
+	 * @return true, if successful
+	 */
+	public boolean equals(ContainerFlag cf2) {
+		
+		return pc.equals(cf2.pc);
+	}
 }

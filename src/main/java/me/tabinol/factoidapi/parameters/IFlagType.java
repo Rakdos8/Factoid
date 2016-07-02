@@ -22,33 +22,33 @@ package me.tabinol.factoidapi.parameters;
  */
 public interface IFlagType {
 
-    /**
-     * Gets the name.
-     *
-     * @return the name
-     */
-    public String getName();
-    
-    /**
-     * Gets the default value.
-     *
-     * @return the default value
-     */
-    public IFlagValue getDefaultValue();
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
+	public String getName();
+	
+	/**
+	 * Gets the default value.
+	 *
+	 * @return the default value
+	 */
+	public IFlagValue getDefaultValue();
 
-    /**
-     * Gets the prints format.
-     *
-     * @return the prints the format
-     */
-    public String getPrint();
-    
-    /**
-     * Checks if is the flag type is registered from Factoid or any other
-     * plugins.
-     *
-     * @return true, if is registered
-     */
-    public boolean isRegistered();
-    
+	/**
+	 * Gets the prints format.
+	 *
+	 * @return the prints the format
+	 */
+	public String getPrint();
+	
+	/**
+	 * Checks if is the flag type is registered from Factoid or any other
+	 * plugins.
+	 *
+	 * @return true, if is registered
+	 */
+	public boolean isRegistered();
+	
 }

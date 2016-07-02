@@ -21,8 +21,8 @@ package me.tabinol.factoidapi.exceptions;
  * The Class FactoidLandException. Called when the land can not be created
  */
 public abstract class AFactoidLandException extends Exception {
-    
-    /** The Constant serialVersionUID. */
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -4561559858019587492L;
 	
 	/**

@@ -31,28 +31,28 @@ import org.bukkit.ChatColor;
  */
 @InfoCommand(name="reload", allowConsole=true)
 public class CommandReload extends CommandExec {
-    
-    /**
-     * Instantiates a new command reload.
-     *
-     * @param entity the entity
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandReload(CommandEntities entity) throws FactoidCommandException {
+	
+	/**
+	 * Instantiates a new command reload.
+	 *
+	 * @param entity the entity
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	public CommandReload(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity);
-    }
+		super(entity);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
-     */
-    @Override
-    public void commandExecute() throws FactoidCommandException {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+	 */
+	@Override
+	public void commandExecute() throws FactoidCommandException {
 
-        checkPermission(false, false, null, "factoid.reload");
+		checkPermission(false, false, null, "factoid.reload");
 
-        entity.sender.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.RELOAD.START"));
-        Factoid.getThisPlugin().reload();
-        entity.sender.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.RELOAD.COMPLETE"));
-    }
+		entity.sender.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.RELOAD.START"));
+		Factoid.getThisPlugin().reload();
+		entity.sender.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.RELOAD.COMPLETE"));
+	}
 }

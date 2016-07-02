@@ -46,178 +46,178 @@ import org.bukkit.configuration.file.YamlConfiguration;
  */
 public class WorldConfig {
 
-    /** The this plugin. */
-    private final Factoid thisPlugin;
-    
-    /** The land default. */
-    private final FileConfiguration landDefault;
-    
-    /** The world config. */
-    private final FileConfiguration worldConfig;
+	/** The this plugin. */
+	private final Factoid thisPlugin;
+	
+	/** The land default. */
+	private final FileConfiguration landDefault;
+	
+	/** The world config. */
+	private final FileConfiguration worldConfig;
 
-    /** Default config (No Type or global) */
-    private DummyLand defaultConfNoType;
+	/** Default config (No Type or global) */
+	private DummyLand defaultConfNoType;
 
-    /**
-     * Instantiates a new world config.
-     */
-    public WorldConfig() {
+	/**
+	 * Instantiates a new world config.
+	 */
+	public WorldConfig() {
 
-        thisPlugin = Factoid.getThisPlugin();
+		thisPlugin = Factoid.getThisPlugin();
 
-        // Create files (if not exist) and load
-        if (!new File(thisPlugin.getDataFolder(), "landdefault.yml").exists()) {
-            thisPlugin.saveResource("landdefault.yml", false);
-        }
-        if (!new File(thisPlugin.getDataFolder(), "worldconfig.yml").exists()) {
-            thisPlugin.saveResource("worldconfig.yml", false);
-        }
-        landDefault = YamlConfiguration.loadConfiguration(new File(thisPlugin.getDataFolder(), "landdefault.yml"));
-        worldConfig = YamlConfiguration.loadConfiguration(new File(thisPlugin.getDataFolder(), "worldconfig.yml"));
-        
-        // Create default (whitout type)
-        defaultConfNoType = getLandDefaultConf();
-    }
-    
-    /**
-     * Gets the land outside area.
-     *
-     * @return the land outside area
-     */
-    public TreeMap<String, DummyLand> getLandOutsideArea() {
+		// Create files (if not exist) and load
+		if (!new File(thisPlugin.getDataFolder(), "landdefault.yml").exists()) {
+			thisPlugin.saveResource("landdefault.yml", false);
+		}
+		if (!new File(thisPlugin.getDataFolder(), "worldconfig.yml").exists()) {
+			thisPlugin.saveResource("worldconfig.yml", false);
+		}
+		landDefault = YamlConfiguration.loadConfiguration(new File(thisPlugin.getDataFolder(), "landdefault.yml"));
+		worldConfig = YamlConfiguration.loadConfiguration(new File(thisPlugin.getDataFolder(), "worldconfig.yml"));
+		
+		// Create default (whitout type)
+		defaultConfNoType = getLandDefaultConf();
+	}
+	
+	/**
+	 * Gets the land outside area.
+	 *
+	 * @return the land outside area
+	 */
+	public TreeMap<String, DummyLand> getLandOutsideArea() {
 
-        TreeMap<String, DummyLand> landList = new TreeMap<String, DummyLand>();
-        Set<String> keys = worldConfig.getConfigurationSection("").getKeys(false);
-        
-        // We have to take _global_ first then others
-        for (String worldName : keys) {
-        	if(worldName.equalsIgnoreCase(GLOBAL)) {
-            	createConfForWorld(worldName, landList, false);
-        	}
-        }
-        
-        // The none-global
-        for (String worldName : keys) {
-        	if(!worldName.equalsIgnoreCase(GLOBAL)) {
-            	createConfForWorld(worldName, landList, true);
-        	}
-        }
+		TreeMap<String, DummyLand> landList = new TreeMap<String, DummyLand>();
+		Set<String> keys = worldConfig.getConfigurationSection("").getKeys(false);
+		
+		// We have to take _global_ first then others
+		for (String worldName : keys) {
+			if(worldName.equalsIgnoreCase(GLOBAL)) {
+				createConfForWorld(worldName, landList, false);
+			}
+		}
+		
+		// The none-global
+		for (String worldName : keys) {
+			if(!worldName.equalsIgnoreCase(GLOBAL)) {
+				createConfForWorld(worldName, landList, true);
+			}
+		}
 
-        return landList;
-    }
-    
-    private void createConfForWorld(String worldName, TreeMap<String, DummyLand> landList, boolean copyFromGlobal) {
-    	
-        String worldNameLower = worldName.toLowerCase();
-        Factoid.getThisPlugin().iLog().write("Create conf for World: " + worldNameLower);
-        DummyLand dl = new DummyLand(worldName);
-        if(copyFromGlobal) {
-        	landList.get(GLOBAL).copyPermsFlagsTo(dl);
-        }
-        landList.put(worldNameLower, landModify(dl, worldConfig, 
-        		worldName + ".ContainerPermissions", worldName + ".ContainerFlags"));
-    }
-    
-    /**
-     * Gets the land default conf.
-     *
-     * @return the land default conf
-     */
-    private DummyLand getLandDefaultConf() {
+		return landList;
+	}
+	
+	private void createConfForWorld(String worldName, TreeMap<String, DummyLand> landList, boolean copyFromGlobal) {
+		
+		String worldNameLower = worldName.toLowerCase();
+		Factoid.getThisPlugin().iLog().write("Create conf for World: " + worldNameLower);
+		DummyLand dl = new DummyLand(worldName);
+		if(copyFromGlobal) {
+			landList.get(GLOBAL).copyPermsFlagsTo(dl);
+		}
+		landList.put(worldNameLower, landModify(dl, worldConfig, 
+				worldName + ".ContainerPermissions", worldName + ".ContainerFlags"));
+	}
+	
+	/**
+	 * Gets the land default conf.
+	 *
+	 * @return the land default conf
+	 */
+	private DummyLand getLandDefaultConf() {
 
-        Factoid.getThisPlugin().iLog().write("Create default conf for lands");
-        return landModify(new DummyLand(GLOBAL), landDefault, "ContainerPermissions", "ContainerFlags");
-    }
+		Factoid.getThisPlugin().iLog().write("Create default conf for lands");
+		return landModify(new DummyLand(GLOBAL), landDefault, "ContainerPermissions", "ContainerFlags");
+	}
 
-    /**
-     * Get the default configuration of a land without a Type.
-     * @return The land configuration (DummyLand)
-     */
-    public DummyLand getDefaultconfNoType() {
-    	
-    	return defaultConfNoType;
-    }
+	/**
+	 * Get the default configuration of a land without a Type.
+	 * @return The land configuration (DummyLand)
+	 */
+	public DummyLand getDefaultconfNoType() {
+		
+		return defaultConfNoType;
+	}
 
-    /**
-     * Gets the default conf for each type
-     * @return a TreeMap of default configuration
-     */
-    public TreeMap<IType, DummyLand> getTypeDefaultConf() {
-    	
-        Factoid.getThisPlugin().iLog().write("Create default conf for lands");
-    	TreeMap<IType, DummyLand> defaultConf = new TreeMap<IType, DummyLand>();
+	/**
+	 * Gets the default conf for each type
+	 * @return a TreeMap of default configuration
+	 */
+	public TreeMap<IType, DummyLand> getTypeDefaultConf() {
+		
+		Factoid.getThisPlugin().iLog().write("Create default conf for lands");
+		TreeMap<IType, DummyLand> defaultConf = new TreeMap<IType, DummyLand>();
 
-    	for(IType type : FactoidAPI.iTypes().getTypes()) {
-    		ConfigurationSection typeConf = landDefault.getConfigurationSection(type.getName());
-    		DummyLand dl = new DummyLand(type.getName());
-            defaultConfNoType.copyPermsFlagsTo(dl);
-    		defaultConf.put(type, landModify(dl, typeConf, 
-    				"ContainerPermissions", "ContainerFlags"));
-    	}
-    	
-    	return defaultConf;
-    }
+		for(IType type : FactoidAPI.iTypes().getTypes()) {
+			ConfigurationSection typeConf = landDefault.getConfigurationSection(type.getName());
+			DummyLand dl = new DummyLand(type.getName());
+			defaultConfNoType.copyPermsFlagsTo(dl);
+			defaultConf.put(type, landModify(dl, typeConf, 
+					"ContainerPermissions", "ContainerFlags"));
+		}
+		
+		return defaultConf;
+	}
 
-    private DummyLand landModify(DummyLand dl, ConfigurationSection fc, String perms, String flags) {
+	private DummyLand landModify(DummyLand dl, ConfigurationSection fc, String perms, String flags) {
 
-        ConfigurationSection csPerm = null;
-        ConfigurationSection csFlags = null;
-        
-        if(fc != null) {
-            csPerm = fc.getConfigurationSection(perms);
-            csFlags = fc.getConfigurationSection(flags);
-        }
+		ConfigurationSection csPerm = null;
+		ConfigurationSection csFlags = null;
+		
+		if(fc != null) {
+			csPerm = fc.getConfigurationSection(perms);
+			csFlags = fc.getConfigurationSection(flags);
+		}
 
-        // Add permissions
-        if (csPerm != null) {
-            for (String container : csPerm.getKeys(false)) {
-                
-                EPlayerContainerType pcType = EPlayerContainerType.getFromString(container);
-                
-                if (pcType.hasParameter()) {
-                    for (String containerName : fc.getConfigurationSection(perms + "." + container).getKeys(false)) {
-                        for (String perm : fc.getConfigurationSection(perms + "." + container + "." + containerName).getKeys(false)) {
-                            Factoid.getThisPlugin().iLog().write("Container: " + container + ":" + containerName + ", " + perm);
-                            
-                            // Remove _ if it is a Bukkit Permission
-                            String containerNameLower;
-                            if(pcType == EPlayerContainerType.PERMISSION) {
-                                containerNameLower = containerName.toLowerCase().replaceAll("_", ".");
-                            } else {
-                                containerNameLower = containerName.toLowerCase();
-                            }
-                            
-                            dl.addPermission(
-                                    PlayerContainer.create(null, pcType, containerNameLower),
-                                    new Permission(Factoid.getThisPlugin().iParameters().getPermissionTypeNoValid(perm.toUpperCase()),
-                                            fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Value"),
-                                            fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Heritable")));
-                        }
-                    }
-                } else {
-                    for (String perm : fc.getConfigurationSection(perms + "." + container).getKeys(false)) {
-                        Factoid.getThisPlugin().iLog().write("Container: " + container + ", " + perm);
-                        dl.addPermission(
-                                PlayerContainer.create(null, pcType, null),
-                                new Permission(Factoid.getThisPlugin().iParameters().getPermissionTypeNoValid(perm.toUpperCase()),
-                                        fc.getBoolean(perms + "." + container + "." + perm + ".Value"),
-                                        fc.getBoolean(perms + "." + container + "." + perm + ".Heritable")));
-                    }
-                }
-            }
-        }
+		// Add permissions
+		if (csPerm != null) {
+			for (String container : csPerm.getKeys(false)) {
+				
+				EPlayerContainerType pcType = EPlayerContainerType.getFromString(container);
+				
+				if (pcType.hasParameter()) {
+					for (String containerName : fc.getConfigurationSection(perms + "." + container).getKeys(false)) {
+						for (String perm : fc.getConfigurationSection(perms + "." + container + "." + containerName).getKeys(false)) {
+							Factoid.getThisPlugin().iLog().write("Container: " + container + ":" + containerName + ", " + perm);
+							
+							// Remove _ if it is a Bukkit Permission
+							String containerNameLower;
+							if(pcType == EPlayerContainerType.PERMISSION) {
+								containerNameLower = containerName.toLowerCase().replaceAll("_", ".");
+							} else {
+								containerNameLower = containerName.toLowerCase();
+							}
+							
+							dl.addPermission(
+									PlayerContainer.create(null, pcType, containerNameLower),
+									new Permission(Factoid.getThisPlugin().iParameters().getPermissionTypeNoValid(perm.toUpperCase()),
+											fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Value"),
+											fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Heritable")));
+						}
+					}
+				} else {
+					for (String perm : fc.getConfigurationSection(perms + "." + container).getKeys(false)) {
+						Factoid.getThisPlugin().iLog().write("Container: " + container + ", " + perm);
+						dl.addPermission(
+								PlayerContainer.create(null, pcType, null),
+								new Permission(Factoid.getThisPlugin().iParameters().getPermissionTypeNoValid(perm.toUpperCase()),
+										fc.getBoolean(perms + "." + container + "." + perm + ".Value"),
+										fc.getBoolean(perms + "." + container + "." + perm + ".Heritable")));
+					}
+				}
+			}
+		}
 
-        // add flags
-        if (csFlags != null) {
-            for (String flag : csFlags.getKeys(false)) {
-                Factoid.getThisPlugin().iLog().write("Flag: " + flag);
-                FlagType ft = Factoid.getThisPlugin().iParameters().getFlagTypeNoValid(flag.toUpperCase());
-                dl.addFlag(new LandFlag(ft,
-                        FlagValue.getFromString(fc.getString(flags + "." + flag + ".Value"), ft), 
-                        fc.getBoolean(flags + "." + flag + ".Heritable")));
-            }
-        }
-        
-        return dl;
-    }
+		// add flags
+		if (csFlags != null) {
+			for (String flag : csFlags.getKeys(false)) {
+				Factoid.getThisPlugin().iLog().write("Flag: " + flag);
+				FlagType ft = Factoid.getThisPlugin().iParameters().getFlagTypeNoValid(flag.toUpperCase());
+				dl.addFlag(new LandFlag(ft,
+						FlagValue.getFromString(fc.getString(flags + "." + flag + ".Value"), ft), 
+						fc.getBoolean(flags + "." + flag + ".Heritable")));
+			}
+		}
+		
+		return dl;
+	}
 }

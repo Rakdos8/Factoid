@@ -32,32 +32,32 @@ import org.bukkit.metadata.MetadataValue;
  */
 public class VanishNoPacket implements Vanish {
 
-    // private final VanishPlugin vanishNoPacket;
+	// private final VanishPlugin vanishNoPacket;
 
-    /**
-     * Instantiates a new vanish no packet.
-     */
-    public VanishNoPacket() {
+	/**
+	 * Instantiates a new vanish no packet.
+	 */
+	public VanishNoPacket() {
 
-        // vanishNoPacket = (VanishPlugin) Factoid.getThisPlugin().iDependPlugin().getVanishNoPacket();
-    }
+		// vanishNoPacket = (VanishPlugin) Factoid.getThisPlugin().iDependPlugin().getVanishNoPacket();
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.config.vanish.Vanish#isVanished(org.bukkit.entity.Player)
-     */
-    @Override
-    public boolean isVanished(Player player) {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.config.vanish.Vanish#isVanished(org.bukkit.entity.Player)
+	 */
+	@Override
+	public boolean isVanished(Player player) {
 
-        if((Factoid.getThisPlugin().iConf().isSpectatorIsVanish() 
-        		&& BKVersion.isSpectatorMode(player))) {
-        	return true;
-        }
-    	
-    	// return vanishNoPacket.getManager().isVanished(player);
-        for(MetadataValue value : player.getMetadata("vanished")) {
-            return value.asBoolean();
-        }
-        
-        return false;
-    }
+		if((Factoid.getThisPlugin().iConf().isSpectatorIsVanish() 
+				&& BKVersion.isSpectatorMode(player))) {
+			return true;
+		}
+		
+		// return vanishNoPacket.getManager().isVanished(player);
+		for(MetadataValue value : player.getMetadata("vanished")) {
+			return value.asBoolean();
+		}
+		
+		return false;
+	}
 }

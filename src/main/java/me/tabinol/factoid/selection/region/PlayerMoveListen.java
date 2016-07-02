@@ -22,9 +22,9 @@ package me.tabinol.factoid.selection.region;
  * The Interface PlayerMoveListen.
  */
 public interface PlayerMoveListen {
-    
-    /**
-     * Move the visual selection.
-     */
-    public void playerMove();
+	
+	/**
+	 * Move the visual selection.
+	 */
+	public void playerMove();
 }

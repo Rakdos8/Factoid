@@ -32,31 +32,31 @@ import org.bukkit.ChatColor;
 @InfoCommand(name="adminmod")
 public class CommandAdminmod extends CommandExec {
 
-    /**
-     * Instantiates a new command adminmod.
-     *
-     * @param entity the entity
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandAdminmod(CommandEntities entity) throws FactoidCommandException {
+	/**
+	 * Instantiates a new command adminmod.
+	 *
+	 * @param entity the entity
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	public CommandAdminmod(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity);
-    }
+		super(entity);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
-     */
-    @Override
-    public void commandExecute() throws FactoidCommandException {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+	 */
+	@Override
+	public void commandExecute() throws FactoidCommandException {
 
-        checkPermission(false, false, null, "factoid.adminmod");
-        
-        if (entity.playerConf.isAdminMod()) {
-            entity.playerConf.setAdminMod(false);
-            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ADMINMOD.QUIT"));
-        } else {
-            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ADMINMOD.JOIN"));
-            entity.playerConf.setAdminMod(true);
-        }
-    }
+		checkPermission(false, false, null, "factoid.adminmod");
+		
+		if (entity.playerConf.isAdminMod()) {
+			entity.playerConf.setAdminMod(false);
+			entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ADMINMOD.QUIT"));
+		} else {
+			entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ADMINMOD.JOIN"));
+			entity.playerConf.setAdminMod(true);
+		}
+	}
 }

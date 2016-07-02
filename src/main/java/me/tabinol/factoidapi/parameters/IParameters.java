@@ -25,70 +25,70 @@ import org.bukkit.Material;
  */
 public interface IParameters {
 
-    /**
-     *  Prefix of specials permissions (ex: PLACE_SIGN).
-     */
-	public enum SpecialPermPrefix {
-    	
-	    /** Place a block */
-	    PLACE,
-    	
-	    /** Prevent place a block */
-	    NOPLACE,
-    	
-	    /** Destroy a block */
-	    DESTROY,
-    	
-	    /** Prevent destroy a block */
-	    NODESTROY;
-    }
-
-    /**
-     * Register permission type. Keep the returned value. a Permission type is
-     * unique.
-     *
-     * @param permissionName the permission name (UPPER CASE ONLY!)
-     * @param defaultValue the default value
-     * @return the permission type
-     */
-	public IPermissionType registerPermissionType(String permissionName, boolean defaultValue);
-    
 	/**
-     * Register flag type. The default value gives the value type and can not
-     * be null, but can be empty. you can put for example: (new Boolean(false),
-     * new Double(0D), new String() or new String[] {}).
-     * Keep the returned value. a Flag type is
-     * unique.
-     *
-     * @param flagName the flag name (UPPER CASE ONLY!)
-     * @param defaultValue the default value
-     * @return the flag type
-     */
-    public IFlagType registerFlagType(String flagName, Object defaultValue);
-    
-    /**
-     * Gets the permission type from the permission name.
-     *
-     * @param permissionName the permission name (UPPER CASE ONLY!)
-     * @return the permission type
-     */
-    public IPermissionType getPermissionType(String permissionName);
-    
-    /**
-     * Gets the flag type from flag name.
-     *
-     * @param flagName the flag name (UPPER CASE ONLY!)
-     * @return the flag type
-     */
-    public IFlagType getFlagType(String flagName);
-    
-    /**
-     * Gets the special permission (prefix_mat). This method is
-     * here to reduce CPU usage.
-     *
-     * @param prefix the prefix ([NO]PLACE, [NO]DESTROY)
-     * @param mat the material (Bukkit)
-     * @return the permission type
-     */
-    public IPermissionType getSpecialPermission(SpecialPermPrefix prefix, Material mat);
+	 *  Prefix of specials permissions (ex: PLACE_SIGN).
+	 */
+	public enum SpecialPermPrefix {
+		
+		/** Place a block */
+		PLACE,
+		
+		/** Prevent place a block */
+		NOPLACE,
+		
+		/** Destroy a block */
+		DESTROY,
+		
+		/** Prevent destroy a block */
+		NODESTROY;
+	}
+
+	/**
+	 * Register permission type. Keep the returned value. a Permission type is
+	 * unique.
+	 *
+	 * @param permissionName the permission name (UPPER CASE ONLY!)
+	 * @param defaultValue the default value
+	 * @return the permission type
+	 */
+	public IPermissionType registerPermissionType(String permissionName, boolean defaultValue);
+	
+	/**
+	 * Register flag type. The default value gives the value type and can not
+	 * be null, but can be empty. you can put for example: (new Boolean(false),
+	 * new Double(0D), new String() or new String[] {}).
+	 * Keep the returned value. a Flag type is
+	 * unique.
+	 *
+	 * @param flagName the flag name (UPPER CASE ONLY!)
+	 * @param defaultValue the default value
+	 * @return the flag type
+	 */
+	public IFlagType registerFlagType(String flagName, Object defaultValue);
+	
+	/**
+	 * Gets the permission type from the permission name.
+	 *
+	 * @param permissionName the permission name (UPPER CASE ONLY!)
+	 * @return the permission type
+	 */
+	public IPermissionType getPermissionType(String permissionName);
+	
+	/**
+	 * Gets the flag type from flag name.
+	 *
+	 * @param flagName the flag name (UPPER CASE ONLY!)
+	 * @return the flag type
+	 */
+	public IFlagType getFlagType(String flagName);
+	
+	/**
+	 * Gets the special permission (prefix_mat). This method is
+	 * here to reduce CPU usage.
+	 *
+	 * @param prefix the prefix ([NO]PLACE, [NO]DESTROY)
+	 * @param mat the material (Bukkit)
+	 * @return the permission type
+	 */
+	public IPermissionType getSpecialPermission(SpecialPermPrefix prefix, Material mat);
 }

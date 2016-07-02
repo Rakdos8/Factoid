@@ -32,204 +32,204 @@ import org.bukkit.Location;
  */
 public interface ILands {
 
-    /**
-     * Creates the land. (without parent)
-     *
-     * @param landName the land name
-     * @param owner the owner
-     * @param area the area
-     * @return the land
-     * @throws AFactoidLandException the factoid land exception
-     */
-    public ILand createLand(String landName, IPlayerContainer owner, ICuboidArea area)
-            throws AFactoidLandException;
-    // For Land with parent
-    /**
-     * Creates the child land.
-     *
-     * @param landName the land name
-     * @param owner the owner
-     * @param area the area
-     * @param parent the parent
-     * @return the land
-     * @throws AFactoidLandException the factoid land exception
-     */
-    public ILand createLand(String landName, IPlayerContainer owner, ICuboidArea area, ILand parent)
-            throws AFactoidLandException;
+	/**
+	 * Creates the land. (without parent)
+	 *
+	 * @param landName the land name
+	 * @param owner the owner
+	 * @param area the area
+	 * @return the land
+	 * @throws AFactoidLandException the factoid land exception
+	 */
+	public ILand createLand(String landName, IPlayerContainer owner, ICuboidArea area)
+			throws AFactoidLandException;
+	// For Land with parent
+	/**
+	 * Creates the child land.
+	 *
+	 * @param landName the land name
+	 * @param owner the owner
+	 * @param area the area
+	 * @param parent the parent
+	 * @return the land
+	 * @throws AFactoidLandException the factoid land exception
+	 */
+	public ILand createLand(String landName, IPlayerContainer owner, ICuboidArea area, ILand parent)
+			throws AFactoidLandException;
 
-    /**
-     * Checks if is name exist.
-     *
-     * @param landName the land name
-     * @return true, if is name exist
-     */
-    public boolean isNameExist(String landName);
-    
-    /**
-     * Removes the land.
-     *
-     * @param land the land
-     * @return true, if successful
-     * @throws AFactoidLandException the factoid land exception
-     */
-    public boolean removeLand(ILand land) throws AFactoidLandException;
+	/**
+	 * Checks if is name exist.
+	 *
+	 * @param landName the land name
+	 * @return true, if is name exist
+	 */
+	public boolean isNameExist(String landName);
+	
+	/**
+	 * Removes the land.
+	 *
+	 * @param land the land
+	 * @return true, if successful
+	 * @throws AFactoidLandException the factoid land exception
+	 */
+	public boolean removeLand(ILand land) throws AFactoidLandException;
 
-    /**
-     * Removes the land.
-     *
-     * @param landName the land name
-     * @return true, if successful
-     * @throws AFactoidLandException the factoid land exception
-     */
-    public boolean removeLand(String landName) throws AFactoidLandException;
-    
-    /**
-     * Removes the land.
-     *
-     * @param uuid the uuid
-     * @return true, if successful
-     * @throws AFactoidLandException the factoid land exception
-     */
-    public boolean removeLand(UUID uuid) throws AFactoidLandException;
+	/**
+	 * Removes the land.
+	 *
+	 * @param landName the land name
+	 * @return true, if successful
+	 * @throws AFactoidLandException the factoid land exception
+	 */
+	public boolean removeLand(String landName) throws AFactoidLandException;
+	
+	/**
+	 * Removes the land.
+	 *
+	 * @param uuid the uuid
+	 * @return true, if successful
+	 * @throws AFactoidLandException the factoid land exception
+	 */
+	public boolean removeLand(UUID uuid) throws AFactoidLandException;
 
-    /**
-     * Rename land.
-     *
-     * @param landName the land name
-     * @param newName the new name
-     * @return true, if successful
-     * @throws AFactoidLandException the factoid land exception
-     */
-    public boolean renameLand(String landName, String newName) throws AFactoidLandException;
-    
-    /**
-     * Rename land.
-     *
-     * @param uuid the uuid
-     * @param newName the new name
-     * @return true, if successful
-     * @throws AFactoidLandException the factoid land exception
-     */
-    public boolean renameLand(UUID uuid, String newName) throws AFactoidLandException;
+	/**
+	 * Rename land.
+	 *
+	 * @param landName the land name
+	 * @param newName the new name
+	 * @return true, if successful
+	 * @throws AFactoidLandException the factoid land exception
+	 */
+	public boolean renameLand(String landName, String newName) throws AFactoidLandException;
+	
+	/**
+	 * Rename land.
+	 *
+	 * @param uuid the uuid
+	 * @param newName the new name
+	 * @return true, if successful
+	 * @throws AFactoidLandException the factoid land exception
+	 */
+	public boolean renameLand(UUID uuid, String newName) throws AFactoidLandException;
 
-    /**
-     * Rename land.
-     *
-     * @param land the land
-     * @param newName the new name
-     * @return true, if successful
-     * @throws AFactoidLandException the factoid land exception
-     */
-    public boolean renameLand(ILand land, String newName) throws AFactoidLandException;
-    
-    /**
-     * Gets the land from name.
-     *
-     * @param landName the land name
-     * @return the land
-     */
-    public ILand getLand(String landName);
+	/**
+	 * Rename land.
+	 *
+	 * @param land the land
+	 * @param newName the new name
+	 * @return true, if successful
+	 * @throws AFactoidLandException the factoid land exception
+	 */
+	public boolean renameLand(ILand land, String newName) throws AFactoidLandException;
+	
+	/**
+	 * Gets the land from name.
+	 *
+	 * @param landName the land name
+	 * @return the land
+	 */
+	public ILand getLand(String landName);
 
-    /**
-     * Gets the land from UUID.
-     *
-     * @param uuid the uuid
-     * @return the land
-     */
-    public ILand getLand(UUID uuid);
+	/**
+	 * Gets the land from UUID.
+	 *
+	 * @param uuid the uuid
+	 * @return the land
+	 */
+	public ILand getLand(UUID uuid);
 
-    /**
-     * Gets the land from location.
-     *
-     * @param loc the loc
-     * @return the land
-     */
-    public ILand getLand(Location loc);
-    
-    /**
-     * Gets the lands.
-     *
-     * @return the lands
-     */
-    public Collection<ILand> getLands();
-    
-    /**
-     * Gets the land or outside area (Dummy Land World).
-     *
-     * @param loc the loc
-     * @return the land or outside area
-     */
-    public IDummyLand getLandOrOutsideArea(Location loc);
+	/**
+	 * Gets the land from location.
+	 *
+	 * @param loc the loc
+	 * @return the land
+	 */
+	public ILand getLand(Location loc);
+	
+	/**
+	 * Gets the lands.
+	 *
+	 * @return the lands
+	 */
+	public Collection<ILand> getLands();
+	
+	/**
+	 * Gets the land or outside area (Dummy Land World).
+	 *
+	 * @param loc the loc
+	 * @return the land or outside area
+	 */
+	public IDummyLand getLandOrOutsideArea(Location loc);
 
-    /**
-     * Gets the outside area (Dummy Land World).
-     *
-     * @param loc the loc
-     * @return the outside area
-     */
-    public IDummyLand getOutsideArea(Location loc);
+	/**
+	 * Gets the outside area (Dummy Land World).
+	 *
+	 * @param loc the loc
+	 * @return the outside area
+	 */
+	public IDummyLand getOutsideArea(Location loc);
 
-    /**
-     * Gets the outside area (Dummy Land World).
-     *
-     * @param worldName the world name
-     * @return the outside area
-     */
-    public IDummyLand getOutsideArea(String worldName);
+	/**
+	 * Gets the outside area (Dummy Land World).
+	 *
+	 * @param worldName the world name
+	 * @return the outside area
+	 */
+	public IDummyLand getOutsideArea(String worldName);
 
-    /**
-     * Gets the lands (Dummy Land World).
-     *
-     * @param loc the loc
-     * @return the lands
-     */
-    public Collection<ILand> getLands(Location loc);
+	/**
+	 * Gets the lands (Dummy Land World).
+	 *
+	 * @param loc the loc
+	 * @return the lands
+	 */
+	public Collection<ILand> getLands(Location loc);
 
-    /**
-     * Gets the lands.
-     *
-     * @param owner the owner
-     * @return the lands
-     */
-    public Collection<ILand> getLands(IPlayerContainer owner);
+	/**
+	 * Gets the lands.
+	 *
+	 * @param owner the owner
+	 * @return the lands
+	 */
+	public Collection<ILand> getLands(IPlayerContainer owner);
 
 
-    /**
-     * Gets the lands from type.
-     *
-     * @param type the type
-     * @return the lands
-     */
-    public Collection<ILand> getLands(IType type);
-    
-    /**
-     * Gets the cuboid areas.
-     *
-     * @param loc the loc
-     * @return the cuboid areas
-     */
-    public Collection<ICuboidArea> getCuboidAreas(Location loc);
-    
-    /**
-     * Gets the cuboid area.
-     *
-     * @param loc the loc
-     * @return the cuboid area
-     */
-    public ICuboidArea getCuboidArea(Location loc);
-    
-    /**
-     * Gets the lands for sale.
-     *
-     * @return the lands for sale
-     */
-    public Collection<ILand> getForSale();
+	/**
+	 * Gets the lands from type.
+	 *
+	 * @param type the type
+	 * @return the lands
+	 */
+	public Collection<ILand> getLands(IType type);
+	
+	/**
+	 * Gets the cuboid areas.
+	 *
+	 * @param loc the loc
+	 * @return the cuboid areas
+	 */
+	public Collection<ICuboidArea> getCuboidAreas(Location loc);
+	
+	/**
+	 * Gets the cuboid area.
+	 *
+	 * @param loc the loc
+	 * @return the cuboid area
+	 */
+	public ICuboidArea getCuboidArea(Location loc);
+	
+	/**
+	 * Gets the lands for sale.
+	 *
+	 * @return the lands for sale
+	 */
+	public Collection<ILand> getForSale();
 
-    
-    /**
-     * Gets the lands for rent.
-     *
-     * @return the lands for rent
-     */
-    public Collection<ILand> getForRent();
+	
+	/**
+	 * Gets the lands for rent.
+	 *
+	 * @return the lands for rent
+	 */
+	public Collection<ILand> getForRent();
 }

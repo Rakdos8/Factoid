@@ -36,37 +36,37 @@ import org.bukkit.entity.Player;
 @InfoCommand(name="who")
 public class CommandWho extends CommandExec {
 
-    /**
-     * Instantiates a new command who.
-     *
-     * @param entity the entity
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandWho(CommandEntities entity) throws FactoidCommandException {
+	/**
+	 * Instantiates a new command who.
+	 *
+	 * @param entity the entity
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	public CommandWho(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity);
-    }
+		super(entity);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
-     */
-    @Override
-    public void commandExecute() throws FactoidCommandException {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+	 */
+	@Override
+	public void commandExecute() throws FactoidCommandException {
 
-        getLandFromCommandIfNoLandSelected();
-        checkSelections(true, null);
-        checkPermission(true, true, PermissionList.LAND_WHO.getPermissionType(), null);
+		getLandFromCommandIfNoLandSelected();
+		checkSelections(true, null);
+		checkPermission(true, true, PermissionList.LAND_WHO.getPermissionType(), null);
 
-        // Create list
-        StringBuilder stList = new StringBuilder();
-        for (Player player : land.getPlayersInLandNoVanish(entity.player)) {
-            stList.append(player.getDisplayName()).append(Config.NEWLINE);
-        }
+		// Create list
+		StringBuilder stList = new StringBuilder();
+		for (Player player : land.getPlayersInLandNoVanish(entity.player)) {
+			stList.append(player.getDisplayName()).append(Config.NEWLINE);
+		}
 
-        if (stList.length() != 0) {
-            new ChatPage("COMMAND.WHO.LISTSTART", stList.toString(), entity.player, land.getName()).getPage(1);
-        } else {
-            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.WHO.LISTNULL", land.getName()));
-        }
-    }
+		if (stList.length() != 0) {
+			new ChatPage("COMMAND.WHO.LISTSTART", stList.toString(), entity.player, land.getName()).getPage(1);
+		} else {
+			entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.WHO.LISTNULL", land.getName()));
+		}
+	}
 }

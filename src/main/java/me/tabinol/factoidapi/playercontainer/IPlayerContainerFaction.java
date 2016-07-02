@@ -25,11 +25,11 @@ import me.tabinol.factoidapi.factions.IFaction;
  */
 public interface IPlayerContainerFaction extends IPlayerContainer {
 
-    /**
-     * Gets the faction.
-     *
-     * @return the faction
-     */
-    public IFaction getFaction();
-    
+	/**
+	 * Gets the faction.
+	 *
+	 * @return the faction
+	 */
+	public IFaction getFaction();
+	
 }

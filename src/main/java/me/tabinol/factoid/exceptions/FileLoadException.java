@@ -26,26 +26,26 @@ import me.tabinol.factoid.Factoid;
  */
 public class FileLoadException extends Exception {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1116607352612567604L;
 
 	/**
-     * Instantiates a new file load exception.
-     *
-     * @param FileName the file name
-     * @param Line the line
-     * @param LineNum the line num
-     * @param message the message
-     */
-    public FileLoadException(String FileName, String Line, Integer LineNum, String message) {
+	 * Instantiates a new file load exception.
+	 *
+	 * @param FileName the file name
+	 * @param Line the line
+	 * @param LineNum the line num
+	 * @param message the message
+	 */
+	public FileLoadException(String FileName, String Line, Integer LineNum, String message) {
 
-        super("File Load Exception in:" + FileName);
-        Factoid.getThisPlugin().iLog().write("Error: file: " + FileName + ", Line: " + Line + ", Line Nb: " + LineNum + ", msg: " + message);
-        Factoid.getThisPlugin().getLogger().log(Level.SEVERE, "Error! There is an error in file: " + FileName);
-        Factoid.getThisPlugin().getLogger().log(Level.SEVERE, "Line: " + LineNum);
-        Factoid.getThisPlugin().getLogger().log(Level.SEVERE, Line);
-        Factoid.getThisPlugin().getLogger().log(Level.SEVERE, "Error Message: " + message);
-    }
+		super("File Load Exception in:" + FileName);
+		Factoid.getThisPlugin().iLog().write("Error: file: " + FileName + ", Line: " + Line + ", Line Nb: " + LineNum + ", msg: " + message);
+		Factoid.getThisPlugin().getLogger().log(Level.SEVERE, "Error! There is an error in file: " + FileName);
+		Factoid.getThisPlugin().getLogger().log(Level.SEVERE, "Line: " + LineNum);
+		Factoid.getThisPlugin().getLogger().log(Level.SEVERE, Line);
+		Factoid.getThisPlugin().getLogger().log(Level.SEVERE, "Error Message: " + message);
+	}
 }

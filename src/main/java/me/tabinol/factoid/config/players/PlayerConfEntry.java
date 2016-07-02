@@ -17,7 +17,7 @@
  */
 package me.tabinol.factoid.config.players;
 
-    // Entries for each player
+	// Entries for each player
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.commands.ConfirmEntry;
@@ -37,270 +37,270 @@ import org.bukkit.entity.Player;
  */
 public class PlayerConfEntry implements IPlayerConfEntry {
 
-    /** The sender. */
-    private final CommandSender sender; // The player (or sender)
-    
-    /** The player. */
-    private final Player player; // The player (if is not console)
-    
-    /** The player selection. */
-    private final PlayerSelection playerSelection; // Player Lands, areas and visual selections
-    
-    /** The admin mod. */
-    private boolean adminMod = false; // If the player is in Admin Mod
-    
-    /** The confirm. */
-    private ConfirmEntry confirm = null; // "/factoid confirm" command
-    
-    /** The chat page. */
-    private ChatPage chatPage = null; // pages for "/factoid page" command
-    
-    /** The last move update. */
-    private long lastMoveUpdate = 0; // Time of lastupdate for PlayerEvents
-    
-    /** The last land. */
-    private IDummyLand lastLand = null; // Last Land for player
-    
-    /** The last loc. */
-    private Location lastLoc = null; // Present location
-    
-    /** The tp cancel. */
-    private boolean tpCancel = false; // If the player has a teleportation cacelled
-    
-    /** The cancel select. */
-    private PlayerAutoCancelSelect cancelSelect = null; // Auto cancel selection system
-    
-    /** The pcp. */
-    private IPlayerContainerPlayer pcp; // PlayerContainerPlayer for this player
+	/** The sender. */
+	private final CommandSender sender; // The player (or sender)
+	
+	/** The player. */
+	private final Player player; // The player (if is not console)
+	
+	/** The player selection. */
+	private final PlayerSelection playerSelection; // Player Lands, areas and visual selections
+	
+	/** The admin mod. */
+	private boolean adminMod = false; // If the player is in Admin Mod
+	
+	/** The confirm. */
+	private ConfirmEntry confirm = null; // "/factoid confirm" command
+	
+	/** The chat page. */
+	private ChatPage chatPage = null; // pages for "/factoid page" command
+	
+	/** The last move update. */
+	private long lastMoveUpdate = 0; // Time of lastupdate for PlayerEvents
+	
+	/** The last land. */
+	private IDummyLand lastLand = null; // Last Land for player
+	
+	/** The last loc. */
+	private Location lastLoc = null; // Present location
+	
+	/** The tp cancel. */
+	private boolean tpCancel = false; // If the player has a teleportation cacelled
+	
+	/** The cancel select. */
+	private PlayerAutoCancelSelect cancelSelect = null; // Auto cancel selection system
+	
+	/** The pcp. */
+	private IPlayerContainerPlayer pcp; // PlayerContainerPlayer for this player
 
-    /**
-     * Instantiates a new player conf entry.
-     *
-     * @param sender the sender
-     */
-    PlayerConfEntry(CommandSender sender) {
+	/**
+	 * Instantiates a new player conf entry.
+	 *
+	 * @param sender the sender
+	 */
+	PlayerConfEntry(CommandSender sender) {
 
-        this.sender = sender;
-        if (sender instanceof Player) {
-            player = (Player) sender;
-            playerSelection = new PlayerSelection(this);
-            pcp = new PlayerContainerPlayer(player.getUniqueId());
-        } else {
-            player = null;
-            playerSelection = null;
-            pcp = null;
-        }
-    }
+		this.sender = sender;
+		if (sender instanceof Player) {
+			player = (Player) sender;
+			playerSelection = new PlayerSelection(this);
+			pcp = new PlayerContainerPlayer(player.getUniqueId());
+		} else {
+			player = null;
+			playerSelection = null;
+			pcp = null;
+		}
+	}
 
-    /* (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see me.tabinol.factoid.config.players.IPlayerConfEntry#getPlayerContainer()
 	 */
-    @Override
+	@Override
 	public IPlayerContainerPlayer getPlayerContainer() {
-        
-        return pcp;
-    }
-    
-    /* (non-Javadoc)
+		
+		return pcp;
+	}
+	
+	/* (non-Javadoc)
 	 * @see me.tabinol.factoid.config.players.IPlayerConfEntry#getSender()
 	 */
-    @Override
+	@Override
 	public CommandSender getSender() {
 
-        return sender;
-    }
+		return sender;
+	}
 
-    /* (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see me.tabinol.factoid.config.players.IPlayerConfEntry#getPlayer()
 	 */
-    @Override
+	@Override
 	public Player getPlayer() {
 
-        return player;
-    }
+		return player;
+	}
 
-    /**
-     * Gets the selection.
-     *
-     * @return the selection
-     */
-    public PlayerSelection getSelection() {
+	/**
+	 * Gets the selection.
+	 *
+	 * @return the selection
+	 */
+	public PlayerSelection getSelection() {
 
-        return playerSelection;
-    }
+		return playerSelection;
+	}
 
-    /* (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see me.tabinol.factoid.config.players.IPlayerConfEntry#isAdminMod()
 	 */
-    @Override
+	@Override
 	public boolean isAdminMod() {
 
-        // Security for adminmod
-        if (adminMod == true && !sender.hasPermission("factoid.adminmod")) {
-            adminMod = false;
-            return false;
-        }
+		// Security for adminmod
+		if (adminMod == true && !sender.hasPermission("factoid.adminmod")) {
+			adminMod = false;
+			return false;
+		}
 
-        return adminMod;
-    }
+		return adminMod;
+	}
 
-    /**
-     * Sets the admin mod.
-     *
-     * @param value the new admin mod
-     */
-    public void setAdminMod(boolean value) {
+	/**
+	 * Sets the admin mod.
+	 *
+	 * @param value the new admin mod
+	 */
+	public void setAdminMod(boolean value) {
 
-        adminMod = value;
-    }
+		adminMod = value;
+	}
 
-    /**
-     * Gets the confirm.
-     *
-     * @return the confirm
-     */
-    public ConfirmEntry getConfirm() {
+	/**
+	 * Gets the confirm.
+	 *
+	 * @return the confirm
+	 */
+	public ConfirmEntry getConfirm() {
 
-        return confirm;
-    }
+		return confirm;
+	}
 
-    /**
-     * Sets the confirm.
-     *
-     * @param entry the new confirm
-     */
-    public void setConfirm(ConfirmEntry entry) {
+	/**
+	 * Sets the confirm.
+	 *
+	 * @param entry the new confirm
+	 */
+	public void setConfirm(ConfirmEntry entry) {
 
-        confirm = entry;
-    }
+		confirm = entry;
+	}
 
-    /**
-     * Gets the chat page.
-     *
-     * @return the chat page
-     */
-    public ChatPage getChatPage() {
+	/**
+	 * Gets the chat page.
+	 *
+	 * @return the chat page
+	 */
+	public ChatPage getChatPage() {
 
-        return chatPage;
-    }
+		return chatPage;
+	}
 
-    /**
-     * Sets the chat page.
-     *
-     * @param page the new chat page
-     */
-    public void setChatPage(ChatPage page) {
+	/**
+	 * Sets the chat page.
+	 *
+	 * @param page the new chat page
+	 */
+	public void setChatPage(ChatPage page) {
 
-        chatPage = page;
-    }
+		chatPage = page;
+	}
 
-    /* (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see me.tabinol.factoid.config.players.IPlayerConfEntry#getLastMoveUpdate()
 	 */
-    @Override
+	@Override
 	public long getLastMoveUpdate() {
 
-        return lastMoveUpdate;
-    }
+		return lastMoveUpdate;
+	}
 
-    /**
-     * Sets the last move update.
-     *
-     * @param lastMove the new last move update
-     */
-    public void setLastMoveUpdate(Long lastMove) {
+	/**
+	 * Sets the last move update.
+	 *
+	 * @param lastMove the new last move update
+	 */
+	public void setLastMoveUpdate(Long lastMove) {
 
-        lastMoveUpdate = lastMove;
-    }
+		lastMoveUpdate = lastMove;
+	}
 
-    /* (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see me.tabinol.factoid.config.players.IPlayerConfEntry#getLastLand()
 	 */
-    @Override
+	@Override
 	public IDummyLand getLastLand() {
 
-        return lastLand;
-    }
+		return lastLand;
+	}
 
-    /**
-     * Sets the last land.
-     *
-     * @param land the new last land
-     */
-    public void setLastLand(IDummyLand land) {
+	/**
+	 * Sets the last land.
+	 *
+	 * @param land the new last land
+	 */
+	public void setLastLand(IDummyLand land) {
 
-        lastLand = land;
-    }
+		lastLand = land;
+	}
 
-    /* (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see me.tabinol.factoid.config.players.IPlayerConfEntry#getLastLoc()
 	 */
-    @Override
+	@Override
 	public Location getLastLoc() {
 
-        return lastLoc;
-    }
+		return lastLoc;
+	}
 
-    /**
-     * Sets the last loc.
-     *
-     * @param loc the new last loc
-     */
-    public void setLastLoc(Location loc) {
+	/**
+	 * Sets the last loc.
+	 *
+	 * @param loc the new last loc
+	 */
+	public void setLastLoc(Location loc) {
 
-        lastLoc = loc;
-    }
+		lastLoc = loc;
+	}
 
-    /**
-     * Checks for tp cancel.
-     *
-     * @return true, if successful
-     */
-    public boolean hasTpCancel() {
+	/**
+	 * Checks for tp cancel.
+	 *
+	 * @return true, if successful
+	 */
+	public boolean hasTpCancel() {
 
-        return tpCancel;
-    }
+		return tpCancel;
+	}
 
-    /**
-     * Sets the tp cancel.
-     *
-     * @param tpCancel the new tp cancel
-     */
-    public void setTpCancel(boolean tpCancel) {
+	/**
+	 * Sets the tp cancel.
+	 *
+	 * @param tpCancel the new tp cancel
+	 */
+	public void setTpCancel(boolean tpCancel) {
 
-        this.tpCancel = tpCancel;
-    }
+		this.tpCancel = tpCancel;
+	}
 
-    // Set auto cancel select
-    /**
-     * Sets the auto cancel select.
-     *
-     * @param value the new auto cancel select
-     */
-    public void setAutoCancelSelect(boolean value) {
+	// Set auto cancel select
+	/**
+	 * Sets the auto cancel select.
+	 *
+	 * @param value the new auto cancel select
+	 */
+	public void setAutoCancelSelect(boolean value) {
 
-        Long timeTick = Factoid.getThisPlugin().iConf().getSelectAutoCancel();
+		Long timeTick = Factoid.getThisPlugin().iConf().getSelectAutoCancel();
 
-        if (timeTick == 0) {
-            return;
-        }
+		if (timeTick == 0) {
+			return;
+		}
 
-        if (cancelSelect == null && value == true) {
-            cancelSelect = new PlayerAutoCancelSelect(this);
-        }
+		if (cancelSelect == null && value == true) {
+			cancelSelect = new PlayerAutoCancelSelect(this);
+		}
 
-        if (cancelSelect == null) {
-            return;
-        }
+		if (cancelSelect == null) {
+			return;
+		}
 
-        if (value == true) {
+		if (value == true) {
 
-            // Schedule task
-            cancelSelect.runLater(timeTick, false);
-        } else {
+			// Schedule task
+			cancelSelect.runLater(timeTick, false);
+		} else {
 
-            // Stop!
-            cancelSelect.stopNextRun();
-        }
-    }
+			// Stop!
+			cancelSelect.stopNextRun();
+		}
+	}
 }

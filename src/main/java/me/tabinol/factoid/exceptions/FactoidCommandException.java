@@ -26,30 +26,30 @@ import org.bukkit.command.CommandSender;
  * The Class FactoidCommandException.
  */
 public class FactoidCommandException extends Exception {
-    
-    /**
+	
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5585486767311219615L;
 
 	/**
-     * Instantiates a new factoid command exception.
-     *
-     * @param logMsg the log msg
-     * @param sender the sender
-     * @param langMsg the lang msg
-     * @param param the param
-     */
-    public FactoidCommandException(String logMsg, CommandSender sender, String langMsg, String... param) {
-        
-        super(logMsg);
-        if (sender != null) {
-            Factoid.getThisPlugin().iLog().write("Player: " + sender.getName() + ", Lang Msg: " + langMsg + ", " + logMsg);
-        } else {
-            Factoid.getThisPlugin().iLog().write(logMsg);
-        }
-        if (sender != null) {
-            sender.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage(langMsg, param));
-        }
-    }
+	 * Instantiates a new factoid command exception.
+	 *
+	 * @param logMsg the log msg
+	 * @param sender the sender
+	 * @param langMsg the lang msg
+	 * @param param the param
+	 */
+	public FactoidCommandException(String logMsg, CommandSender sender, String langMsg, String... param) {
+		
+		super(logMsg);
+		if (sender != null) {
+			Factoid.getThisPlugin().iLog().write("Player: " + sender.getName() + ", Lang Msg: " + langMsg + ", " + logMsg);
+		} else {
+			Factoid.getThisPlugin().iLog().write(logMsg);
+		}
+		if (sender != null) {
+			sender.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage(langMsg, param));
+		}
+	}
 }

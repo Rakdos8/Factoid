@@ -30,13 +30,13 @@ import org.bukkit.entity.Player;
  */
 public class DummyVanish implements Vanish {
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.config.vanish.Vanish#isVanished(org.bukkit.entity.Player)
-     */
-    @Override
-    public boolean isVanished(Player player) {
-        
-        return Factoid.getThisPlugin().iConf().isSpectatorIsVanish() 
-        		&& BKVersion.isSpectatorMode(player);
-    }
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.config.vanish.Vanish#isVanished(org.bukkit.entity.Player)
+	 */
+	@Override
+	public boolean isVanished(Player player) {
+		
+		return Factoid.getThisPlugin().iConf().isSpectatorIsVanish() 
+				&& BKVersion.isSpectatorMode(player);
+	}
 }

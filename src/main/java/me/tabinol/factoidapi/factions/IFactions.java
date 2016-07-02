@@ -22,51 +22,51 @@ import me.tabinol.factoidapi.playercontainer.IPlayerContainerPlayer;
 
 public interface IFactions {
 	
-    /**
-     * Creates the faction.
-     *
-     * @param factionName the faction name
-     * @return the faction
-     */
-    public IFaction createFaction(String factionName);
-    
+	/**
+	 * Creates the faction.
+	 *
+	 * @param factionName the faction name
+	 * @return the faction
+	 */
+	public IFaction createFaction(String factionName);
+	
 
-    /**
-     * Removes the faction.
-     *
-     * @param faction the faction
-     * @return true, if successful
-     */
-    public boolean removeFaction(IFaction faction);
-    
-    /**
-     * Removes the faction.
-     *
-     * @param factionName the faction name
-     * @return true, if successful
-     */
-    public boolean removeFaction(String factionName);
-    
-    /**
-     * Gets the faction.
-     *
-     * @param factionName the faction name
-     * @return the faction
-     */
-    public IFaction getFaction(String factionName);
-    
-    /**
-     * Gets the player faction.
-     *
-     * @param player the player
-     * @return the player faction
-     */
-    public IFaction getPlayerFaction(IPlayerContainerPlayer player);
-    
-    /**
-     * Gets the factions.
-     *
-     * @return the factions
-     */
-    public Collection<IFaction> getFactions();
+	/**
+	 * Removes the faction.
+	 *
+	 * @param faction the faction
+	 * @return true, if successful
+	 */
+	public boolean removeFaction(IFaction faction);
+	
+	/**
+	 * Removes the faction.
+	 *
+	 * @param factionName the faction name
+	 * @return true, if successful
+	 */
+	public boolean removeFaction(String factionName);
+	
+	/**
+	 * Gets the faction.
+	 *
+	 * @param factionName the faction name
+	 * @return the faction
+	 */
+	public IFaction getFaction(String factionName);
+	
+	/**
+	 * Gets the player faction.
+	 *
+	 * @param player the player
+	 * @return the player faction
+	 */
+	public IFaction getPlayerFaction(IPlayerContainerPlayer player);
+	
+	/**
+	 * Gets the factions.
+	 *
+	 * @return the factions
+	 */
+	public Collection<IFaction> getFactions();
 }

@@ -31,75 +31,75 @@ import org.bukkit.entity.Player;
  */
 public class PlayerContainerFactionTerritory extends PlayerContainer 
 	implements IPlayerContainerFactionTerritory {
-    
-    /** The land. */
-    private ILand land;
-    
-    /**
-     * Instantiates a new player container faction territory.
-     *
-     * @param land the land
-     */
-    public PlayerContainerFactionTerritory(ILand land) {
-        
-        super("", EPlayerContainerType.FACTION_TERRITORY, false);
-        this.land = land;
-    }
-    
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
-     */
-    @Override
-    public boolean equals(IPlayerContainer container2) {
-        
-        return container2 instanceof PlayerContainerFactionTerritory &&
-                land == ((PlayerContainerFactionTerritory)container2).land;
-    }
-    
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#copyOf()
-     */
-    @Override
-    public PlayerContainer copyOf() {
-        
-        return new PlayerContainerFactionTerritory(land);
-    }
+	
+	/** The land. */
+	private ILand land;
+	
+	/**
+	 * Instantiates a new player container faction territory.
+	 *
+	 * @param land the land
+	 */
+	public PlayerContainerFactionTerritory(ILand land) {
+		
+		super("", EPlayerContainerType.FACTION_TERRITORY, false);
+		this.land = land;
+	}
+	
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
+	 */
+	@Override
+	public boolean equals(IPlayerContainer container2) {
+		
+		return container2 instanceof PlayerContainerFactionTerritory &&
+				land == ((PlayerContainerFactionTerritory)container2).land;
+	}
+	
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#copyOf()
+	 */
+	@Override
+	public PlayerContainer copyOf() {
+		
+		return new PlayerContainerFactionTerritory(land);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#hasAccess(org.bukkit.entity.Player)
-     */
-    @Override
-    public boolean hasAccess(Player player) {
-        
-        if(land.getFactionTerritory() == null) {
-            return false;
-        }
-        
-        return land.getFactionTerritory().isPlayerInList(Factoid.getThisPlugin().iPlayerConf().get(player).getPlayerContainer());
-    }
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#hasAccess(org.bukkit.entity.Player)
+	 */
+	@Override
+	public boolean hasAccess(Player player) {
+		
+		if(land.getFactionTerritory() == null) {
+			return false;
+		}
+		
+		return land.getFactionTerritory().isPlayerInList(Factoid.getThisPlugin().iPlayerConf().get(player).getPlayerContainer());
+	}
 
-    @Override
-    public boolean hasAccess(Player player, ILand land) {
-        
-        return hasAccess(player);
-    }
+	@Override
+	public boolean hasAccess(Player player, ILand land) {
+		
+		return hasAccess(player);
+	}
 
-    /**
-     * Gets the land.
-     *
-     * @return the land
-     */
-    public ILand getLand() {
-        
-        return land;
-    }
+	/**
+	 * Gets the land.
+	 *
+	 * @return the land
+	 */
+	public ILand getLand() {
+		
+		return land;
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
-     */
-    @Override
-    public void setLand(ILand land) {
-     
-        this.land = land;
-    }
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
+	 */
+	@Override
+	public void setLand(ILand land) {
+	 
+		this.land = land;
+	}
 }

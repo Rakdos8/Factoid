@@ -24,10 +24,10 @@ import me.tabinol.factoidapi.lands.ILand;
  */
 public interface IPlayerContainerOwner extends IPlayerContainer {
 
-    /**
-     * Gets the land.
-     *
-     * @return the land
-     */
-    public ILand getLand();
+	/**
+	 * Gets the land.
+	 *
+	 * @return the land
+	 */
+	public ILand getLand();
 }

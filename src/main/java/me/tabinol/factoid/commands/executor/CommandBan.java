@@ -41,89 +41,89 @@ public class CommandBan extends CommandThreadExec {
 	private String fonction;
 
 	/**
-     * Instantiates a new command ban.
-     *
-     * @param entity the entity
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandBan(CommandEntities entity) throws FactoidCommandException {
+	 * Instantiates a new command ban.
+	 *
+	 * @param entity the entity
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	public CommandBan(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity);
-    }
+		super(entity);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
-     */
-    @Override
-    public void commandExecute() throws FactoidCommandException {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+	 */
+	@Override
+	public void commandExecute() throws FactoidCommandException {
 
-        checkSelections(true, null);
-        checkPermission(true, true, PermissionList.LAND_BAN.getPermissionType(), null);
+		checkSelections(true, null);
+		checkPermission(true, true, PermissionList.LAND_BAN.getPermissionType(), null);
 
-        fonction = entity.argList.getNext();
+		fonction = entity.argList.getNext();
 
-        if (fonction.equalsIgnoreCase("add")) {
+		if (fonction.equalsIgnoreCase("add")) {
 
-            pc = entity.argList.getPlayerContainerFromArg(land,
-                    new EPlayerContainerType[]{EPlayerContainerType.EVERYBODY,
-                        EPlayerContainerType.OWNER, EPlayerContainerType.VISITOR,
-                        EPlayerContainerType.RESIDENT});
-            Factoid.getThisPlugin().iPlayersCache().getUUIDWithNames(this, pc);
+			pc = entity.argList.getPlayerContainerFromArg(land,
+					new EPlayerContainerType[]{EPlayerContainerType.EVERYBODY,
+						EPlayerContainerType.OWNER, EPlayerContainerType.VISITOR,
+						EPlayerContainerType.RESIDENT});
+			Factoid.getThisPlugin().iPlayersCache().getUUIDWithNames(this, pc);
 
-        } else if (fonction.equalsIgnoreCase("remove")) {
+		} else if (fonction.equalsIgnoreCase("remove")) {
 
-            pc = entity.argList.getPlayerContainerFromArg(land, null);
-            Factoid.getThisPlugin().iPlayersCache().getUUIDWithNames(this, pc);
+			pc = entity.argList.getPlayerContainerFromArg(land, null);
+			Factoid.getThisPlugin().iPlayersCache().getUUIDWithNames(this, pc);
 
-        } else if (fonction.equalsIgnoreCase("list")) {
+		} else if (fonction.equalsIgnoreCase("list")) {
 
-            StringBuilder stList = new StringBuilder();
-            if (!land.getBanneds().isEmpty()) {
-                for (IPlayerContainer pc : land.getBanneds()) {
-                    if (stList.length() != 0) {
-                        stList.append(" ");
-                    }
-                    stList.append(ChatColor.WHITE).append(pc.getPrint());
-                }
-                stList.append(Config.NEWLINE);
-            } else {
-                entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.BANNED.LISTROWNULL"));
-            }
-            new ChatPage("COMMAND.BANNED.LISTSTART", stList.toString(), entity.player, land.getName()).getPage(1);
-        
-        } else {
-            throw new FactoidCommandException("Missing information command", entity.player, "GENERAL.MISSINGINFO");
-        }
-    }
+			StringBuilder stList = new StringBuilder();
+			if (!land.getBanneds().isEmpty()) {
+				for (IPlayerContainer pc : land.getBanneds()) {
+					if (stList.length() != 0) {
+						stList.append(" ");
+					}
+					stList.append(ChatColor.WHITE).append(pc.getPrint());
+				}
+				stList.append(Config.NEWLINE);
+			} else {
+				entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.BANNED.LISTROWNULL"));
+			}
+			new ChatPage("COMMAND.BANNED.LISTSTART", stList.toString(), entity.player, land.getName()).getPage(1);
+		
+		} else {
+			throw new FactoidCommandException("Missing information command", entity.player, "GENERAL.MISSINGINFO");
+		}
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.commands.executor.CommandThreadExec#commandThreadExecute(me.tabinol.factoid.playerscache.PlayerCacheEntry[])
-     */
-    @Override
-    public synchronized void commandThreadExecute(PlayerCacheEntry[] playerCacheEntry)
-    		throws FactoidCommandException {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.commands.executor.CommandThreadExec#commandThreadExecute(me.tabinol.factoid.playerscache.PlayerCacheEntry[])
+	 */
+	@Override
+	public synchronized void commandThreadExecute(PlayerCacheEntry[] playerCacheEntry)
+			throws FactoidCommandException {
 	
-    	convertPcIfNeeded(playerCacheEntry);
+		convertPcIfNeeded(playerCacheEntry);
 
-    	if (fonction.equalsIgnoreCase("add")) {
+		if (fonction.equalsIgnoreCase("add")) {
 
-    		if (land.isLocationInside(land.getWorld().getSpawnLocation())) {
-    			throw new FactoidCommandException("Banned", entity.player, "COMMAND.BANNED.NOTINSPAWN");
-    		}
-    		land.addBanned(pc);
+			if (land.isLocationInside(land.getWorld().getSpawnLocation())) {
+				throw new FactoidCommandException("Banned", entity.player, "COMMAND.BANNED.NOTINSPAWN");
+			}
+			land.addBanned(pc);
 
-    		entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.BANNED.ISDONE", 
-    				pc.getPrint() + ChatColor.YELLOW, land.getName()));
-    		Factoid.getThisPlugin().iLog().write("Ban added: " + pc.toString());
+			entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.BANNED.ISDONE", 
+					pc.getPrint() + ChatColor.YELLOW, land.getName()));
+			Factoid.getThisPlugin().iLog().write("Ban added: " + pc.toString());
 
-    	} else if (fonction.equalsIgnoreCase("remove")) {
+		} else if (fonction.equalsIgnoreCase("remove")) {
 
-    		if (!land.removeBanned(pc)) {
-    			throw new FactoidCommandException("Banned", entity.player, "COMMAND.BANNED.REMOVENOTEXIST");
-    		}
-    		entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.BANNED.REMOVEISDONE", 
-    				pc.getPrint() + ChatColor.YELLOW, land.getName()));
-    		Factoid.getThisPlugin().iLog().write("Ban removed: " + pc.toString());
-    	}
-    }
+			if (!land.removeBanned(pc)) {
+				throw new FactoidCommandException("Banned", entity.player, "COMMAND.BANNED.REMOVENOTEXIST");
+			}
+			entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.BANNED.REMOVEISDONE", 
+					pc.getPrint() + ChatColor.YELLOW, land.getName()));
+			Factoid.getThisPlugin().iLog().write("Ban removed: " + pc.toString());
+		}
+	}
 }

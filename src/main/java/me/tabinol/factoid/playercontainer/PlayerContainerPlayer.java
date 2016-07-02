@@ -37,140 +37,140 @@ import org.bukkit.entity.Player;
 public class PlayerContainerPlayer extends PlayerContainer 
 	implements IPlayerContainerPlayer {
 
-    /** The minecraft uuid. */
-    private final UUID minecraftUUID;
-    
-    // Compare before create
-    /**
-     * Instantiates a new player container player.
-     *
-     * @param minecraftUUID the minecraft uuid
-     */
-    public PlayerContainerPlayer(UUID minecraftUUID) {
+	/** The minecraft uuid. */
+	private final UUID minecraftUUID;
+	
+	// Compare before create
+	/**
+	 * Instantiates a new player container player.
+	 *
+	 * @param minecraftUUID the minecraft uuid
+	 */
+	public PlayerContainerPlayer(UUID minecraftUUID) {
 
-        super("ID-" + minecraftUUID.toString(), EPlayerContainerType.PLAYER, false);
-        this.minecraftUUID = minecraftUUID;
-    }
+		super("ID-" + minecraftUUID.toString(), EPlayerContainerType.PLAYER, false);
+		this.minecraftUUID = minecraftUUID;
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
-     */
-    @Override
-    public boolean equals(IPlayerContainer container2) {
-        
-        return container2 instanceof PlayerContainerPlayer &&
-                minecraftUUID.equals(((PlayerContainerPlayer) container2).minecraftUUID);
-    }
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
+	 */
+	@Override
+	public boolean equals(IPlayerContainer container2) {
+		
+		return container2 instanceof PlayerContainerPlayer &&
+				minecraftUUID.equals(((PlayerContainerPlayer) container2).minecraftUUID);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#copyOf()
-     */
-    @Override
-    public PlayerContainer copyOf() {
-        
-        return new PlayerContainerPlayer(minecraftUUID);
-    }
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#copyOf()
+	 */
+	@Override
+	public PlayerContainer copyOf() {
+		
+		return new PlayerContainerPlayer(minecraftUUID);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#hasAccess(org.bukkit.entity.Player)
-     */
-    @Override
-    public boolean hasAccess(Player player) {
-        
-        if(player != null) {
-            return minecraftUUID.equals(player.getUniqueId());
-        } else {
-            return false;
-        }
-    }
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#hasAccess(org.bukkit.entity.Player)
+	 */
+	@Override
+	public boolean hasAccess(Player player) {
+		
+		if(player != null) {
+			return minecraftUUID.equals(player.getUniqueId());
+		} else {
+			return false;
+		}
+	}
 
-    @Override
-    public boolean hasAccess(Player player, ILand land) {
-        
-        return hasAccess(player);
-    }
+	@Override
+	public boolean hasAccess(Player player, ILand land) {
+		
+		return hasAccess(player);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainer#getPrint()
-     */
-    @Override
-    public String getPrint() {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainer#getPrint()
+	 */
+	@Override
+	public String getPrint() {
 
-        StringBuilder sb = new StringBuilder();
-        String playerName = getPlayerName();
-        
-        sb.append(ChatColor.DARK_RED).append("P:");
-        
-        if(playerName != null) {
-        	sb.append(ChatColor.WHITE).append(playerName);
-        } else {
-        	// Player never connected on the server, show UUID
-        	sb.append(ChatColor.DARK_GRAY).append("ID-" + minecraftUUID);
-        }
-        
-        return sb.toString();
-    }
-    
-    public String getPlayerName() {
-    	
-    	String playerName;
-    	
-    	// Pass 1 get in Online players
-    	Player player = Bukkit.getPlayer(minecraftUUID);
-    	if(player != null) {
-    		return player.getName();
-    	}
-    	
-    	// Pass 2 get from Factoid cache
-    	playerName = Factoid.getThisPlugin().iPlayersCache().getNameFromUUID(minecraftUUID);
-    	if(playerName != null) {
-    		return playerName;
-    	}
-    	
-    	// Pass 3 get from offline players
-    	OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(minecraftUUID);
-    	if(offlinePlayer != null) {
-    		return offlinePlayer.getName();
-    	}
-    	
-        return null;    	
-    }
+		StringBuilder sb = new StringBuilder();
+		String playerName = getPlayerName();
+		
+		sb.append(ChatColor.DARK_RED).append("P:");
+		
+		if(playerName != null) {
+			sb.append(ChatColor.WHITE).append(playerName);
+		} else {
+			// Player never connected on the server, show UUID
+			sb.append(ChatColor.DARK_GRAY).append("ID-" + minecraftUUID);
+		}
+		
+		return sb.toString();
+	}
+	
+	public String getPlayerName() {
+		
+		String playerName;
+		
+		// Pass 1 get in Online players
+		Player player = Bukkit.getPlayer(minecraftUUID);
+		if(player != null) {
+			return player.getName();
+		}
+		
+		// Pass 2 get from Factoid cache
+		playerName = Factoid.getThisPlugin().iPlayersCache().getNameFromUUID(minecraftUUID);
+		if(playerName != null) {
+			return playerName;
+		}
+		
+		// Pass 3 get from offline players
+		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(minecraftUUID);
+		if(offlinePlayer != null) {
+			return offlinePlayer.getName();
+		}
+		
+		return null;		
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
-     */
-    @Override
-    public void setLand(ILand land) {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
+	 */
+	@Override
+	public void setLand(ILand land) {
 
-    }
-    
-    /**
-     * Gets the minecraft uuid.
-     *
-     * @return the minecraft uuid
-     */
-    public UUID getMinecraftUUID() {
-        
-        return minecraftUUID;
-    }
-    
-    /**
-     * Gets the player.
-     *
-     * @return the player
-     */
-    public Player getPlayer() {
-        
-        return Bukkit.getPlayer(minecraftUUID);
-    }
+	}
+	
+	/**
+	 * Gets the minecraft uuid.
+	 *
+	 * @return the minecraft uuid
+	 */
+	public UUID getMinecraftUUID() {
+		
+		return minecraftUUID;
+	}
+	
+	/**
+	 * Gets the player.
+	 *
+	 * @return the player
+	 */
+	public Player getPlayer() {
+		
+		return Bukkit.getPlayer(minecraftUUID);
+	}
 
-    /**
-     * Get the offline player.
-     * 
-     * @return the offline player
-     */
-    public OfflinePlayer getOfflinePlayer() {
-    	
-    	return Bukkit.getOfflinePlayer(minecraftUUID);
-    }
+	/**
+	 * Get the offline player.
+	 * 
+	 * @return the offline player
+	 */
+	public OfflinePlayer getOfflinePlayer() {
+		
+		return Bukkit.getOfflinePlayer(minecraftUUID);
+	}
 }

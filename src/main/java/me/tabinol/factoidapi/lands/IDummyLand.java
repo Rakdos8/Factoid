@@ -35,80 +35,80 @@ import org.bukkit.entity.Player;
  */
 public interface IDummyLand {
 
-    /**
-     * Gets the world name.
-     *
-     * @return the world name
-     */
-    public String getWorldName();
-    
-    /**
-     * Gets the world.
-     *
-     * @return the world
-     */
-    public World getWorld();
-    
-    /**
-     * Copy permissions and flags from this land to an other.
-     * Duplicated permissions and flags will be overwrite.
-     * @param desLand The destination land or dummy land.
-     */
-    public void copyPermsFlagsTo(IDummyLand desLand);
-    
-    /**
-     * Gets the sets of player containers having a permission.
-     *
-     * @return the sets the player containers
-     */
-    public Set<IPlayerContainer> getSetPCHavePermission();
-    
-    /**
-     * Gets the permissions list for a player container.
-     *
-     * @param pc the player container
-     * @return the permissions for player container
-     */
-    public Collection<IPermission> getPermissionsForPC(IPlayerContainer pc);
-    
-    /**
-     * Check if a player has permission with inheritance.
-     *
-     * @param player the player
-     * @param pt the permission type 
-     * @return the permission result or default value
-     */
-    public boolean checkPermissionAndInherit(Player player, IPermissionType pt);
-    
-    /**
-     * Check if a player has permission without inheritance.
-     *
-     * @param player the player
-     * @param pt the permission type
-     * @return the permission result or default value
-     */
-    public boolean checkPermissionNoInherit(Player player, IPermissionType pt);
-    
-    /**
-     * Gets the flags.
-     *
-     * @return the flags
-     */
-    public Collection<ILandFlag> getFlags();
-    
-    /**
-     * Gets the flags with inheritance.
-     *
-     * @param ft the flag type
-     * @return the flags value or default value
-     */
-    public IFlagValue getFlagAndInherit(IFlagType ft);
+	/**
+	 * Gets the world name.
+	 *
+	 * @return the world name
+	 */
+	public String getWorldName();
+	
+	/**
+	 * Gets the world.
+	 *
+	 * @return the world
+	 */
+	public World getWorld();
+	
+	/**
+	 * Copy permissions and flags from this land to an other.
+	 * Duplicated permissions and flags will be overwrite.
+	 * @param desLand The destination land or dummy land.
+	 */
+	public void copyPermsFlagsTo(IDummyLand desLand);
+	
+	/**
+	 * Gets the sets of player containers having a permission.
+	 *
+	 * @return the sets the player containers
+	 */
+	public Set<IPlayerContainer> getSetPCHavePermission();
+	
+	/**
+	 * Gets the permissions list for a player container.
+	 *
+	 * @param pc the player container
+	 * @return the permissions for player container
+	 */
+	public Collection<IPermission> getPermissionsForPC(IPlayerContainer pc);
+	
+	/**
+	 * Check if a player has permission with inheritance.
+	 *
+	 * @param player the player
+	 * @param pt the permission type 
+	 * @return the permission result or default value
+	 */
+	public boolean checkPermissionAndInherit(Player player, IPermissionType pt);
+	
+	/**
+	 * Check if a player has permission without inheritance.
+	 *
+	 * @param player the player
+	 * @param pt the permission type
+	 * @return the permission result or default value
+	 */
+	public boolean checkPermissionNoInherit(Player player, IPermissionType pt);
+	
+	/**
+	 * Gets the flags.
+	 *
+	 * @return the flags
+	 */
+	public Collection<ILandFlag> getFlags();
+	
+	/**
+	 * Gets the flags with inheritance.
+	 *
+	 * @param ft the flag type
+	 * @return the flags value or default value
+	 */
+	public IFlagValue getFlagAndInherit(IFlagType ft);
 
-    /**
-     * Gets the flags without inheritance.
-     *
-     * @param ft the flag type
-     * @return the flag value or default value
-     */
-    public IFlagValue getFlagNoInherit(IFlagType ft);
+	/**
+	 * Gets the flags without inheritance.
+	 *
+	 * @param ft the flag type
+	 * @return the flag value or default value
+	 */
+	public IFlagValue getFlagNoInherit(IFlagType ft);
 }

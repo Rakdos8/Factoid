@@ -42,11 +42,11 @@ public class CommonListener {
 	 * Check permission.
 	 * 
 	 * @param land
-	 *            the land
+	 *			the land
 	 * @param player
-	 *            the player
+	 *			the player
 	 * @param pt
-	 *            the pt
+	 *			the pt
 	 * @return true, if successful
 	 */
 	protected boolean checkPermission(IDummyLand land, Player player,
@@ -60,7 +60,7 @@ public class CommonListener {
 	 * Message permission.
 	 * 
 	 * @param player
-	 *            the player
+	 *			the player
 	 */
 	protected void messagePermission(Player player) {
 

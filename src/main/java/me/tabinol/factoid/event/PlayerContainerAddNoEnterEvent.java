@@ -30,50 +30,50 @@ import org.bukkit.event.HandlerList;
 @Deprecated
 public class PlayerContainerAddNoEnterEvent extends LandEvent {
 
-    /** The Constant handlers. */
-    private static final HandlerList handlers = new HandlerList();
-    
-    /** The player container. */
-    PlayerContainer playerContainer;
+	/** The Constant handlers. */
+	private static final HandlerList handlers = new HandlerList();
+	
+	/** The player container. */
+	PlayerContainer playerContainer;
 
-    /**
-     * Instantiates a new player container add no enter event.
-     *
-     * @param land the land
-     * @param playerContainer the player container
-     */
-    public PlayerContainerAddNoEnterEvent(final Land land, final PlayerContainer playerContainer) {
+	/**
+	 * Instantiates a new player container add no enter event.
+	 *
+	 * @param land the land
+	 * @param playerContainer the player container
+	 */
+	public PlayerContainerAddNoEnterEvent(final Land land, final PlayerContainer playerContainer) {
 
-        super(land);
-        this.playerContainer = playerContainer;
-    }
+		super(land);
+		this.playerContainer = playerContainer;
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.event.LandEvent#getHandlers()
-     */
-    @Override
-    public HandlerList getHandlers() {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.event.LandEvent#getHandlers()
+	 */
+	@Override
+	public HandlerList getHandlers() {
 
-        return handlers;
-    }
+		return handlers;
+	}
 
-    /**
-     * Gets the handler list.
-     *
-     * @return the handler list
-     */
-    public static HandlerList getHandlerList() {
+	/**
+	 * Gets the handler list.
+	 *
+	 * @return the handler list
+	 */
+	public static HandlerList getHandlerList() {
 
-        return handlers;
-    }
+		return handlers;
+	}
 
-    /**
-     * Gets the player container.
-     *
-     * @return the player container
-     */
-    public PlayerContainer getPlayerContainer() {
+	/**
+	 * Gets the player container.
+	 *
+	 * @return the player container
+	 */
+	public PlayerContainer getPlayerContainer() {
 
-        return playerContainer;
-    }
+		return playerContainer;
+	}
 }

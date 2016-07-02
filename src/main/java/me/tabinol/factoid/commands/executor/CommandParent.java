@@ -39,40 +39,40 @@ public class CommandParent extends CommandExec {
 	@SuppressWarnings("deprecation")
 	public void commandExecute() throws FactoidCommandException {
 
-        checkSelections(true, null);
-        checkPermission(true, true, null, null);
-    	
-        String curArg = entity.argList.getNext();
-        Land parent = null;
-        
-        if(!curArg.equalsIgnoreCase("unset")) {
-        	parent = Factoid.getLands().getLand(curArg);
-        	
-            // Check if the parent exist
-        	if (parent == null) {
-        		throw new FactoidCommandException("CommandParent", entity.player, "COMMAND.PARENT.INVALID");
-        	}
-        	
-        	// Check if the land is a children
-        	if(land.isDescendants(parent)) {
-        		throw new FactoidCommandException("CommandParent", entity.player, "COMMAND.PARENT.NOTCHILD");
-        	}
-        }
-        
-        // Check for collision
-        if (checkCollision(land.getName(), land, null, LandAction.LAND_PARENT, 0, null, parent, 
-        		land.getOwner(), 0, true)) {
-            return;
-        }
-        
-        // Set parent
-        land.setParent(parent);
-        if(parent == null) {
-        	entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.PARENT.REMOVEDONE"));
-        	Factoid.getThisPlugin().iLog().write(entity.playerName + " has set land " + land.getName() + " to no parent ");
-        } else {
-        	entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.PARENT.DONE", parent.getName()));
-        	Factoid.getThisPlugin().iLog().write(entity.playerName + " has set land " + land.getName() + " to parent " + parent.getName());
-        }
-    }
+		checkSelections(true, null);
+		checkPermission(true, true, null, null);
+		
+		String curArg = entity.argList.getNext();
+		Land parent = null;
+		
+		if(!curArg.equalsIgnoreCase("unset")) {
+			parent = Factoid.getLands().getLand(curArg);
+			
+			// Check if the parent exist
+			if (parent == null) {
+				throw new FactoidCommandException("CommandParent", entity.player, "COMMAND.PARENT.INVALID");
+			}
+			
+			// Check if the land is a children
+			if(land.isDescendants(parent)) {
+				throw new FactoidCommandException("CommandParent", entity.player, "COMMAND.PARENT.NOTCHILD");
+			}
+		}
+		
+		// Check for collision
+		if (checkCollision(land.getName(), land, null, LandAction.LAND_PARENT, 0, null, parent, 
+				land.getOwner(), 0, true)) {
+			return;
+		}
+		
+		// Set parent
+		land.setParent(parent);
+		if(parent == null) {
+			entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.PARENT.REMOVEDONE"));
+			Factoid.getThisPlugin().iLog().write(entity.playerName + " has set land " + land.getName() + " to no parent ");
+		} else {
+			entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.PARENT.DONE", parent.getName()));
+			Factoid.getThisPlugin().iLog().write(entity.playerName + " has set land " + land.getName() + " to parent " + parent.getName());
+		}
+	}
 }

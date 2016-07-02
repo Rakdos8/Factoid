@@ -25,55 +25,55 @@ import me.tabinol.factoid.lands.Land;
  * The Interface StorageInt.
  */
 public interface StorageInt {
-    
-    /**
-     * Load all.
-     */
-    public void loadAll();
-    
-    /**
-     * Save land.
-     *
-     * @param land the land
-     */
-    public void saveLand(Land land);
-    
-    /**
-     * Removes the land.
-     *
-     * @param land the land
-     */
-    public void removeLand(Land land);
-    
-    /**
-     * Removes the land.
-     *  
-     * @param landName the land name
-     * @param landGenealogy The land genealogy
-     */
-    public void removeLand(String landName, int landGenealogy);
+	
+	/**
+	 * Load all.
+	 */
+	public void loadAll();
+	
+	/**
+	 * Save land.
+	 *
+	 * @param land the land
+	 */
+	public void saveLand(Land land);
+	
+	/**
+	 * Removes the land.
+	 *
+	 * @param land the land
+	 */
+	public void removeLand(Land land);
+	
+	/**
+	 * Removes the land.
+	 *  
+	 * @param landName the land name
+	 * @param landGenealogy The land genealogy
+	 */
+	public void removeLand(String landName, int landGenealogy);
 
-    /**
-     * Load factions.
-     */
-    public void loadFactions();
-    
-    /**
-     * Load lands.
-     */
-    public void loadLands();    
-    
-    /**
-     * Save faction.
-     *
-     * @param faction the faction
-     */
-    public void saveFaction(Faction faction);
-    
-    /**
-     * Removes the faction.
-     *
-     * @param faction the faction
-     */
-    public void removeFaction(Faction faction);
+	/**
+	 * Load factions.
+	 */
+	public void loadFactions();
+	
+	/**
+	 * Load lands.
+	 */
+	public void loadLands();	
+	
+	/**
+	 * Save faction.
+	 *
+	 * @param faction the faction
+	 */
+	public void saveFaction(Faction faction);
+	
+	/**
+	 * Removes the faction.
+	 *
+	 * @param faction the faction
+	 */
+	public void removeFaction(Faction faction);
 }

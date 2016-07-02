@@ -27,89 +27,89 @@ import me.tabinol.factoid.lands.collisions.Collisions.LandError;
  */
 public class CollisionsEntry {
 
-    /** The error. */
-    private final LandError error;
-    
-    /** The land. */
-    private final ILand land;
-    
-    /** The area id. */
-    private final int areaId;
+	/** The error. */
+	private final LandError error;
+	
+	/** The land. */
+	private final ILand land;
+	
+	/** The area id. */
+	private final int areaId;
 
-    /**
-     * Instantiates a new collisions entry.
-     *
-     * @param error the error
-     * @param land the land
-     * @param areaId the area id
-     */
-    public CollisionsEntry(LandError error, ILand land, int areaId) {
+	/**
+	 * Instantiates a new collisions entry.
+	 *
+	 * @param error the error
+	 * @param land the land
+	 * @param areaId the area id
+	 */
+	public CollisionsEntry(LandError error, ILand land, int areaId) {
 
-        this.error = error;
-        this.land = land;
-        this.areaId = areaId;
-    }
+		this.error = error;
+		this.land = land;
+		this.areaId = areaId;
+	}
 
-    /**
-     * Gets the error.
-     *
-     * @return the error
-     */
-    public LandError getError() {
+	/**
+	 * Gets the error.
+	 *
+	 * @return the error
+	 */
+	public LandError getError() {
 
-        return error;
-    }
+		return error;
+	}
 
-    /**
-     * Gets the land.
-     *
-     * @return the land
-     */
-    public ILand getLand() {
+	/**
+	 * Gets the land.
+	 *
+	 * @return the land
+	 */
+	public ILand getLand() {
 
-        return land;
-    }
+		return land;
+	}
 
-    /**
-     * Gets the area id.
-     *
-     * @return the area id
-     */
-    public int getAreaId() {
+	/**
+	 * Gets the area id.
+	 *
+	 * @return the area id
+	 */
+	public int getAreaId() {
 
-        return areaId;
-    }
+		return areaId;
+	}
 
-    /**
-     * Gets the prints the.
-     *
-     * @return the prints the
-     */
-    public String getPrint() {
+	/**
+	 * Gets the prints the.
+	 *
+	 * @return the prints the
+	 */
+	public String getPrint() {
 
-        if (error == LandError.COLLISION) {
-            return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.COLLISION", land.getName(), areaId + "");
-        } else if (error == LandError.OUT_OF_PARENT) {
-            return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.OUT_OF_PARENT", land.getName());
-        } else if (error == LandError.CHILD_OUT_OF_BORDER) {
-            return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.CHILD_OUT_OF_BORDER", land.getName());
-        } else if (error == LandError.HAS_CHILDREN) {
-            return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.HAS_CHILDREN", land.getName());
-        } else if (error == LandError.NAME_IN_USE) {
-            return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.NAME_IN_USE");
-        } else if (error == LandError.IN_APPROVE_LIST) {
-            return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.IN_APPROVE_LIST");
-        } else if (error == LandError.NOT_ENOUGH_MONEY) {
-            return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.NOT_ENOUGH_MONEY");
-        } else if (error == LandError.MAX_AREA_FOR_LAND) {
-            return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.MAX_AREA_FOR_LAND", land.getName());
-        } else if (error == LandError.MAX_LAND_FOR_PLAYER) {
-            return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.MAX_LAND_FOR_PLAYER");
-        } else if (error == LandError.MUST_HAVE_AT_LEAST_ONE_AREA) {
-        	return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.MUST_HAVE_AT_LEAST_ONE_AREA");
-        }
-        
+		if (error == LandError.COLLISION) {
+			return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.COLLISION", land.getName(), areaId + "");
+		} else if (error == LandError.OUT_OF_PARENT) {
+			return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.OUT_OF_PARENT", land.getName());
+		} else if (error == LandError.CHILD_OUT_OF_BORDER) {
+			return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.CHILD_OUT_OF_BORDER", land.getName());
+		} else if (error == LandError.HAS_CHILDREN) {
+			return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.HAS_CHILDREN", land.getName());
+		} else if (error == LandError.NAME_IN_USE) {
+			return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.NAME_IN_USE");
+		} else if (error == LandError.IN_APPROVE_LIST) {
+			return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.IN_APPROVE_LIST");
+		} else if (error == LandError.NOT_ENOUGH_MONEY) {
+			return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.NOT_ENOUGH_MONEY");
+		} else if (error == LandError.MAX_AREA_FOR_LAND) {
+			return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.MAX_AREA_FOR_LAND", land.getName());
+		} else if (error == LandError.MAX_LAND_FOR_PLAYER) {
+			return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.MAX_LAND_FOR_PLAYER");
+		} else if (error == LandError.MUST_HAVE_AT_LEAST_ONE_AREA) {
+			return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.MUST_HAVE_AT_LEAST_ONE_AREA");
+		}
+		
 
-        return null;
-    }
+		return null;
+	}
 }

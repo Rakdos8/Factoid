@@ -37,19 +37,19 @@ import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
  */
 public final class FactoidAPI {
 
-    /**  The Factoid Interface. */
+	/**  The Factoid Interface. */
 	private static IFactoid iFactoid;
 	
-    /**
-     * Inits the factoid plugin access. NOTE: It is not useful to run it.
-     */
-    public static void initFactoidPluginAccess() {
-    	
-    	try {
+	/**
+	 * Inits the factoid plugin access. NOTE: It is not useful to run it.
+	 */
+	public static void initFactoidPluginAccess() {
+		
+		try {
 			iFactoid = (IFactoid) Class.forName("me.tabinol.factoid.Factoid")
 					.getDeclaredMethod("getThisPlugin").invoke(null);
 		
-    	} catch (IllegalAccessException e) {
+		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
@@ -62,103 +62,103 @@ public final class FactoidAPI {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-    }
+	}
 	
 	/*
-     * Normal gets
-     */
+	 * Normal gets
+	 */
 	
-    /**
+	/**
 	 * I factions.
 	 *
 	 * @return the i factions
 	 * @see IFactoid#iFactions()
 	 */
-    public static IFactions iFactions() {
-    	
-    	return iFactoid.iFactions();
-    }
+	public static IFactions iFactions() {
+		
+		return iFactoid.iFactions();
+	}
 
-    /**
-     * I lands.
-     *
-     * @return the i lands
-     * @see IFactoid#iLands()
-     */
-    public static ILands iLands() {
-    	
-    	return iFactoid.iLands();
-    }
+	/**
+	 * I lands.
+	 *
+	 * @return the i lands
+	 * @see IFactoid#iLands()
+	 */
+	public static ILands iLands() {
+		
+		return iFactoid.iLands();
+	}
 
-    /**
-     * I types.
-     *
-     * @return the i types
-     * @see IFactoid#iTypes()
-     */
-    public static ITypes iTypes() {
-    	
-    	return iFactoid.iTypes();
-    }
-    
-    /**
-     * I parameters.
-     *
-     * @return the i parameters
-     * @see IFactoid#iParameters()
-     */
-    public static IParameters iParameters() {
-    	
-    	return iFactoid.iParameters();
-    }
-    
-    /**
-     * I player conf.
-     *
-     * @return the i player static config
-     * @see IFactoid#iPlayerConf()
-     */
-    public static IPlayerStaticConfig iPlayerConf() {
-    	
-    	return iFactoid.iPlayerConf();
-    }
-    
-    /*
-     * Creators
-     */
+	/**
+	 * I types.
+	 *
+	 * @return the i types
+	 * @see IFactoid#iTypes()
+	 */
+	public static ITypes iTypes() {
+		
+		return iFactoid.iTypes();
+	}
+	
+	/**
+	 * I parameters.
+	 *
+	 * @return the i parameters
+	 * @see IFactoid#iParameters()
+	 */
+	public static IParameters iParameters() {
+		
+		return iFactoid.iParameters();
+	}
+	
+	/**
+	 * I player conf.
+	 *
+	 * @return the i player static config
+	 * @see IFactoid#iPlayerConf()
+	 */
+	public static IPlayerStaticConfig iPlayerConf() {
+		
+		return iFactoid.iPlayerConf();
+	}
+	
+	/*
+	 * Creators
+	 */
 
-    /**
-     * Creates the player container.
-     *
-     * @param land the land
-     * @param pct the pct
-     * @param name the name
-     * @return the i player container
-     * @see IFactoid#createPlayerContainer(ILand, EPlayerContainerType, String)
-     */
-    public static IPlayerContainer createPlayerContainer(ILand land, 
-    		EPlayerContainerType pct, String name) {
-    	
-    	return iFactoid.createPlayerContainer(land, pct, name);
-    }
-    
-    /**
-     * Creates the cuboid area.
-     *
-     * @param worldName the world name
-     * @param x1 the x1
-     * @param y1 the y1
-     * @param z1 the z1
-     * @param x2 the x2
-     * @param y2 the y2
-     * @param z2 the z2
-     * @return the i cuboid area
-     * @see IFactoid#createCuboidArea(String, int, int, int, int, int, int)
-     */
-    public static ICuboidArea createCuboidArea(String worldName, int x1, int y1, 
-    		int z1, int x2, int y2, int z2) {
-    	
-    	return iFactoid.createCuboidArea(worldName, x1, y1, z1, x2, y2, z2);
-    }
+	/**
+	 * Creates the player container.
+	 *
+	 * @param land the land
+	 * @param pct the pct
+	 * @param name the name
+	 * @return the i player container
+	 * @see IFactoid#createPlayerContainer(ILand, EPlayerContainerType, String)
+	 */
+	public static IPlayerContainer createPlayerContainer(ILand land, 
+			EPlayerContainerType pct, String name) {
+		
+		return iFactoid.createPlayerContainer(land, pct, name);
+	}
+	
+	/**
+	 * Creates the cuboid area.
+	 *
+	 * @param worldName the world name
+	 * @param x1 the x1
+	 * @param y1 the y1
+	 * @param z1 the z1
+	 * @param x2 the x2
+	 * @param y2 the y2
+	 * @param z2 the z2
+	 * @return the i cuboid area
+	 * @see IFactoid#createCuboidArea(String, int, int, int, int, int, int)
+	 */
+	public static ICuboidArea createCuboidArea(String worldName, int x1, int y1, 
+			int z1, int x2, int y2, int z2) {
+		
+		return iFactoid.createCuboidArea(worldName, x1, y1, z1, x2, y2, z2);
+	}
 
 }

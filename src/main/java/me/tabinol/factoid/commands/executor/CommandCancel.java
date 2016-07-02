@@ -35,100 +35,100 @@ import org.bukkit.entity.Player;
 @InfoCommand(name="cancel")
 public class CommandCancel extends CommandExec {
 
-    /** The player. */
-    private final Player player;
-    
-    /** The player conf. */
-    private final PlayerConfEntry playerConf;
-    
-    /** The from auto cancel. */
-    private final boolean fromAutoCancel; // true: launched from autoCancel
+	/** The player. */
+	private final Player player;
+	
+	/** The player conf. */
+	private final PlayerConfEntry playerConf;
+	
+	/** The from auto cancel. */
+	private final boolean fromAutoCancel; // true: launched from autoCancel
 
-    /**
-     * Instantiates a new command cancel.
-     *
-     * @param entity the entity
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandCancel(CommandEntities entity) throws FactoidCommandException {
+	/**
+	 * Instantiates a new command cancel.
+	 *
+	 * @param entity the entity
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	public CommandCancel(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity);
-        player = entity.player;
-        playerConf = entity.playerConf;
-        fromAutoCancel = false;
-    }
+		super(entity);
+		player = entity.player;
+		playerConf = entity.playerConf;
+		fromAutoCancel = false;
+	}
 
-    // Called from PlayerListener
-    /**
-     * Instantiates a new command cancel.
-     *
-     * @param entry the entry
-     * @param fromAutoCancel the from auto cancel
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandCancel(PlayerConfEntry entry, boolean fromAutoCancel) throws FactoidCommandException {
+	// Called from PlayerListener
+	/**
+	 * Instantiates a new command cancel.
+	 *
+	 * @param entry the entry
+	 * @param fromAutoCancel the from auto cancel
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	public CommandCancel(PlayerConfEntry entry, boolean fromAutoCancel) throws FactoidCommandException {
 
-        super(null);
-        this.player = entry.getPlayer();
-        playerConf = entry;
-        this.fromAutoCancel = fromAutoCancel;
-    }
-    
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
-     */
-    @Override
-    public void commandExecute() throws FactoidCommandException {
+		super(null);
+		this.player = entry.getPlayer();
+		playerConf = entry;
+		this.fromAutoCancel = fromAutoCancel;
+	}
+	
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+	 */
+	@Override
+	public void commandExecute() throws FactoidCommandException {
 
-        if (playerConf.getConfirm() != null) {
-            playerConf.setConfirm(null);
-            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CANCEL.ACTION"));
-            Factoid.getThisPlugin().iLog().write(player.getName() + " cancel for action");
-            
-            if(!fromAutoCancel) {
-                return;
-            }
-        }
-        
-        if (playerConf.getSelection().getSelection(SelectionType.AREA) != null) {
+		if (playerConf.getConfirm() != null) {
+			playerConf.setConfirm(null);
+			player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CANCEL.ACTION"));
+			Factoid.getThisPlugin().iLog().write(player.getName() + " cancel for action");
+			
+			if(!fromAutoCancel) {
+				return;
+			}
+		}
+		
+		if (playerConf.getSelection().getSelection(SelectionType.AREA) != null) {
 
-            playerConf.getSelection().removeSelection(SelectionType.AREA);
-            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.CANCEL"));
-            Factoid.getThisPlugin().iLog().write(player.getName() + ": Select cancel");
+			playerConf.getSelection().removeSelection(SelectionType.AREA);
+			player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.CANCEL"));
+			Factoid.getThisPlugin().iLog().write(player.getName() + ": Select cancel");
 
-            if(!fromAutoCancel) {
-                return;
-            }
-        }
+			if(!fromAutoCancel) {
+				return;
+			}
+		}
 
 /*
-        if (playerConf.getSetFlagUI() != null) {
+		if (playerConf.getSetFlagUI() != null) {
 
-            playerConf.setSetFlagUI(null);
-            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CANCEL.FLAGS"));
+			playerConf.setSetFlagUI(null);
+			player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CANCEL.FLAGS"));
 
-            if(!fromAutoCancel) {
-                return;
-            }
-        }
+			if(!fromAutoCancel) {
+				return;
+			}
+		}
   
 */
-        if (playerConf.getSelection().getSelection(SelectionType.LAND) != null) {
+		if (playerConf.getSelection().getSelection(SelectionType.LAND) != null) {
 
-            playerConf.getSelection().removeSelection(SelectionType.LAND);
-            player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CANCEL.SELECT"));
+			playerConf.getSelection().removeSelection(SelectionType.LAND);
+			player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CANCEL.SELECT"));
 
-            // Cancel selection (it is the last think selected)
-            playerConf.setAutoCancelSelect(false);
-            
-            if(!fromAutoCancel) {
-                return;
-            }
-        }
-        
-        // No cancel done
-        if(!fromAutoCancel) {
-            throw new FactoidCommandException("Nothing to confirm", player, "COMMAND.CANCEL.NOCANCEL");
-        }
-    }
+			// Cancel selection (it is the last think selected)
+			playerConf.setAutoCancelSelect(false);
+			
+			if(!fromAutoCancel) {
+				return;
+			}
+		}
+		
+		// No cancel done
+		if(!fromAutoCancel) {
+			throw new FactoidCommandException("Nothing to confirm", player, "COMMAND.CANCEL.NOCANCEL");
+		}
+	}
 }

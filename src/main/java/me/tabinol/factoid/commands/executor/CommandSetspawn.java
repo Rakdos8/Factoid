@@ -33,41 +33,41 @@ import me.tabinol.factoidapi.utilities.StringChanges;
 @InfoCommand(name="setspawn")
 public class CommandSetspawn extends CommandExec {
 
-    /**
-     * Instantiates a new command set spawn.
-     *
-     * @param entity the entity
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandSetspawn(CommandEntities entity) throws FactoidCommandException {
+	/**
+	 * Instantiates a new command set spawn.
+	 *
+	 * @param entity the entity
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	public CommandSetspawn(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity);
-    }
+		super(entity);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
-     */
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+	 */
 	@Override
 	public void commandExecute() throws FactoidCommandException {
 
-        checkSelections(true, null);
-        checkPermission(true, true, null, null);
-        
-        Location loc = entity.player.getLocation();
-        
-        // If the player is not inside the land
-        if(!land.isLocationInside(loc)) {
-        	throw new FactoidCommandException("On land tp create", entity.player, "COMMAND.TP.OUTSIDE");
-        }
-        
-        // put player position to String
-        String posStr = StringChanges.locationToString(loc);
-        
-        // Set flag
-        LandFlag flag = new LandFlag(FlagList.SPAWN.getFlagType(), posStr, true);
-        ((Land) land).addFlag(flag);
-        
-        entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.TP.CREATED"));
+		checkSelections(true, null);
+		checkPermission(true, true, null, null);
+		
+		Location loc = entity.player.getLocation();
+		
+		// If the player is not inside the land
+		if(!land.isLocationInside(loc)) {
+			throw new FactoidCommandException("On land tp create", entity.player, "COMMAND.TP.OUTSIDE");
+		}
+		
+		// put player position to String
+		String posStr = StringChanges.locationToString(loc);
+		
+		// Set flag
+		LandFlag flag = new LandFlag(FlagList.SPAWN.getFlagType(), posStr, true);
+		((Land) land).addFlag(flag);
+		
+		entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.TP.CREATED"));
 	}
 
 }

@@ -33,68 +33,68 @@ import org.bukkit.permissions.Permission;
 public class PlayerContainerPermission extends PlayerContainer 
 	implements IPlayerContainerPermission {
 
-    /** The perm. */
-    private Permission perm;
-    
-    /**
-     * Instantiates a new player container permission.
-     *
-     * @param bukkitPermission the bukkit permission
-     */
-    public PlayerContainerPermission(String bukkitPermission) {
+	/** The perm. */
+	private Permission perm;
+	
+	/**
+	 * Instantiates a new player container permission.
+	 *
+	 * @param bukkitPermission the bukkit permission
+	 */
+	public PlayerContainerPermission(String bukkitPermission) {
 
-        super(bukkitPermission, EPlayerContainerType.PERMISSION, true);
-        perm = new Permission(bukkitPermission);
-    }
+		super(bukkitPermission, EPlayerContainerType.PERMISSION, true);
+		perm = new Permission(bukkitPermission);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
-     */
-    @Override
-    public boolean equals(IPlayerContainer container2) {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
+	 */
+	@Override
+	public boolean equals(IPlayerContainer container2) {
 
-        return container2 instanceof PlayerContainerPermission
-                && name.equalsIgnoreCase(container2.getName());
-    }
+		return container2 instanceof PlayerContainerPermission
+				&& name.equalsIgnoreCase(container2.getName());
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#copyOf()
-     */
-    @Override
-    public PlayerContainer copyOf() {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#copyOf()
+	 */
+	@Override
+	public PlayerContainer copyOf() {
 
-        return new PlayerContainerPermission(name);
-    }
+		return new PlayerContainerPermission(name);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#hasAccess(org.bukkit.entity.Player)
-     */
-    @Override
-    public boolean hasAccess(Player player) {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#hasAccess(org.bukkit.entity.Player)
+	 */
+	@Override
+	public boolean hasAccess(Player player) {
 
-        return player.hasPermission(perm);
-    }
+		return player.hasPermission(perm);
+	}
 
-    @Override
-    public boolean hasAccess(Player player, ILand land) {
-        
-        return hasAccess(player);
-    }
+	@Override
+	public boolean hasAccess(Player player, ILand land) {
+		
+		return hasAccess(player);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainer#getPrint()
-     */
-    @Override
-    public String getPrint() {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainer#getPrint()
+	 */
+	@Override
+	public String getPrint() {
 
-        return ChatColor.GRAY + "B:" + ChatColor.WHITE + name;
-    }
+		return ChatColor.GRAY + "B:" + ChatColor.WHITE + name;
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
-     */
-    @Override
-    public void setLand(ILand land) {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
+	 */
+	@Override
+	public void setLand(ILand land) {
 
-    }
+	}
 }

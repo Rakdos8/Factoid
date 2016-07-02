@@ -30,31 +30,31 @@ import me.tabinol.factoid.utilities.FactoidRunnable;
  */
 public class PlayerAutoCancelSelect extends FactoidRunnable {
 
-    /** The entry. */
-    private final PlayerConfEntry entry;
+	/** The entry. */
+	private final PlayerConfEntry entry;
 
-    /**
-     * Instantiates a new player auto cancel select.
-     *
-     * @param entry the entry
-     */
-    public PlayerAutoCancelSelect(PlayerConfEntry entry) {
+	/**
+	 * Instantiates a new player auto cancel select.
+	 *
+	 * @param entry the entry
+	 */
+	public PlayerAutoCancelSelect(PlayerConfEntry entry) {
 
-        super();
-        this.entry = entry;
-    }
+		super();
+		this.entry = entry;
+	}
 
-    /* (non-Javadoc)
-     * @see java.lang.Runnable#run()
-     */
-    @Override
-    public void run() {
-        
-        setOneTimeDone();
-        try {            
-            new CommandCancel(entry, true).commandExecute();
-        } catch (FactoidCommandException ex) {
-            Logger.getLogger(PlayerAutoCancelSelect.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
+	@Override
+	public void run() {
+		
+		setOneTimeDone();
+		try {			
+			new CommandCancel(entry, true).commandExecute();
+		} catch (FactoidCommandException ex) {
+			Logger.getLogger(PlayerAutoCancelSelect.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
 }

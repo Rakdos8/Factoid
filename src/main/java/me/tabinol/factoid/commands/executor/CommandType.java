@@ -34,46 +34,46 @@ public class CommandType extends CommandExec {
 	
 	public CommandType(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity);
-    }
+		super(entity);
+	}
 
-    @Override
-    public void commandExecute() throws FactoidCommandException {
+	@Override
+	public void commandExecute() throws FactoidCommandException {
 
-        checkSelections(true, null);
-        checkPermission(true, false, null, null);
-        
-        String curArg = entity.argList.getNext();
+		checkSelections(true, null);
+		checkPermission(true, false, null, null);
+		
+		String curArg = entity.argList.getNext();
 
-        if (curArg.equalsIgnoreCase("list")) {
-            
-            StringBuilder stList = new StringBuilder();
-            for (IType type : FactoidAPI.iTypes().getTypes()) {
-            	if (stList.length() != 0) {
-            		stList.append(" ");
-                }
-                stList.append(ChatColor.WHITE).append(type.getName());
-            stList.append(Config.NEWLINE);
-            }
-            new ChatPage("COMMAND.TYPES.LISTSTART", stList.toString(), entity.player, null).getPage(1);
-        
-        } else if(curArg.equals("remove")) {
-        	
-        	land.setType(null);
-            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.TYPES.REMOVEISDONE", land.getName()));
-            Factoid.getThisPlugin().iLog().write("Land type removed: " + land.getName());
-        
-        } else { // Type change 
-        	
-        	IType type = FactoidAPI.iTypes().getType(curArg);
-        	
-        	if(type == null) {
-        		throw new FactoidCommandException("Land Types", entity.player, "COMMAND.TYPES.INVALID");
-        	}
-        	
-        	land.setType(type);
-            entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.TYPES.ISDONE", type.getName(), land.getName()));
-            Factoid.getThisPlugin().iLog().write("Land type: " + type.getName() + " for land: " + land.getName());
-        }
-    }
+		if (curArg.equalsIgnoreCase("list")) {
+			
+			StringBuilder stList = new StringBuilder();
+			for (IType type : FactoidAPI.iTypes().getTypes()) {
+				if (stList.length() != 0) {
+					stList.append(" ");
+				}
+				stList.append(ChatColor.WHITE).append(type.getName());
+			stList.append(Config.NEWLINE);
+			}
+			new ChatPage("COMMAND.TYPES.LISTSTART", stList.toString(), entity.player, null).getPage(1);
+		
+		} else if(curArg.equals("remove")) {
+			
+			land.setType(null);
+			entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.TYPES.REMOVEISDONE", land.getName()));
+			Factoid.getThisPlugin().iLog().write("Land type removed: " + land.getName());
+		
+		} else { // Type change 
+			
+			IType type = FactoidAPI.iTypes().getType(curArg);
+			
+			if(type == null) {
+				throw new FactoidCommandException("Land Types", entity.player, "COMMAND.TYPES.INVALID");
+			}
+			
+			land.setType(type);
+			entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.TYPES.ISDONE", type.getName(), land.getName()));
+			Factoid.getThisPlugin().iLog().write("Land type: " + type.getName() + " for land: " + land.getName());
+		}
+	}
 }

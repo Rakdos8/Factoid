@@ -27,61 +27,61 @@ import org.bukkit.entity.Player;
  * any types.
  */
 public interface IPlayerContainer {
-    
-    /**
-     * Gets the name.
-     *
-     * @return the name
-     */
-    public String getName();
-    
-    /**
-     * Gets the container type.
-     *
-     * @return the container type
-     */
-    public EPlayerContainerType getContainerType();
+	
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
+	public String getName();
+	
+	/**
+	 * Gets the container type.
+	 *
+	 * @return the container type
+	 */
+	public EPlayerContainerType getContainerType();
 
-    /**
-     * Equals.
-     *
-     * @param container2 the container2
-     * @return true, if successful
-     */
-    public boolean equals(IPlayerContainer container2);
-    
-    /**
-     * Copy of.
-     *
-     * @return the player container
-     */
-    public IPlayerContainer copyOf();
-    
-    /**
-     * Checks if the player has access or is member of this player container.
-     *
-     * @param player the player
-     * @return true, if successful
-     */
-    public boolean hasAccess(Player player);
-    
-    /**
-     * Check if the player has access or is member of this player container.
-     * The land option is for assume the player to check if the player is
-     * owner/resident/... of this specific land. This method is only used
-     * from a DummyLand (Default or World)
-     * 
-     * @param player the player
-     * @param land from what land?
-     * @return true, if successful
-     */
-    public boolean hasAccess(Player player, ILand land);
-    
-    /**
-     * Gets the printable output.
-     *
-     * @return the printable output
-     */
-    public String getPrint();
-    
+	/**
+	 * Equals.
+	 *
+	 * @param container2 the container2
+	 * @return true, if successful
+	 */
+	public boolean equals(IPlayerContainer container2);
+	
+	/**
+	 * Copy of.
+	 *
+	 * @return the player container
+	 */
+	public IPlayerContainer copyOf();
+	
+	/**
+	 * Checks if the player has access or is member of this player container.
+	 *
+	 * @param player the player
+	 * @return true, if successful
+	 */
+	public boolean hasAccess(Player player);
+	
+	/**
+	 * Check if the player has access or is member of this player container.
+	 * The land option is for assume the player to check if the player is
+	 * owner/resident/... of this specific land. This method is only used
+	 * from a DummyLand (Default or World)
+	 * 
+	 * @param player the player
+	 * @param land from what land?
+	 * @return true, if successful
+	 */
+	public boolean hasAccess(Player player, ILand land);
+	
+	/**
+	 * Gets the printable output.
+	 *
+	 * @return the printable output
+	 */
+	public String getPrint();
+	
 }

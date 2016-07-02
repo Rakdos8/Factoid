@@ -32,157 +32,157 @@ import org.bukkit.plugin.RegisteredServiceProvider;
  */
 public class DependPlugin {
 
-    /** The world edit. */
-    private Plugin worldEdit = null;
-    
-    /** The essentials. */
-    private Plugin essentials = null;
-    
-    /** The vanish no packet. */
-    private Plugin vanishNoPacket = null;
-    
-    /** The permission. */
-    private Permission permission = null;
-    
-    /** The economy. */
-    private Economy economy = null;
-    
-    /** The chat. */
-    private Chat chat = null;
+	/** The world edit. */
+	private Plugin worldEdit = null;
+	
+	/** The essentials. */
+	private Plugin essentials = null;
+	
+	/** The vanish no packet. */
+	private Plugin vanishNoPacket = null;
+	
+	/** The permission. */
+	private Permission permission = null;
+	
+	/** The economy. */
+	private Economy economy = null;
+	
+	/** The chat. */
+	private Chat chat = null;
 
-    /**
-     * Instantiates a new depend plugin.
-     */
-    public DependPlugin() {
+	/**
+	 * Instantiates a new depend plugin.
+	 */
+	public DependPlugin() {
 
-        worldEdit = getPlugin("WorldEdit");
-        essentials = getPlugin("Essentials");
-        vanishNoPacket = getPlugin("VanishNoPacket");
-        setupPermissions();
-        setupChat();
-        setupEconomy();
-    }
+		worldEdit = getPlugin("WorldEdit");
+		essentials = getPlugin("Essentials");
+		vanishNoPacket = getPlugin("VanishNoPacket");
+		setupPermissions();
+		setupChat();
+		setupEconomy();
+	}
 
-    /**
-     * Gets the plugin.
-     *
-     * @param pluginName the plugin name
-     * @return the plugin
-     */
-    private Plugin getPlugin(String pluginName) {
+	/**
+	 * Gets the plugin.
+	 *
+	 * @param pluginName the plugin name
+	 * @return the plugin
+	 */
+	private Plugin getPlugin(String pluginName) {
 
-        Plugin plugin = Factoid.getThisPlugin().getServer().getPluginManager().getPlugin(pluginName);
+		Plugin plugin = Factoid.getThisPlugin().getServer().getPluginManager().getPlugin(pluginName);
 
-        if (plugin != null) {
-            Factoid.getThisPlugin().getServer().getPluginManager().enablePlugin(plugin);
-            Factoid.getThisPlugin().iLog().write(pluginName + " detected!");
-            Factoid.getThisPlugin().getLogger().log(Level.INFO, pluginName + " detected!");
-        } else {
-            Factoid.getThisPlugin().iLog().write(pluginName + " NOT detected!");
-            Factoid.getThisPlugin().getLogger().log(Level.INFO, pluginName + " IS NOT Detected!");
-        }
+		if (plugin != null) {
+			Factoid.getThisPlugin().getServer().getPluginManager().enablePlugin(plugin);
+			Factoid.getThisPlugin().iLog().write(pluginName + " detected!");
+			Factoid.getThisPlugin().getLogger().log(Level.INFO, pluginName + " detected!");
+		} else {
+			Factoid.getThisPlugin().iLog().write(pluginName + " NOT detected!");
+			Factoid.getThisPlugin().getLogger().log(Level.INFO, pluginName + " IS NOT Detected!");
+		}
 
-        return plugin;
-    }
+		return plugin;
+	}
 
-    /**
-     * Gets the world edit.
-     *
-     * @return the world edit
-     */
-    public Plugin getWorldEdit() {
+	/**
+	 * Gets the world edit.
+	 *
+	 * @return the world edit
+	 */
+	public Plugin getWorldEdit() {
 
-        return worldEdit;
-    }
+		return worldEdit;
+	}
 
-    /**
-     * Gets the essentials.
-     *
-     * @return the essentials
-     */
-    public Plugin getEssentials() {
-        
-        return essentials;
-    }
-    
-    /**
-     * Gets the vanish no packet.
-     *
-     * @return the vanish no packet
-     */
-    public Plugin getVanishNoPacket() {
-        
-        return vanishNoPacket;
-    }
-    
-    /**
-     * Setup permissions.
-     *
-     * @return true, if successful
-     */
-    private boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
-        if (permissionProvider != null) {
-            permission = permissionProvider.getProvider();
-        }
-        return (permission != null);
-    }
+	/**
+	 * Gets the essentials.
+	 *
+	 * @return the essentials
+	 */
+	public Plugin getEssentials() {
+		
+		return essentials;
+	}
+	
+	/**
+	 * Gets the vanish no packet.
+	 *
+	 * @return the vanish no packet
+	 */
+	public Plugin getVanishNoPacket() {
+		
+		return vanishNoPacket;
+	}
+	
+	/**
+	 * Setup permissions.
+	 *
+	 * @return true, if successful
+	 */
+	private boolean setupPermissions() {
+		RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+		if (permissionProvider != null) {
+			permission = permissionProvider.getProvider();
+		}
+		return (permission != null);
+	}
 
-    /**
-     * Setup chat.
-     *
-     * @return true, if successful
-     */
-    private boolean setupChat() {
-        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
-        if (chatProvider != null) {
-            chat = chatProvider.getProvider();
-        }
+	/**
+	 * Setup chat.
+	 *
+	 * @return true, if successful
+	 */
+	private boolean setupChat() {
+		RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+		if (chatProvider != null) {
+			chat = chatProvider.getProvider();
+		}
 
-        return (chat != null);
-    }
+		return (chat != null);
+	}
 
-    /**
-     * Setup economy.
-     *
-     * @return true, if successful
-     */
-    private boolean setupEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-        if (economyProvider != null) {
-            economy = economyProvider.getProvider();
-        }
+	/**
+	 * Setup economy.
+	 *
+	 * @return true, if successful
+	 */
+	private boolean setupEconomy() {
+		RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+		if (economyProvider != null) {
+			economy = economyProvider.getProvider();
+		}
 
-        return (economy != null);
-    }
+		return (economy != null);
+	}
 
-    /**
-     * Gets the permission.
-     *
-     * @return the permission
-     */
-    public Permission getPermission() {
-        
-        return permission;
-    }
-    
-    /**
-     * Gets the economy.
-     *
-     * @return the economy
-     */
-    public Economy getEconomy() {
-        
-        return economy;
-    }
-    
-    /**
-     * Gets the chat.
-     *
-     * @return the chat
-     */
-    public Chat getChat() {
-        
-        return chat;
-    }
+	/**
+	 * Gets the permission.
+	 *
+	 * @return the permission
+	 */
+	public Permission getPermission() {
+		
+		return permission;
+	}
+	
+	/**
+	 * Gets the economy.
+	 *
+	 * @return the economy
+	 */
+	public Economy getEconomy() {
+		
+		return economy;
+	}
+	
+	/**
+	 * Gets the chat.
+	 *
+	 * @return the chat
+	 */
+	public Chat getChat() {
+		
+		return chat;
+	}
 }

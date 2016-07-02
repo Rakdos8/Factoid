@@ -23,46 +23,46 @@ package me.tabinol.factoidapi.parameters;
  */
 public interface IPermission {
 
-    /**
-     * Copy of.
-     *
-     * @return a copy of this object
-     */
-    public IPermission copyOf();
+	/**
+	 * Copy of.
+	 *
+	 * @return a copy of this object
+	 */
+	public IPermission copyOf();
 	
 	/**
-     * Gets the perm type.
-     *
-     * @return the perm type
-     */
-    public IPermissionType getPermType();
-    
-    /**
-     * Gets the value.
-     *
-     * @return the value
-     */
-    public boolean getValue();
-    
-    /**
-     * Gets the value print.
-     *
-     * @return the value print
-     */
-    public String getValuePrint();
+	 * Gets the perm type.
+	 *
+	 * @return the perm type
+	 */
+	public IPermissionType getPermType();
+	
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
+	public boolean getValue();
+	
+	/**
+	 * Gets the value print.
+	 *
+	 * @return the value print
+	 */
+	public String getValuePrint();
 
-    /**
-     * Checks if is heritable.
-     *
-     * @return true, if is heritable
-     */
-    public boolean isHeritable();
-    
-    /**
-     * To string.
-     *
-     * @return the string
-     */
-    @Override
-    public String toString();
+	/**
+	 * Checks if is heritable.
+	 *
+	 * @return true, if is heritable
+	 */
+	public boolean isHeritable();
+	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
+	@Override
+	public String toString();
 }

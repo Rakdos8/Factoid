@@ -32,129 +32,129 @@ import me.tabinol.factoidapi.playercontainer.IPlayerContainerPlayer;
  */
 public class Factions implements IFactions {
 
-    /** The faction list. */
-    private final TreeMap<String, IFaction> factionList;
-    
-    /** The faction uuid list. */
-    private final TreeMap<UUID, IFaction> factionUUIDList;
+	/** The faction list. */
+	private final TreeMap<String, IFaction> factionList;
+	
+	/** The faction uuid list. */
+	private final TreeMap<UUID, IFaction> factionUUIDList;
 
-    /**
-     * Instantiates a new factions.
-     */
-    public Factions() {
+	/**
+	 * Instantiates a new factions.
+	 */
+	public Factions() {
 
-        factionList = new TreeMap<String, IFaction>();
-        factionUUIDList = new TreeMap<UUID, IFaction>();
-    }
+		factionList = new TreeMap<String, IFaction>();
+		factionUUIDList = new TreeMap<UUID, IFaction>();
+	}
 
-    /**
-     * Creates the faction.
-     *
-     * @param factionName the faction name
-     * @return the faction
-     */
-    public Faction createFaction(String factionName) {
+	/**
+	 * Creates the faction.
+	 *
+	 * @param factionName the faction name
+	 * @return the faction
+	 */
+	public Faction createFaction(String factionName) {
 
-        return createFaction(factionName, null);
+		return createFaction(factionName, null);
 
-    }
+	}
 
-    /**
-     * Creates the faction.
-     *
-     * @param factionName the faction name
-     * @param uuid the uuid
-     * @return the faction
-     */
-    public Faction createFaction(String factionName, UUID uuid) {
+	/**
+	 * Creates the faction.
+	 *
+	 * @param factionName the faction name
+	 * @param uuid the uuid
+	 * @return the faction
+	 */
+	public Faction createFaction(String factionName, UUID uuid) {
 
-        Faction faction;
+		Faction faction;
 
-        if (factionList.containsKey(factionName)) {
-            return null;
-        }
+		if (factionList.containsKey(factionName)) {
+			return null;
+		}
 
-        if (uuid == null) {
-            uuid = UUID.randomUUID();
-        }
+		if (uuid == null) {
+			uuid = UUID.randomUUID();
+		}
 
-        faction = new Faction(factionName, uuid);
+		faction = new Faction(factionName, uuid);
 
-        factionList.put(factionName, faction);
-        factionUUIDList.put(uuid, faction);
-        Factoid.getThisPlugin().iLog().write("add faction: " + faction.getName());
+		factionList.put(factionName, faction);
+		factionUUIDList.put(uuid, faction);
+		Factoid.getThisPlugin().iLog().write("add faction: " + faction.getName());
 
-        return faction;
-    }
+		return faction;
+	}
 
-    /**
-     * Removes the faction.
-     *
-     * @param faction the faction
-     * @return true, if successful
-     */
-    public boolean removeFaction(IFaction faction) {
+	/**
+	 * Removes the faction.
+	 *
+	 * @param faction the faction
+	 * @return true, if successful
+	 */
+	public boolean removeFaction(IFaction faction) {
 
-        if (!factionList.containsKey(faction.getName())) {
-            return false;
-        }
-        Factoid.getThisPlugin().iStorageThread().removeFaction((Faction) faction);
-        factionList.remove(faction.getName());
-        Factoid.getThisPlugin().iLog().write("remove faction: " + faction.getName());
-        return true;
-    }
+		if (!factionList.containsKey(faction.getName())) {
+			return false;
+		}
+		Factoid.getThisPlugin().iStorageThread().removeFaction((Faction) faction);
+		factionList.remove(faction.getName());
+		Factoid.getThisPlugin().iLog().write("remove faction: " + faction.getName());
+		return true;
+	}
 
-    /**
-     * Removes the faction.
-     *
-     * @param factionName the faction name
-     * @return true, if successful
-     */
-    public boolean removeFaction(String factionName) {
+	/**
+	 * Removes the faction.
+	 *
+	 * @param factionName the faction name
+	 * @return true, if successful
+	 */
+	public boolean removeFaction(String factionName) {
 
-        String factionLower;
+		String factionLower;
 
-        if (factionName == null || !factionList.containsKey(factionLower = factionName.toLowerCase())) {
-            return false;
-        }
-        return removeFaction(factionList.get(factionLower));
-    }
+		if (factionName == null || !factionList.containsKey(factionLower = factionName.toLowerCase())) {
+			return false;
+		}
+		return removeFaction(factionList.get(factionLower));
+	}
 
-    /**
-     * Gets the faction.
-     *
-     * @param factionName the faction name
-     * @return the faction
-     */
-    public Faction getFaction(String factionName) {
+	/**
+	 * Gets the faction.
+	 *
+	 * @param factionName the faction name
+	 * @return the faction
+	 */
+	public Faction getFaction(String factionName) {
 
-        return (Faction) factionList.get(factionName.toLowerCase());
-    }
+		return (Faction) factionList.get(factionName.toLowerCase());
+	}
 
-    /**
-     * Gets the player faction.
-     *
-     * @param player the player
-     * @return the player faction
-     */
-    public Faction getPlayerFaction(IPlayerContainerPlayer player) {
+	/**
+	 * Gets the player faction.
+	 *
+	 * @param player the player
+	 * @return the player faction
+	 */
+	public Faction getPlayerFaction(IPlayerContainerPlayer player) {
 
-        for (IFaction faction : factionList.values()) {
-            if (faction.isPlayerInList(player)) {
-                return (Faction) faction;
-            }
-        }
+		for (IFaction faction : factionList.values()) {
+			if (faction.isPlayerInList(player)) {
+				return (Faction) faction;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    /**
-     * Gets the factions.
-     *
-     * @return the factions
-     */
-    public Collection<IFaction> getFactions() {
+	/**
+	 * Gets the factions.
+	 *
+	 * @return the factions
+	 */
+	public Collection<IFaction> getFactions() {
 
-        return factionList.values();
-    }
+		return factionList.values();
+	}
 }

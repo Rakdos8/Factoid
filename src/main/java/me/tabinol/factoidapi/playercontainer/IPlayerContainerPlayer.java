@@ -27,27 +27,27 @@ import org.bukkit.entity.Player;
  */
 public interface IPlayerContainerPlayer extends IPlayerContainer {
 
-    public String getPlayerName();
-    
-    /**
-     * Gets the minecraft uuid.
-     *
-     * @return the minecraft uuid
-     */
-    public UUID getMinecraftUUID();
-    
-    /**
-     * Gets the player.
-     *
-     * @return the player
-     */
-    public Player getPlayer();
-    
-    /**
-     * Get the offline player.
-     * 
-     * @return the offline player
-     */
-    public OfflinePlayer getOfflinePlayer();
-    
+	public String getPlayerName();
+	
+	/**
+	 * Gets the minecraft uuid.
+	 *
+	 * @return the minecraft uuid
+	 */
+	public UUID getMinecraftUUID();
+	
+	/**
+	 * Gets the player.
+	 *
+	 * @return the player
+	 */
+	public Player getPlayer();
+	
+	/**
+	 * Get the offline player.
+	 * 
+	 * @return the offline player
+	 */
+	public OfflinePlayer getOfflinePlayer();
+	
 }

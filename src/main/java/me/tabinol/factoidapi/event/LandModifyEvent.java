@@ -67,66 +67,66 @@ public class LandModifyEvent extends LandEvent {
 		FACTION_TERRITORY_CHANGE;
 	}
 
-    /** The Constant handlers. */
-    private static final HandlerList handlers = new HandlerList();
-    
-    /** The land modify reason. */
-    private final LandModifyReason landModifyReason;
-    
-    /** The new object. */
-    private final Object newObject;
+	/** The Constant handlers. */
+	private static final HandlerList handlers = new HandlerList();
+	
+	/** The land modify reason. */
+	private final LandModifyReason landModifyReason;
+	
+	/** The new object. */
+	private final Object newObject;
 
-    /**
-     * Instantiates a new land modify event.
-     *
-     * @param land the land
-     * @param landModifyReason the land modify reason
-     * @param newObject the new object
-     */
-    public LandModifyEvent(final ILand land, final LandModifyReason landModifyReason, final Object newObject) {
+	/**
+	 * Instantiates a new land modify event.
+	 *
+	 * @param land the land
+	 * @param landModifyReason the land modify reason
+	 * @param newObject the new object
+	 */
+	public LandModifyEvent(final ILand land, final LandModifyReason landModifyReason, final Object newObject) {
 
-        super(land);
-        this.newObject = newObject;
-        this.landModifyReason = landModifyReason;
-    }
+		super(land);
+		this.newObject = newObject;
+		this.landModifyReason = landModifyReason;
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoidapi.event.LandEvent#getHandlers()
-     */
-    @Override
-    public HandlerList getHandlers() {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoidapi.event.LandEvent#getHandlers()
+	 */
+	@Override
+	public HandlerList getHandlers() {
 
-        return handlers;
-    }
+		return handlers;
+	}
 
-    /**
-     * Gets the handler list.
-     *
-     * @return the handler list
-     */
-    public static HandlerList getHandlerList() {
+	/**
+	 * Gets the handler list.
+	 *
+	 * @return the handler list
+	 */
+	public static HandlerList getHandlerList() {
 
-        return handlers;
-    }
+		return handlers;
+	}
 
-    /**
-     * Gets the land modify reason.
-     *
-     * @return the land modify reason
-     */
-    public LandModifyReason getLandModifyReason() {
+	/**
+	 * Gets the land modify reason.
+	 *
+	 * @return the land modify reason
+	 */
+	public LandModifyReason getLandModifyReason() {
 
-        return landModifyReason;
-    }
-    
-    /**
-     * Gets the new object. This object can be an Area, a playerContainer (for RESIDENT or owner change),
-     * a flag, a permission, a String for a name change or a faction.
-     *
-     * @return the new object
-     */
-    public Object getNewObject() {
-    	
-    	return newObject;
-    }
+		return landModifyReason;
+	}
+	
+	/**
+	 * Gets the new object. This object can be an Area, a playerContainer (for RESIDENT or owner change),
+	 * a flag, a permission, a String for a name change or a faction.
+	 *
+	 * @return the new object
+	 */
+	public Object getNewObject() {
+		
+		return newObject;
+	}
 }

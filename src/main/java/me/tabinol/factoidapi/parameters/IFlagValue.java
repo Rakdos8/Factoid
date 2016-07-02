@@ -23,14 +23,14 @@ package me.tabinol.factoidapi.parameters;
  */
 public interface IFlagValue {
 
-    /**
-     * Copy of.
-     *
-     * @return a copy of this object
-     */
-    public IFlagValue copyOf();
+	/**
+	 * Copy of.
+	 *
+	 * @return a copy of this object
+	 */
+	public IFlagValue copyOf();
 
-    /**
+	/**
 	 * Sets the value. IMPORTANT: You must use the same type has the flag type:
 	 * Boolean, Double, String or String[].
 	 *
@@ -38,45 +38,45 @@ public interface IFlagValue {
 	 */
 	public void setValue(Object value);
 
-    /**
-     * Gets the value.
-     *
-     * @return the value
-     */
-    public Object getValue();
-    
-    /**
-     * Gets the value boolean.
-     *
-     * @return the value boolean
-     */
-    public boolean getValueBoolean();
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
+	public Object getValue();
+	
+	/**
+	 * Gets the value boolean.
+	 *
+	 * @return the value boolean
+	 */
+	public boolean getValueBoolean();
 
-    /**
-     * Gets the value double.
-     *
-     * @return the value double
-     */
-    public double getValueDouble();
+	/**
+	 * Gets the value double.
+	 *
+	 * @return the value double
+	 */
+	public double getValueDouble();
 
-    /**
-     * Gets the value string.
-     *
-     * @return the value string
-     */
-    public String getValueString();
-    
-    /**
-     * Gets the value string list.
-     *
-     * @return the value string list
-     */
-    public String[] getValueStringList();
+	/**
+	 * Gets the value string.
+	 *
+	 * @return the value string
+	 */
+	public String getValueString();
+	
+	/**
+	 * Gets the value string list.
+	 *
+	 * @return the value string list
+	 */
+	public String[] getValueStringList();
 
-    /**
-     * Gets the value in print format.
-     *
-     * @return the value in print format
-     */
-    public String getValuePrint();
+	/**
+	 * Gets the value in print format.
+	 *
+	 * @return the value in print format
+	 */
+	public String getValuePrint();
 }

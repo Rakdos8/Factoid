@@ -92,9 +92,9 @@ public class CommandEcosign extends CommandExec {
 				}
 				((Land) land).setForSale(false, 0, null);
 				land.setOwner(playerConf.getPlayerContainer());
-		        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ECONOMY.BUYLAND",
-		        		land.getName()));
-		        Factoid.getThisPlugin().iLog().write("The land " + land.getName() + " is purchased by : " + player.getName());
+				player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ECONOMY.BUYLAND",
+						land.getName()));
+				Factoid.getThisPlugin().iLog().write("The land " + land.getName() + " is purchased by : " + player.getName());
 			} else {
 
 				// Rent and unrent
@@ -112,9 +112,9 @@ public class CommandEcosign extends CommandExec {
 						// Real Error
 						e.printStackTrace();
 					}
-			        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ECONOMY.UNRENTLAND",
-			        		land.getName()));
-			        Factoid.getThisPlugin().iLog().write("The land " + land.getName() + " is unrented by : " + player.getName());
+					player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ECONOMY.UNRENTLAND",
+							land.getName()));
+					Factoid.getThisPlugin().iLog().write("The land " + land.getName() + " is unrented by : " + player.getName());
 				
 				} else if (!land.isRented()) {
 
@@ -146,9 +146,9 @@ public class CommandEcosign extends CommandExec {
 						// Real Error
 						e.printStackTrace();
 					}
-			        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ECONOMY.RENTLAND",
-			        		land.getName()));
-			        Factoid.getThisPlugin().iLog().write("The land " + land.getName() + " is rented by : " + player.getName());
+					player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ECONOMY.RENTLAND",
+							land.getName()));
+					Factoid.getThisPlugin().iLog().write("The land " + land.getName() + " is rented by : " + player.getName());
 				}
 			}
 		} else {
@@ -166,9 +166,9 @@ public class CommandEcosign extends CommandExec {
 						e.printStackTrace();
 					}
 					((Land) land).setForSale(false, 0, null);
-			        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ECONOMY.UNFORSALE", 
-			        		land.getName()));
-			        Factoid.getThisPlugin().iLog().write("The land " + land.getName() + " is no longer for sale by : " + player.getName());
+					player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ECONOMY.UNFORSALE", 
+							land.getName()));
+					Factoid.getThisPlugin().iLog().write("The land " + land.getName() + " is no longer for sale by : " + player.getName());
 				} else {
 
 					// Destroy rent sign
@@ -180,9 +180,9 @@ public class CommandEcosign extends CommandExec {
 					}
 					((Land) land).unSetRented();
 					((Land) land).unSetForRent();
-			        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ECONOMY.UNFORRENT",
-			        		land.getName()));
-			        Factoid.getThisPlugin().iLog().write("The land " + land.getName() + " is no longer for rent by : " + player.getName());
+					player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.ECONOMY.UNFORRENT",
+							land.getName()));
+					Factoid.getThisPlugin().iLog().write("The land " + land.getName() + " is no longer for rent by : " + player.getName());
 				}
 			}
 		}

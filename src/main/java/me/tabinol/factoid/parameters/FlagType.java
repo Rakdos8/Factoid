@@ -26,38 +26,38 @@ import me.tabinol.factoidapi.parameters.IFlagType;
  */
 public class FlagType extends ParameterType implements IFlagType {
 
-    /** The default value. */
-    private FlagValue defaultValue;
+	/** The default value. */
+	private FlagValue defaultValue;
 
-    /**
-     * Instantiates a new flag type.
-     *
-     * @param flagName the flag name
-     * @param defaultValue the default value
-     */
-    FlagType(String flagName, Object defaultValue) {
+	/**
+	 * Instantiates a new flag type.
+	 *
+	 * @param flagName the flag name
+	 * @param defaultValue the default value
+	 */
+	FlagType(String flagName, Object defaultValue) {
 
-        super(flagName);
-        this.defaultValue = new FlagValue(defaultValue);
-    }
-    
-    /**
-     * Sets the default value.
-     *
-     * @param defaultValue the new default value
-     */
-    public void setDefaultValue(FlagValue defaultValue) {
-        
-        this.defaultValue = defaultValue;
-    }
+		super(flagName);
+		this.defaultValue = new FlagValue(defaultValue);
+	}
+	
+	/**
+	 * Sets the default value.
+	 *
+	 * @param defaultValue the new default value
+	 */
+	public void setDefaultValue(FlagValue defaultValue) {
+		
+		this.defaultValue = defaultValue;
+	}
 
-    /**
-     * Gets the default value.
-     *
-     * @return the default value
-     */
-    public FlagValue getDefaultValue() {
-        
-        return defaultValue;
-    }
+	/**
+	 * Gets the default value.
+	 *
+	 * @return the default value
+	 */
+	public FlagValue getDefaultValue() {
+		
+		return defaultValue;
+	}
 }

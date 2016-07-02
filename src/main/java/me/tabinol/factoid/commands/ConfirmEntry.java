@@ -25,42 +25,42 @@ import me.tabinol.factoidapi.lands.ILand;
  */
 public class ConfirmEntry {
 
-    // Represent a Entry for a "/factoid confirm"
-    /**
-     * The Enum ConfirmType.
-     */
-    public enum ConfirmType {
+	// Represent a Entry for a "/factoid confirm"
+	/**
+	 * The Enum ConfirmType.
+	 */
+	public enum ConfirmType {
 
-        /** The remove land. */
-        REMOVE_LAND,
-        
-        /** The remove area. */
-        REMOVE_AREA,
-        
-        /** The land default. */
-        LAND_DEFAULT;
-    }
+		/** The remove land. */
+		REMOVE_LAND,
+		
+		/** The remove area. */
+		REMOVE_AREA,
+		
+		/** The land default. */
+		LAND_DEFAULT;
+	}
 
-    /** The confirm type. */
-    public final ConfirmType confirmType;
-    
-    /** The land. */
-    public final ILand land;
-    
-    /** The area nb. */
-    public final int areaNb;
+	/** The confirm type. */
+	public final ConfirmType confirmType;
+	
+	/** The land. */
+	public final ILand land;
+	
+	/** The area nb. */
+	public final int areaNb;
 
-    /**
-     * Instantiates a new confirm entry.
-     *
-     * @param confirmType the confirm type
-     * @param land the land
-     * @param areaNb the area nb
-     */
-    public ConfirmEntry(ConfirmType confirmType, ILand land, int areaNb) {
+	/**
+	 * Instantiates a new confirm entry.
+	 *
+	 * @param confirmType the confirm type
+	 * @param land the land
+	 * @param areaNb the area nb
+	 */
+	public ConfirmEntry(ConfirmType confirmType, ILand land, int areaNb) {
 
-        this.confirmType = confirmType;
-        this.land = land;
-        this.areaNb = areaNb;
-    }
+		this.confirmType = confirmType;
+		this.land = land;
+		this.areaNb = areaNb;
+	}
 }

@@ -30,37 +30,37 @@ import me.tabinol.factoid.exceptions.FactoidCommandException;
 @InfoCommand(name="page", allowConsole=true, forceParameter=true)
 public class CommandPage extends CommandExec {
 
-    /**
-     * Instantiates a new command page.
-     *
-     * @param entity the entity
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandPage(CommandEntities entity) throws FactoidCommandException {
+	/**
+	 * Instantiates a new command page.
+	 *
+	 * @param entity the entity
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	public CommandPage(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity);
-    }
+		super(entity);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
-     */
-    @Override
-    public void commandExecute() throws FactoidCommandException {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+	 */
+	@Override
+	public void commandExecute() throws FactoidCommandException {
 
-        ChatPage chatPage = entity.playerConf.getChatPage();
-        int pageNumber;
+		ChatPage chatPage = entity.playerConf.getChatPage();
+		int pageNumber;
 
-        if (chatPage == null) {
-            throw new FactoidCommandException("Page", entity.player, "COMMAND.PAGE.INVALID");
-        }
+		if (chatPage == null) {
+			throw new FactoidCommandException("Page", entity.player, "COMMAND.PAGE.INVALID");
+		}
 
-        String curArg = entity.argList.getNext();
+		String curArg = entity.argList.getNext();
 
-        try {
-            pageNumber = Integer.parseInt(curArg);
-        } catch (NumberFormatException ex) {
-            throw new FactoidCommandException("Page", entity.player, "COMMAND.PAGE.INVALID");
-        }
-        chatPage.getPage(pageNumber);
-    }
+		try {
+			pageNumber = Integer.parseInt(curArg);
+		} catch (NumberFormatException ex) {
+			throw new FactoidCommandException("Page", entity.player, "COMMAND.PAGE.INVALID");
+		}
+		chatPage.getPage(pageNumber);
+	}
 }

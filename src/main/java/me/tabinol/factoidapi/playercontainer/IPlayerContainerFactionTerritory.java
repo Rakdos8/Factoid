@@ -24,11 +24,11 @@ import me.tabinol.factoidapi.lands.ILand;
  * The Interface IPlayerContainerFactionTerritory. The faction in siege.
  */
 public interface IPlayerContainerFactionTerritory extends IPlayerContainer {
-    
-    /**
-     * Gets the land.
-     *
-     * @return the land
-     */
-    public ILand getLand();
+	
+	/**
+	 * Gets the land.
+	 *
+	 * @return the land
+	 */
+	public ILand getLand();
 }

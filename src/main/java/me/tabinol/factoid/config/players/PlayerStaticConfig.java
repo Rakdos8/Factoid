@@ -41,121 +41,121 @@ import org.bukkit.entity.Player;
  */
 public class PlayerStaticConfig implements IPlayerStaticConfig {
 
-    /** The player conf list. */
-    private final Map<CommandSender, PlayerConfEntry> playerConfList;
-    
-    /** The vanish. */
-    private final Vanish vanish;
-    
-    /** The chat. */
-    private final Chat chat;
+	/** The player conf list. */
+	private final Map<CommandSender, PlayerConfEntry> playerConfList;
+	
+	/** The vanish. */
+	private final Vanish vanish;
+	
+	/** The chat. */
+	private final Chat chat;
 
-    /**
-     * Instantiates a new player static config.
-     */
-    public PlayerStaticConfig() {
+	/**
+	 * Instantiates a new player static config.
+	 */
+	public PlayerStaticConfig() {
 
-        playerConfList = new HashMap<CommandSender, PlayerConfEntry>();
+		playerConfList = new HashMap<CommandSender, PlayerConfEntry>();
 
-        // Check for VanishNoPacket plugin
-        if (Factoid.getThisPlugin().iDependPlugin().getVanishNoPacket() != null) {
-            vanish = new VanishNoPacket();
+		// Check for VanishNoPacket plugin
+		if (Factoid.getThisPlugin().iDependPlugin().getVanishNoPacket() != null) {
+			vanish = new VanishNoPacket();
 
-            // Check for Essentials plugin
-        } else if (Factoid.getThisPlugin().iDependPlugin().getEssentials() != null) {
-            vanish = new VanishEssentials();
+			// Check for Essentials plugin
+		} else if (Factoid.getThisPlugin().iDependPlugin().getEssentials() != null) {
+			vanish = new VanishEssentials();
 
-            // Dummy Vanish if no plugins
-        } else {
-            vanish = new DummyVanish();
-        }
-        
-        // Check for Chat plugin
-        if (Factoid.getThisPlugin().iDependPlugin().getEssentials() != null) {
-        	chat = new ChatEssentials();
-        } else {
-        	chat = new ChatFactoid();
-        }
-    }
+			// Dummy Vanish if no plugins
+		} else {
+			vanish = new DummyVanish();
+		}
+		
+		// Check for Chat plugin
+		if (Factoid.getThisPlugin().iDependPlugin().getEssentials() != null) {
+			chat = new ChatEssentials();
+		} else {
+			chat = new ChatFactoid();
+		}
+	}
 
-    // Methods for geting a player static config
-    /**
-     * Adds the.
-     *
-     * @param sender the sender
-     * @return the player conf entry
-     */
-    public PlayerConfEntry add(CommandSender sender) {
+	// Methods for geting a player static config
+	/**
+	 * Adds the.
+	 *
+	 * @param sender the sender
+	 * @return the player conf entry
+	 */
+	public PlayerConfEntry add(CommandSender sender) {
 
-        PlayerConfEntry entry = new PlayerConfEntry(sender);
-        playerConfList.put(sender, entry);
+		PlayerConfEntry entry = new PlayerConfEntry(sender);
+		playerConfList.put(sender, entry);
 
-        return entry;
-    }
+		return entry;
+	}
 
-    /**
-     * Removes the.
-     *
-     * @param sender the sender
-     */
-    public void remove(CommandSender sender) {
+	/**
+	 * Removes the.
+	 *
+	 * @param sender the sender
+	 */
+	public void remove(CommandSender sender) {
 
-        PlayerConfEntry entry = playerConfList.get(sender);
-        
-        // First, remove AutoCancelSelect
-        entry.setAutoCancelSelect(false);
+		PlayerConfEntry entry = playerConfList.get(sender);
+		
+		// First, remove AutoCancelSelect
+		entry.setAutoCancelSelect(false);
 
-        playerConfList.remove(sender);
-    }
+		playerConfList.remove(sender);
+	}
 
-    /* (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see me.tabinol.factoid.config.players.IPlayerStaticConfig#get(org.bukkit.command.CommandSender)
 	 */
-    @Override
+	@Override
 	public PlayerConfEntry get(CommandSender sender) {
 
-        return playerConfList.get(sender);
-    }
+		return playerConfList.get(sender);
+	}
 
-    /**
-     * Adds the all.
-     */
-    public void addAll() {
+	/**
+	 * Adds the all.
+	 */
+	public void addAll() {
 
-        // Add the consle in the list
-        add(Factoid.getThisPlugin().getServer().getConsoleSender());
+		// Add the consle in the list
+		add(Factoid.getThisPlugin().getServer().getConsoleSender());
 
-        // Add online players
-        for (CommandSender sender : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
-            add(sender);
-        }
-    }
+		// Add online players
+		for (CommandSender sender : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
+			add(sender);
+		}
+	}
 
-    /**
-     * Removes the all.
-     */
-    public void removeAll() {
+	/**
+	 * Removes the all.
+	 */
+	public void removeAll() {
 
-        for (PlayerConfEntry entry : playerConfList.values()) {
+		for (PlayerConfEntry entry : playerConfList.values()) {
 
-            // First, remove AutoCancelSelect
-            entry.setAutoCancelSelect(false);
+			// First, remove AutoCancelSelect
+			entry.setAutoCancelSelect(false);
 
-        }
-        playerConfList.clear();
-    }
-    
-    /* (non-Javadoc)
+		}
+		playerConfList.clear();
+	}
+	
+	/* (non-Javadoc)
 	 * @see me.tabinol.factoid.config.players.IPlayerStaticConfig#isVanished(org.bukkit.entity.Player)
 	 */
-    @Override
+	@Override
 	public boolean isVanished(Player player) {
-        
-        return vanish.isVanished(player);
-    }
-    
-    public Chat getChat() {
-    	
-    	return chat;
-    }
+		
+		return vanish.isVanished(player);
+	}
+	
+	public Chat getChat() {
+		
+		return chat;
+	}
 }

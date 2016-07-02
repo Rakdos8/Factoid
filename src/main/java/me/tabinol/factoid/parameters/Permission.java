@@ -27,84 +27,84 @@ import org.bukkit.ChatColor;
  */
 public class Permission implements IPermission {
 
-    /** The perm type. */
-    PermissionType permType;
-    
-    /** The value. */
-    boolean value;
-    
-    /** The heritable. */
-    boolean heritable;
+	/** The perm type. */
+	PermissionType permType;
+	
+	/** The value. */
+	boolean value;
+	
+	/** The heritable. */
+	boolean heritable;
 
-    /**
-     * Instantiates a new permission.
-     *
-     * @param permType the perm type
-     * @param value the value
-     * @param heritable the heritable
-     */
-    public Permission(final PermissionType permType, final boolean value, final boolean heritable) {
+	/**
+	 * Instantiates a new permission.
+	 *
+	 * @param permType the perm type
+	 * @param value the value
+	 * @param heritable the heritable
+	 */
+	public Permission(final PermissionType permType, final boolean value, final boolean heritable) {
 
-        this.permType = permType;
-        this.value = value;
-        this.heritable = heritable;
-    }
+		this.permType = permType;
+		this.value = value;
+		this.heritable = heritable;
+	}
 
-    public Permission copyOf() {
-    	
-    	return new Permission(permType, value, heritable);
-    }
-    
-    /**
-     * Gets the perm type.
-     *
-     * @return the perm type
-     */
-    public PermissionType getPermType() {
+	public Permission copyOf() {
+		
+		return new Permission(permType, value, heritable);
+	}
+	
+	/**
+	 * Gets the perm type.
+	 *
+	 * @return the perm type
+	 */
+	public PermissionType getPermType() {
 
-        return permType;
-    }
+		return permType;
+	}
 
-    /**
-     * Gets the value.
-     *
-     * @return the value
-     */
-    public boolean getValue() {
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
+	public boolean getValue() {
 
-        return value;
-    }
+		return value;
+	}
 
-    /**
-     * Gets the value print.
-     *
-     * @return the value print
-     */
-    public final String getValuePrint() {
+	/**
+	 * Gets the value print.
+	 *
+	 * @return the value print
+	 */
+	public final String getValuePrint() {
 
-        if (value) {
-            return "" + ChatColor.GREEN + value;
-        } else {
-            return "" + ChatColor.RED + value;
-        }
-    }
+		if (value) {
+			return "" + ChatColor.GREEN + value;
+		} else {
+			return "" + ChatColor.RED + value;
+		}
+	}
 
-    /**
-     * Checks if is heritable.
-     *
-     * @return true, if is heritable
-     */
-    public boolean isHeritable() {
+	/**
+	 * Checks if is heritable.
+	 *
+	 * @return true, if is heritable
+	 */
+	public boolean isHeritable() {
 
-        return heritable;
-    }
+		return heritable;
+	}
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
 
-        return permType.toString() + ":" + value + ":" + heritable;
-    }
+		return permType.toString() + ":" + value + ":" + heritable;
+	}
 }

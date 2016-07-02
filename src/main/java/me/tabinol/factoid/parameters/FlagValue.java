@@ -71,129 +71,129 @@ public class FlagValue implements IFlagValue {
 		this.value = value;
 	}
 
-    /**
-     * Gets the value.
-     *
-     * @return the value
-     */
-    public final Object getValue() {
-        
-        return value;
-    }
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
+	public final Object getValue() {
+		
+		return value;
+	}
 
-    /**
-     * Gets the value boolean.
-     *
-     * @return the value boolean
-     */
-    public final boolean getValueBoolean() {
-        
-        return (Boolean) value;
-    }
+	/**
+	 * Gets the value boolean.
+	 *
+	 * @return the value boolean
+	 */
+	public final boolean getValueBoolean() {
+		
+		return (Boolean) value;
+	}
 
-    /**
-     * Gets the value double.
-     *
-     * @return the value double
-     */
-    public final double getValueDouble() {
-        
-        return (Double) value;
-    }
+	/**
+	 * Gets the value double.
+	 *
+	 * @return the value double
+	 */
+	public final double getValueDouble() {
+		
+		return (Double) value;
+	}
 
-    /**
-     * Gets the value string.
-     *
-     * @return the value string
-     */
-    public final String getValueString() {
-        
-        return (String) value;
-    }
-    
-    /**
-     * Gets the value string list.
-     *
-     * @return the value string list
-     */
-    public final String[] getValueStringList() {
-        
-        return (String[]) value;
-    }
+	/**
+	 * Gets the value string.
+	 *
+	 * @return the value string
+	 */
+	public final String getValueString() {
+		
+		return (String) value;
+	}
+	
+	/**
+	 * Gets the value string list.
+	 *
+	 * @return the value string list
+	 */
+	public final String[] getValueStringList() {
+		
+		return (String[]) value;
+	}
 
-    /**
-     * Gets the value print.
-     *
-     * @return the value print
-     */
-    public final String getValuePrint() {
+	/**
+	 * Gets the value print.
+	 *
+	 * @return the value print
+	 */
+	public final String getValuePrint() {
 
-        if(value instanceof Boolean) {
-            if((Boolean) value) {
-                return "" + ChatColor.GREEN + true;
-            } else {
-                return "" + ChatColor.RED + false;
-            }
-        }
-        
-        if(value instanceof Double) {
-        	return ((Double) value).toString();
-        }
-        
-        if(value instanceof String) {
-            return (String) value;
-        }
-        
-        if(value instanceof String[]) {
-            StringBuilder sb = new StringBuilder();
-            for(String st : (String[]) value) {
-                if(sb.length() != 0) {
-                    sb.append("; ");
-                }
-                sb.append(StringChanges.toQuote(st));
-            }
-            return sb.toString();
-        }
-        
-        return null;
-    }
-    
-    /**
-     * Gets the flag value from string.
-     *
-     * @param str the string
-     * @param ft the flag type
-     * @return the flag value
-     */
-    public static FlagValue getFromString(String str, FlagType ft) {
-    	
-        FlagValue value;
-    	
-    	if(ft.isRegistered()) {
-        	if (ft.getDefaultValue().getValue() instanceof Boolean) {
-                String[] strs = str.split(" ");
-                value = new FlagValue(Boolean.parseBoolean(strs[0]));
-        	} else if (ft.getDefaultValue().getValue() instanceof Double) {
-        		String[] strs = str.split(" ");
-        		value = new FlagValue(Double.parseDouble(strs[0]));
-        	} else if (ft.getDefaultValue().getValue() instanceof String) {
-        		value = new FlagValue(StringChanges.fromQuote(str));
-        	} else if (ft.getDefaultValue().getValue() instanceof String[]) {
-        		ArrayList<String> result = new ArrayList<String>();
-        		String[] strs = StringChanges.splitKeepQuote(str, ";");
-        		for (String st : strs) {
-                result.add(StringChanges.fromQuote(st));
-        		}
-        		value = new FlagValue(result.toArray(new String[0]));
-        	} else {
-        		value = null;
-        	}
-    	}else {
-    		
-    		// not registered save raw information
-    		value = new FlagValue(str);
-    	}
-    	
-    	return value;
-    }
+		if(value instanceof Boolean) {
+			if((Boolean) value) {
+				return "" + ChatColor.GREEN + true;
+			} else {
+				return "" + ChatColor.RED + false;
+			}
+		}
+		
+		if(value instanceof Double) {
+			return ((Double) value).toString();
+		}
+		
+		if(value instanceof String) {
+			return (String) value;
+		}
+		
+		if(value instanceof String[]) {
+			StringBuilder sb = new StringBuilder();
+			for(String st : (String[]) value) {
+				if(sb.length() != 0) {
+					sb.append("; ");
+				}
+				sb.append(StringChanges.toQuote(st));
+			}
+			return sb.toString();
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Gets the flag value from string.
+	 *
+	 * @param str the string
+	 * @param ft the flag type
+	 * @return the flag value
+	 */
+	public static FlagValue getFromString(String str, FlagType ft) {
+		
+		FlagValue value;
+		
+		if(ft.isRegistered()) {
+			if (ft.getDefaultValue().getValue() instanceof Boolean) {
+				String[] strs = str.split(" ");
+				value = new FlagValue(Boolean.parseBoolean(strs[0]));
+			} else if (ft.getDefaultValue().getValue() instanceof Double) {
+				String[] strs = str.split(" ");
+				value = new FlagValue(Double.parseDouble(strs[0]));
+			} else if (ft.getDefaultValue().getValue() instanceof String) {
+				value = new FlagValue(StringChanges.fromQuote(str));
+			} else if (ft.getDefaultValue().getValue() instanceof String[]) {
+				ArrayList<String> result = new ArrayList<String>();
+				String[] strs = StringChanges.splitKeepQuote(str, ";");
+				for (String st : strs) {
+				result.add(StringChanges.fromQuote(st));
+				}
+				value = new FlagValue(result.toArray(new String[0]));
+			} else {
+				value = null;
+			}
+		}else {
+			
+			// not registered save raw information
+			value = new FlagValue(str);
+		}
+		
+		return value;
+	}
 }

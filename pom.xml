@@ -7,9 +7,8 @@
 
 	<name>Factoid</name>
 	<version>1.2.1</version>
-	<description>Plugin permettant de mettre à jour le /worth du plugin Essentials parmi les zones définies.</description>
+	<description>Plugin permettant de gérer des zones avec des permissions prédifinies.</description>
 	<url>http://www.tabinol.me</url>
-	<!-- *** Change version here *** -->
 
 	<packaging>jar</packaging>
 
@@ -33,16 +32,16 @@
 			<url>http://nexus.modulmonde.com/content/groups/modulmonde/</url>
 		</repository>
 
-		<!-- *** Dépôt Essentials *** -->
-		<repository>
-			<id>ess-repo</id>
-			<url>http://repo.ess3.net/content/groups/essentials</url>
-		</repository>
-
 		<!-- *** Dépôt Vault *** -->
 		<repository>
 			<id>vault-repo</id>
 			<url>http://nexus.theyeticave.net/content/repositories/pub_releases</url>
+		</repository>
+
+		<!-- *** Dépôt Essentials *** -->
+		<repository>
+			<id>ess-repo</id>
+			<url>http://repo.ess3.net/content/groups/essentials</url>
 		</repository>
 
 		<!-- *** Dépôt WorldEdit *** -->

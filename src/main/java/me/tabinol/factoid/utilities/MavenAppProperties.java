@@ -35,57 +35,54 @@ import java.util.logging.Logger;
  */
 public class MavenAppProperties {
 
-    /** The properties. */
-    Properties properties;
+	/** The properties. */
+	Properties properties;
 
-    /**
-     * Instantiates a new maven app properties.
-     */
-    public MavenAppProperties() {
-        this.properties = new Properties();
-    }
+	/**
+	 * Instantiates a new maven app properties.
+	 */
+	public MavenAppProperties() {
+		this.properties = new Properties();
+	}
 
-    /**
-     * Load properties.
-     */
-    public void loadProperties() {
+	/**
+	 * Load properties.
+	 */
+	public void loadProperties() {
+		try {
+			final File jarloc = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getCanonicalFile();
+			try(final JarFile jar = new JarFile(jarloc)) {
+				final JarEntry entry = jar.getJarEntry("app.properties");
+				try(final InputStream resource = jar.getInputStream(entry)) {
+					properties.load(resource);
+				}
+			}
+		} catch (final URISyntaxException ex) {
+			Logger.getLogger(MavenAppProperties.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (final IOException ex) {
+			Logger.getLogger(MavenAppProperties.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
 
-        try {
-            
-            File jarloc = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getCanonicalFile();
-            JarFile jar = new JarFile(jarloc);
-            JarEntry entry = jar.getJarEntry("app.properties");
-            InputStream resource = jar.getInputStream(entry);
-            properties.load(resource);
-            resource.close();
-            jar.close();
-        
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(MavenAppProperties.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(MavenAppProperties.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+	/**
+	 * Gets the property string.
+	 *
+	 * @param path the path
+	 * @return the property string
+	 */
+	public String getPropertyString(final String path) {
 
-    /**
-     * Gets the property string.
-     *
-     * @param path the path
-     * @return the property string
-     */
-    public String getPropertyString(String path) {
+		return properties.getProperty(path);
+	}
 
-        return properties.getProperty(path);
-    }
+	/**
+	 * Gets the property int.
+	 *
+	 * @param path the path
+	 * @return the property int
+	 */
+	public int getPropertyInt(final String path) {
 
-    /**
-     * Gets the property int.
-     *
-     * @param path the path
-     * @return the property int
-     */
-    public int getPropertyInt(String path) {
-
-        return Integer.parseInt(properties.getProperty(path));
-    }
+		return Integer.parseInt(properties.getProperty(path));
+	}
 }

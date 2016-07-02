@@ -34,177 +34,177 @@ import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
  * The Class Approve.
  */
 public class Approve {
-    
-    /** The action. */
-    private final LandAction action;
-    
-    /** The land name. */
-    private final String landName;
-    
-    /** The type */
-    private final IType type;
-    
-    /** The removed area id. */
-    private final int removedAreaId;
-    
-    /** The new area. */
-    private final ICuboidArea newArea;
-    
-    /** The owner. */
-    private final IPlayerContainer owner;
-    
-    /** The parent. */
-    private final ILand parent;
-    
-    /** The price. */
-    private final double price;
-    
-    /** The date time. */
-    private final Calendar dateTime;
-    
-    /**
-     * Instantiates a new approve.
-     *
-     * @param landName the land name
-     * @param type the type
-     * @param action the action
-     * @param removedAreaId the removed area id
-     * @param newArea the new area
-     * @param owner the owner
-     * @param parent the parent
-     * @param price the price
-     * @param dateTime the date time
-     */
-    public Approve(String landName, IType type, LandAction action, int removedAreaId, 
-            ICuboidArea newArea, IPlayerContainer owner, ILand parent, double price,
-            Calendar dateTime) {
-        
-        this.action = action;
-        this.landName = landName.toLowerCase();
-        this.type = type;
-        this.removedAreaId = removedAreaId;
-        this.newArea = newArea;
-        this.owner = owner;
-        this.parent = parent;
-        this.price = price;
-        this.dateTime = dateTime;
-    }
+	
+	/** The action. */
+	private final LandAction action;
+	
+	/** The land name. */
+	private final String landName;
+	
+	/** The type */
+	private final IType type;
+	
+	/** The removed area id. */
+	private final int removedAreaId;
+	
+	/** The new area. */
+	private final ICuboidArea newArea;
+	
+	/** The owner. */
+	private final IPlayerContainer owner;
+	
+	/** The parent. */
+	private final ILand parent;
+	
+	/** The price. */
+	private final double price;
+	
+	/** The date time. */
+	private final Calendar dateTime;
+	
+	/**
+	 * Instantiates a new approve.
+	 *
+	 * @param landName the land name
+	 * @param type the type
+	 * @param action the action
+	 * @param removedAreaId the removed area id
+	 * @param newArea the new area
+	 * @param owner the owner
+	 * @param parent the parent
+	 * @param price the price
+	 * @param dateTime the date time
+	 */
+	public Approve(String landName, IType type, LandAction action, int removedAreaId, 
+			ICuboidArea newArea, IPlayerContainer owner, ILand parent, double price,
+			Calendar dateTime) {
+		
+		this.action = action;
+		this.landName = landName.toLowerCase();
+		this.type = type;
+		this.removedAreaId = removedAreaId;
+		this.newArea = newArea;
+		this.owner = owner;
+		this.parent = parent;
+		this.price = price;
+		this.dateTime = dateTime;
+	}
 
-    /**
-     * Gets the action.
-     *
-     * @return the action
-     */
-    public LandAction getAction() {
-        
-        return action;
-    }
-    
-    /**
-     * Gets the land name.
-     *
-     * @return the land name
-     */
-    public String getLandName() {
-        
-        return landName;
-    }
-    
-    /**
-     * Gets the type.
-     *
-     * @return the type
-     */
-    public IType getType() {
-    	
-    	return type;
-    }
-    
-    /**
-     * Gets the removed area id.
-     *
-     * @return the removed area id
-     */
-    public int getRemovedAreaId() {
-        
-        return removedAreaId;
-    }
-    
-    /**
-     * Gets the new area.
-     *
-     * @return the new area
-     */
-    public ICuboidArea getNewArea() {
-        
-        return newArea;
-    }
-    
-    /**
-     * Gets the owner.
-     *
-     * @return the owner
-     */
-    public IPlayerContainer getOwner() {
-        
-        return owner;
-    }
-    
-    /**
-     * Gets the parent.
-     *
-     * @return the parent
-     */
-    public ILand getParent() {
-        
-        return parent;
-    }
-    
-    /**
-     * Gets the price.
-     *
-     * @return the price
-     */
-    public double getPrice() {
-        
-        return price;
-    }
-    
-    /**
-     * Gets the date time.
-     *
-     * @return the date time
-     */
-    public Calendar getDateTime() {
-        
-        return dateTime;
-    }
-    
-    /**
-     * Creates the action.
-     */
-    public void createAction() {
-        
-        if(action == LandAction.AREA_ADD) {
-            Factoid.getThisPlugin().iLands().getLand(landName).addArea(newArea, price);
-        } else if(action == LandAction.AREA_REMOVE) {
-            Factoid.getThisPlugin().iLands().getLand(landName).removeArea(removedAreaId);
-        } else if(action == LandAction.AREA_MODIFY) {
-            Factoid.getThisPlugin().iLands().getLand(landName).replaceArea(removedAreaId, newArea, price);
-        } else if(action == LandAction.LAND_ADD) {
-            try {
-                Factoid.getThisPlugin().iLands().createLand(landName, owner, newArea, parent, price, type);
-            } catch (FactoidLandException ex) {
-                Logger.getLogger(Approve.class.getName()).log(Level.SEVERE, "On land create", ex);
-            }
-        } else if(action == LandAction.LAND_REMOVE) {
-            try {
-                Factoid.getThisPlugin().iLands().removeLand(landName);
-            } catch (FactoidLandException ex) {
-                Logger.getLogger(Approve.class.getName()).log(Level.SEVERE, "On land remove", ex);
-            }
-        } else if(action == LandAction.LAND_PARENT) {
-        	Factoid.getThisPlugin().iLands().getLand(landName).setParent(parent);
-        }
-    }
+	/**
+	 * Gets the action.
+	 *
+	 * @return the action
+	 */
+	public LandAction getAction() {
+		
+		return action;
+	}
+	
+	/**
+	 * Gets the land name.
+	 *
+	 * @return the land name
+	 */
+	public String getLandName() {
+		
+		return landName;
+	}
+	
+	/**
+	 * Gets the type.
+	 *
+	 * @return the type
+	 */
+	public IType getType() {
+		
+		return type;
+	}
+	
+	/**
+	 * Gets the removed area id.
+	 *
+	 * @return the removed area id
+	 */
+	public int getRemovedAreaId() {
+		
+		return removedAreaId;
+	}
+	
+	/**
+	 * Gets the new area.
+	 *
+	 * @return the new area
+	 */
+	public ICuboidArea getNewArea() {
+		
+		return newArea;
+	}
+	
+	/**
+	 * Gets the owner.
+	 *
+	 * @return the owner
+	 */
+	public IPlayerContainer getOwner() {
+		
+		return owner;
+	}
+	
+	/**
+	 * Gets the parent.
+	 *
+	 * @return the parent
+	 */
+	public ILand getParent() {
+		
+		return parent;
+	}
+	
+	/**
+	 * Gets the price.
+	 *
+	 * @return the price
+	 */
+	public double getPrice() {
+		
+		return price;
+	}
+	
+	/**
+	 * Gets the date time.
+	 *
+	 * @return the date time
+	 */
+	public Calendar getDateTime() {
+		
+		return dateTime;
+	}
+	
+	/**
+	 * Creates the action.
+	 */
+	public void createAction() {
+		
+		if(action == LandAction.AREA_ADD) {
+			Factoid.getThisPlugin().iLands().getLand(landName).addArea(newArea, price);
+		} else if(action == LandAction.AREA_REMOVE) {
+			Factoid.getThisPlugin().iLands().getLand(landName).removeArea(removedAreaId);
+		} else if(action == LandAction.AREA_MODIFY) {
+			Factoid.getThisPlugin().iLands().getLand(landName).replaceArea(removedAreaId, newArea, price);
+		} else if(action == LandAction.LAND_ADD) {
+			try {
+				Factoid.getThisPlugin().iLands().createLand(landName, owner, newArea, parent, price, type);
+			} catch (FactoidLandException ex) {
+				Logger.getLogger(Approve.class.getName()).log(Level.SEVERE, "On land create", ex);
+			}
+		} else if(action == LandAction.LAND_REMOVE) {
+			try {
+				Factoid.getThisPlugin().iLands().removeLand(landName);
+			} catch (FactoidLandException ex) {
+				Logger.getLogger(Approve.class.getName()).log(Level.SEVERE, "On land remove", ex);
+			}
+		} else if(action == LandAction.LAND_PARENT) {
+			Factoid.getThisPlugin().iLands().getLand(landName).setParent(parent);
+		}
+	}
 }

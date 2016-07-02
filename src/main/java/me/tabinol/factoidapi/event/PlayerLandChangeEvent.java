@@ -31,151 +31,151 @@ import org.bukkit.event.HandlerList;
  * moves from a land to an other, or to an other world.
  */
 public class PlayerLandChangeEvent extends LandEvent implements Cancellable {
-    
-    /** The Constant handlers. */
-    private static final HandlerList handlers = new HandlerList();
-    
-    /** The cancelled. */
-    protected boolean cancelled = false;
-    
-    /** The player. */
-    Player player;
-    
-    /** The from loc. */
-    Location fromLoc;
-    
-    /** The to loc. */
-    Location toLoc;
-    
-    /** The last land. */
-    ILand lastLand;
-    
-    /** The last dummy land. */
-    IDummyLand lastDummyLand;
-    
-    /** The if this is a player teleport. */
-    boolean isTp;
+	
+	/** The Constant handlers. */
+	private static final HandlerList handlers = new HandlerList();
+	
+	/** The cancelled. */
+	protected boolean cancelled = false;
+	
+	/** The player. */
+	Player player;
+	
+	/** The from loc. */
+	Location fromLoc;
+	
+	/** The to loc. */
+	Location toLoc;
+	
+	/** The last land. */
+	ILand lastLand;
+	
+	/** The last dummy land. */
+	IDummyLand lastDummyLand;
+	
+	/** The if this is a player teleport. */
+	boolean isTp;
 
-    /**
-     * Instantiates a new player land change event.
-     *
-     * @param lastDummyLand the last dummy land
-     * @param dummyLand the actual dummy land
-     * @param player the player
-     * @param fromLoc from location
-     * @param toLoc the to location
-     * @param isTp the is a player teleport
-     */
-    public PlayerLandChangeEvent(final IDummyLand lastDummyLand, final IDummyLand dummyLand, final Player player, 
-            final Location fromLoc, final Location toLoc, final boolean isTp) {
+	/**
+	 * Instantiates a new player land change event.
+	 *
+	 * @param lastDummyLand the last dummy land
+	 * @param dummyLand the actual dummy land
+	 * @param player the player
+	 * @param fromLoc from location
+	 * @param toLoc the to location
+	 * @param isTp the is a player teleport
+	 */
+	public PlayerLandChangeEvent(final IDummyLand lastDummyLand, final IDummyLand dummyLand, final Player player, 
+			final Location fromLoc, final Location toLoc, final boolean isTp) {
 
-        super(dummyLand);
-        this.lastDummyLand = lastDummyLand;
-        
-        if(lastDummyLand instanceof ILand) {
-            lastLand = (ILand) lastDummyLand;
-        } else {
-            lastLand = null;
-        }
-        
-        this.player = player;
-        this.fromLoc = fromLoc;
-        this.toLoc = toLoc;
-        this.isTp = isTp;
-    }
+		super(dummyLand);
+		this.lastDummyLand = lastDummyLand;
+		
+		if(lastDummyLand instanceof ILand) {
+			lastLand = (ILand) lastDummyLand;
+		} else {
+			lastLand = null;
+		}
+		
+		this.player = player;
+		this.fromLoc = fromLoc;
+		this.toLoc = toLoc;
+		this.isTp = isTp;
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoidapi.event.LandEvent#getHandlers()
-     */
-    @Override
-    public HandlerList getHandlers() {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoidapi.event.LandEvent#getHandlers()
+	 */
+	@Override
+	public HandlerList getHandlers() {
 
-        return handlers;
-    }
+		return handlers;
+	}
 
-    /**
-     * Gets the handler list.
-     *
-     * @return the handler list
-     */
-    public static HandlerList getHandlerList() {
+	/**
+	 * Gets the handler list.
+	 *
+	 * @return the handler list
+	 */
+	public static HandlerList getHandlerList() {
 
-        return handlers;
-    }
+		return handlers;
+	}
 
-    /* (non-Javadoc)
-     * @see org.bukkit.event.Cancellable#isCancelled()
-     */
-    public boolean isCancelled() {
-        
-        return cancelled;
-    }
+	/* (non-Javadoc)
+	 * @see org.bukkit.event.Cancellable#isCancelled()
+	 */
+	public boolean isCancelled() {
+		
+		return cancelled;
+	}
 
-    /* (non-Javadoc)
-     * @see org.bukkit.event.Cancellable#setCancelled(boolean)
-     */
-    public void setCancelled(boolean bln) {
-        
-        cancelled = bln;
-    }
-    
-    /**
-     * Gets the player.
-     *
-     * @return the player
-     */
-    public Player getPlayer() {
-        
-        return player;
-    }
-    
-    /**
-     * Gets the last land.
-     *
-     * @return the last land
-     */
-    public ILand getLastLand() {
-        
-        return lastLand;
-    }
-    
-    /**
-     * Gets the last land or outside area (World).
-     *
-     * @return the last land or dummy land (World)
-     */
-    public IDummyLand getLastLandOrOutside() {
-        
-        return lastDummyLand;
-    }
-    
-    /**
-     * Gets the from location.
-     *
-     * @return the from location
-     */
-    public Location getFromLoc() {
-        
-        return fromLoc;
-    }
+	/* (non-Javadoc)
+	 * @see org.bukkit.event.Cancellable#setCancelled(boolean)
+	 */
+	public void setCancelled(boolean bln) {
+		
+		cancelled = bln;
+	}
+	
+	/**
+	 * Gets the player.
+	 *
+	 * @return the player
+	 */
+	public Player getPlayer() {
+		
+		return player;
+	}
+	
+	/**
+	 * Gets the last land.
+	 *
+	 * @return the last land
+	 */
+	public ILand getLastLand() {
+		
+		return lastLand;
+	}
+	
+	/**
+	 * Gets the last land or outside area (World).
+	 *
+	 * @return the last land or dummy land (World)
+	 */
+	public IDummyLand getLastLandOrOutside() {
+		
+		return lastDummyLand;
+	}
+	
+	/**
+	 * Gets the from location.
+	 *
+	 * @return the from location
+	 */
+	public Location getFromLoc() {
+		
+		return fromLoc;
+	}
 
-    /**
-     * Gets the to location.
-     *
-     * @return the to location
-     */
-    public Location getToLoc() {
-        
-        return toLoc;
-    }
-    
-    /**
-     * Checks if this is a player teleport.
-     *
-     * @return true, if it is a player teleport
-     */
-    public boolean isTp() {
-        
-        return isTp;
-    }
+	/**
+	 * Gets the to location.
+	 *
+	 * @return the to location
+	 */
+	public Location getToLoc() {
+		
+		return toLoc;
+	}
+	
+	/**
+	 * Checks if this is a player teleport.
+	 *
+	 * @return true, if it is a player teleport
+	 */
+	public boolean isTp() {
+		
+		return isTp;
+	}
 }

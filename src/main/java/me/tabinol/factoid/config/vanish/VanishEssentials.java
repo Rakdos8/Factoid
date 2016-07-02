@@ -31,26 +31,26 @@ import org.bukkit.entity.Player;
  * @author Tabinol
  */
 public class VanishEssentials implements Vanish {
-    
-    /** The essentials. */
-    private final Essentials essentials;
-    
-    /**
-     * Instantiates a new vanish essentials.
-     */
-    public VanishEssentials() {
-        
-        essentials = (Essentials)Factoid.getThisPlugin().iDependPlugin().getEssentials();
-    }
-    
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.config.vanish.Vanish#isVanished(org.bukkit.entity.Player)
-     */
-    @Override
-    public boolean isVanished(Player player) {
-        
-        return (Factoid.getThisPlugin().iConf().isSpectatorIsVanish() 
-        		&& BKVersion.isSpectatorMode(player))
-        		|| essentials.getUser(player).isVanished();
-    }
+	
+	/** The essentials. */
+	private final Essentials essentials;
+	
+	/**
+	 * Instantiates a new vanish essentials.
+	 */
+	public VanishEssentials() {
+		
+		essentials = (Essentials)Factoid.getThisPlugin().iDependPlugin().getEssentials();
+	}
+	
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.config.vanish.Vanish#isVanished(org.bukkit.entity.Player)
+	 */
+	@Override
+	public boolean isVanished(Player player) {
+		
+		return (Factoid.getThisPlugin().iConf().isSpectatorIsVanish() 
+				&& BKVersion.isSpectatorMode(player))
+				|| essentials.getUser(player).isVanished();
+	}
 }

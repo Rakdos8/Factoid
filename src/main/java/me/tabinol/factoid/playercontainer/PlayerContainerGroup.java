@@ -32,69 +32,69 @@ import org.bukkit.entity.Player;
  */
 public class PlayerContainerGroup extends PlayerContainer 
 	implements IPlayerContainerGroup {
-    
-    /**
-     * Instantiates a new player container group.
-     *
-     * @param groupName the group name
-     */
-    public PlayerContainerGroup(String groupName) {
-        
-        super(groupName, EPlayerContainerType.GROUP, true);
-    }
-    
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
-     */
-    @Override
-    public boolean equals(IPlayerContainer container2) {
-        
-        return container2 instanceof PlayerContainerGroup &&
-                name.equalsIgnoreCase(container2.getName());
-    }
+	
+	/**
+	 * Instantiates a new player container group.
+	 *
+	 * @param groupName the group name
+	 */
+	public PlayerContainerGroup(String groupName) {
+		
+		super(groupName, EPlayerContainerType.GROUP, true);
+	}
+	
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#equals(me.tabinol.factoid.playercontainer.PlayerContainer)
+	 */
+	@Override
+	public boolean equals(IPlayerContainer container2) {
+		
+		return container2 instanceof PlayerContainerGroup &&
+				name.equalsIgnoreCase(container2.getName());
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#copyOf()
-     */
-    @Override
-    public PlayerContainer copyOf() {
-        
-        return new PlayerContainerGroup(name);
-    }
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#copyOf()
+	 */
+	@Override
+	public PlayerContainer copyOf() {
+		
+		return new PlayerContainerGroup(name);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#hasAccess(org.bukkit.entity.Player)
-     */
-    @Override
-    public boolean hasAccess(Player player) {
-        
-        if(player != null) {
-            return Factoid.getThisPlugin().iDependPlugin().getPermission().playerInGroup(player, name);
-        } else {
-            return false;
-        }
-    }
-    
-    @Override
-    public boolean hasAccess(Player player, ILand land) {
-        
-        return hasAccess(player);
-    }
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#hasAccess(org.bukkit.entity.Player)
+	 */
+	@Override
+	public boolean hasAccess(Player player) {
+		
+		if(player != null) {
+			return Factoid.getThisPlugin().iDependPlugin().getPermission().playerInGroup(player, name);
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public boolean hasAccess(Player player, ILand land) {
+		
+		return hasAccess(player);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainer#getPrint()
-     */
-    @Override
-    public String getPrint() {
-        
-        return ChatColor.BLUE + "G:" + ChatColor.WHITE + name;
-    }
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainer#getPrint()
+	 */
+	@Override
+	public String getPrint() {
+		
+		return ChatColor.BLUE + "G:" + ChatColor.WHITE + name;
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
-     */
-    @Override
-    public void setLand(ILand land) {
-        
-    }
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.playercontainer.PlayerContainerInterface#setLand(me.tabinol.factoid.lands.Land)
+	 */
+	@Override
+	public void setLand(ILand land) {
+		
+	}
 }

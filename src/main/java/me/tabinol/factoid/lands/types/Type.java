@@ -29,10 +29,10 @@ public class Type implements IType, Comparable<Type> {
 	}
 	
 	@Override
-    public int compareTo(Type arg0) {
-	    
+	public int compareTo(Type arg0) {
+		
 		return typeName.compareTo(arg0.typeName);
-    }
+	}
 
 	@Override
 	public String getName() {

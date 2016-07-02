@@ -27,32 +27,32 @@ import me.tabinol.factoidapi.exceptions.AFactoidLandException;
  * The Class FactoidLandException.
  */
 public class FactoidLandException extends AFactoidLandException {
-    
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4561559858019587492L;
 
 	/**
-     * Instantiates a new factoid land exception.
-     *
-     * @param landName the land name
-     * @param area the area
-     * @param action the action
-     * @param error the error
-     */
-    public FactoidLandException(String landName, CuboidArea area, Collisions.LandAction action, Collisions.LandError error) {
-        
-        super("Factoid Land Exception");
-        
-        StringBuilder bf = new StringBuilder();
-        
-        bf.append("Error: Land: ").append(landName);
-        if(area != null) {
-            bf.append(", area: ").append(area.getPrint());
-        }
-        bf.append(", Action: ").append(action.toString()).append(", Error: ").append(error.toString());
+	 * Instantiates a new factoid land exception.
+	 *
+	 * @param landName the land name
+	 * @param area the area
+	 * @param action the action
+	 * @param error the error
+	 */
+	public FactoidLandException(String landName, CuboidArea area, Collisions.LandAction action, Collisions.LandError error) {
+		
+		super("Factoid Land Exception");
+		
+		StringBuilder bf = new StringBuilder();
+		
+		bf.append("Error: Land: ").append(landName);
+		if(area != null) {
+			bf.append(", area: ").append(area.getPrint());
+		}
+		bf.append(", Action: ").append(action.toString()).append(", Error: ").append(error.toString());
 
-        Factoid.getThisPlugin().iLog().write(bf.toString());
-    }
+		Factoid.getThisPlugin().iLog().write(bf.toString());
+	}
 }

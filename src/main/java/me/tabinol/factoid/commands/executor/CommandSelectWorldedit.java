@@ -38,58 +38,58 @@ import org.bukkit.entity.Player;
  * The Class CommandSelectWorldedit.
  */
 public class CommandSelectWorldedit {
-    
-    /** The player. */
-    Player player;
-    
-    /** The entry. */
-    PlayerConfEntry entry;
-    
-    /**
-     * Instantiates a new command select worldedit.
-     *
-     * @param player the player
-     * @param entry the entry
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandSelectWorldedit(Player player, PlayerConfEntry entry) throws FactoidCommandException{
-        
-        this.player = player;
-        this.entry = entry;
-    }
-    
-    /**
-     * Make select.
-     *
-     * @throws FactoidCommandException the factoid command exception
-     */
-    protected void MakeSelect() throws FactoidCommandException {
-        
-        if (Factoid.getThisPlugin().iDependPlugin().getWorldEdit() == null) {
-            throw new FactoidCommandException("CommandSelectWorldEdit", player, "COMMAND.SELECT.WORLDEDIT.NOTLOAD");
-        }
-        LocalSession session = ((WorldEditPlugin) Factoid.getThisPlugin().iDependPlugin().getWorldEdit()).getSession(player);
-        
-        try {
-            Region sel;
-            if (session.getSelectionWorld() == null
-                    || !((sel = session.getSelection(session.getSelectionWorld())) != null && sel instanceof CuboidRegion)) {
-                throw new FactoidCommandException("CommandSelectWorldEdit", player, "COMMAND.SELECT.WORLDEDIT.NOSELECTIONNED");
-            }
+	
+	/** The player. */
+	Player player;
+	
+	/** The entry. */
+	PlayerConfEntry entry;
+	
+	/**
+	 * Instantiates a new command select worldedit.
+	 *
+	 * @param player the player
+	 * @param entry the entry
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	public CommandSelectWorldedit(Player player, PlayerConfEntry entry) throws FactoidCommandException{
+		
+		this.player = player;
+		this.entry = entry;
+	}
+	
+	/**
+	 * Make select.
+	 *
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	protected void MakeSelect() throws FactoidCommandException {
+		
+		if (Factoid.getThisPlugin().iDependPlugin().getWorldEdit() == null) {
+			throw new FactoidCommandException("CommandSelectWorldEdit", player, "COMMAND.SELECT.WORLDEDIT.NOTLOAD");
+		}
+		LocalSession session = ((WorldEditPlugin) Factoid.getThisPlugin().iDependPlugin().getWorldEdit()).getSession(player);
+		
+		try {
+			Region sel;
+			if (session.getSelectionWorld() == null
+					|| !((sel = session.getSelection(session.getSelectionWorld())) != null && sel instanceof CuboidRegion)) {
+				throw new FactoidCommandException("CommandSelectWorldEdit", player, "COMMAND.SELECT.WORLDEDIT.NOSELECTIONNED");
+			}
 
-            player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.SELECTIONNED"));
-            Factoid.getThisPlugin().iLog().write(Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.SELECTIONNED"));
-            
-            AreaSelection select = new AreaSelection(player, new CuboidArea(player.getWorld().getName(), 
-                    sel.getMinimumPoint().getBlockX(), sel.getMinimumPoint().getBlockY(),
-                    sel.getMinimumPoint().getBlockZ(), sel.getMaximumPoint().getBlockX(), 
-                    sel.getMaximumPoint().getBlockY(), sel.getMaximumPoint().getBlockZ()));
-            
-            entry.getSelection().addSelection(select);
-            entry.setAutoCancelSelect(true);
+			player.sendMessage(ChatColor.GREEN + "[Factoid] " + ChatColor.DARK_GRAY + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.SELECTIONNED"));
+			Factoid.getThisPlugin().iLog().write(Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.WORLDEDIT.SELECTIONNED"));
+			
+			AreaSelection select = new AreaSelection(player, new CuboidArea(player.getWorld().getName(), 
+					sel.getMinimumPoint().getBlockX(), sel.getMinimumPoint().getBlockY(),
+					sel.getMinimumPoint().getBlockZ(), sel.getMaximumPoint().getBlockX(), 
+					sel.getMaximumPoint().getBlockY(), sel.getMaximumPoint().getBlockZ()));
+			
+			entry.getSelection().addSelection(select);
+			entry.setAutoCancelSelect(true);
 
-        } catch (IncompleteRegionException ex) {
-            throw new FactoidCommandException("CommandSelectWorldEdit", player, "COMMAND.SELECT.WORLDEDIT.SELECTIONINCOMPLET");
-        }
-    }
+		} catch (IncompleteRegionException ex) {
+			throw new FactoidCommandException("CommandSelectWorldEdit", player, "COMMAND.SELECT.WORLDEDIT.SELECTIONINCOMPLET");
+		}
+	}
 }

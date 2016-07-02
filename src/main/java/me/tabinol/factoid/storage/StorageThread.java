@@ -38,12 +38,12 @@ public class StorageThread extends Thread {
 	/** The exit request. */
 	private boolean exitRequest = false;
 
-    /** The in load. */
-    protected boolean inLoad = true; // True if the Database is in Loaded
+	/** The in load. */
+	protected boolean inLoad = true; // True if the Database is in Loaded
 
 	/** The storage. */
-    private final Storage storage;
-    
+	private final Storage storage;
+	
 	/** The land save list request. */
 	private final List<Object> saveList;
 
@@ -51,67 +51,67 @@ public class StorageThread extends Thread {
 	private final List<Object> removeList;
 
 	/** The lock. */
-    final Lock lock = new ReentrantLock();
-    
-    /** The lock command request. */
-    final Condition commandRequest  = lock.newCondition(); 
-    
-    /** The lock not saved. */
-    final Condition notSaved = lock.newCondition(); 
+	final Lock lock = new ReentrantLock();
+	
+	/** The lock command request. */
+	final Condition commandRequest  = lock.newCondition(); 
+	
+	/** The lock not saved. */
+	final Condition notSaved = lock.newCondition(); 
 
-    /** Class internally used to store landName et LandGenealogy in a list */
-    private class NameGenealogy {
-    	
-    	String landName;
-    	int landGenealogy;
-    	
-    	NameGenealogy(String landName, int landGenealogy) {
-    		
-    		this.landName = landName;
-    		this.landGenealogy = landGenealogy;
-    	}
-    }
-    
-    /**
-     * Instantiates a new storage thread.
-     */
-    public StorageThread() {
-    	
-        this.setName("Factoid Storage");
-    	storage = new StorageFlat();
-        saveList = Collections.synchronizedList(new ArrayList<Object>());
-        removeList = Collections.synchronizedList(new ArrayList<Object>());
-    }
-    
-    /**
-     * Load all and start.
-     */
-    public void loadAllAndStart() {
-    	
-        inLoad = true;
-    	storage.loadAll();
-    	inLoad = false;
-    	this.start();
-    }
-    
-    /**
-     * Checks if is in load.
-     *
-     * @return true, if is in load
-     */
-    public boolean isInLoad() {
-        
-        return inLoad;
-    }
+	/** Class internally used to store landName et LandGenealogy in a list */
+	private class NameGenealogy {
+		
+		String landName;
+		int landGenealogy;
+		
+		NameGenealogy(String landName, int landGenealogy) {
+			
+			this.landName = landName;
+			this.landGenealogy = landGenealogy;
+		}
+	}
+	
+	/**
+	 * Instantiates a new storage thread.
+	 */
+	public StorageThread() {
+		
+		this.setName("Factoid Storage");
+		storage = new StorageFlat();
+		saveList = Collections.synchronizedList(new ArrayList<Object>());
+		removeList = Collections.synchronizedList(new ArrayList<Object>());
+	}
+	
+	/**
+	 * Load all and start.
+	 */
+	public void loadAllAndStart() {
+		
+		inLoad = true;
+		storage.loadAll();
+		inLoad = false;
+		this.start();
+	}
+	
+	/**
+	 * Checks if is in load.
+	 *
+	 * @return true, if is in load
+	 */
+	public boolean isInLoad() {
+		
+		return inLoad;
+	}
 
-    /* (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see java.lang.Thread#run()
 	 */
 	@Override
 	public void run() {
-    	
+		
 		lock.lock();
-    	
+		
 		// Output request loop (waiting for a command)
 		while(!exitRequest) {
 			
@@ -140,10 +140,10 @@ public class StorageThread extends Thread {
    				}
    			}
    			
-    		// wait!
-    		try {
-    			commandRequest.await();
-    			Factoid.getThisPlugin().iLog().write("Storage Thread wake up!");
+			// wait!
+			try {
+				commandRequest.await();
+				Factoid.getThisPlugin().iLog().write("Storage Thread wake up!");
    			} catch (InterruptedException e) {
    				// TODO Auto-generated catch block
    				e.printStackTrace();
@@ -151,7 +151,7 @@ public class StorageThread extends Thread {
 		}
 		notSaved.signal();
 		lock.unlock();
-    }
+	}
 	
 	/**
 	 * Stop next run.
@@ -212,19 +212,19 @@ public class StorageThread extends Thread {
 		wakeUp();
 	}
 
-    /**
-     * Removes the land.
-     *  
-     * @param landName the land name
-     * @param landGenealogy The land genealogy
-     */
-    public void removeLand(String landName, int landGenealogy) {
-    	
-    	removeList.add(new NameGenealogy(landName, landGenealogy));
-    	wakeUp();
-    }
+	/**
+	 * Removes the land.
+	 *  
+	 * @param landName the land name
+	 * @param landGenealogy The land genealogy
+	 */
+	public void removeLand(String landName, int landGenealogy) {
+		
+		removeList.add(new NameGenealogy(landName, landGenealogy));
+		wakeUp();
+	}
 
-    /**
+	/**
 	 * Removes the faction.
 	 *
 	 * @param faction the faction

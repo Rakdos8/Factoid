@@ -35,79 +35,79 @@ import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
  */
 public interface IFactoid {
 	
-    /*
-     * Normal gets
-     */
+	/*
+	 * Normal gets
+	 */
 	
-    /**
-     * Gets all faction informations
-     *
-     * @return the factions
-     */
-    public IFactions iFactions();
+	/**
+	 * Gets all faction informations
+	 *
+	 * @return the factions
+	 */
+	public IFactions iFactions();
 
-    /**
-     * Gets all faction informations
-     *
-     * @return the lands
-     */
-    public ILands iLands();
-    
-    /**
-     * Gets all land types informations
-     *
-     * @return the types
-     */
-    public ITypes iTypes();
+	/**
+	 * Gets all faction informations
+	 *
+	 * @return the lands
+	 */
+	public ILands iLands();
+	
+	/**
+	 * Gets all land types informations
+	 *
+	 * @return the types
+	 */
+	public ITypes iTypes();
 
-    /**
-     * Gets all parameters (flags and permissions). If you want to register
-     * a new flag or a new permission, it is here!
-     *
-     * @return the parameters
-     */
-    public IParameters iParameters();
-    
-    /**
-     * Obtains informations about an online player
-     *
-     * @return the player config
-     */
-    public IPlayerStaticConfig iPlayerConf();
-    
-    /*
-     * Creators
-     */
+	/**
+	 * Gets all parameters (flags and permissions). If you want to register
+	 * a new flag or a new permission, it is here!
+	 *
+	 * @return the parameters
+	 */
+	public IParameters iParameters();
+	
+	/**
+	 * Obtains informations about an online player
+	 *
+	 * @return the player config
+	 */
+	public IPlayerStaticConfig iPlayerConf();
+	
+	/*
+	 * Creators
+	 */
 
-    /**
-     * Creates a player container.
-     *
-     * @param land the parameter land is needed for Container type RESIDENT,
-     *  VISITOR, FACTION_TERRITORY, OWNER and TENANT, otherwise, put null
-     * @param pct the container type (EPlayerContainerType.XXXX)
-     * @param name the name is needed for a GROUP (name of the group from
-     * your permission system), PERMISSION (xxx.yyy from your permission system)
-     * and for a PLAYER (ID-110e8400-e29b-11d4-a716-446655440000) without
-     * parenthesis. You must begin with "ID-" or it will not works. If the player
-     * is online, you may prefer to take it from iPlayerConf().
-     * @return the player container
-     */
-    public IPlayerContainer createPlayerContainer(ILand land, 
-    		EPlayerContainerType pct, String name);
-    
-    /**
-     * Creates a cuboid area.
-     *
-     * @param worldName the world name
-     * @param x1 the x1
-     * @param y1 the y1
-     * @param z1 the z1
-     * @param x2 the x2
-     * @param y2 the y2
-     * @param z2 the z2
-     * @return the cuboid area
-     */
-    public ICuboidArea createCuboidArea(String worldName, int x1, int y1, 
-    		int z1, int x2, int y2, int z2);
+	/**
+	 * Creates a player container.
+	 *
+	 * @param land the parameter land is needed for Container type RESIDENT,
+	 *  VISITOR, FACTION_TERRITORY, OWNER and TENANT, otherwise, put null
+	 * @param pct the container type (EPlayerContainerType.XXXX)
+	 * @param name the name is needed for a GROUP (name of the group from
+	 * your permission system), PERMISSION (xxx.yyy from your permission system)
+	 * and for a PLAYER (ID-110e8400-e29b-11d4-a716-446655440000) without
+	 * parenthesis. You must begin with "ID-" or it will not works. If the player
+	 * is online, you may prefer to take it from iPlayerConf().
+	 * @return the player container
+	 */
+	public IPlayerContainer createPlayerContainer(ILand land, 
+			EPlayerContainerType pct, String name);
+	
+	/**
+	 * Creates a cuboid area.
+	 *
+	 * @param worldName the world name
+	 * @param x1 the x1
+	 * @param y1 the y1
+	 * @param z1 the z1
+	 * @param x2 the x2
+	 * @param y2 the y2
+	 * @param z2 the z2
+	 * @return the cuboid area
+	 */
+	public ICuboidArea createCuboidArea(String worldName, int x1, int y1, 
+			int z1, int x2, int y2, int z2);
 
 }

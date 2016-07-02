@@ -31,81 +31,81 @@ import org.bukkit.entity.Player;
  */
 public class ApproveNotif extends FactoidRunnable {
 
-    /** The Constant PERM_APPROVE. */
-    public static final String PERM_APPROVE = "factoid.collisionapprove";
+	/** The Constant PERM_APPROVE. */
+	public static final String PERM_APPROVE = "factoid.collisionapprove";
 
-    /**
-     * Instantiates a new approve notif.
-     */
-    public ApproveNotif() {
-        
-        super();
-    }
+	/**
+	 * Instantiates a new approve notif.
+	 */
+	public ApproveNotif() {
+		
+		super();
+	}
 
-    /**
-     * Run approve notif later.
-     */
-    public void runApproveNotifLater() {
+	/**
+	 * Run approve notif later.
+	 */
+	public void runApproveNotifLater() {
 
-        long notifyTime = Factoid.getThisPlugin().iConf().getApproveNotifyTime();
+		long notifyTime = Factoid.getThisPlugin().iConf().getApproveNotifyTime();
 
-        // Start only if notification is activated in configuration
-        if (notifyTime != 0) {
-            this.runLater(notifyTime, true);
-        }
+		// Start only if notification is activated in configuration
+		if (notifyTime != 0) {
+			this.runLater(notifyTime, true);
+		}
 
-    }
+	}
 
-    /* (non-Javadoc)
-     * @see java.lang.Runnable#run()
-     */
-    @Override
-    public void run() {
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
+	@Override
+	public void run() {
 
-        int lstCount;
+		int lstCount;
 
-        if ((lstCount = Factoid.getThisPlugin().iLands().getApproveList().getApproveList().size()) != 0) {
+		if ((lstCount = Factoid.getThisPlugin().iLands().getApproveList().getApproveList().size()) != 0) {
 
-            // If there is some notification to done
-            notifyListApprove(lstCount);
-        }
-    }
+			// If there is some notification to done
+			notifyListApprove(lstCount);
+		}
+	}
 
-    /**
-     * Notify for approve.
-     *
-     * @param landName the land name
-     * @param playerName the player name
-     */
-    public void notifyForApprove(String landName, String playerName) {
+	/**
+	 * Notify for approve.
+	 *
+	 * @param landName the land name
+	 * @param playerName the player name
+	 */
+	public void notifyForApprove(String landName, String playerName) {
 
-        notifyPlayer(Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.NOTIFYLAND", landName, playerName + ChatColor.GREEN));
-    }
+		notifyPlayer(Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.NOTIFYLAND", landName, playerName + ChatColor.GREEN));
+	}
 
-    /**
-     * Notify list approve.
-     *
-     * @param lstCount the lst count
-     */
-    private void notifyListApprove(int lstCount) {
+	/**
+	 * Notify list approve.
+	 *
+	 * @param lstCount the lst count
+	 */
+	private void notifyListApprove(int lstCount) {
 
-        notifyPlayer(Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.NOTIFY", lstCount + ""));
-    }
+		notifyPlayer(Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.NOTIFY", lstCount + ""));
+	}
 
-    // Notify with a message
-    /**
-     * Notify player.
-     *
-     * @param message the message
-     */
-    private void notifyPlayer(String message) {
+	// Notify with a message
+	/**
+	 * Notify player.
+	 *
+	 * @param message the message
+	 */
+	private void notifyPlayer(String message) {
 
-        for (Player players : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
-            if (players.hasPermission(PERM_APPROVE)) {
-                players.sendMessage(ChatColor.GREEN + "[Factoid] " + message);
-            }
-        }
+		for (Player players : Factoid.getThisPlugin().getServer().getOnlinePlayers()) {
+			if (players.hasPermission(PERM_APPROVE)) {
+				players.sendMessage(ChatColor.GREEN + "[Factoid] " + message);
+			}
+		}
 
-        Factoid.getThisPlugin().getLogger().log(Level.INFO, "[Factoid] " + message);
-    }
+		Factoid.getThisPlugin().getLogger().log(Level.INFO, "[Factoid] " + message);
+	}
 }

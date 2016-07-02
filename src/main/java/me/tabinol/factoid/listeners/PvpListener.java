@@ -117,7 +117,7 @@ public class PvpListener extends CommonListener implements Listener {
 	 * On block ignite.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onBlockIgnite(BlockIgniteEvent event) {

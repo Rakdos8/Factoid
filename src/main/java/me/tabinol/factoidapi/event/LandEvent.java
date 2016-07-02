@@ -29,67 +29,67 @@ import org.bukkit.event.HandlerList;
  */
 public class LandEvent extends Event {
 
-    /** The Constant handlers. */
-    private static final HandlerList handlers = new HandlerList();
-    
-    /** The dummy land. */
-    private IDummyLand dummyLand;
-    
-    /** The land. */
-    private ILand land;
+	/** The Constant handlers. */
+	private static final HandlerList handlers = new HandlerList();
+	
+	/** The dummy land. */
+	private IDummyLand dummyLand;
+	
+	/** The land. */
+	private ILand land;
 
-    /**
-     * Instantiates a new land event.
-     *
-     * @param dummyLand the dummy land
-     */
-    public LandEvent(IDummyLand dummyLand) {
+	/**
+	 * Instantiates a new land event.
+	 *
+	 * @param dummyLand the dummy land
+	 */
+	public LandEvent(IDummyLand dummyLand) {
 
-        this.dummyLand = dummyLand;
-        
-        if(dummyLand instanceof ILand) {
-            land = (ILand) dummyLand;
-        } else {
-            land = null;
-        }
-    }
+		this.dummyLand = dummyLand;
+		
+		if(dummyLand instanceof ILand) {
+			land = (ILand) dummyLand;
+		} else {
+			land = null;
+		}
+	}
 
-    /* (non-Javadoc)
-     * @see org.bukkit.event.Event#getHandlers()
-     */
-    @Override
-    public HandlerList getHandlers() {
+	/* (non-Javadoc)
+	 * @see org.bukkit.event.Event#getHandlers()
+	 */
+	@Override
+	public HandlerList getHandlers() {
 
-        return handlers;
-    }
+		return handlers;
+	}
 
-    /**
-     * Gets the handler list.
-     *
-     * @return the handler list
-     */
-    public static HandlerList getHandlerList() {
+	/**
+	 * Gets the handler list.
+	 *
+	 * @return the handler list
+	 */
+	public static HandlerList getHandlerList() {
 
-        return handlers;
-    }
+		return handlers;
+	}
 
-    /**
-     * Gets the land.
-     *
-     * @return the land or null if the event is outside a land
-     */
-    public ILand getLand() {
+	/**
+	 * Gets the land.
+	 *
+	 * @return the land or null if the event is outside a land
+	 */
+	public ILand getLand() {
 
-        return land;
-    }
-    
-    /**
-     * Gets the land or outside area.
-     *
-     * @return the land or a "Dummy Land Word" if the event is outside a land
-     */
-    public IDummyLand getLandOrOutside() {
-        
-        return dummyLand;
-    }
+		return land;
+	}
+	
+	/**
+	 * Gets the land or outside area.
+	 *
+	 * @return the land or a "Dummy Land Word" if the event is outside a land
+	 */
+	public IDummyLand getLandOrOutside() {
+		
+		return dummyLand;
+	}
 }

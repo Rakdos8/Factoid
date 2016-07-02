@@ -35,61 +35,61 @@ import org.bukkit.entity.Player;
 @InfoCommand(name="kick", forceParameter=true)
 public class CommandKick extends CommandExec {
 
-    /** The arg list. */
-    private final ArgList argList;
-    
-    /** The player. */
-    private final Player player;
+	/** The arg list. */
+	private final ArgList argList;
+	
+	/** The player. */
+	private final Player player;
 
-    /**
-     * Instantiates a new command kick.
-     *
-     * @param entity the entity
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandKick(CommandEntities entity) throws FactoidCommandException {
+	/**
+	 * Instantiates a new command kick.
+	 *
+	 * @param entity the entity
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	public CommandKick(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity);
-        argList = entity.argList;
-        player = entity.player;
+		super(entity);
+		argList = entity.argList;
+		player = entity.player;
 
-    }
-    
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
-     */
-    @Override
-    public void commandExecute() throws FactoidCommandException {
+	}
+	
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+	 */
+	@Override
+	public void commandExecute() throws FactoidCommandException {
 
-        String playerKickName = argList.getNext();
+		String playerKickName = argList.getNext();
 
-        getLandFromCommandIfNoLandSelected();
+		getLandFromCommandIfNoLandSelected();
 
-        // Only if it is from Kick command
-        if (entity != null) {
-            checkSelections(true, null);
-            checkPermission(true, true, PermissionList.LAND_KICK.getPermissionType(), null);
-        }
+		// Only if it is from Kick command
+		if (entity != null) {
+			checkSelections(true, null);
+			checkPermission(true, true, PermissionList.LAND_KICK.getPermissionType(), null);
+		}
 
-        // No player name?
-        if (playerKickName == null) {
-            throw new FactoidCommandException("Kicked", player, "COMMAND.KICK.PLAYERNULL");
-        }
+		// No player name?
+		if (playerKickName == null) {
+			throw new FactoidCommandException("Kicked", player, "COMMAND.KICK.PLAYERNULL");
+		}
 
-        @SuppressWarnings("deprecation")
+		@SuppressWarnings("deprecation")
 		Player playerKick = Factoid.getThisPlugin().getServer().getPlayer(playerKickName);
 
-        // Player not in land?
-        if (playerKick == null || !land.isPlayerinLandNoVanish(playerKick, player)
-                || Factoid.getThisPlugin().iPlayerConf().get(playerKick).isAdminMod()
-                || playerKick.hasPermission("factoid.bypassban")) {
-            throw new FactoidCommandException("Kicked", player, "COMMAND.KICK.NOTINLAND");
-        }
-        
-        //Kick the player
-        playerKick.teleport(playerKick.getLocation().getWorld().getSpawnLocation());
-        player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.KICK.DONE", playerKickName, land.getName()));
-        playerKick.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.KICK.KICKED", land.getName()));
-        Factoid.getThisPlugin().iLog().write("Player " + playerKick + " kicked from " + land.getName() + ".");
-    }
+		// Player not in land?
+		if (playerKick == null || !land.isPlayerinLandNoVanish(playerKick, player)
+				|| Factoid.getThisPlugin().iPlayerConf().get(playerKick).isAdminMod()
+				|| playerKick.hasPermission("factoid.bypassban")) {
+			throw new FactoidCommandException("Kicked", player, "COMMAND.KICK.NOTINLAND");
+		}
+		
+		//Kick the player
+		playerKick.teleport(playerKick.getLocation().getWorld().getSpawnLocation());
+		player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.KICK.DONE", playerKickName, land.getName()));
+		playerKick.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.KICK.KICKED", land.getName()));
+		Factoid.getThisPlugin().iLog().write("Player " + playerKick + " kicked from " + land.getName() + ".");
+	}
 }

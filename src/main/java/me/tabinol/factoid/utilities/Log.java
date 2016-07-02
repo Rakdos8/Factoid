@@ -23,6 +23,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import me.tabinol.factoid.Factoid;
 
 
@@ -31,68 +32,59 @@ import me.tabinol.factoid.Factoid;
  */
 public class Log {
 
-    /** The Folder. */
-    public File Folder;
-    
-    /** The debug. */
-    private boolean debug = false;
+	/** The Folder. */
+	public File Folder;
 
-    /**
-     * Instantiates a new log.
-     */
-    public Log() {
+	/** The debug. */
+	private boolean debug = false;
 
-        this.debug = Factoid.getThisPlugin().iConf().isDebug();
-        this.Folder = Factoid.getThisPlugin().getDataFolder();
-    }
+	/**
+	 * Instantiates a new log.
+	 */
+	public Log() {
 
-    /**
-     * Write.
-     *
-     * @param text the text
-     */
-    public void write(String text) {
+		this.debug = Factoid.getThisPlugin().iConf().isDebug();
+		this.Folder = Factoid.getThisPlugin().getDataFolder();
+	}
 
-        if (debug) {
-            File filename = new File(Folder, "log_" + Dates.date() + ".log");
-            BufferedWriter bufWriter = null;
-            FileWriter fileWriter = null;
+	/**
+	 * Write.
+	 *
+	 * @param text the text
+	 */
+	public void write(final String text) {
 
-            if (!filename.exists()) {
-                try {
-                    filename.createNewFile();
-                } catch (IOException ex) {
-                    Logger.getLogger(Log.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+		if (debug) {
+			final File filename = new File(Folder, "log_" + Dates.date() + ".log");
 
-            try {
-                fileWriter = new FileWriter(filename, true);
-                bufWriter = new BufferedWriter(fileWriter);
-                bufWriter.newLine();
-                bufWriter.write("[Factoid][v." + Factoid.getThisPlugin().getDescription().getVersion()
-                		+ "][" + Dates.time() + "]" + text);
-                bufWriter.close();
-            } catch (IOException ex) {
-                Logger.getLogger(Log.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                try {
-                    bufWriter.close();
-                    fileWriter.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(Log.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-    }
+			if (!filename.exists()) {
+				try {
+					filename.createNewFile();
+				} catch (final IOException ex) {
+					Logger.getLogger(Log.class.getName()).log(Level.SEVERE, null, ex);
+				}
+			}
 
-    /**
-     * Sets the debug.
-     *
-     * @param newdebug the new debug
-     */
-    public void setDebug(boolean newdebug) {
+			try(final FileWriter fileWriter = new FileWriter(filename, true);
+				final BufferedWriter bufWriter = new BufferedWriter(fileWriter)
+			) {
+				bufWriter.newLine();
+				bufWriter.write("[Factoid][v." + Factoid.getThisPlugin().getDescription().getVersion()
+						+ "][" + Dates.time() + "]" + text);
+				bufWriter.close();
+			} catch (final IOException ex) {
+				Logger.getLogger(Log.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
+	}
 
-        this.debug = newdebug;
-    }
+	/**
+	 * Sets the debug.
+	 *
+	 * @param newdebug the new debug
+	 */
+	public void setDebug(final boolean newdebug) {
+
+		this.debug = newdebug;
+	}
 }

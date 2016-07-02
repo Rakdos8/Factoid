@@ -32,302 +32,302 @@ import me.tabinol.factoid.exceptions.FileLoadException;
  */
 public class ConfLoader {
 
-    /** The version. */
-    private int version;
-    
-    /** The uuid. */
-    private UUID uuid;
-    
-    /** The name. */
-    private String name;
-    
-    /** The param. */
-    private String param = null;
-    
-    /** The value. */
-    private String value = null;
-    
-    /** The file. */
-    private final File file;
-    
-    /** The br. */
-    private final BufferedReader br;
-    
-    /** The act line. */
-    private String actLine = null; // Line read
-    
-    /** The act line nb. */
-    private int actLineNb = 0; // Line nb
+	/** The version. */
+	private int version;
+	
+	/** The uuid. */
+	private UUID uuid;
+	
+	/** The name. */
+	private String name;
+	
+	/** The param. */
+	private String param = null;
+	
+	/** The value. */
+	private String value = null;
+	
+	/** The file. */
+	private final File file;
+	
+	/** The br. */
+	private final BufferedReader br;
+	
+	/** The act line. */
+	private String actLine = null; // Line read
+	
+	/** The act line nb. */
+	private int actLineNb = 0; // Line nb
 
-    /**
-     * Instantiates a new conf loader.
-     *
-     * @param file the file
-     * @throws FileLoadException the file load exception
-     */
-    public ConfLoader(File file) throws FileLoadException {
+	/**
+	 * Instantiates a new conf loader.
+	 *
+	 * @param file the file
+	 * @throws FileLoadException the file load exception
+	 */
+	public ConfLoader(File file) throws FileLoadException {
 
-        this.file = file;
-        FileReader fr = null;
-        try {
-            fr = new FileReader(file);
-        } catch (FileNotFoundException ex) {
-            // Impossible
-        }
-        br = new BufferedReader(fr);
-        readVersion();
-        if(version >= 2) {
-            readUUID();
-        } else {
-            uuid = null;
-        }
-        readName();
-    }
+		this.file = file;
+		FileReader fr = null;
+		try {
+			fr = new FileReader(file);
+		} catch (FileNotFoundException ex) {
+			// Impossible
+		}
+		br = new BufferedReader(fr);
+		readVersion();
+		if(version >= 2) {
+			readUUID();
+		} else {
+			uuid = null;
+		}
+		readName();
+	}
 
-    /**
-     * Read version.
-     *
-     * @throws FileLoadException the file load exception
-     */
-    private void readVersion() throws FileLoadException {
+	/**
+	 * Read version.
+	 *
+	 * @throws FileLoadException the file load exception
+	 */
+	private void readVersion() throws FileLoadException {
 
-        readParam();
-        version = getValueInt();
-    }
-    
-    /**
-     * Read uuid.
-     *
-     * @throws FileLoadException the file load exception
-     */
-    private void readUUID() throws FileLoadException {
-        
-        readParam();
-        try {
-        uuid = UUID.fromString(getValueString());
-        } catch(IllegalArgumentException ex) {
-            throw new FileLoadException(file.getName(), actLine, actLineNb, "Can't read UUID.");
-        }
-    }
+		readParam();
+		version = getValueInt();
+	}
+	
+	/**
+	 * Read uuid.
+	 *
+	 * @throws FileLoadException the file load exception
+	 */
+	private void readUUID() throws FileLoadException {
+		
+		readParam();
+		try {
+		uuid = UUID.fromString(getValueString());
+		} catch(IllegalArgumentException ex) {
+			throw new FileLoadException(file.getName(), actLine, actLineNb, "Can't read UUID.");
+		}
+	}
 
-    /**
-     * Read name.
-     *
-     * @throws FileLoadException the file load exception
-     */
-    private void readName() throws FileLoadException {
+	/**
+	 * Read name.
+	 *
+	 * @throws FileLoadException the file load exception
+	 */
+	private void readName() throws FileLoadException {
 
-        readParam();
-        name = value;
+		readParam();
+		name = value;
 
-    }
+	}
 
-    /**
-     * Readln.
-     *
-     * @return the string
-     * @throws FileLoadException the file load exception
-     */
-    public String readln() throws FileLoadException {
+	/**
+	 * Readln.
+	 *
+	 * @return the string
+	 * @throws FileLoadException the file load exception
+	 */
+	public String readln() throws FileLoadException {
 
-        String lrt;
+		String lrt;
 
-        actLineNb++;
+		actLineNb++;
 
-        try {
-            actLine = br.readLine();
-        } catch (IOException ex) {
-            throw new FileLoadException(file.getName(), actLine, actLineNb, "Can't read the next line.");
-        }
+		try {
+			actLine = br.readLine();
+		} catch (IOException ex) {
+			throw new FileLoadException(file.getName(), actLine, actLineNb, "Can't read the next line.");
+		}
 
-        if (actLine == null) {
-            return null;
-        }
-        lrt = actLine.trim();
-        if (lrt.equals("") || lrt.equals("}")) {
-            return null;
-        }
-        Factoid.getThisPlugin().iLog().write("Readline: " + lrt);
-        return lrt;
-    }
+		if (actLine == null) {
+			return null;
+		}
+		lrt = actLine.trim();
+		if (lrt.equals("") || lrt.equals("}")) {
+			return null;
+		}
+		Factoid.getThisPlugin().iLog().write("Readline: " + lrt);
+		return lrt;
+	}
 
-    /**
-     * Read param.
-     *
-     * @return true, if successful
-     * @throws FileLoadException the file load exception
-     */
-    public boolean readParam() throws FileLoadException {
+	/**
+	 * Read param.
+	 *
+	 * @return true, if successful
+	 * @throws FileLoadException the file load exception
+	 */
+	public boolean readParam() throws FileLoadException {
 
-        String str = readln();
+		String str = readln();
 
-        if (str == null) {
-            return false;
-        }
-        if (str.endsWith("\\{")) {
-            param = str.replaceAll("\\{", "");
-            value = null;
-        } else if (str.contains(":")) {
-            String[] chn = str.split(":", 2);
-            param = chn[0];
-            if (chn[1].equals("-null-")) {
-                value = null;
-            } else {
-                value = chn[1];
-            }
-        }
+		if (str == null) {
+			return false;
+		}
+		if (str.endsWith("\\{")) {
+			param = str.replaceAll("\\{", "");
+			value = null;
+		} else if (str.contains(":")) {
+			String[] chn = str.split(":", 2);
+			param = chn[0];
+			if (chn[1].equals("-null-")) {
+				value = null;
+			} else {
+				value = chn[1];
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * Gets the param name.
-     *
-     * @return the param name
-     */
-    public String getParamName() {
+	/**
+	 * Gets the param name.
+	 *
+	 * @return the param name
+	 */
+	public String getParamName() {
 
-        return param;
-    }
+		return param;
+	}
 
-    /**
-     * Gets the value string.
-     *
-     * @return the value string
-     */
-    public String getValueString() {
+	/**
+	 * Gets the value string.
+	 *
+	 * @return the value string
+	 */
+	public String getValueString() {
 
-        return value;
-    }
+		return value;
+	}
 
-    /**
-     * Gets the value int.
-     *
-     * @return the value int
-     * @throws FileLoadException the file load exception
-     */
-    public int getValueInt() throws FileLoadException {
+	/**
+	 * Gets the value int.
+	 *
+	 * @return the value int
+	 * @throws FileLoadException the file load exception
+	 */
+	public int getValueInt() throws FileLoadException {
 
-        try {
-            return Integer.parseInt(value);
-        } catch (NumberFormatException ex) {
-            throw new FileLoadException(file.getName(), actLine, actLineNb, "Can't read the Integer parameter.");
-        }
-    }
+		try {
+			return Integer.parseInt(value);
+		} catch (NumberFormatException ex) {
+			throw new FileLoadException(file.getName(), actLine, actLineNb, "Can't read the Integer parameter.");
+		}
+	}
 
-    /**
-     * Gets the value short.
-     *
-     * @return the value short
-     * @throws FileLoadException the file load exception
-     */
-    public short getValueShort() throws FileLoadException {
+	/**
+	 * Gets the value short.
+	 *
+	 * @return the value short
+	 * @throws FileLoadException the file load exception
+	 */
+	public short getValueShort() throws FileLoadException {
 
-        try {
-        return Short.parseShort(value);
-        } catch (NumberFormatException ex) {
-            throw new FileLoadException(file.getName(), actLine, actLineNb, "Can't read the Short parameter.");
-        }
-    }
+		try {
+		return Short.parseShort(value);
+		} catch (NumberFormatException ex) {
+			throw new FileLoadException(file.getName(), actLine, actLineNb, "Can't read the Short parameter.");
+		}
+	}
 
-    /**
-     * Gets the value double.
-     *
-     * @return the value double
-     * @throws FileLoadException the file load exception
-     */
-    public double getValueDouble() throws FileLoadException {
+	/**
+	 * Gets the value double.
+	 *
+	 * @return the value double
+	 * @throws FileLoadException the file load exception
+	 */
+	public double getValueDouble() throws FileLoadException {
 
-        try {
-        return Double.parseDouble(value);
-        } catch (NumberFormatException ex) {
-            throw new FileLoadException(file.getName(), actLine, actLineNb, "Can't read the Double parameter.");
-        }
-    }
+		try {
+		return Double.parseDouble(value);
+		} catch (NumberFormatException ex) {
+			throw new FileLoadException(file.getName(), actLine, actLineNb, "Can't read the Double parameter.");
+		}
+	}
 
-    /**
-     * Gets the next string.
-     *
-     * @return the next string
-     * @throws FileLoadException the file load exception
-     */
-    public String getNextString() throws FileLoadException {
+	/**
+	 * Gets the next string.
+	 *
+	 * @return the next string
+	 * @throws FileLoadException the file load exception
+	 */
+	public String getNextString() throws FileLoadException {
 
-        return readln();
-    }
+		return readln();
+	}
 
-    /**
-     * Gets the name.
-     *
-     * @return the name
-     */
-    public String getName() {
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
+	public String getName() {
 
-        return name;
-    }
+		return name;
+	}
 
-    /**
-     * Gets the version.
-     *
-     * @return the version
-     */
-    public int getVersion() {
+	/**
+	 * Gets the version.
+	 *
+	 * @return the version
+	 */
+	public int getVersion() {
 
-        return version;
-    }
-    
-    /**
-     * Gets the uuid.
-     *
-     * @return the uuid
-     */
-    public UUID getUUID() {
-        
-        return uuid;
-    }
+		return version;
+	}
+	
+	/**
+	 * Gets the uuid.
+	 *
+	 * @return the uuid
+	 */
+	public UUID getUUID() {
+		
+		return uuid;
+	}
 
-    /**
-     * Gets the file name.
-     *
-     * @return the file name
-     */
-    public String getFileName() {
+	/**
+	 * Gets the file name.
+	 *
+	 * @return the file name
+	 */
+	public String getFileName() {
 
-        return file.getName();
-    }
+		return file.getName();
+	}
 
-    // Used for errors
-    /**
-     * Gets the line nb.
-     *
-     * @return the line nb
-     */
-    public int getLineNb() {
+	// Used for errors
+	/**
+	 * Gets the line nb.
+	 *
+	 * @return the line nb
+	 */
+	public int getLineNb() {
 
-        return actLineNb;
-    }
+		return actLineNb;
+	}
 
-    // Used for errors
-    /**
-     * Gets the line.
-     *
-     * @return the line
-     */
-    public String getLine() {
+	// Used for errors
+	/**
+	 * Gets the line.
+	 *
+	 * @return the line
+	 */
+	public String getLine() {
 
-        return actLine;
-    }
+		return actLine;
+	}
 
-    /**
-     * Close.
-     *
-     * @throws FileLoadException the file load exception
-     */
-    public void close() throws FileLoadException {
-        try {
-            br.close();
-        } catch (IOException ex) {
-            throw new FileLoadException(file.getName(), actLine, actLineNb, "Impossible to close the file.");
-        }
-    }
+	/**
+	 * Close.
+	 *
+	 * @throws FileLoadException the file load exception
+	 */
+	public void close() throws FileLoadException {
+		try {
+			br.close();
+		} catch (IOException ex) {
+			throw new FileLoadException(file.getName(), actLine, actLineNb, "Impossible to close the file.");
+		}
+	}
 }

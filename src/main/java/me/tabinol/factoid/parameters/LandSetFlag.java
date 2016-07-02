@@ -31,74 +31,74 @@ import org.bukkit.inventory.ItemStack;
  * The Class LandSetFlag.
  */
 public class LandSetFlag extends Thread implements Listener{
-    
-    /** The player. */
-    private Player player;
-    
-    /** The area. */
-    @SuppressWarnings("unused")
+	
+	/** The player. */
+	private Player player;
+	
+	/** The area. */
+	@SuppressWarnings("unused")
 	private CuboidArea area;
-    
-    /** The Redstone torch off. */
-    @SuppressWarnings("unused")
+	
+	/** The Redstone torch off. */
+	@SuppressWarnings("unused")
 	private ItemStack RedstoneTorchOff = new ItemStack(Material.REDSTONE_TORCH_OFF);
-    
-    /** The Redstone torch on. */
-    @SuppressWarnings("unused")
+	
+	/** The Redstone torch on. */
+	@SuppressWarnings("unused")
 	private ItemStack RedstoneTorchOn = new ItemStack(Material.REDSTONE_TORCH_ON);
-    
-    /** The inventory. */
-    @SuppressWarnings("unused")
+	
+	/** The inventory. */
+	@SuppressWarnings("unused")
 	private Inventory inventory;
-    
-    /**
-     * Instantiates a new land set flag.
-     *
-     * @param player the player
-     * @param area the area
-     */
-    public LandSetFlag(Player player,CuboidArea area){
-        this.player = player;
-        this.area = area;
-        makeMenu();
-        //player.openInventory(inventory);
-    }
-    
-    /**
-     * Make menu.
-     */
-    private void makeMenu(){
-        
-        inventory = player.getServer().createInventory(null,8,"Flag Setting");
-        @SuppressWarnings("unused")
+	
+	/**
+	 * Instantiates a new land set flag.
+	 *
+	 * @param player the player
+	 * @param area the area
+	 */
+	public LandSetFlag(Player player,CuboidArea area){
+		this.player = player;
+		this.area = area;
+		makeMenu();
+		//player.openInventory(inventory);
+	}
+	
+	/**
+	 * Make menu.
+	 */
+	private void makeMenu(){
+		
+		inventory = player.getServer().createInventory(null,8,"Flag Setting");
+		@SuppressWarnings("unused")
 		int i = 0;
-       /* for(){
-            if(){
-                ItemStack Torch = RedstoneTorchOn.clone();
-                ItemMeta meta = Torch.getItemMeta();
-                List<String> lore = new ArrayList<String>();
-                
-                meta.setDisplayName("Flag");
-                lore.add("BLABLABLA");
-                meta.setLore(lore);
-                
-                Torch.setItemMeta(meta);
-                inventory.setItem(i, Torch);
-            }else{
-                ItemStack Torch = RedstoneTorchOff.clone();
-                ItemMeta meta = Torch.getItemMeta();
-                List<String> lore = new ArrayList<String>();
-                
-                meta.setDisplayName("Flag");
-                lore.add("BLABLABLA");
-                meta.setLore(lore);
-                
-                Torch.setItemMeta(meta);
-                inventory.setItem(i, Torch);
-            }
-                i++;
-        }*/
-        
-    }
-    
+	   /* for(){
+			if(){
+				ItemStack Torch = RedstoneTorchOn.clone();
+				ItemMeta meta = Torch.getItemMeta();
+				List<String> lore = new ArrayList<String>();
+				
+				meta.setDisplayName("Flag");
+				lore.add("BLABLABLA");
+				meta.setLore(lore);
+				
+				Torch.setItemMeta(meta);
+				inventory.setItem(i, Torch);
+			}else{
+				ItemStack Torch = RedstoneTorchOff.clone();
+				ItemMeta meta = Torch.getItemMeta();
+				List<String> lore = new ArrayList<String>();
+				
+				meta.setDisplayName("Flag");
+				lore.add("BLABLABLA");
+				meta.setLore(lore);
+				
+				Torch.setItemMeta(meta);
+				inventory.setItem(i, Torch);
+			}
+				i++;
+		}*/
+		
+	}
+	
 }

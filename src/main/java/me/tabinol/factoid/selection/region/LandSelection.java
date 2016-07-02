@@ -29,50 +29,50 @@ import org.bukkit.entity.Player;
  */
 public class LandSelection extends RegionSelection {
 
-    /** The land. */
-    private final ILand land;
-    
-    /** The visual areas. */
-    private final TreeMap<ICuboidArea, AreaSelection> visualAreas; // Visuals arealist
-    
-    /**
-     * Instantiates a new land selection.
-     *
-     * @param player the player
-     * @param land the land
-     */
-    public LandSelection(Player player, ILand land) {
-        
-        super(SelectionType.LAND, player);
-        this.land = land;
-        visualAreas = new TreeMap<ICuboidArea, AreaSelection>();
-        
-        // Add visual areas
-        for(ICuboidArea area : land.getAreas()) {
-            visualAreas.put(area, new AreaSelection(player, area, true));
-        }
-    }
-    
-    /**
-     * Gets the land.
-     *
-     * @return the land
-     */
-    public ILand getLand() {
-        
-        return land;
-    }
+	/** The land. */
+	private final ILand land;
+	
+	/** The visual areas. */
+	private final TreeMap<ICuboidArea, AreaSelection> visualAreas; // Visuals arealist
+	
+	/**
+	 * Instantiates a new land selection.
+	 *
+	 * @param player the player
+	 * @param land the land
+	 */
+	public LandSelection(Player player, ILand land) {
+		
+		super(SelectionType.LAND, player);
+		this.land = land;
+		visualAreas = new TreeMap<ICuboidArea, AreaSelection>();
+		
+		// Add visual areas
+		for(ICuboidArea area : land.getAreas()) {
+			visualAreas.put(area, new AreaSelection(player, area, true));
+		}
+	}
+	
+	/**
+	 * Gets the land.
+	 *
+	 * @return the land
+	 */
+	public ILand getLand() {
+		
+		return land;
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.selection.region.RegionSelection#removeSelection()
-     */
-    @Override
-    public void removeSelection() {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.selection.region.RegionSelection#removeSelection()
+	 */
+	@Override
+	public void removeSelection() {
 
-        for(AreaSelection areaSel : visualAreas.values()) {
-            areaSel.removeSelection();
-        }
-        
-        visualAreas.clear();
-    }
+		for(AreaSelection areaSel : visualAreas.values()) {
+			areaSel.removeSelection();
+		}
+		
+		visualAreas.clear();
+	}
 }

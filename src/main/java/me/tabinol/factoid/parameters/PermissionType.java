@@ -24,39 +24,39 @@ import me.tabinol.factoidapi.parameters.IPermissionType;
  * The Class PermissionType.
  */
 public class PermissionType extends ParameterType implements IPermissionType {
-    
-    /** The default value. */
-    private boolean defaultValue;
-    
-    /**
-     * Instantiates a new permission type.
-     *
-     * @param permissionName the permission name
-     * @param defaultValue the default value
-     */
-    PermissionType(String permissionName, boolean defaultValue) {
-        
-        super(permissionName);
-        this.defaultValue = defaultValue;
-    }
-    
-    /**
-     * Sets the default value.
-     *
-     * @param defaultValue the new default value
-     */
-    void setDefaultValue(boolean defaultValue) {
-        
-        this.defaultValue = defaultValue;
-    }
-    
-    /**
-     * Gets the default value.
-     *
-     * @return the default value
-     */
-    public boolean getDefaultValue() {
-        
-        return defaultValue;
-    }
+	
+	/** The default value. */
+	private boolean defaultValue;
+	
+	/**
+	 * Instantiates a new permission type.
+	 *
+	 * @param permissionName the permission name
+	 * @param defaultValue the default value
+	 */
+	PermissionType(String permissionName, boolean defaultValue) {
+		
+		super(permissionName);
+		this.defaultValue = defaultValue;
+	}
+	
+	/**
+	 * Sets the default value.
+	 *
+	 * @param defaultValue the new default value
+	 */
+	void setDefaultValue(boolean defaultValue) {
+		
+		this.defaultValue = defaultValue;
+	}
+	
+	/**
+	 * Gets the default value.
+	 *
+	 * @return the default value
+	 */
+	public boolean getDefaultValue() {
+		
+		return defaultValue;
+	}
 }

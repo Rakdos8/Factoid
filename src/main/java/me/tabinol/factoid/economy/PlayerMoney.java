@@ -30,63 +30,63 @@ import net.milkbowl.vault.economy.Economy;
  */
 public class PlayerMoney {
 
-    /** The economy. */
-    private final Economy economy;
+	/** The economy. */
+	private final Economy economy;
 
-    /**
-     * Instantiates a new player money.
-     */
-    public PlayerMoney() {
+	/**
+	 * Instantiates a new player money.
+	 */
+	public PlayerMoney() {
 
-        economy = Factoid.getThisPlugin().iDependPlugin().getEconomy();
-    }
-    
-    /**
-     * Gets the player balance.
-     *
-     * @param offlinePlayer the offline player
-     * @param worldName the world name
-     * @return the player balance
-     */
-    public Double getPlayerBalance(OfflinePlayer offlinePlayer, String worldName) {
-        
-        return economy.getBalance(offlinePlayer, worldName);
-    }
-    
-    /**
-     * Give to player.
-     *
-     * @param offlinePlayer the offline player
-     * @param worldName the world name
-     * @param amount the amount
-     * @return true, if successful
-     */
-    public boolean giveToPlayer(OfflinePlayer offlinePlayer, String worldName, Double amount) {
-        
-        return economy.depositPlayer(offlinePlayer, worldName, amount).transactionSuccess();
-    }
+		economy = Factoid.getThisPlugin().iDependPlugin().getEconomy();
+	}
+	
+	/**
+	 * Gets the player balance.
+	 *
+	 * @param offlinePlayer the offline player
+	 * @param worldName the world name
+	 * @return the player balance
+	 */
+	public Double getPlayerBalance(OfflinePlayer offlinePlayer, String worldName) {
+		
+		return economy.getBalance(offlinePlayer, worldName);
+	}
+	
+	/**
+	 * Give to player.
+	 *
+	 * @param offlinePlayer the offline player
+	 * @param worldName the world name
+	 * @param amount the amount
+	 * @return true, if successful
+	 */
+	public boolean giveToPlayer(OfflinePlayer offlinePlayer, String worldName, Double amount) {
+		
+		return economy.depositPlayer(offlinePlayer, worldName, amount).transactionSuccess();
+	}
 
-    /**
-     * Gets the from player.
-     *
-     * @param offlinePlayer the offline player
-     * @param worldName the world name
-     * @param amount the amount
-     * @return the from player
-     */
-    public boolean getFromPlayer(OfflinePlayer offlinePlayer, String worldName, Double amount) {
-        
-        return economy.withdrawPlayer(offlinePlayer, worldName, amount).transactionSuccess();
-    }
-    
-    /**
-     * To format.
-     *
-     * @param amount the amount
-     * @return the string
-     */
-    public String toFormat(Double amount) {
-        
-        return economy.format(amount);
-    }
+	/**
+	 * Gets the from player.
+	 *
+	 * @param offlinePlayer the offline player
+	 * @param worldName the world name
+	 * @param amount the amount
+	 * @return the from player
+	 */
+	public boolean getFromPlayer(OfflinePlayer offlinePlayer, String worldName, Double amount) {
+		
+		return economy.withdrawPlayer(offlinePlayer, worldName, amount).transactionSuccess();
+	}
+	
+	/**
+	 * To format.
+	 *
+	 * @param amount the amount
+	 * @return the string
+	 */
+	public String toFormat(Double amount) {
+		
+		return economy.format(amount);
+	}
 }

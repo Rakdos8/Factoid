@@ -28,24 +28,24 @@ import com.earth2me.essentials.Essentials;
  */
 public class ChatEssentials implements Chat {
 
-    /** The essentials. */
-    private final Essentials essentials;
+	/** The essentials. */
+	private final Essentials essentials;
 
-    /**
-     * Instantiates a new chat essentials.
-     */
-    public ChatEssentials() {
-        
-        essentials = (Essentials)Factoid.getThisPlugin().iDependPlugin().getEssentials();
-    }
+	/**
+	 * Instantiates a new chat essentials.
+	 */
+	public ChatEssentials() {
+		
+		essentials = (Essentials)Factoid.getThisPlugin().iDependPlugin().getEssentials();
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.config.chat.Chat#isSpy(org.bukkit.entity.Player)
-     */
-    @Override
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.config.chat.Chat#isSpy(org.bukkit.entity.Player)
+	 */
+	@Override
 	public boolean isSpy(Player player) {
 		
-    	return essentials.getUser(player).isSocialSpyEnabled();
+		return essentials.getUser(player).isSocialSpyEnabled();
 	}
 
 	/* (non-Javadoc)

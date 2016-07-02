@@ -130,7 +130,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On player join.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerJoin(PlayerJoinEvent event) {
@@ -156,7 +156,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On player quit.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerQuit(PlayerQuitEvent event) {
@@ -177,7 +177,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On player teleport.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
@@ -214,7 +214,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On player move.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerMove(PlayerMoveEvent event) {
@@ -243,7 +243,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On player interact.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -314,8 +314,8 @@ public class PlayerListener extends CommonListener implements Listener {
 			
 			if (trueLand != null) {
 
-			    Factoid.getThisPlugin().iLog().write("EcoSignClick: ClickLoc: " + loc + ", SignLoc" + trueLand.getSaleSignLoc());
-			    
+				Factoid.getThisPlugin().iLog().write("EcoSignClick: ClickLoc: " + loc + ", SignLoc" + trueLand.getSaleSignLoc());
+				
 				try {
 					if (trueLand.getSaleSignLoc() != null
 							&& trueLand.getSaleSignLoc().getBlock().equals(loc.getBlock())) {
@@ -380,9 +380,9 @@ public class PlayerListener extends CommonListener implements Listener {
 							land, player,
 							PermissionList.USE_STRING.getPermissionType()))
 					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.MOB_SPAWNER
-					        && !checkPermission(land, player, PermissionList.USE_MOBSPAWNER.getPermissionType()))
+							&& !checkPermission(land, player, PermissionList.USE_MOBSPAWNER.getPermissionType()))
 					|| (action == Action.RIGHT_CLICK_BLOCK && (ml == Material.DAYLIGHT_DETECTOR || ml == Material.DAYLIGHT_DETECTOR_INVERTED)
-					        && !checkPermission(land, player, PermissionList.USE_LIGHTDETECTOR.getPermissionType()))
+							&& !checkPermission(land, player, PermissionList.USE_LIGHTDETECTOR.getPermissionType()))
 					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.ENCHANTMENT_TABLE
 							&& !checkPermission(land, player, PermissionList.USE_ENCHANTTABLE.getPermissionType()))
 					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.ANVIL
@@ -482,7 +482,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On block place.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockPlace(BlockPlaceEvent event) {
@@ -524,7 +524,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On hanging place.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onHangingPlace(HangingPlaceEvent event) {
@@ -550,7 +550,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On player interact entity.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
@@ -576,7 +576,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On block break.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockBreak(BlockBreakEvent event) {
@@ -615,7 +615,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On hanging break by entity.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
@@ -644,7 +644,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On player drop item.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerDropItem(PlayerDropItemEvent event) {
@@ -668,7 +668,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On player pickup item.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
@@ -689,7 +689,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On player bed enter.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerBedEnter(PlayerBedEnterEvent event) {
@@ -712,7 +712,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On entity damage by entity.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
@@ -772,7 +772,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On player bucket fill.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerBucketFill(PlayerBucketFillEvent event) {
@@ -801,7 +801,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On player bucket empty.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
@@ -826,19 +826,19 @@ public class PlayerListener extends CommonListener implements Listener {
 		}
 	}
 	
-    /**
-     * On entity change block.
-     *
-     * @param event the event
-     */
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onEntityChangeBlock(EntityChangeBlockEvent event) {
+	/**
+	 * On entity change block.
+	 *
+	 * @param event the event
+	 */
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onEntityChangeBlock(EntityChangeBlockEvent event) {
 
-        // Crop trample
+		// Crop trample
 		IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(
 				event.getBlock().getLocation());
-        Material matFrom = event.getBlock().getType();
-        Material matTo = event.getTo();
+		Material matFrom = event.getBlock().getType();
+		Material matTo = event.getTo();
 		Player player;
 		
 		if(event.getEntity() instanceof Player
@@ -850,7 +850,7 @@ public class PlayerListener extends CommonListener implements Listener {
 						PermissionList.CROP_TRAMPLE.getPermissionType())))) {
 			event.setCancelled(true);
 		}
-    }
+	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	// Must be after Essentials
@@ -878,7 +878,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On player respawn2.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	// For land listener
@@ -895,7 +895,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On block ignite.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockIgnite(BlockIgniteEvent event) {
@@ -909,7 +909,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On potion splash.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPotionSplash(PotionSplashEvent event) {
@@ -984,7 +984,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * On player command preprocess.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
@@ -1065,13 +1065,13 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * Update pos info.
 	 * 
 	 * @param event
-	 *            the event
+	 *			the event
 	 * @param entry
-	 *            the entry
+	 *			the entry
 	 * @param loc
-	 *            the loc
+	 *			the loc
 	 * @param newPlayer
-	 *            the new player
+	 *			the new player
 	 */
 	@SuppressWarnings("deprecation")
 	private void updatePosInfo(Event event, PlayerConfEntry entry,

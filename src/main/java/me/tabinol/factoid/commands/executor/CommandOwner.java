@@ -35,46 +35,46 @@ import org.bukkit.ChatColor;
 public class CommandOwner extends CommandThreadExec {
 
 	/**
-     * Instantiates a new command owner.
-     *
-     * @param entity the entity
-     * @throws FactoidCommandException the factoid command exception
-     */
-    public CommandOwner(CommandEntities entity) throws FactoidCommandException {
+	 * Instantiates a new command owner.
+	 *
+	 * @param entity the entity
+	 * @throws FactoidCommandException the factoid command exception
+	 */
+	public CommandOwner(CommandEntities entity) throws FactoidCommandException {
 
-        super(entity);
-    }
+		super(entity);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
-     */
-    @Override
-    public void commandExecute() throws FactoidCommandException {
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.commands.executor.CommandInterface#commandExecute()
+	 */
+	@Override
+	public void commandExecute() throws FactoidCommandException {
 
-        checkSelections(true, null);
-        checkPermission(true, true, null, null);
-        
-        pc = entity.argList.getPlayerContainerFromArg(land,
-                new EPlayerContainerType[]{EPlayerContainerType.EVERYBODY,
-                    EPlayerContainerType.OWNER, EPlayerContainerType.VISITOR});
-        Factoid.getThisPlugin().iPlayersCache().getUUIDWithNames(this, pc);
-    }
+		checkSelections(true, null);
+		checkPermission(true, true, null, null);
+		
+		pc = entity.argList.getPlayerContainerFromArg(land,
+				new EPlayerContainerType[]{EPlayerContainerType.EVERYBODY,
+					EPlayerContainerType.OWNER, EPlayerContainerType.VISITOR});
+		Factoid.getThisPlugin().iPlayersCache().getUUIDWithNames(this, pc);
+	}
 
-    /* (non-Javadoc)
-     * @see me.tabinol.factoid.commands.executor.CommandThreadExec#commandThreadExecute(me.tabinol.factoid.playerscache.PlayerCacheEntry[])
-     */
-    @Override
-    public void commandThreadExecute(PlayerCacheEntry[] playerCacheEntry)
-    		throws FactoidCommandException {
-        
-    	convertPcIfNeeded(playerCacheEntry);
+	/* (non-Javadoc)
+	 * @see me.tabinol.factoid.commands.executor.CommandThreadExec#commandThreadExecute(me.tabinol.factoid.playerscache.PlayerCacheEntry[])
+	 */
+	@Override
+	public void commandThreadExecute(PlayerCacheEntry[] playerCacheEntry)
+			throws FactoidCommandException {
+		
+		convertPcIfNeeded(playerCacheEntry);
 
-        land.setOwner(pc);
-        entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.OWNER.ISDONE", pc.getPrint(), land.getName()));
-        Factoid.getThisPlugin().iLog().write("The land " + land.getName() + "is set to owner: " + pc.getPrint());
+		land.setOwner(pc);
+		entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.OWNER.ISDONE", pc.getPrint(), land.getName()));
+		Factoid.getThisPlugin().iLog().write("The land " + land.getName() + "is set to owner: " + pc.getPrint());
 
-        // Cancel the selection
-        new CommandCancel(entity.playerConf, true).commandExecute();
+		// Cancel the selection
+		new CommandCancel(entity.playerConf, true).commandExecute();
 
-    }
+	}
 }
