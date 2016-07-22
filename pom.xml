@@ -6,7 +6,7 @@
 	<artifactId>Factoid</artifactId>
 
 	<name>Factoid</name>
-	<version>1.2.1</version>
+	<version>1.2.2</version>
 	<description>Plugin permettant de gérer des zones avec des permissions prédifinies.</description>
 	<url>http://www.tabinol.me</url>
 
@@ -66,8 +66,8 @@
 			<version>1.5</version>
 			<exclusions>
 				<exclusion>
-					<groupId>org.bukkit</groupId>
-					<artifactId>bukkit</artifactId>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -79,12 +79,8 @@
 			<version>2.13.1</version>
 			<exclusions>
 				<exclusion>
-					<groupId>org.bukkit</groupId>
-					<artifactId>bukkit</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.sk89q.bukkit</groupId>
-					<artifactId>bukkit-classloader-check</artifactId>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>

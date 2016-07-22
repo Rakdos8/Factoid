@@ -339,7 +339,10 @@ public class PlayerListener extends CommonListener implements Listener {
 			land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(loc);
 
 			//FIXME: good if they can put a block, what a nonsense !
-			if (action == Action.RIGHT_CLICK_BLOCK && Material.END_CRYSTAL == event.getMaterial() &&
+			// Checks if the player is in a cubo ?? >> Factoid.getThisPlugin().iLands().getLand(loc)
+			if (Factoid.getThisPlugin().iLands().getLand(loc) != null &&
+				action == Action.RIGHT_CLICK_BLOCK &&
+				Material.END_CRYSTAL == event.getMaterial() &&
 				checkPermission(land, player, PermissionList.PLACE_END_CRYSTAL.getPermissionType())
 			) {
 				messagePermission(player);
