@@ -338,8 +338,8 @@ public class PlayerListener extends CommonListener implements Listener {
 				&& !entry.isAdminMod()) {
 			land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(loc);
 
-			//FIXME: good if they can put a block, what a nonesense Tabinol !
-			if (action == Action.RIGHT_CLICK_BLOCK && Material.END_CRYSTAL == event.getItem().getType() &&
+			//FIXME: good if they can put a block, what a nonsense !
+			if (action == Action.RIGHT_CLICK_BLOCK && Material.END_CRYSTAL == event.getMaterial() &&
 				checkPermission(land, player, PermissionList.PLACE_END_CRYSTAL.getPermissionType())
 			) {
 				messagePermission(player);
