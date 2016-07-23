@@ -24,52 +24,55 @@ package me.tabinol.factoid.parameters;
  * @author Tabinol
  */
 public enum FlagList {
-	
+
 	/** The undefined. */
 	UNDEFINED(new String()),
-	
+
 	/** The firespread. */
 	FIRESPREAD(new Boolean(true)),
-	
+
 	/** The fire. */
 	FIRE(new Boolean(true)),
-	
+
 	/** The explosion. */
 	EXPLOSION(new Boolean(true)),
-	
+
 	/** The creeper explosion. */
 	CREEPER_EXPLOSION(new Boolean(true)),
-	
+
 	/** The tnt explosion. */
 	TNT_EXPLOSION(new Boolean(true)),
-	
+
 	/** The creeper damage. */
 	CREEPER_DAMAGE(new Boolean(true)),
-	
+
 	/** The enderman damage. */
 	ENDERMAN_DAMAGE(new Boolean(true)),
-	
+
+	/** The frost walker enchant. */
+	FROST_WALKER(new Boolean(false)),
+
 	/** The wither damage. */
 	WITHER_DAMAGE(new Boolean(true)),
-	
+
 	/** The ghast damage. */
 	GHAST_DAMAGE(new Boolean(true)),
-	
+
 	/** The enderdragon damage. */
 	ENDERDRAGON_DAMAGE(new Boolean(true)),
-	
+
 	/** The tnt damage. */
 	TNT_DAMAGE(new Boolean(true)),
-	
+
 	/** The mob spawn. */
 	MOB_SPAWN(new Boolean(true)),
-	
+
 	/** The animal spawn. */
 	ANIMAL_SPAWN(new Boolean(true)),
-	
+
 	/** The leaves decay */
 	LEAF_DECAY(new Boolean(true)),
-	
+
 	/** The crop trample */
 	CROP_TRAMPLE(new Boolean(true)),
 
@@ -81,46 +84,46 @@ public enum FlagList {
 
 	/** The full pvp. */
 	FULL_PVP(new Boolean(true)),
-	
+
 	/** The faction pvp. */
 	FACTION_PVP(new Boolean(true)),
 
 	/** The message join. */
 	MESSAGE_JOIN(new String()),
-	
+
 	/** The message quit. */
 	MESSAGE_QUIT(new String()),
-	
+
 	/** The eco block price. */
 	ECO_BLOCK_PRICE(new Double(0)),
-	
+
 	/** The exclude commands. */
 	EXCLUDE_COMMANDS(new String[] {}),
-	
+
 	/**  The spawn and teleport point. */
 	SPAWN(new String("")),
-	
+
 	/** Inherit from parent owner */
 	INHERIT_OWNER(new Boolean(true)),
-	
+
 	/** Inherit from parent residents */
 	INHERIT_RESIDENTS(new Boolean(true)),
-	
+
 	/** Inherit from parent tenant */
 	INHERIT_TENANT(new Boolean(true));
 
 	/** The base value. */
 	final FlagValue baseValue;
-	
+
 	/** The flag type. */
 	private FlagType flagType;
-	
+
 	/**
 	 * Instantiates a new flag list.
 	 *
 	 * @param baseValue the base value
 	 */
-	private FlagList(Object baseValue) {
+	private FlagList(final Object baseValue) {
 
 		this.baseValue = new FlagValue(baseValue);
 	}
@@ -130,8 +133,8 @@ public enum FlagList {
 	 *
 	 * @param flagType the new flag type
 	 */
-	void setFlagType(FlagType flagType) {
-		
+	void setFlagType(final FlagType flagType) {
+
 		this.flagType = flagType;
 	}
 
@@ -141,7 +144,7 @@ public enum FlagList {
 	 * @return the flag type
 	 */
 	public FlagType getFlagType() {
-		
+
 		return flagType;
 	}
 }

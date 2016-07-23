@@ -107,7 +107,10 @@ public enum PermissionList {
 	USE_ANVIL(true),
 
 	/** The place end crystal **/
-	PLACE_END_CRYSTAL(true),
+	PLACE_END_CRYSTAL(false),
+
+	/** The place end crystal **/
+	FROST_WALKER(false),
 
 	/** The mob spawner **/
 	USE_MOBSPAWNER(true),
