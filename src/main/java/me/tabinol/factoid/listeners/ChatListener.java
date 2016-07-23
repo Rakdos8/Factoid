@@ -33,7 +33,6 @@ public class ChatListener extends CommonListener implements Listener {
 	 * Instantiates a new chat listener.
 	 */
 	public ChatListener() {
-		super();
 		conf = Factoid.getThisPlugin().iConf();
 		playerConf = Factoid.getThisPlugin().iPlayerConf();
 	}

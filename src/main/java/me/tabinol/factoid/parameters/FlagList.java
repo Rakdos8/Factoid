@@ -43,6 +43,9 @@ public enum FlagList {
 	/** The tnt explosion. */
 	TNT_EXPLOSION(new Boolean(true)),
 
+	/** The end crystal explosion. */
+	END_CRYSTAL_EXPLOSION(new Boolean(true)),
+
 	/** The creeper damage. */
 	CREEPER_DAMAGE(new Boolean(true)),
 

@@ -6,7 +6,7 @@
 	<artifactId>Factoid</artifactId>
 
 	<name>Factoid</name>
-	<version>1.2.2</version>
+	<version>1.2.3</version>
 	<description>Plugin permettant de gérer des zones avec des permissions prédifinies.</description>
 	<url>http://www.tabinol.me</url>
 

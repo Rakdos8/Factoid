@@ -117,7 +117,6 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * Instantiates a new player listener.
 	 */
 	public PlayerListener() {
-		super();
 		conf = Factoid.getThisPlugin().iConf();
 		playerConf = Factoid.getThisPlugin().iPlayerConf();
 		timeCheck = DEFAULT_TIME_LAPS;
