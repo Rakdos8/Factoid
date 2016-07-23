@@ -110,7 +110,7 @@ public enum PermissionList {
 	PLACE_END_CRYSTAL(false),
 
 	/** The place end crystal **/
-	FROST_WALKER(false),
+	FROST_WALKER(true),
 
 	/** The mob spawner **/
 	USE_MOBSPAWNER(true),
