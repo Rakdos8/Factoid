@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>FactoidInventory</artifactId>
+	<name>FactoidInventory</name>
+
+	<description>Plugin permettant de gérer le flag INVENTORY pour Factoid.</description>
+	<url>http://modulmonde.com</url>
+
+	<properties>
+		<plugin.version>1.0.2</plugin.version>
+		<!-- *** Change Storage version here *** -->
+		<StorageVersion>1</StorageVersion>
+		<!-- *** Change Storage for offline players here *** -->
+		<PlayerOfflineVersion>1</PlayerOfflineVersion>
+	</properties>
+
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>com.modulmonde</groupId>
+		<artifactId>FactoidPlugin</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<dependencies>
+		<!-- *** Dépendance Bukkit *** -->
+		<dependency>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot-api</artifactId>
+			<version>${spigot-version}</version>
+		</dependency>
+
+		<!-- *** Dépendance Factoid *** -->
+		<dependency>
+			<groupId>com.modulmonde</groupId>
+			<artifactId>Factoid</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+	</dependencies>
+</project>
