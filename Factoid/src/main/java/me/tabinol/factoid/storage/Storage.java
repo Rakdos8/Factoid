@@ -28,20 +28,20 @@ import me.tabinol.factoidapi.lands.ILand;
 public abstract class Storage implements StorageInt {
 
 	/** The Constant LAND_VERSION. */
-	public static final int LAND_VERSION = Factoid.getMavenAppProperties().getPropertyInt("landVersion");
-	
+	public static final int LAND_VERSION = 5;
+
 	/** The Constant FACTION_VERSION. */
-	public static final int FACTION_VERSION = Factoid.getMavenAppProperties().getPropertyInt("factionVersion");
+	public static final int FACTION_VERSION = 3;
 
 	/** The to resave. */
-	private boolean toResave = false; // If a new version of .conf file, we need to save again
+	private final boolean toResave = false; // If a new version of .conf file, we need to save again
 
 	/**
 	 * Instantiates a new storage.
 	 */
 	public Storage() {
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see me.tabinol.factoid.storage.StorageInt#loadAll()
 	 */
@@ -62,12 +62,12 @@ public abstract class Storage implements StorageInt {
 	 */
 	private void saveAll() {
 
-		for (ILand land : Factoid.getThisPlugin().iLands().getLands()) {
+		for (final ILand land : Factoid.getThisPlugin().iLands().getLands()) {
 
 			land.forceSave();
 		}
 
-		for (IFaction faction : Factoid.getThisPlugin().iFactions().getFactions()) {
+		for (final IFaction faction : Factoid.getThisPlugin().iFactions().getFactions()) {
 
 			faction.forceSave();
 		}

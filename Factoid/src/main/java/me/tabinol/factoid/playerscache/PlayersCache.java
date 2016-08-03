@@ -53,7 +53,7 @@ import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 public class PlayersCache extends Thread {
 
 	/** The Constant PLAYERS_CACHE_VERSION. */
-	public static final int PLAYERS_CACHE_VERSION = Factoid.getMavenAppProperties().getPropertyInt("playersCacheVersion");
+	public static final int PLAYERS_CACHE_VERSION = 1;
 
 	/** The file name. */
 	private final String fileName;

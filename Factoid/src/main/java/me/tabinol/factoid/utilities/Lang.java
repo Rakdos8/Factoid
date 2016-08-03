@@ -22,13 +22,13 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
 
-import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.config.Config;
-
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.config.Config;
 
 
 /**
@@ -37,17 +37,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Lang {
 
 	/** The Constant ACTUAL_VERSION. */
-	public static final int ACTUAL_VERSION = Factoid.getMavenAppProperties().getPropertyInt("langVersion");
-	
+	public static final int ACTUAL_VERSION = 26;
+
 	/** The lang. */
 	private String lang = null;
-	
+
 	/** The lang file. */
 	private File langFile;
-	
+
 	/** The langconfig. */
 	private final FileConfiguration langconfig;
-	
+
 	/** The plugin. */
 	private final JavaPlugin plugin;
 
@@ -79,7 +79,7 @@ public class Lang {
 	 */
 	public final void checkVersion() {
 
-		int fileVersion = langconfig.getInt("VERSION");
+		final int fileVersion = langconfig.getInt("VERSION");
 
 		// We must rename the file and activate the new file
 		if (ACTUAL_VERSION != fileVersion) {
@@ -97,7 +97,7 @@ public class Lang {
 	 * @param param the param
 	 * @return the message
 	 */
-	public String getMessage(String path, String... param) {
+	public String getMessage(final String path, final String... param) {
 
 		String message = langconfig.getString(path);
 
@@ -105,7 +105,7 @@ public class Lang {
 			return "MESSAGE NOT FOUND FOR PATH: " + path;
 		}
 		if (param.length >= 1) {
-			int occurence = getOccurence(message, '%');
+			final int occurence = getOccurence(message, '%');
 			if (occurence == param.length) {
 				for (int i = 0; i < occurence; i++) {
 					message = replace(message, "%", param[i]);
@@ -125,7 +125,7 @@ public class Lang {
 	 * @param path the path
 	 * @return true, if is message exist
 	 */
-	public boolean isMessageExist(String path) {
+	public boolean isMessageExist(final String path) {
 
 		return langconfig.getString(path) != null;
 	}
@@ -138,7 +138,7 @@ public class Lang {
 	 * @param s_nouveau the s_nouveau
 	 * @return the string
 	 */
-	public String replace(String s_original, String s_cherche, String s_nouveau) {
+	public String replace(final String s_original, final String s_cherche, final String s_nouveau) {
 		if ((s_original == null) || (s_original.equals(""))) {
 			return "";
 		}
@@ -147,7 +147,7 @@ public class Lang {
 		}
 
 		StringBuffer s_final;
-		int index = s_original.indexOf(s_cherche);
+		final int index = s_original.indexOf(s_cherche);
 
 		s_final = new StringBuffer(s_original.substring(0, index));
 		s_final.append(s_nouveau);
@@ -162,7 +162,7 @@ public class Lang {
 	private void loadYamls() {
 		try {
 			langconfig.load(langFile);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -176,7 +176,7 @@ public class Lang {
 				langFile.getParentFile().mkdirs();
 				FileCopy.copyTextFromJav(plugin.getResource("lang/" + lang + ".yml"), langFile);
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -188,7 +188,7 @@ public class Lang {
 	 * @param r the r
 	 * @return the occurence
 	 */
-	private int getOccurence(String s, char r) {
+	private int getOccurence(final String s, final char r) {
 		int counter = 0;
 		for (int i = 0; i < s.length(); i++) {
 			if (s.charAt(i) == r) {
@@ -205,22 +205,22 @@ public class Lang {
 	 * @param commandName the command name
 	 * @return the help
 	 */
-	public String getHelp(String mainCommand, String commandName) {
-		
-		ConfigurationSection helpSec = langconfig.getConfigurationSection("HELP." + mainCommand + "." + commandName);
-		
+	public String getHelp(final String mainCommand, final String commandName) {
+
+		final ConfigurationSection helpSec = langconfig.getConfigurationSection("HELP." + mainCommand + "." + commandName);
+
 		// No help for this command?
 		if(helpSec == null) {
 			return null;
 		}
-		
-		Map<String, Object> valueList = helpSec.getValues(false);
-		StringBuilder sb = new StringBuilder();
-		
+
+		final Map<String, Object> valueList = helpSec.getValues(false);
+		final StringBuilder sb = new StringBuilder();
+
 		for(int t = 1; t <= valueList.size(); t ++) {
 			sb.append((String) valueList.get(t + "")).append(Config.NEWLINE);
 		}
-		
+
 		return sb.toString();
 	}
 }

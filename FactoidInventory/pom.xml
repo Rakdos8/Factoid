@@ -10,10 +10,6 @@
 
 	<properties>
 		<plugin.version>1.0.2</plugin.version>
-		<!-- *** Change Storage version here *** -->
-		<StorageVersion>1</StorageVersion>
-		<!-- *** Change Storage for offline players here *** -->
-		<PlayerOfflineVersion>1</PlayerOfflineVersion>
 	</properties>
 
 	<packaging>jar</packaging>

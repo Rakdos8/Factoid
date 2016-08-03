@@ -10,14 +10,6 @@
 
 	<properties>
 		<plugin.version>1.2.3</plugin.version>
-		<!-- *** Change Language version here here *** -->
-		<langVersion>26</langVersion>
-		<!-- *** Change land .conf version here here *** -->
-		<landVersion>5</landVersion>
-		<!-- *** Change faction .conf version here here *** -->
-		<factionVersion>3</factionVersion>
-		<!-- *** Change players cache .conf version here here *** -->
-		<playersCacheVersion>1</playersCacheVersion>
 	</properties>
 
 	<packaging>jar</packaging>

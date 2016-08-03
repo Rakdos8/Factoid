@@ -43,7 +43,6 @@ import me.tabinol.factoid.scoreboard.ScoreBoard;
 import me.tabinol.factoid.storage.StorageThread;
 import me.tabinol.factoid.utilities.Lang;
 import me.tabinol.factoid.utilities.Log;
-import me.tabinol.factoid.utilities.MavenAppProperties;
 import me.tabinol.factoidapi.FactoidAPI;
 import me.tabinol.factoidapi.IFactoid;
 import me.tabinol.factoidapi.lands.ILand;
@@ -57,9 +56,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 
 	/** The Economy schedule interval. */
 	public static final int ECO_SCHEDULE_INTERVAL = 20 * 60 * 5;
-
-	/** The maven app properties. */
-	private static MavenAppProperties mavenAppProperties;
 
 	/** The this plugin. */
 	private static Factoid thisPlugin;
@@ -131,16 +127,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	private PlayersCache playersCache;
 
 	/**
-	 * Gets the maven app properties.
-	 *
-	 * @return the maven app properties
-	 */
-	public static MavenAppProperties getMavenAppProperties() {
-
-		return mavenAppProperties;
-	}
-
-	/**
 	 * Gets the this plugin.
 	 *
 	 * @return the this plugin
@@ -190,9 +176,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	 * @see org.bukkit.plugin.java.JavaPlugin#onEnable() */
 	@Override
 	public void onEnable() {
-
-		mavenAppProperties = new MavenAppProperties();
-		mavenAppProperties.loadProperties();
 		// Static access to «this» Factoid
 		thisPlugin = this;
 		BKVersion.initVersion();

@@ -40,7 +40,7 @@ import me.tabinol.factoidinventory.config.InventoryConfig;
 
 public class InventoryStorage {
 
-    public final static int STORAGE_VERSION = FactoidInventory.getMavenAppProperties().getPropertyInt("StorageVersion");
+    public final static int STORAGE_VERSION = 1;
     public final static String INV_DIR = "inventories";
     public final static String DEFAULT_INV = "DEFAULTINV";
     public final static int MAX_FOOD_LEVEL = 20;

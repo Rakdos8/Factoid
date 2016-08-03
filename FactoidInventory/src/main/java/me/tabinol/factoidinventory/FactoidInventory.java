@@ -23,64 +23,54 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.tabinol.factoidinventory.config.InventoryConfig;
 import me.tabinol.factoidinventory.inventories.InventoryListener;
-import me.tabinol.factoidinventory.utils.MavenAppProperties;
 
 public class FactoidInventory extends JavaPlugin {
 
-    private static FactoidInventory thisPlugin;
-    private static MavenAppProperties mavenAppProperties;
-    private static InventoryConfig config;
-    private InventoryListener inventoryListener = null;
+	private static FactoidInventory thisPlugin;
+	private static InventoryConfig config;
+	private InventoryListener inventoryListener = null;
 
-    @Override
-    public void onEnable() {
+	@Override
+	public void onEnable() {
 
-        thisPlugin = this;
+		thisPlugin = this;
 
-        mavenAppProperties = new MavenAppProperties();
-        mavenAppProperties.loadProperties();
+		// Config
+		config = new InventoryConfig();
+		config.loadConfig();
 
-        // Config
-        config = new InventoryConfig();
-        config.loadConfig();
+		// Enable InveotryListener
+		inventoryListener = new InventoryListener();
+		getServer().getPluginManager().registerEvents(inventoryListener, this);
+	}
 
-        // Enable InveotryListener
-        inventoryListener = new InventoryListener();
-        getServer().getPluginManager().registerEvents(inventoryListener, this);
-    }
+	@Override
+	public void onDisable() {
 
-    @Override
-    public void onDisable() {
+		if (inventoryListener != null) {
+			// Save inventories and remove online players
+			inventoryListener.removeAndSave();
+		}
+	}
 
-        if (inventoryListener != null) {
-            // Save inventories and remove online players
-            inventoryListener.removeAndSave();
-        }
-    }
+	public static FactoidInventory getThisPlugin() {
 
-    public static FactoidInventory getThisPlugin() {
+		return thisPlugin;
+	}
 
-        return thisPlugin;
-    }
+	public static InventoryConfig getConf() {
 
-    public static MavenAppProperties getMavenAppProperties() {
+		return config;
+	}
 
-        return mavenAppProperties;
-    }
+	public InventoryListener getInventoryListener() {
 
-    public static InventoryConfig getConf() {
+		return inventoryListener;
+	}
 
-        return config;
-    }
+	@Override
+	public boolean onCommand(final CommandSender sender, final Command cmd, final String commandLabel, final String[] args) {
 
-    public InventoryListener getInventoryListener() {
-
-        return inventoryListener;
-    }
-
-    @Override
-    public boolean onCommand(final CommandSender sender, final Command cmd, final String commandLabel, final String[] args) {
-
-        return new Commands(sender, cmd, commandLabel, args).getComReturn();
-    }
+		return new Commands(sender, cmd, commandLabel, args).getComReturn();
+	}
 }
