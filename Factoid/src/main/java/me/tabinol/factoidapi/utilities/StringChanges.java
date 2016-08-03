@@ -37,15 +37,15 @@ public class StringChanges {
 	 * @param list the String list
 	 * @return the converted String list
 	 */
-	public static List<String> toLower(List<String> list) {
+	public static List<String> toLower(final List<String> list) {
 
 		if (list == null) {
 			return null;
 		}
 
-		ArrayList<String> listLower = new ArrayList<String>();
+		final ArrayList<String> listLower = new ArrayList<String>();
 
-		for (String str : list) {
+		for (final String str : list) {
 			listLower.add(str.toLowerCase());
 		}
 
@@ -58,7 +58,7 @@ public class StringChanges {
 	 * @param str the String without quote
 	 * @return the quoted String
 	 */
-	public static String toQuote(String str) {
+	public static String toQuote(final String str) {
 
 		String strRet;
 
@@ -77,7 +77,7 @@ public class StringChanges {
 	 * @param str the quoted String
 	 * @return the string removed from quote
 	 */
-	public static String fromQuote(String str) {
+	public static String fromQuote(final String str) {
 
 		if (isStartQuote(str) && isEndQuote(str)) {
 			return (new StringBuffer(str).deleteCharAt(str.length() - 1).deleteCharAt(0)).toString().replaceAll("''", "'");
@@ -93,13 +93,13 @@ public class StringChanges {
 	 * @param split the split character
 	 * @return the multiple String split
 	 */
-	public static String[] splitKeepQuote(String str, String split) {
+	public static String[] splitKeepQuote(final String str, final String split) {
 
-		String[] strs = str.split(split);
-		ArrayList<String> strl = new ArrayList<String>();
+		final String[] strs = str.split(split);
+		final ArrayList<String> strl = new ArrayList<String>();
 		StringBuffer sb = null;
 
-		for (String strv : strs) {
+		for (final String strv : strs) {
 			if (sb == null) {
 				if (isStartQuote(strv)) {
 					sb = new StringBuffer(strv);
@@ -114,7 +114,7 @@ public class StringChanges {
 				sb = null;
 			}
 		}
-		
+
 		return strl.toArray(new String[0]);
 	}
 
@@ -124,7 +124,7 @@ public class StringChanges {
 	 * @param str the String
 	 * @return true, if the String starts with a quote
 	 */
-	private static boolean isStartQuote(String str) {
+	private static boolean isStartQuote(final String str) {
 
 		if (str.startsWith("'") || str.startsWith("\"")) {
 			return true;
@@ -138,14 +138,14 @@ public class StringChanges {
 	 * @param str the String
 	 * @return true, if the String end with a quote
 	 */
-	private static boolean isEndQuote(String str) {
+	private static boolean isEndQuote(final String str) {
 
 		if (str.endsWith("'") || str.endsWith("\"") || str.endsWith(";") /* Fix String list */) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Split the String and adds a empty at the end of the array.
 	 *
@@ -153,108 +153,108 @@ public class StringChanges {
 	 * @param split the split character
 	 * @return the string[]
 	 */
-	public static String[] splitAddVoid(String string, String split) {
-		
-		String[] tlist = string.split(split);
-		String[] result = new String[tlist.length + 1];
+	public static String[] splitAddVoid(final String string, final String split) {
+
+		final String[] tlist = string.split(split);
+		final String[] result = new String[tlist.length + 1];
 		for(int t = 0; t < tlist.length; t ++) {
 			result[t] = tlist[t];
 		}
 		result[tlist.length] = "";
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * To integer.
 	 *
 	 * @param n the string
 	 * @return the int
 	 */
-	public static int toInteger(String n){
+	public static int toInteger(final String n){
 		try{
 		   return Integer.parseInt(n);
-		}catch(NumberFormatException e){
+		}catch(final NumberFormatException e){
 			return 0;
 		}
 	}
-	
+
 	/**
 	 * Checks if is int.
 	 *
 	 * @param n the string
 	 * @return true, if is int
 	 */
-	public static boolean isInt(String n)
+	public static boolean isInt(final String n)
 	{
 		try{
 			Integer.parseInt(n);
-		}catch(NumberFormatException e){
+		}catch(final NumberFormatException e){
 			return false;
 		}
 		return true;
 	}
-	
+
 	/**
 	 * To double.
 	 *
 	 * @param n the string
 	 * @return the double
 	 */
-	public static double toDouble(String n){
+	public static double toDouble(final String n){
 		try{
 		   return Double.parseDouble(n);
-		}catch(NumberFormatException e){
+		}catch(final NumberFormatException e){
 			return 0;
 		}
 	}
-	
+
 	/**
 	 * Checks if is double.
 	 *
 	 * @param n the string
 	 * @return true, if is double
 	 */
-	public static boolean isDouble(String n)
+	public static boolean isDouble(final String n)
 	{
 		try{
 			Double.parseDouble(n);
-		}catch(NumberFormatException e){
+		}catch(final NumberFormatException e){
 			return false;
 		}
 		return true;
 	}
-	
+
 	/**
 	 * To long.
 	 *
 	 * @param n the long
 	 * @return the long
 	 */
-	public static long toLong(String n){
+	public static long toLong(final String n){
 		try{
 		   return Long.parseLong(n);
-		}catch(NumberFormatException e){
+		}catch(final NumberFormatException e){
 			return 0;
 		}
 	}
-	
+
 	/**
 	 * Checks if is long.
 	 *
 	 * @param n the long
 	 * @return true, if is long
 	 */
-	public static boolean isLong(String n)
+	public static boolean isLong(final String n)
 	{
 		try{
 			Long.parseLong(n);
-		}catch(NumberFormatException e){
+		}catch(final NumberFormatException e){
 			return false;
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Convert the string. The first character will be upper case and the rest
 	 * will be lower case.
@@ -262,56 +262,60 @@ public class StringChanges {
 	 * @param str the string
 	 * @return the string converted
 	 */
-	public static String FirstUpperThenLower(String str) {
-		
+	public static String FirstUpperThenLower(final String str) {
+
 		return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
 	}
-	
+
 	/**
 	 * Location to string.
 	 *
 	 * @param location the location
 	 * @return the string
 	 */
-	public static String locationToString(Location location) {
-		
-		return location.getWorld().getName() + ";" + location.getX() + ";" + location.getY() + ";" + location.getZ() 
-				+ ";" + location.getYaw() + ";" + location.getPitch();
+	public static String locationToString(final Location location) {
+		if (location == null) {
+			return "";
+		}
+
+		return location.getWorld().getName() + ";" +
+			location.getX() + ";" + location.getY() + ";" + location.getZ() +
+			";" + location.getYaw() + ";" + location.getPitch();
 	}
-	
+
 	/**
 	 * String to location.
 	 *
 	 * @param locStr the string
 	 * @return the location
 	 */
-	public static Location stringToLocation(String locStr) {
-		
-		String[] strs = locStr.split("\\;");
-		
+	public static Location stringToLocation(final String locStr) {
+		final String[] strs = locStr.split("\\;");
+
 		// Wrong parameter
 		if(strs.length != 6) {
 			return null;
 		}
-		
-		World world = Bukkit.getWorld(strs[0]);
-		
+
+		final World world = Bukkit.getWorld(strs[0]);
+
 		if(world == null) {
 			return null;
 		}
-		
+
 		// Get the location
-		Location location;
-		
 		try {
-			location = new Location(world, Double.parseDouble(strs[1]), Double.parseDouble(strs[2]),
-					Double.parseDouble(strs[3]), Float.parseFloat(strs[4]), Float.parseFloat(strs[5]));
-		} catch(NumberFormatException ex) {
-			
-			// if location is wrong, set null
-			location = null;
+			return new Location(
+				world,
+				Double.parseDouble(strs[1]),
+				Double.parseDouble(strs[2]),
+				Double.parseDouble(strs[3]),
+				Float.parseFloat(strs[4]),
+				Float.parseFloat(strs[5])
+			);
 		}
-		
-		return location;
+		catch(final NumberFormatException ex) {
+			return null;
+		}
 	}
 }
