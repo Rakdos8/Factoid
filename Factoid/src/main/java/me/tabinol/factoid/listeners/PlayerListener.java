@@ -973,16 +973,19 @@ public class PlayerListener extends CommonListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerItemConsume(final PlayerItemConsumeEvent event) {
-
 		final Player player = event.getPlayer();
-		IPlayerConfEntry entry;
+		final IPlayerConfEntry entry = playerConf.get(player);
 
-		if((entry = playerConf.get(player)) != null
-				&& !entry.isAdminMod()) {
-
+		if(entry != null && !entry.isAdminMod()) {
 			final IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(player.getLocation());
-
-			if (!checkPermission(land, player, PermissionList.EAT.getPermissionType())) {
+			// Disallow the chorus fruit tp when eaten
+			if (event.getItem().getType() == Material.CHORUS_FRUIT &&
+				land.getFlagAndInherit(FlagList.CHORUS_FRUIT_TP.getFlagType()).getValueBoolean() == false
+			) {
+				messagePermission(player);
+				event.setCancelled(true);
+			}
+			else if (!checkPermission(land, player, PermissionList.EAT.getPermissionType())) {
 				messagePermission(player);
 				event.setCancelled(true);
 			}

@@ -55,6 +55,9 @@ public enum FlagList {
 	/** The frost walker enchant. */
 	FROST_WALKER(new Boolean(false)),
 
+	/** The chorus fruit random tp. */
+	CHORUS_FRUIT_TP(new Boolean(false)),
+
 	/** The wither damage. */
 	WITHER_DAMAGE(new Boolean(true)),
 

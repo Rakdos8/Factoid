@@ -138,29 +138,29 @@ public class WorldListener extends CommonListener implements Listener {
 					// bugfix : droped item destroyed
 					power = 0L;
 				}
-				ExplodeBlocks(event, event.blockList(), FlagList.CREEPER_DAMAGE.getFlagType(), event.getLocation(),
+				explodeBlocks(event, event.blockList(), FlagList.CREEPER_DAMAGE.getFlagType(), event.getLocation(),
 						event.getYield(), power, false, true);
 
 				//  Wither
 			} else if (event.getEntityType() == EntityType.WITHER_SKULL) {
-				ExplodeBlocks(event, event.blockList(), FlagList.WITHER_DAMAGE.getFlagType(), event.getLocation(),
+				explodeBlocks(event, event.blockList(), FlagList.WITHER_DAMAGE.getFlagType(), event.getLocation(),
 						event.getYield(), 1L, false, true);
 			} else if (event.getEntityType() == EntityType.WITHER) {
-				ExplodeBlocks(event, event.blockList(), FlagList.WITHER_DAMAGE.getFlagType(), event.getLocation(),
+				explodeBlocks(event, event.blockList(), FlagList.WITHER_DAMAGE.getFlagType(), event.getLocation(),
 						event.getYield(), 7L, false, true);
 
 				// Ghast
 			} else if (event.getEntityType() == EntityType.FIREBALL) {
-				ExplodeBlocks(event, event.blockList(), FlagList.GHAST_DAMAGE.getFlagType(), event.getLocation(),
+				explodeBlocks(event, event.blockList(), FlagList.GHAST_DAMAGE.getFlagType(), event.getLocation(),
 						event.getYield(), 1L, true, true);
 
 				// TNT
 			} else if (event.getEntityType() == EntityType.MINECART_TNT
 					|| event.getEntityType() == EntityType.PRIMED_TNT) {
-				ExplodeBlocks(event, event.blockList(), FlagList.TNT_DAMAGE.getFlagType(), event.getLocation(),
+				explodeBlocks(event, event.blockList(), FlagList.TNT_DAMAGE.getFlagType(), event.getLocation(),
 						event.getYield(), 4L, false, true);
 			} else if (event.getEntityType() == EntityType.ENDER_DRAGON) {
-				ExplodeBlocks(event, event.blockList(), FlagList.ENDERDRAGON_DAMAGE.getFlagType(), event.getLocation(),
+				explodeBlocks(event, event.blockList(), FlagList.ENDERDRAGON_DAMAGE.getFlagType(), event.getLocation(),
 						event.getYield(), 4L, false, false);
 			}
 		}
@@ -194,7 +194,7 @@ public class WorldListener extends CommonListener implements Listener {
 	 * @param setFire the set fire
 	 * @param doExplosion the do explosion
 	 */
-	private void ExplodeBlocks(final Cancellable event, final List<Block> blocks, final IFlagType ft, final Location loc,
+	private void explodeBlocks(final Cancellable event, final List<Block> blocks, final IFlagType ft, final Location loc,
 			final float yield, final float power, final boolean setFire, final boolean doExplosion) {
 		IFlagValue value;
 		boolean cancelEvent = false;
@@ -263,7 +263,7 @@ public class WorldListener extends CommonListener implements Listener {
 		if (land != null &&
 			event.getEntity() instanceof Player &&
 			event.getNewState().getType() == Material.FROSTED_ICE &&
-			checkPermission(land, (Player) event.getEntity(), PermissionList.FROST_WALKER.getPermissionType()) &&
+			!checkPermission(land, (Player) event.getEntity(), PermissionList.FROST_WALKER.getPermissionType()) &&
 			(event.getBlock().getType() == Material.WATER || event.getBlock().getType() == Material.STATIONARY_WATER)
 		) {
 			event.setCancelled(true);
