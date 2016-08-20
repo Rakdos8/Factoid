@@ -28,12 +28,6 @@
 			<url>http://nexus.hc.to/content/repositories/pub_releases</url>
 		</repository>
 
-		<!-- *** Dépôt Essentials *** -->
-		<repository>
-			<id>ess-repo</id>
-			<url>http://repo.ess3.net/content/groups/essentials</url>
-		</repository>
-
 		<!-- *** Dépôt WorldEdit *** -->
 		<repository>
 			<id>sk89q-repo</id>
@@ -65,8 +59,8 @@
 		<!-- *** Dépendance Essentials *** -->
 		<dependency>
 			<groupId>net.ess3</groupId>
-			<artifactId>Essentials</artifactId>
-			<version>${essentials-version}</version>
+			<artifactId>EssentialsX</artifactId>
+			<version>${essentialsx-version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>*</groupId>
@@ -82,8 +76,8 @@
 			<version>${worldedit-version}</version>
 			<exclusions>
 				<exclusion>
-					<groupId>org.bukkit</groupId>
-					<artifactId>bukkit</artifactId>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>

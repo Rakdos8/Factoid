@@ -1,6 +1,6 @@
 name: FactoidFlyCreative
 main: me.tabinol.factoidflycreative.FactoidFlyCreative
-version: ${project.version}
+version: ${plugin.version}
 depend: [Factoid]
 commands:
     fcreload:
