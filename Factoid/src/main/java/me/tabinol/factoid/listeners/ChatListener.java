@@ -1,5 +1,6 @@
 package me.tabinol.factoid.listeners;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,63 +48,59 @@ public class ChatListener extends CommonListener implements Listener {
 		final Player player = event.getPlayer();
 
 		// Chat in a land
-		if(firstChar.equals("=") || firstChar.equals(">") || firstChar.equals("<")) {
-
+		if ("=".equals(firstChar) || ">".equals(firstChar) || "<".equals(firstChar)) {
 			event.setCancelled(true);
-
-			@SuppressWarnings("deprecation")
-			final
-			Land land = Factoid.getLands().getLand(player.getLocation());
+			final Land land = Factoid.getThisPlugin().iLands().getLand(player.getLocation());
 
 			// The player is not in a land
-			if(land == null) {
-				player.sendMessage(ChatColor.RED + "[Factoid] "
-						+ Factoid.getThisPlugin().iLanguage().getMessage(
-								"CHAT.OUTSIDE"));
+			if (land == null) {
+				player.sendMessage(ChatColor.RED + "[Factoid] " +
+					Factoid.getThisPlugin().iLanguage().getMessage("CHAT.OUTSIDE")
+				);
 				return;
 			}
 
 			// Return if the player is muted
-			if(playerConf.getChat().isMuted(player)) {
+			if (playerConf.getChat().isMuted(player)) {
 				return;
 			}
 
 			// Get users list
-			Set<Player> playersToMsg;
-
-			if(firstChar.equals("=")) {
+			final Set<Player> playersToMsg;
+			if (firstChar.equals("=")) {
 				playersToMsg = copyWithSpy(land.getPlayersInLand());
-			} else if(firstChar.equals("<")) {
+			}
+			else if( firstChar.equals("<")) {
 				playersToMsg = copyWithSpy(land.getPlayersInLandAndChildren());
-			} else { // ">"
+			}
+			// ">"
+			else {
 				playersToMsg = copyWithSpy(land.getAncestor(land.getGenealogy()).getPlayersInLandAndChildren());
 			}
 
 			final String message = event.getMessage().substring(1);
-
 			// send messages
- 			System.out.println(ChatColor.WHITE + "[" + player.getDisplayName()
-					+ ChatColor.WHITE + " " + firstChar + " " + "'"
-					+ ChatColor.GREEN + land.getName() + ChatColor.WHITE + "'] "
-					+ ChatColor.GRAY + message);
-			for(final Player playerToMsg : playersToMsg) {
-				playerToMsg.sendMessage(ChatColor.WHITE + "[" + player.getDisplayName()
-						+ ChatColor.WHITE + " " + firstChar + " " + "'"
-						+ ChatColor.GREEN + land.getName() + ChatColor.WHITE + "'] "
-						+ ChatColor.GRAY + message);
+			final String messageToSend = ChatColor.WHITE + "[" + player.getDisplayName() +
+				ChatColor.WHITE + " " + firstChar + " " + "'" +
+				ChatColor.GREEN + land.getName() + ChatColor.WHITE + "'] " +
+				ChatColor.GRAY + message;
+ 			System.out.println(messageToSend);
+			for (final Player playerToMsg : playersToMsg) {
+				playerToMsg.sendMessage(
+					(playerConf.getChat().isSpy(playerToMsg) ?
+						ChatColor.WHITE + "[" + ChatColor.GOLD + "SS" + ChatColor.WHITE + "] " : ""
+					) + messageToSend
+				);
 			}
 		}
 	}
 
-	private HashSet<Player> copyWithSpy(final Set<Player> a) {
+	private Set<Player> copyWithSpy(final Set<Player> a) {
+		final Set<Player> listSet = new HashSet<Player>();
 
-		final HashSet<Player> listSet = new HashSet<Player>();
-
-		for(final Player player : a) {
-			listSet.add(player);
-		}
-		for(final Player player : Bukkit.getOnlinePlayers()) {
-			if(playerConf.getChat().isSpy(player)) {
+		listSet.addAll(a != null ? a : Collections.emptySet());
+		for (final Player player : Bukkit.getOnlinePlayers()) {
+			if (playerConf.getChat().isSpy(player)) {
 				listSet.add(player);
 			}
 		}
