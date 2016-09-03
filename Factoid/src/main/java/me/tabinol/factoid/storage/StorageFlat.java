@@ -37,19 +37,19 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.FactoidLandException;
 import me.tabinol.factoid.exceptions.FileLoadException;
 import me.tabinol.factoid.factions.Faction;
-import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.parameters.Permission;
 import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playercontainer.PlayerContainerPlayer;
 import me.tabinol.factoidapi.FactoidAPI;
-import me.tabinol.factoidapi.utilities.StringChanges;
 import me.tabinol.factoidapi.parameters.ILandFlag;
 import me.tabinol.factoidapi.parameters.IPermission;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainerPlayer;
+import me.tabinol.factoidapi.utilities.StringChanges;
 
 
 /**
@@ -59,13 +59,13 @@ public class StorageFlat extends Storage implements StorageInt {
 
 	/** The Constant EXT_CONF. */
 	public static final String EXT_CONF = ".conf";
-	
+
 	/** The factions dir. */
 	private String factionsDir;
-	
+
 	/** The lands dir. */
 	private String landsDir;
-	
+
 	/**
 	 * Instantiates a new storage flat.
 	 */
@@ -93,9 +93,9 @@ public class StorageFlat extends Storage implements StorageInt {
 	 *
 	 * @param dir the dir
 	 */
-	private void createDir(String dir) {
+	private void createDir(final String dir) {
 
-		File file = new File(dir);
+		final File file = new File(dir);
 
 		if (!file.exists()) {
 			file.mkdir();
@@ -108,7 +108,7 @@ public class StorageFlat extends Storage implements StorageInt {
 	 * @param faction the faction
 	 * @return the faction file
 	 */
-	private File getFactionFile(Faction faction) {
+	private File getFactionFile(final Faction faction) {
 
 		return new File(factionsDir + "/" + faction.getName() + EXT_CONF);
 	}
@@ -119,7 +119,7 @@ public class StorageFlat extends Storage implements StorageInt {
 	 * @param land the land
 	 * @return the land file
 	 */
-	private File getLandFile(Land land) {
+	private File getLandFile(final Land land) {
 
 		return new File(landsDir + "/" + land.getName() + "." + land.getGenealogy() + EXT_CONF);
 	}
@@ -131,7 +131,7 @@ public class StorageFlat extends Storage implements StorageInt {
 	 * @param landGenealogy the land genealogy
 	 * @return the land file
 	 */
-	private File getLandFile(String landName, int landGenealogy) {
+	private File getLandFile(final String landName, final int landGenealogy) {
 
 		return new File(landsDir + "/" + landName + "." + landGenealogy + EXT_CONF);
 	}
@@ -141,7 +141,7 @@ public class StorageFlat extends Storage implements StorageInt {
 	@Override
 	public void loadFactions() {
 
-		File[] files = new File(factionsDir).listFiles();
+		final File[] files = new File(factionsDir).listFiles();
 		int loadedfactions = 0;
 
 		if (files.length == 0) {
@@ -149,7 +149,7 @@ public class StorageFlat extends Storage implements StorageInt {
 			return;
 		}
 
-		for (File file : files) {
+		for (final File file : files) {
 			if (file.isFile() && file.getName().toLowerCase().endsWith(EXT_CONF)) {
 				loadFaction(file);
 				loadedfactions++;
@@ -164,7 +164,7 @@ public class StorageFlat extends Storage implements StorageInt {
 	@Override
 	public void loadLands() {
 
-		File[] files = new File(landsDir).listFiles();
+		final File[] files = new File(landsDir).listFiles();
 		int loadedlands = 0;
 		int pass = 0;
 		boolean empty = false;
@@ -176,7 +176,7 @@ public class StorageFlat extends Storage implements StorageInt {
 
 		while (!empty) {
 			empty = true;
-			for (File file : files) {
+			for (final File file : files) {
 				if (file.isFile() && file.getName().toLowerCase().endsWith(pass + EXT_CONF)) {
 					empty = false;
 					loadLand(file);
@@ -193,20 +193,17 @@ public class StorageFlat extends Storage implements StorageInt {
 	 *
 	 * @param file the file
 	 */
-	private void loadFaction(File file) {
+	private void loadFaction(final File file) {
 
 		Faction faction;
 		ConfLoader cf = null;
-		ArrayList<PlayerContainerPlayer> playerNames = new ArrayList<PlayerContainerPlayer>();
+		final ArrayList<PlayerContainerPlayer> playerNames = new ArrayList<PlayerContainerPlayer>();
 		UUID uuid;
 
 		try {
 			cf = new ConfLoader(file);
 			String str;
-			
-			@SuppressWarnings("unused")
-			int version = cf.getVersion();
-			
+
 			uuid = cf.getUUID();
 			cf.readParam();
 			while ((str = cf.getNextString()) != null) {
@@ -216,21 +213,21 @@ public class StorageFlat extends Storage implements StorageInt {
 			cf.close();
 
 			// Catch errors here
-		} catch (NullPointerException ex) {
+		} catch (final NullPointerException ex) {
 			try {
 				throw new FileLoadException(file.getName(), cf.getLine(), cf.getLineNb(), "Problem with parameter.");
-			} catch (FileLoadException ex2) {
+			} catch (final FileLoadException ex2) {
 				// Catch load
 				return;
 			}
-		} catch (FileLoadException ex) {
+		} catch (final FileLoadException ex) {
 			// Catch load
 			return;
 		}
 
 		// Create Faction
 		faction = Factoid.getThisPlugin().iFactions().createFaction(cf.getName(), uuid);
-		for (PlayerContainerPlayer player : playerNames) {
+		for (final PlayerContainerPlayer player : playerNames) {
 			faction.addPlayer(player);
 		}
 	}
@@ -240,7 +237,7 @@ public class StorageFlat extends Storage implements StorageInt {
 	 *
 	 * @param file the file
 	 */
-	private void loadLand(File file) {
+	private void loadLand(final File file) {
 
 		int version;
 		ConfLoader cf = null;
@@ -248,19 +245,19 @@ public class StorageFlat extends Storage implements StorageInt {
 		String landName;
 		String type = null;
 		Land land = null;
-		Map<Integer, CuboidArea> areas = new TreeMap<Integer, CuboidArea>();
+		final Map<Integer, CuboidArea> areas = new TreeMap<Integer, CuboidArea>();
 		boolean isLandCreated = false;
 		PlayerContainer owner;
 		String parentName;
 		String factionTerritory;
-		Set<PlayerContainer> residents = new TreeSet<PlayerContainer>();
-		Set<PlayerContainer> banneds = new TreeSet<PlayerContainer>();
-		Map<PlayerContainer, TreeMap<PermissionType, Permission>> permissions
+		final Set<PlayerContainer> residents = new TreeSet<PlayerContainer>();
+		final Set<PlayerContainer> banneds = new TreeSet<PlayerContainer>();
+		final Map<PlayerContainer, TreeMap<PermissionType, Permission>> permissions
 				= new TreeMap<PlayerContainer, TreeMap<PermissionType, Permission>>();
-		Set<LandFlag> flags = new HashSet<LandFlag>();
+		final Set<LandFlag> flags = new HashSet<LandFlag>();
 		short priority;
 		double money;
-		Set<PlayerContainerPlayer> pNotifs = new TreeSet<PlayerContainerPlayer>();
+		final Set<PlayerContainerPlayer> pNotifs = new TreeSet<PlayerContainerPlayer>();
 		Land parent;
 
 		// For economy
@@ -289,7 +286,7 @@ public class StorageFlat extends Storage implements StorageInt {
 				type = cf.getValueString();
 			}
 			cf.readParam();
-			String ownerS = cf.getValueString();
+			final String ownerS = cf.getValueString();
 
 			// create owner (PlayerContainer)
 			owner = PlayerContainer.getFromString(ownerS);
@@ -306,7 +303,7 @@ public class StorageFlat extends Storage implements StorageInt {
 
 			// Create areas
 			while ((str = cf.getNextString()) != null) {
-				String[] multiStr = str.split(":", 2);
+				final String[] multiStr = str.split(":", 2);
 				areas.put(Integer.parseInt(multiStr[0]), CuboidArea.getFromString(multiStr[1]));
 			}
 			if (areas.isEmpty()) {
@@ -329,10 +326,10 @@ public class StorageFlat extends Storage implements StorageInt {
 
 			//Create permissions
 			while ((str = cf.getNextString()) != null) {
-				String[] multiStr = str.split(":");
+				final String[] multiStr = str.split(":");
 				TreeMap<PermissionType, Permission> permPlayer;
-				PlayerContainer pc = PlayerContainer.getFromString(multiStr[0] + ":" + multiStr[1]);
-				PermissionType permType = Factoid.getThisPlugin().iParameters().getPermissionTypeNoValid(multiStr[2]);
+				final PlayerContainer pc = PlayerContainer.getFromString(multiStr[0] + ":" + multiStr[1]);
+				final PermissionType permType = Factoid.getThisPlugin().iParameters().getPermissionTypeNoValid(multiStr[2]);
 				if (!permissions.containsKey(pc)) {
 					permPlayer = new TreeMap<PermissionType, Permission>();
 					permissions.put(pc, permPlayer);
@@ -362,7 +359,7 @@ public class StorageFlat extends Storage implements StorageInt {
 			while ((str = cf.getNextString()) != null) {
 				pNotifs.add((PlayerContainerPlayer) PlayerContainer.getFromString(str));
 			}
-			
+
 			// Economy
 			if(version >= 4) {
 				cf.readParam();
@@ -398,20 +395,20 @@ public class StorageFlat extends Storage implements StorageInt {
 			cf.close();
 
 			// Catch errors here
-		} catch (NullPointerException ex) {
+		} catch (final NullPointerException ex) {
 			try {
 				throw new FileLoadException(file.getName(), cf.getLine(), cf.getLineNb(), "Problem with parameter.");
-			} catch (FileLoadException ex2) {
+			} catch (final FileLoadException ex2) {
 				// Catch load
 				return;
 			}
-		} catch (FileLoadException ex) {
+		} catch (final FileLoadException ex) {
 			// Catch load
 			return;
 		}
 
 		// Create land
-		for (Map.Entry<Integer, CuboidArea> entry : areas.entrySet()) {
+		for (final Map.Entry<Integer, CuboidArea> entry : areas.entrySet()) {
 			if (!isLandCreated) {
 				if (parentName != null) {
 
@@ -420,15 +417,15 @@ public class StorageFlat extends Storage implements StorageInt {
 					try {
 						land = Factoid.getThisPlugin().iLands().createLand(landName, owner, entry.getValue(), parent,
 								entry.getKey(), uuid, FactoidAPI.iTypes().addOrGetType(type));
-					} catch (FactoidLandException ex) {
+					} catch (final FactoidLandException ex) {
 						Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "Error on loading land: " + landName, ex);
 						return;
 					}
 				} else {
 					try {
-						land = Factoid.getThisPlugin().iLands().createLand(landName, owner, entry.getValue(), 
+						land = Factoid.getThisPlugin().iLands().createLand(landName, owner, entry.getValue(),
 								null, entry.getKey(), uuid, FactoidAPI.iTypes().addOrGetType(type));
-					} catch (FactoidLandException ex) {
+					} catch (final FactoidLandException ex) {
 						Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "Error on loading land: " + landName, ex);
 						return;
 					}
@@ -443,26 +440,22 @@ public class StorageFlat extends Storage implements StorageInt {
 		if (factionTerritory != null) {
 			land.setFactionTerritory(Factoid.getThisPlugin().iFactions().getFaction(factionTerritory));
 		}
-		for (PlayerContainer resident : residents) {
-			land.addResident(resident);
-		}
-		for (PlayerContainer banned : banneds) {
-			land.addResident(banned);
-		}
-		for (Map.Entry<PlayerContainer, TreeMap<PermissionType, Permission>> entry : permissions.entrySet()) {
-			for (Map.Entry<PermissionType, Permission> entryP : entry.getValue().entrySet()) {
+		banneds.forEach(land::addBanned);
+		residents.forEach(land::addResident);
+		for (final Map.Entry<PlayerContainer, TreeMap<PermissionType, Permission>> entry : permissions.entrySet()) {
+			for (final Map.Entry<PermissionType, Permission> entryP : entry.getValue().entrySet()) {
 				land.addPermission(entry.getKey(), entryP.getValue());
 			}
 		}
-		for (LandFlag flag : flags) {
+		for (final LandFlag flag : flags) {
 			land.addFlag(flag);
 		}
 		land.setPriority(priority);
 		land.addMoney(money);
-		for (PlayerContainerPlayer pNotif : pNotifs) {
+		for (final PlayerContainerPlayer pNotif : pNotifs) {
 			land.addPlayerNotify(pNotif);
 		}
-		
+
 		// Economy add
 		if (version >= 4) {
 			if(forSale) {
@@ -482,7 +475,7 @@ public class StorageFlat extends Storage implements StorageInt {
 	 * @see me.tabinol.factoid.storage.StorageInt#saveLand(me.tabinol.factoid.lands.Land)
 	 */
 	@Override
-	public void saveLand(Land land) {
+	public void saveLand(final Land land) {
 		try {
 			ArrayList<String> strs;
 
@@ -491,7 +484,7 @@ public class StorageFlat extends Storage implements StorageInt {
 			}
 
 			Factoid.getThisPlugin().iLog().write("Saving land: " + land.getName());
-			ConfBuilder cb = new ConfBuilder(land.getName(), land.getUUID(), getLandFile(land), LAND_VERSION);
+			final ConfBuilder cb = new ConfBuilder(land.getName(), land.getUUID(), getLandFile(land), LAND_VERSION);
 			cb.writeParam("Type", land.getType() != null ? land.getType().getName() : null);
 			cb.writeParam("Owner", land.getOwner().toString());
 
@@ -511,29 +504,29 @@ public class StorageFlat extends Storage implements StorageInt {
 
 			//CuboidAreas
 			strs = new ArrayList<String>();
-			for (int index : land.getAreasKey()) {
+			for (final int index : land.getAreasKey()) {
 				strs.add(index + ":" + land.getArea(index).toString());
 			}
 			cb.writeParam("CuboidAreas", strs.toArray(new String[0]));
 
 			//Residents
 			strs = new ArrayList<String>();
-			for (IPlayerContainer pc : land.getResidents()) {
+			for (final IPlayerContainer pc : land.getResidents()) {
 				strs.add(pc.toString());
 			}
 			cb.writeParam("Residents", strs.toArray(new String[0]));
 
 			//Banneds
 			strs = new ArrayList<String>();
-			for (IPlayerContainer pc : land.getBanneds()) {
+			for (final IPlayerContainer pc : land.getBanneds()) {
 				strs.add(pc.toString());
 			}
 			cb.writeParam("Banneds", strs.toArray(new String[0]));
 
 			//Permissions
 			strs = new ArrayList<String>();
-			for (IPlayerContainer pc : land.getSetPCHavePermission()) {
-				for (IPermission perm : land.getPermissionsForPC(pc)) {
+			for (final IPlayerContainer pc : land.getSetPCHavePermission()) {
+				for (final IPermission perm : land.getPermissionsForPC(pc)) {
 					strs.add(pc.toString() + ":" + perm.toString());
 				}
 			}
@@ -541,7 +534,7 @@ public class StorageFlat extends Storage implements StorageInt {
 
 			//Flags
 			strs = new ArrayList<String>();
-			for (ILandFlag flag : land.getFlags()) {
+			for (final ILandFlag flag : land.getFlags()) {
 				strs.add(flag.toString());
 			}
 			cb.writeParam("Flags", strs.toArray(new String[0]));
@@ -554,7 +547,7 @@ public class StorageFlat extends Storage implements StorageInt {
 
 			// PlayersNotify
 			strs = new ArrayList<String>();
-			for (IPlayerContainerPlayer pc : land.getPlayersNotify()) {
+			for (final IPlayerContainerPlayer pc : land.getPlayersNotify()) {
 				strs.add(pc.toString());
 			}
 			cb.writeParam("PlayersNotify", strs.toArray(new String[0]));
@@ -579,7 +572,7 @@ public class StorageFlat extends Storage implements StorageInt {
 			}
 
 			cb.close();
-		} catch (IOException ex) {
+		} catch (final IOException ex) {
 			Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "Error on saving land: " + land.getName(), ex);
 		}
 	}
@@ -588,13 +581,13 @@ public class StorageFlat extends Storage implements StorageInt {
 	 * @see me.tabinol.factoid.storage.StorageInt#removeLand(me.tabinol.factoid.lands.Land)
 	 */
 	@Override
-	public void removeLand(Land land) {
+	public void removeLand(final Land land) {
 
 		getLandFile(land).delete();
 	}
 
 	@Override
-	public void removeLand(String landName, int landGenealogy) {
+	public void removeLand(final String landName, final int landGenealogy) {
 
 		getLandFile(landName, landGenealogy).delete();
 	}
@@ -603,23 +596,23 @@ public class StorageFlat extends Storage implements StorageInt {
 	 * @see me.tabinol.factoid.storage.StorageInt#saveFaction(me.tabinol.factoid.factions.Faction)
 	 */
 	@Override
-	public void saveFaction(Faction faction) {
+	public void saveFaction(final Faction faction) {
 		try {
 			if (Factoid.getThisPlugin().iStorageThread().isInLoad()) {
 				return;
 			}
 
 			Factoid.getThisPlugin().iLog().write("Saving faction: " + faction.getName());
-			ConfBuilder cb = new ConfBuilder(faction.getName(), faction.getUUID(), getFactionFile(faction), FACTION_VERSION);
+			final ConfBuilder cb = new ConfBuilder(faction.getName(), faction.getUUID(), getFactionFile(faction), FACTION_VERSION);
 
-			List<String> strs = new ArrayList<String>();
-			for (IPlayerContainerPlayer pc : faction.getPlayers()) {
+			final List<String> strs = new ArrayList<String>();
+			for (final IPlayerContainerPlayer pc : faction.getPlayers()) {
 				strs.add(pc.toString());
 			}
 			cb.writeParam("Players", strs.toArray(new String[0]));
 
 			cb.close();
-		} catch (IOException ex) {
+		} catch (final IOException ex) {
 			Logger.getLogger(StorageFlat.class.getName()).log(Level.SEVERE, "Error on saving Faction: " + faction.getName(), ex);
 		}
 	}
@@ -628,7 +621,7 @@ public class StorageFlat extends Storage implements StorageInt {
 	 * @see me.tabinol.factoid.storage.StorageInt#removeFaction(me.tabinol.factoid.factions.Faction)
 	 */
 	@Override
-	public void removeFaction(Faction faction) {
+	public void removeFaction(final Faction faction) {
 
 		getFactionFile(faction).delete();
 	}
