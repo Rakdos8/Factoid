@@ -78,7 +78,7 @@ public class ChatListener extends CommonListener implements Listener {
 				playersToMsg = copyWithSpy(land.getAncestor(land.getGenealogy()).getPlayersInLandAndChildren());
 			}
 
-			final String message = event.getMessage().substring(1);
+			final String message = ChatColor.translateAlternateColorCodes('&', event.getMessage().substring(1));
 			// send messages
 			final String messageToSend = ChatColor.WHITE + "[" + player.getDisplayName() +
 				ChatColor.WHITE + " " + firstChar + " " + "'" +
