@@ -18,7 +18,7 @@
 package me.tabinol.factoid.storage;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -45,10 +45,10 @@ public class StorageThread extends Thread {
 	private final Storage storage;
 
 	/** The land save list request. */
-	private final List<Object> saveList = new ArrayList<>();
+	private final List<Object> saveList = Collections.synchronizedList(new ArrayList<>());
 
 	/** The land save list request. */
-	private final List<Object> removeList = new ArrayList<>();
+	private final List<Object> removeList = Collections.synchronizedList(new ArrayList<>());
 
 	/** The lock. */
 	final Lock lock = new ReentrantLock();
@@ -95,31 +95,27 @@ public class StorageThread extends Thread {
 
 		// Output request loop (waiting for a command)
 		while(!exitRequest) {
-			final Iterator<Object> itSave = saveList.iterator();
 			// Save Lands or Factions
-			while (itSave.hasNext()) {
-				final Object saveEntry = itSave.next();
+			while (!saveList.isEmpty()) {
+				final Object saveEntry = saveList.remove(0);
 				if(saveEntry instanceof Land) {
-					storage.saveLand((Land)saveEntry);
+					storage.saveLand((Land) saveEntry);
 				} else {
-					storage.saveFaction((Faction)saveEntry);
+					storage.saveFaction((Faction) saveEntry);
 				}
-				itSave.remove();
 			}
 
-			final Iterator<Object> itRemove = removeList.iterator();
 			// Remove Lands or Factions
-			while (itRemove.hasNext()) {
-				final Object removeEntry = itRemove.next();
+			while (!removeList.isEmpty()) {
+				final Object removeEntry = removeList.remove(0);
 				if(removeEntry instanceof Land) {
-					storage.removeLand((Land)removeEntry);
+					storage.removeLand((Land) removeEntry);
 				} else if( removeEntry instanceof NameGenealogy){
-					storage.removeLand(((NameGenealogy)removeEntry).landName,
-							((NameGenealogy)removeEntry).landGenealogy);
+					storage.removeLand(((NameGenealogy) removeEntry).landName,
+							((NameGenealogy) removeEntry).landGenealogy);
 				} else {
 					storage.removeFaction((Faction)removeEntry);
 				}
-				itRemove.remove();
 			}
 
 			// wait!
@@ -162,8 +158,10 @@ public class StorageThread extends Thread {
 	 * @param land the land
 	 */
 	public void saveLand(final Land land) {
-		saveList.add(land);
-		wakeUp();
+		storage.saveLand(land);
+		if (!inLoad) {
+			wakeUp();
+		}
 	}
 
 	/**
@@ -172,8 +170,10 @@ public class StorageThread extends Thread {
 	 * @param faction the faction
 	 */
 	public void saveFaction(final Faction faction) {
-		saveList.add(faction);
-		wakeUp();
+		storage.saveFaction(faction);
+		if (!inLoad) {
+			wakeUp();
+		}
 	}
 
 	/**
@@ -193,8 +193,10 @@ public class StorageThread extends Thread {
 	 * @param landGenealogy The land genealogy
 	 */
 	public void removeLand(final String landName, final int landGenealogy) {
-		removeList.add(new NameGenealogy(landName, landGenealogy));
-		wakeUp();
+		storage.removeLand(landName, landGenealogy);
+		if (!inLoad) {
+			wakeUp();
+		}
 	}
 
 	/**
@@ -203,8 +205,10 @@ public class StorageThread extends Thread {
 	 * @param faction the faction
 	 */
 	public void removeFaction(final Faction faction) {
-		removeList.add(faction);
-		wakeUp();
+		storage.removeFaction(faction);
+		if (!inLoad) {
+			wakeUp();
+		}
 	}
 
 	private void wakeUp() {

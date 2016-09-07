@@ -280,7 +280,6 @@ public class Lands implements ILands {
 	@Override
 	@SuppressWarnings("deprecation")
 	public boolean removeLand(final ILand land) throws FactoidLandException {
-
 		if (land == null) {
 			return false;
 		}
@@ -302,7 +301,7 @@ public class Lands implements ILands {
 		pm.callEvent(landEvent);
 
 		// Deprecated to remove
-		if(!landEvent.isCancelled()) {
+		if (!landEvent.isCancelled()) {
 			pm.callEvent(oldLandEvent);
 		}
 
@@ -328,7 +327,6 @@ public class Lands implements ILands {
 	 */
 	@Override
 	public boolean removeLand(final String landName) throws FactoidLandException {
-
 		return removeLand(landList.get(landName.toLowerCase()));
 	}
 
@@ -341,7 +339,6 @@ public class Lands implements ILands {
 	 */
 	@Override
 	public boolean removeLand(final UUID uuid) throws FactoidLandException {
-
 		return removeLand(landUUIDList.get(uuid));
 	}
 
@@ -355,7 +352,6 @@ public class Lands implements ILands {
 	 */
 	@Override
 	public boolean renameLand(final String landName, final String newName) throws FactoidLandException {
-
 		final Land land = getLand(landName);
 
 		if (land != null) {
@@ -375,7 +371,6 @@ public class Lands implements ILands {
 	 */
 	@Override
 	public boolean renameLand(final UUID uuid, final String newName) throws FactoidLandException {
-
 		final Land land = getLand(uuid);
 
 		if (land != null) {
@@ -396,23 +391,23 @@ public class Lands implements ILands {
 	@Override
 	public boolean renameLand(final ILand land, final String newName)
 			throws FactoidLandException {
-
 		final String newNameLower = newName.toLowerCase();
 
 		if (isNameExist(newNameLower)) {
 			throw new FactoidLandException(newNameLower, null, LandAction.LAND_RENAME, LandError.NAME_IN_USE);
 		}
 
-		final Land uglyCast = (Land) land;
 		// Removes the old land
-		removeLandFromList(uglyCast);
-		Factoid.getThisPlugin().iStorageThread().removeLand(uglyCast);
-		// Rename the land then re-add it
-		((Land) land).setName(newNameLower);
-		addLandToList(uglyCast);
-		Factoid.getThisPlugin().iStorageThread().saveLand(uglyCast);
+		if (removeLand(land)) {
+			// Rename the land then re-add it
+			final Land uglyCast = (Land) land;
+			uglyCast.setName(newNameLower);
+			addLandToList(uglyCast);
+			Factoid.getThisPlugin().iStorageThread().saveLand(uglyCast);
 
-		return true;
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -828,7 +823,6 @@ public class Lands implements ILands {
 	 * @param land the land
 	 */
 	private void addLandToList(final Land land) {
-
 		landList.put(land.getName(), land);
 		landUUIDList.put(land.getUUID(), land);
 	}
@@ -839,7 +833,6 @@ public class Lands implements ILands {
 	 * @param land the land
 	 */
 	private void removeLandFromList(final Land land) {
-
 		landList.remove(land.getName());
 		landUUIDList.remove(land.getUUID());
 		for (final ICuboidArea area : land.getAreas()) {
