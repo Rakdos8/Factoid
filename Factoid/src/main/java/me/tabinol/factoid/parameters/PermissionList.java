@@ -103,6 +103,15 @@ public enum PermissionList {
 	/** The use enchanting table **/
 	USE_ENCHANTTABLE(true),
 
+	/** The use comparator **/
+	USE_COMPARATOR(true),
+
+	/** The use repeater **/
+	USE_REPEATER(true),
+
+	/** The use note block **/
+	USE_NOTEBLOCK(true),
+
 	/** The use anvil **/
 	USE_ANVIL(true),
 

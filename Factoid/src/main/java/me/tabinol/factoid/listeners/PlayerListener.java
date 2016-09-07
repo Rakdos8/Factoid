@@ -395,7 +395,13 @@ public class PlayerListener extends CommonListener implements Listener {
 					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.ENCHANTMENT_TABLE
 							&& !checkPermission(land, player, PermissionList.USE_ENCHANTTABLE.getPermissionType()))
 					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.ANVIL
-							&& !checkPermission(land, player, PermissionList.USE_ANVIL.getPermissionType()))) {
+							&& !checkPermission(land, player, PermissionList.USE_ANVIL.getPermissionType()))
+					|| (action == Action.RIGHT_CLICK_BLOCK && (ml == Material.DIODE || ml == Material.DIODE_BLOCK_ON || ml == Material.DIODE_BLOCK_OFF)
+							&& !checkPermission(land, player, PermissionList.USE_REPEATER.getPermissionType()))
+					|| (action == Action.RIGHT_CLICK_BLOCK && (ml == Material.REDSTONE_COMPARATOR || ml == Material.REDSTONE_COMPARATOR_ON || ml == Material.REDSTONE_COMPARATOR_OFF)
+							&& !checkPermission(land, player, PermissionList.USE_COMPARATOR.getPermissionType()))
+					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.NOTE_BLOCK
+							&& !checkPermission(land, player, PermissionList.USE_NOTEBLOCK.getPermissionType()))) {
 
 				if (action != Action.PHYSICAL) {
 					messagePermission(player);
