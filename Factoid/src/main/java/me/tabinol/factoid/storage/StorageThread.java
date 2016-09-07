@@ -182,8 +182,10 @@ public class StorageThread extends Thread {
 	 * @param land the land
 	 */
 	public void removeLand(final Land land) {
-		removeList.add(land);
-		wakeUp();
+		storage.removeLand(land);
+		if (!inLoad) {
+			wakeUp();
+		}
 	}
 
 	/**
