@@ -81,8 +81,7 @@ public class Land extends DummyLand implements ILand {
 	private final Map<Integer, ICuboidArea> areas = new TreeMap<Integer, ICuboidArea>();
 
 	/** The children. */
-	private final Map<UUID, ILand>
-		children = new TreeMap<UUID, ILand>();
+	private final Map<UUID, ILand> children = new TreeMap<UUID, ILand>();
 
 	/** The priority. */
 	private short priority = DEFAULT_PRIORITY; // Do not put more then 100000!!!!

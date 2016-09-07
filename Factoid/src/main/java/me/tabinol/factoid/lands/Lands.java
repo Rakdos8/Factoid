@@ -397,17 +397,10 @@ public class Lands implements ILands {
 			throw new FactoidLandException(newNameLower, null, LandAction.LAND_RENAME, LandError.NAME_IN_USE);
 		}
 
-		// Removes the old land
-		if (removeLand(land)) {
-			// Rename the land then re-add it
-			final Land uglyCast = (Land) land;
-			uglyCast.setName(newNameLower);
-			addLandToList(uglyCast);
-			Factoid.getThisPlugin().iStorageThread().saveLand(uglyCast);
-
-			return true;
-		}
-		return false;
+		final Land uglyCast = (Land) land;
+		uglyCast.setName(newNameLower);
+		land.forceSave();
+		return true;
 	}
 
 	/**
