@@ -26,30 +26,30 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.UUID;
 
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.config.WorldConfig;
-import me.tabinol.factoidapi.event.LandDeleteEvent;
 import me.tabinol.factoid.exceptions.FactoidLandException;
 import me.tabinol.factoid.lands.approve.ApproveList;
 import me.tabinol.factoid.lands.areas.AreaIndex;
 import me.tabinol.factoid.lands.areas.CuboidArea;
+import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
+import me.tabinol.factoid.lands.collisions.Collisions.LandError;
+import me.tabinol.factoidapi.event.LandDeleteEvent;
 import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoidapi.lands.ILands;
 import me.tabinol.factoidapi.lands.areas.ICuboidArea;
 import me.tabinol.factoidapi.lands.types.IType;
-import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
-import me.tabinol.factoid.lands.collisions.Collisions.LandError;
 import me.tabinol.factoidapi.parameters.IFlagType;
 import me.tabinol.factoidapi.parameters.IFlagValue;
 import me.tabinol.factoidapi.parameters.IPermissionType;
+import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainerPlayer;
-import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
-
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
 
 
 /**
@@ -59,45 +59,45 @@ public class Lands implements ILands {
 
 	/** The Constant INDEX_X1. */
 	public final static int INDEX_X1 = 0;
-	
+
 	/** The Constant INDEX_Z1. */
 	public final static int INDEX_Z1 = 1;
-	
+
 	/** The Constant INDEX_X2. */
 	public final static int INDEX_X2 = 2;
-	
+
 	/** The Constant INDEX_Z2. */
 	public final static int INDEX_Z2 = 3;
-	
+
 	/** The area list. */
 	private final TreeMap<String, TreeSet<AreaIndex>>[] areaList; // INDEX first, Tree by worlds (then by Areas)
-	
+
 	/** The land uuid list. */
 	private final TreeMap<UUID, ILand> landUUIDList; // Lands by UUID;
-	
+
 	/** The land list. */
 	private final TreeMap<String, ILand> landList; // Tree by name
-	
+
 	/** The outside area. */
 	protected TreeMap<String, DummyLand> outsideArea; // Outside a Land (in specific worlds)
-	
+
 	private final DummyLand defaultConfNoType; // Default config (Type not exist or Type null)
-	
+
 	/** The default conf. */
 	private final TreeMap<IType, DummyLand> defaultConf; // Default config of a land
-	
+
 	/** The pm. */
 	private final PluginManager pm;
-	
+
 	/** The approve list. */
 	private final ApproveList approveList;
-	
+
 	/**  List of forSale. */
 	private final HashSet<ILand> forSale;
 
 	/**  List of forRent and rented. */
 	private final HashSet<ILand> forRent;
-	
+
 	/**
 	 * Instantiates a new lands.
 	 */
@@ -109,7 +109,7 @@ public class Lands implements ILands {
 		for (int t = 0; t < areaList.length; t++) {
 			areaList[t] = new TreeMap<String, TreeSet<AreaIndex>>();
 		}
-		WorldConfig worldConfig = new WorldConfig();
+		final WorldConfig worldConfig = new WorldConfig();
 
 		// Load World Config
 		this.outsideArea = worldConfig.getLandOutsideArea();
@@ -125,25 +125,25 @@ public class Lands implements ILands {
 		forRent = new HashSet<ILand>();
 	}
 
-	public DummyLand getDefaultConf(IType type) {
-		
+	public DummyLand getDefaultConf(final IType type) {
+
 		DummyLand land;
-		
+
 		// No type? Return default config
 		if(type == null) {
 			return defaultConfNoType;
 		}
-		
+
 		land = defaultConf.get(type);
-		
+
 		// Type not found? Return default config
 		if(land == null) {
 			return defaultConfNoType;
 		}
-		
+
 		return land;
 	}
-	
+
 	/**
 	 * Gets the approve list.
 	 *
@@ -164,7 +164,8 @@ public class Lands implements ILands {
 	 * @return the land
 	 * @throws FactoidLandException the factoid land exception
 	 */
-	public Land createLand(String landName, IPlayerContainer owner, ICuboidArea area)
+	@Override
+	public Land createLand(final String landName, final IPlayerContainer owner, final ICuboidArea area)
 			throws FactoidLandException {
 
 		return createLand(landName, owner, area, null, 1, null);
@@ -181,8 +182,9 @@ public class Lands implements ILands {
 	 * @return the land
 	 * @throws FactoidLandException the factoid land exception
 	 */
-	public Land createLand(String landName, IPlayerContainer owner, ICuboidArea area, 
-			me.tabinol.factoidapi.lands.ILand parent)
+	@Override
+	public Land createLand(final String landName, final IPlayerContainer owner, final ICuboidArea area,
+			final me.tabinol.factoidapi.lands.ILand parent)
 			throws FactoidLandException {
 
 		return createLand(landName, owner, area, parent, 1, null);
@@ -201,10 +203,10 @@ public class Lands implements ILands {
 	 * @return the land
 	 * @throws FactoidLandException the factoid land exception
 	 */
-	public Land createLand(String landName, IPlayerContainer owner, ICuboidArea area, 
-			me.tabinol.factoidapi.lands.ILand parent, double price, IType type)
+	public Land createLand(final String landName, final IPlayerContainer owner, final ICuboidArea area,
+			final me.tabinol.factoidapi.lands.ILand parent, final double price, final IType type)
 			throws FactoidLandException {
-		
+
 		getPriceFromPlayer(area.getWorldName(), owner, price);
 
 		return createLand(landName, owner, area, parent, 1, null, type);
@@ -224,15 +226,15 @@ public class Lands implements ILands {
 	 * @return the land
 	 * @throws FactoidLandException the factoid land exception
 	 */
-	public Land createLand(String landName, IPlayerContainer owner, ICuboidArea area, 
-			me.tabinol.factoidapi.lands.ILand parent, int areaId, UUID uuid, IType type)
+	public Land createLand(final String landName, final IPlayerContainer owner, final ICuboidArea area,
+			final me.tabinol.factoidapi.lands.ILand parent, final int areaId, final UUID uuid, final IType type)
 			throws FactoidLandException {
 
-		String landNameLower = landName.toLowerCase();
+		final String landNameLower = landName.toLowerCase();
 		int genealogy = 0;
 		Land land;
 		UUID landUUID;
-		
+
 		if (uuid == null) {
 			landUUID = UUID.randomUUID();
 		} else {
@@ -244,7 +246,7 @@ public class Lands implements ILands {
 		}
 
 		if (isNameExist(landName)) {
-			throw new FactoidLandException(landName, (CuboidArea) area, 
+			throw new FactoidLandException(landName, (CuboidArea) area,
 					LandAction.LAND_ADD, LandError.NAME_IN_USE);
 		}
 
@@ -262,7 +264,8 @@ public class Lands implements ILands {
 	 * @param landName the land name
 	 * @return true, if is name exist
 	 */
-	public boolean isNameExist(String landName) {
+	@Override
+	public boolean isNameExist(final String landName) {
 
 		return landList.containsKey(landName.toLowerCase());
 	}
@@ -274,15 +277,16 @@ public class Lands implements ILands {
 	 * @return true, if successful
 	 * @throws FactoidLandException the factoid land exception
 	 */
+	@Override
 	@SuppressWarnings("deprecation")
-	public boolean removeLand(ILand land) throws FactoidLandException {
+	public boolean removeLand(final ILand land) throws FactoidLandException {
 
 		if (land == null) {
 			return false;
 		}
 
-		LandDeleteEvent landEvent = new LandDeleteEvent((Land) land);
-		me.tabinol.factoid.event.LandDeleteEvent oldLandEvent = 
+		final LandDeleteEvent landEvent = new LandDeleteEvent(land);
+		final me.tabinol.factoid.event.LandDeleteEvent oldLandEvent =
 				new me.tabinol.factoid.event.LandDeleteEvent((Land) land);
 
 		if (!landList.containsKey(land.getName())) {
@@ -296,12 +300,12 @@ public class Lands implements ILands {
 
 		// Call Land Event and check if it is cancelled
 		pm.callEvent(landEvent);
-		
+
 		// Deprecated to remove
 		if(!landEvent.isCancelled()) {
 			pm.callEvent(oldLandEvent);
 		}
-		
+
 		if (landEvent.isCancelled() || oldLandEvent.isCancelled()) {
 			return false;
 		}
@@ -322,7 +326,8 @@ public class Lands implements ILands {
 	 * @return true, if successful
 	 * @throws FactoidLandException the factoid land exception
 	 */
-	public boolean removeLand(String landName) throws FactoidLandException {
+	@Override
+	public boolean removeLand(final String landName) throws FactoidLandException {
 
 		return removeLand(landList.get(landName.toLowerCase()));
 	}
@@ -334,7 +339,8 @@ public class Lands implements ILands {
 	 * @return true, if successful
 	 * @throws FactoidLandException the factoid land exception
 	 */
-	public boolean removeLand(UUID uuid) throws FactoidLandException {
+	@Override
+	public boolean removeLand(final UUID uuid) throws FactoidLandException {
 
 		return removeLand(landUUIDList.get(uuid));
 	}
@@ -347,9 +353,10 @@ public class Lands implements ILands {
 	 * @return true, if successful
 	 * @throws FactoidLandException the factoid land exception
 	 */
-	public boolean renameLand(String landName, String newName) throws FactoidLandException {
+	@Override
+	public boolean renameLand(final String landName, final String newName) throws FactoidLandException {
 
-		Land land = (Land) getLand(landName);
+		final Land land = getLand(landName);
 
 		if (land != null) {
 			return renameLand(land, newName);
@@ -366,9 +373,10 @@ public class Lands implements ILands {
 	 * @return true, if successful
 	 * @throws FactoidLandException the factoid land exception
 	 */
-	public boolean renameLand(UUID uuid, String newName) throws FactoidLandException {
+	@Override
+	public boolean renameLand(final UUID uuid, final String newName) throws FactoidLandException {
 
-		Land land = (Land) getLand(uuid);
+		final Land land = getLand(uuid);
 
 		if (land != null) {
 			return renameLand(land, newName);
@@ -385,20 +393,24 @@ public class Lands implements ILands {
 	 * @return true, if successful
 	 * @throws FactoidLandException the factoid land exception
 	 */
-	public boolean renameLand(ILand land, String newName) 
+	@Override
+	public boolean renameLand(final ILand land, final String newName)
 			throws FactoidLandException {
 
-		String oldNameLower = land.getName();
-		String newNameLower = newName.toLowerCase();
+		final String newNameLower = newName.toLowerCase();
 
 		if (isNameExist(newNameLower)) {
 			throw new FactoidLandException(newNameLower, null, LandAction.LAND_RENAME, LandError.NAME_IN_USE);
 		}
 
-		landList.remove(oldNameLower);
-
+		final Land uglyCast = (Land) land;
+		// Removes the old land
+		removeLandFromList(uglyCast);
+		Factoid.getThisPlugin().iStorageThread().removeLand(uglyCast);
+		// Rename the land then re-add it
 		((Land) land).setName(newNameLower);
-		landList.put(newNameLower, (Land) land);
+		addLandToList(uglyCast);
+		Factoid.getThisPlugin().iStorageThread().saveLand(uglyCast);
 
 		return true;
 	}
@@ -409,7 +421,8 @@ public class Lands implements ILands {
 	 * @param landName the land name
 	 * @return the land
 	 */
-	public Land getLand(String landName) {
+	@Override
+	public Land getLand(final String landName) {
 
 		return (Land) landList.get(landName.toLowerCase());
 	}
@@ -420,7 +433,8 @@ public class Lands implements ILands {
 	 * @param uuid the uuid
 	 * @return the land
 	 */
-	public Land getLand(UUID uuid) {
+	@Override
+	public Land getLand(final UUID uuid) {
 
 		return (Land) landUUIDList.get(uuid);
 	}
@@ -431,7 +445,8 @@ public class Lands implements ILands {
 	 * @param loc the loc
 	 * @return the land
 	 */
-	public Land getLand(Location loc) {
+	@Override
+	public Land getLand(final Location loc) {
 
 		ICuboidArea ca;
 
@@ -446,6 +461,7 @@ public class Lands implements ILands {
 	 *
 	 * @return the lands
 	 */
+	@Override
 	public Collection<ILand> getLands() {
 
 		return landList.values();
@@ -457,7 +473,8 @@ public class Lands implements ILands {
 	 * @param loc the loc
 	 * @return the land or outside area
 	 */
-	public DummyLand getLandOrOutsideArea(Location loc) {
+	@Override
+	public DummyLand getLandOrOutsideArea(final Location loc) {
 
 		Land land;
 
@@ -474,7 +491,8 @@ public class Lands implements ILands {
 	 * @param loc the loc
 	 * @return the outside area
 	 */
-	public DummyLand getOutsideArea(Location loc) {
+	@Override
+	public DummyLand getOutsideArea(final Location loc) {
 
 		return getOutsideArea(loc.getWorld().getName());
 	}
@@ -485,9 +503,10 @@ public class Lands implements ILands {
 	 * @param worldName the world name
 	 * @return the outside area
 	 */
-	public DummyLand getOutsideArea(String worldName) {
+	@Override
+	public DummyLand getOutsideArea(final String worldName) {
 
-		String worldNameLower = worldName.toLowerCase();
+		final String worldNameLower = worldName.toLowerCase();
 		DummyLand dummyLand = outsideArea.get(worldNameLower);
 
 		// Not exist, create one
@@ -506,13 +525,14 @@ public class Lands implements ILands {
 	 * @param loc the loc
 	 * @return the lands
 	 */
-	public Collection<ILand> getLands(Location loc) {
+	@Override
+	public Collection<ILand> getLands(final Location loc) {
 
-		Collection<ICuboidArea> areas = getCuboidAreas(loc);
-		HashMap<String, ILand> 
+		final Collection<ICuboidArea> areas = getCuboidAreas(loc);
+		final HashMap<String, ILand>
 			lands = new HashMap<String, ILand>();
 
-		for (ICuboidArea area : areas) {
+		for (final ICuboidArea area : areas) {
 			lands.put(area.getLand().getName(), area.getLand());
 		}
 
@@ -525,12 +545,13 @@ public class Lands implements ILands {
 	 * @param owner the owner
 	 * @return the lands
 	 */
-	public Collection<ILand> getLands(IPlayerContainer owner) {
+	@Override
+	public Collection<ILand> getLands(final IPlayerContainer owner) {
 
-		Collection<ILand> 
+		final Collection<ILand>
 			lands = new HashSet<ILand>();
 
-		for (ILand land : landList.values()) {
+		for (final ILand land : landList.values()) {
 			if (land.getOwner().equals(owner)) {
 				lands.add(land);
 			}
@@ -545,12 +566,13 @@ public class Lands implements ILands {
 	 * @param type the type
 	 * @return the lands
 	 */
-	public Collection<ILand> getLands(IType type) {
-		
-		Collection<ILand> 
+	@Override
+	public Collection<ILand> getLands(final IType type) {
+
+		final Collection<ILand>
 		lands = new HashSet<ILand>();
 
-	for (ILand land : landList.values()) {
+	for (final ILand land : landList.values()) {
 		if (land.getType() == type) {
 			lands.add(land);
 		}
@@ -567,15 +589,15 @@ public class Lands implements ILands {
 	 * @param price the price
 	 * @return the price from player
 	 */
-	protected boolean getPriceFromPlayer(String worldName, IPlayerContainer pc, double price) {
-		
+	protected boolean getPriceFromPlayer(final String worldName, final IPlayerContainer pc, final double price) {
+
 		if(pc.getContainerType() == EPlayerContainerType.PLAYER && price > 0) {
 			return Factoid.getThisPlugin().iPlayerMoney().getFromPlayer(((IPlayerContainerPlayer)pc).getOfflinePlayer(), worldName, price);
 		}
-	
+
 	return true;
 	}
-	
+
 	/**
 	 * Gets the permission in world.
 	 *
@@ -585,7 +607,7 @@ public class Lands implements ILands {
 	 * @param onlyInherit the only inherit
 	 * @return the permission in world
 	 */
-	protected boolean getPermissionInWorld(String worldName, Player player, IPermissionType pt, boolean onlyInherit) {
+	protected boolean getPermissionInWorld(final String worldName, final Player player, final IPermissionType pt, final boolean onlyInherit) {
 
 		Boolean result;
 		DummyLand dl;
@@ -605,7 +627,7 @@ public class Lands implements ILands {
 	 * @param onlyInherit the only inherit
 	 * @return the flag value in world
 	 */
-	protected IFlagValue getFlagInWorld(String worldName, IFlagType ft, boolean onlyInherit) {
+	protected IFlagValue getFlagInWorld(final String worldName, final IFlagType ft, final boolean onlyInherit) {
 
 		IFlagValue result;
 		DummyLand dl;
@@ -623,10 +645,11 @@ public class Lands implements ILands {
 	 * @param loc the loc
 	 * @return the cuboid areas
 	 */
-	public Collection<ICuboidArea> getCuboidAreas(Location loc) {
+	@Override
+	public Collection<ICuboidArea> getCuboidAreas(final Location loc) {
 
-		Collection<ICuboidArea> areas = new ArrayList<ICuboidArea>();
-		String worldName = loc.getWorld().getName();
+		final Collection<ICuboidArea> areas = new ArrayList<ICuboidArea>();
+		final String worldName = loc.getWorld().getName();
 		int SearchIndex;
 		int nbToFind;
 		boolean ForwardSearch;
@@ -686,7 +709,8 @@ public class Lands implements ILands {
 	 * @param loc the loc
 	 * @return the cuboid area
 	 */
-	public ICuboidArea getCuboidArea(Location loc) {
+	@Override
+	public ICuboidArea getCuboidArea(final Location loc) {
 
 		int actualPrio = Short.MIN_VALUE;
 		int curPrio;
@@ -694,20 +718,22 @@ public class Lands implements ILands {
 		int curGen;
 		ICuboidArea actualArea = null;
 		Location resLoc; // Resolved location
-		
+
 		// Give the position from the sky to underbedrock if the Y is greater than 255 or lower than 0
 		if(loc.getBlockY() >= loc.getWorld().getMaxHeight()) {
-			resLoc = new Location(loc.getWorld(), loc.getX(), loc.getWorld().getMaxHeight() - 1, loc.getZ()); 
+			resLoc = new Location(loc.getWorld(), loc.getX(), loc.getWorld().getMaxHeight() - 1, loc.getZ());
 		} else if(loc.getBlockY() < 0){
-			resLoc = new Location(loc.getWorld(), loc.getX(), 0, loc.getZ()); 
-		} else resLoc = loc; 
-		
-		Collection<ICuboidArea> areas = getCuboidAreas(resLoc);
+			resLoc = new Location(loc.getWorld(), loc.getX(), 0, loc.getZ());
+		} else {
+			resLoc = loc;
+		}
+
+		final Collection<ICuboidArea> areas = getCuboidAreas(resLoc);
 
 		Factoid.getThisPlugin().iLog().write("Area check in" + resLoc.toString());
 
 		// Compare priorities of parents (or main)
-		for (ICuboidArea area : areas) {
+		for (final ICuboidArea area : areas) {
 
 			Factoid.getThisPlugin().iLog().write("Check for: " + area.getLand().getName()
 					+ ", area: " + area.toString());
@@ -736,7 +762,7 @@ public class Lands implements ILands {
 	 * @param SearchIndex the search index
 	 * @return true, if successful
 	 */
-	private boolean checkContinueSearch(ICuboidArea area, int nbToFind, int SearchIndex) {
+	private boolean checkContinueSearch(final ICuboidArea area, final int nbToFind, final int SearchIndex) {
 
 		switch (SearchIndex) {
 			case INDEX_X1:
@@ -769,7 +795,7 @@ public class Lands implements ILands {
 	 *
 	 * @param area the area
 	 */
-	protected void addAreaToList(ICuboidArea area) {
+	protected void addAreaToList(final ICuboidArea area) {
 
 		if (!areaList[0].containsKey(area.getWorldName())) {
 			for (int t = 0; t < 4; t++) {
@@ -788,7 +814,7 @@ public class Lands implements ILands {
 	 *
 	 * @param area the area
 	 */
-	protected void removeAreaFromList(ICuboidArea area) {
+	protected void removeAreaFromList(final ICuboidArea area) {
 
 		areaList[INDEX_X1].get(area.getWorldName()).remove(new AreaIndex(area.getX1(), area));
 		areaList[INDEX_Z1].get(area.getWorldName()).remove(new AreaIndex(area.getZ1(), area));
@@ -801,7 +827,7 @@ public class Lands implements ILands {
 	 *
 	 * @param land the land
 	 */
-	private void addLandToList(Land land) {
+	private void addLandToList(final Land land) {
 
 		landList.put(land.getName(), land);
 		landUUIDList.put(land.getUUID(), land);
@@ -812,42 +838,43 @@ public class Lands implements ILands {
 	 *
 	 * @param land the land
 	 */
-	private void removeLandFromList(Land land) {
+	private void removeLandFromList(final Land land) {
 
 		landList.remove(land.getName());
 		landUUIDList.remove(land.getUUID());
-		for (ICuboidArea area : land.getAreas()) {
+		for (final ICuboidArea area : land.getAreas()) {
 			removeAreaFromList(area);
 		}
 	}
-	
+
 	/**
 	 * Adds the for sale.
 	 *
 	 * @param land the land
 	 */
-	protected void addForSale(Land land) {
-		
+	protected void addForSale(final Land land) {
+
 		forSale.add(land);
 	}
-	
+
 	/**
 	 * Removes the for sale.
 	 *
 	 * @param land the land
 	 */
-	protected void removeForSale(Land land) {
-		
+	protected void removeForSale(final Land land) {
+
 		forSale.remove(land);
 	}
-	
+
 	/**
 	 * Gets the for sale.
 	 *
 	 * @return the for sale
 	 */
+	@Override
 	public Collection<ILand> getForSale() {
-		
+
 		return forSale;
 	}
 
@@ -856,28 +883,29 @@ public class Lands implements ILands {
 	 *
 	 * @param land the land
 	 */
-	protected void addForRent(Land land) {
-		
+	protected void addForRent(final Land land) {
+
 		forRent.add(land);
 	}
-	
+
 	/**
 	 * Removes the for rent.
 	 *
 	 * @param land the land
 	 */
-	protected void removeForRent(Land land) {
-		
+	protected void removeForRent(final Land land) {
+
 		forRent.remove(land);
 	}
-	
+
 	/**
 	 * Gets the for rent.
 	 *
 	 * @return the for rent
 	 */
+	@Override
 	public Collection<ILand> getForRent() {
-		
+
 		return forRent;
 	}
 }

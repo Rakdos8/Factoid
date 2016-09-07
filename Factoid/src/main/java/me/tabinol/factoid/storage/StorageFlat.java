@@ -163,7 +163,6 @@ public class StorageFlat extends Storage implements StorageInt {
 	 */
 	@Override
 	public void loadLands() {
-
 		final File[] files = new File(landsDir).listFiles();
 		int loadedlands = 0;
 		int pass = 0;
