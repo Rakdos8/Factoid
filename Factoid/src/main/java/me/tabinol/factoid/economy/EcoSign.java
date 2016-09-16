@@ -17,11 +17,7 @@
  */
 package me.tabinol.factoid.economy;
 
-import java.util.HashSet;
-
-import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.exceptions.SignException;
-import me.tabinol.factoidapi.lands.ILand;
+import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -31,6 +27,10 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.exceptions.SignException;
+import me.tabinol.factoidapi.lands.ILand;
 
 
 /**
@@ -45,10 +45,10 @@ public class EcoSign {
 
 	/** The location. */
 	private final Location location;
-	
+
 	/** The facing. */
 	private final BlockFace facing;
-	
+
 	/** The is wall sign. */
 	private final boolean isWallSign;
 
@@ -60,17 +60,16 @@ public class EcoSign {
 	 * @param player			the player
 	 * @throws SignException the sign exception
 	 */
-	public EcoSign(ILand land, Player player) throws SignException {
+	public EcoSign(final ILand land, final Player player) throws SignException {
 
-		@SuppressWarnings("deprecation")
-		Block targetBlock = player.getTargetBlock((HashSet<Byte>) null, 10);
+		final Block targetBlock = player.getTargetBlock((Set<Material>) null, 10);
 		Block testBlock;
 		this.land = land;
 
 		if(targetBlock == null) {
 			throw new SignException();
 		}
-		
+
 		testBlock = targetBlock.getRelative(BlockFace.UP);
 		if (testBlock.getType() == Material.AIR && land.isLocationInside(testBlock.getLocation())) {
 
@@ -78,9 +77,9 @@ public class EcoSign {
 			location = testBlock.getLocation();
 			facing = signFacing(player.getLocation().getYaw());
 			isWallSign = false;
-		
+
 		} else {
-			
+
 			// A Wall Sign
 			facing  = wallFacing(player.getLocation().getYaw());
 			testBlock = targetBlock.getRelative(facing);
@@ -91,17 +90,17 @@ public class EcoSign {
 			location = testBlock.getLocation();
 			isWallSign = true;
 		}
-		
+
 		// Target is outside the land
 		if(!land.isLocationInside(this.location)) {
 			throw new SignException();
 		}
-		
+
 		Factoid.getThisPlugin().iLog().write("SignToCreate: PlayerYaw: " + player.getLocation().getYaw() +
 				", Location: " + location.toString() + ", Facing: " + facing.name() +
 				", isWallSign: " + isWallSign);
 	}
-	
+
 	/**
 	 * Instantiates a new eco sign (If the sign is already existing only).
 	 *
@@ -109,17 +108,17 @@ public class EcoSign {
 	 * @param location the location
 	 * @throws SignException the sign exception
 	 */
-	public EcoSign(ILand land, Location location) throws SignException {
-		
+	public EcoSign(final ILand land, final Location location) throws SignException {
+
 		this.land = land;
 		this.location = location;
-		
+
 		// Load chunk
 		location.getChunk().load();
-		
+
 		// Get Sign parameter
-		Block blockPlace = location.getBlock();
-		
+		final Block blockPlace = location.getBlock();
+
 		if(blockPlace.getType() == Material.WALL_SIGN) {
 			isWallSign = true;
 		} else if(blockPlace.getType() == Material.SIGN_POST) {
@@ -127,7 +126,7 @@ public class EcoSign {
 		} else {
 			throw new SignException();
 		}
-		
+
 		this.facing = ((org.bukkit.material.Sign)((Sign) blockPlace.getState()).getData()).getFacing();
 	}
 
@@ -147,9 +146,9 @@ public class EcoSign {
 	 * @param price			the price
 	 * @throws SignException the sign exception
 	 */
-	public void createSignForSale(double price) throws SignException {
+	public void createSignForSale(final double price) throws SignException {
 
-		String[] lines = new String[4];
+		final String[] lines = new String[4];
 		lines[0] = ChatColor.GREEN
 				+ Factoid.getThisPlugin().iLanguage().getMessage("SIGN.SALE.FORSALE");
 		lines[1] = ChatColor.GREEN + land.getName();
@@ -168,10 +167,10 @@ public class EcoSign {
 	 * @param tenantName			the tenant name
 	 * @throws SignException the sign exception
 	 */
-	public void createSignForRent(double price, int renew,
-			boolean autoRenew, String tenantName) throws SignException {
+	public void createSignForRent(final double price, final int renew,
+			final boolean autoRenew, final String tenantName) throws SignException {
 
-		String[] lines = new String[4];
+		final String[] lines = new String[4];
 
 		if (tenantName != null) {
 			lines[0] = ChatColor.RED
@@ -202,9 +201,9 @@ public class EcoSign {
 	 * @param lines			the lines
 	 * @throws SignException the sign exception
 	 */
-	public void createSign(String[] lines) throws SignException {
+	public void createSign(final String[] lines) throws SignException {
 
-		Block blockPlace = location.getBlock();
+		final Block blockPlace = location.getBlock();
 
 		// Impossible to create the sign here
 		if (Factoid.getThisPlugin().iLands().getLand(location) != land) {
@@ -221,7 +220,7 @@ public class EcoSign {
 				throw new SignException();
 			}
 		}
-		
+
 		// Determinate material
 		Material mat;
 		if (isWallSign) {
@@ -234,7 +233,7 @@ public class EcoSign {
 		// Create sign
 		blockPlace.setType(mat);
 
-		Sign sign = (Sign) blockPlace.getState();
+		final Sign sign = (Sign) blockPlace.getState();
 
 		// Add lines
 		for (int t = 0; t <= 3; t++) {
@@ -243,7 +242,7 @@ public class EcoSign {
 
 		// Set facing
 		((org.bukkit.material.Sign) sign.getData()).setFacingDirection(facing);
-		
+
 		sign.update();
 	}
 
@@ -251,26 +250,26 @@ public class EcoSign {
 	 * Removes the sign.
 	 */
 	public void removeSign() {
-		
+
 		removeSign(location);
 	}
-	
+
 	/**
 	 * Removes the old sign.
 	 *
 	 * @param oldSignLocation the old sign location
 	 */
-	public void removeSign(Location oldSignLocation) {
+	public void removeSign(final Location oldSignLocation) {
 
-		Block block = oldSignLocation.getBlock();
-		
+		final Block block = oldSignLocation.getBlock();
+
 		block.getChunk().load();
 
 		// Remove only if it is a sign;
 		if (block.getType() == Material.SIGN_POST
 				|| block.getType() == Material.WALL_SIGN) {
 			block.setType(Material.AIR);
-			
+
 			//Drop item
 			oldSignLocation.getWorld().dropItem(oldSignLocation, new ItemStack(Material.SIGN, 1));
 		}
@@ -323,10 +322,10 @@ public class EcoSign {
 		} else {
 			facing = BlockFace.NORTH_NORTH_WEST;
 		}
-		
+
 		return facing;
 	}
-	
+
 	/**
 	 * Wall facing.
 	 *
@@ -334,13 +333,13 @@ public class EcoSign {
 	 * @return the block face
 	 */
 	private BlockFace wallFacing(float yaw) {
-		
+
 		BlockFace facing;
-		
+
 		if(yaw < 0) {
 			yaw += 360;
 		}
-		
+
 		if(yaw > 315 || yaw <= 45) {
 			facing = BlockFace.NORTH;
 		} else if(yaw <= 135) {
@@ -350,7 +349,7 @@ public class EcoSign {
 		} else {
 			facing = BlockFace.WEST;
 		}
-		
+
 		return facing;
 	}
 

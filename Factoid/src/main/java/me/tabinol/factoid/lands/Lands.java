@@ -400,6 +400,10 @@ public class Lands implements ILands {
 		final Land uglyCast = (Land) land;
 		uglyCast.setName(newNameLower);
 		land.forceSave();
+
+		// Removes the old name and put the new one into the Map
+		landList.remove(land.getName());
+		addLandToList(uglyCast);
 		return true;
 	}
 
