@@ -1,0 +1,65 @@
+name: Factoid
+main: me.tabinol.factoid.Factoid
+version: ${plugin.version}
+description: Factoid
+author: [Kaz00,Tabinol]
+depend: [Vault]
+softdepend: [WorldEdit,Essentials,VanishNoPacket]
+commands:
+   factoid:
+      description: Factoid Command
+      aliases: [fd, claim]
+      usage: /factoid help
+      permission: factoid.use
+      permission-message: you don't have permission for that!
+   faction:
+      description: Factoid Command
+      aliases: [fn]
+      usage: /faction help
+      permission: factoid.faction.use
+      permission-message: you don't have permission for that!
+permissions:
+    factoid.*:
+        description: Factoid Command Permission
+        default: op
+        children:
+            factoid.adminmod: true
+            factoid.adminmod.auto: true
+            factoid.collisionapprove: true
+            factoid.socialspy: true
+            factoid.bypassban: true
+            factoid.use: true
+            factoid.reload: true
+            factoid.faction.*: true
+    factoid.faction.*:
+        description: Factoid Factions Command Permission
+        default: op
+        children:
+            factoid.faction.use: true
+    factoid.adminmod:
+        description: Can use Admin Mod
+        default: op
+    factoid.adminmod.auto:
+        description: Auto Admin Mod on connect
+        default: op
+        children:
+            factoid.adminmod: true
+    factoid.collisionapprove:
+        description: Can approve land creation collisions
+        default: op
+    factoid.socialspy:
+        description: Can read conversations from all lands
+        default: op
+    factoid.bypassban:
+        description: Ban and kick does not affect this player
+        default: op
+    factoid.use:
+        description: Can use factoid command
+        default: op
+    factoid.reload:
+        description: Can reload the plugin
+        default: op
+    factoid.faction.use:
+        description: Can use faction command
+        default: op
+        
