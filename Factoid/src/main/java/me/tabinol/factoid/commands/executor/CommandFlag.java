@@ -17,7 +17,10 @@
  */
 package me.tabinol.factoid.commands.executor;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.ChatColor;
 
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
@@ -34,8 +37,6 @@ import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoidapi.parameters.IFlagType;
 import me.tabinol.factoidapi.parameters.ILandFlag;
 
-import org.bukkit.ChatColor;
-
 
 /**
  * The Class CommandFlag.
@@ -43,7 +44,7 @@ import org.bukkit.ChatColor;
 @InfoCommand(name="flag", forceParameter=true)
 public class CommandFlag extends CommandExec {
 
-	private LinkedList<IDummyLand> precDL; // Listed Precedent lands (no duplicates)
+	private List<IDummyLand> precDL;
 	private StringBuilder stList;
 
 	/**
@@ -108,7 +109,7 @@ public class CommandFlag extends CommandExec {
 
 		} else if (curArg.equalsIgnoreCase("list")) {
 
-			precDL = new LinkedList<IDummyLand>();
+			precDL = new ArrayList<>();
 			stList = new StringBuilder();
 
 			// For the actual land

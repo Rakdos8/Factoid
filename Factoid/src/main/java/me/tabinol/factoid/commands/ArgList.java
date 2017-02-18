@@ -17,19 +17,19 @@
  */
 package me.tabinol.factoid.commands;
 
+import org.bukkit.command.CommandSender;
+
+import me.tabinol.factoid.Factoid;
 // Work with command arguments
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoid.Factoid;
-import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoid.parameters.FlagType;
 import me.tabinol.factoid.parameters.FlagValue;
 import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.parameters.Permission;
 import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
+import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
-
-import org.bukkit.command.CommandSender;
 
 
 /**
@@ -196,9 +196,8 @@ public class ArgList {
 
 		if(flagValue != null) {
 			return new LandFlag(flagType, flagValue, true);
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**

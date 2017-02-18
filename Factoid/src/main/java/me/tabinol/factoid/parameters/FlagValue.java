@@ -19,10 +19,10 @@ package me.tabinol.factoid.parameters;
 
 import java.util.ArrayList;
 
-import me.tabinol.factoidapi.utilities.StringChanges;
-import me.tabinol.factoidapi.parameters.IFlagValue;
-
 import org.bukkit.ChatColor;
+
+import me.tabinol.factoidapi.parameters.IFlagValue;
+import me.tabinol.factoidapi.utilities.StringChanges;
 
 /**
  * The Class FlagValue.
@@ -187,8 +187,8 @@ public class FlagValue implements IFlagValue {
 			} else if (ft.getDefaultValue().getValue() instanceof String) {
 				value = new FlagValue(StringChanges.fromQuote(str));
 			} else if (ft.getDefaultValue().getValue() instanceof String[]) {
-				final ArrayList<String> result = new ArrayList<String>();
-				final String[] strs = StringChanges.splitKeepQuote(str, ";");
+				final ArrayList<String> result = new ArrayList<>();
+					final String[] strs = StringChanges.splitKeepQuote(str, ";");
 				for (final String st : strs) {
 				result.add(StringChanges.fromQuote(st));
 				}

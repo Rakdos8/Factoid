@@ -1050,7 +1050,7 @@ public class PlayerListener extends CommonListener implements Listener {
 				final String commandTyped = event.getMessage().substring(1).split(" ")[0];
 
 				for (final String commandTest : excludedCommands) {
-					if (commandTest.equalsIgnoreCase(commandTyped)) {
+					if (commandTest.replace("/", "").equalsIgnoreCase(commandTyped)) {
 						event.setCancelled(true);
 						player.sendMessage(ChatColor.RED
 								+ "[Factoid] "
