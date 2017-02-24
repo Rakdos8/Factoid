@@ -17,18 +17,20 @@
  */
 package me.tabinol.factoid.commands.executor;
 
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.players.PlayerConfEntry;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.selection.region.AreaSelection;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 
 // WorldEdit is in a separate class from CommandSelect because if WorldEdit

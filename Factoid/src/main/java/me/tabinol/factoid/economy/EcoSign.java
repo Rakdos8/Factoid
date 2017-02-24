@@ -66,7 +66,7 @@ public class EcoSign {
 		Block testBlock;
 		this.land = land;
 
-		if(targetBlock == null) {
+		if (targetBlock == null) {
 			throw new SignException();
 		}
 
@@ -83,7 +83,7 @@ public class EcoSign {
 			// A Wall Sign
 			facing  = wallFacing(player.getLocation().getYaw());
 			testBlock = targetBlock.getRelative(facing);
-			if(testBlock.getType() != Material.AIR) {
+			if (testBlock.getType() != Material.AIR) {
 				// Error no place to put the wall sign
 				throw new SignException();
 			}
@@ -92,7 +92,7 @@ public class EcoSign {
 		}
 
 		// Target is outside the land
-		if(!land.isLocationInside(this.location)) {
+		if (!land.isLocationInside(this.location)) {
 			throw new SignException();
 		}
 
@@ -119,9 +119,9 @@ public class EcoSign {
 		// Get Sign parameter
 		final Block blockPlace = location.getBlock();
 
-		if(blockPlace.getType() == Material.WALL_SIGN) {
+		if (blockPlace.getType() == Material.WALL_SIGN) {
 			isWallSign = true;
-		} else if(blockPlace.getType() == Material.SIGN_POST) {
+		} else if (blockPlace.getType() == Material.SIGN_POST) {
 			isWallSign = false;
 		} else {
 			throw new SignException();
@@ -212,11 +212,11 @@ public class EcoSign {
 
 		// Check if the facing block is solid
 		if (isWallSign) {
-			if(!blockPlace.getRelative(facing.getOppositeFace()).getType().isSolid()) {
+			if (!blockPlace.getRelative(facing.getOppositeFace()).getType().isSolid()) {
 				throw new SignException();
 			}
 		} else {
-			if(!blockPlace.getRelative(BlockFace.DOWN).getType().isSolid()) {
+			if (!blockPlace.getRelative(BlockFace.DOWN).getType().isSolid()) {
 				throw new SignException();
 			}
 		}
@@ -285,7 +285,7 @@ public class EcoSign {
 
 		BlockFace facing;
 
-		if(yaw < 0) {
+		if (yaw < 0) {
 			yaw += 360;
 		}
 
@@ -336,15 +336,15 @@ public class EcoSign {
 
 		BlockFace facing;
 
-		if(yaw < 0) {
+		if (yaw < 0) {
 			yaw += 360;
 		}
 
-		if(yaw > 315 || yaw <= 45) {
+		if (yaw > 315 || yaw <= 45) {
 			facing = BlockFace.NORTH;
-		} else if(yaw <= 135) {
+		} else if (yaw <= 135) {
 			facing = BlockFace.EAST;
-		} else if(yaw <= 225) {
+		} else if (yaw <= 225) {
 			facing = BlockFace.SOUTH;
 		} else {
 			facing = BlockFace.WEST;

@@ -40,7 +40,7 @@ public class ChatListener extends CommonListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onAsyncPlayerChat(final AsyncPlayerChatEvent event) {
-		if(!conf.isLandChat()) {
+		if (!conf.isLandChat()) {
 			return;
 		}
 
@@ -70,7 +70,7 @@ public class ChatListener extends CommonListener implements Listener {
 			if (firstChar.equals("=")) {
 				playersToMsg = copyWithSpy(land.getPlayersInLand());
 			}
-			else if( firstChar.equals("<")) {
+			else if ( firstChar.equals("<")) {
 				playersToMsg = copyWithSpy(land.getPlayersInLandAndChildren());
 			}
 			// ">"
@@ -96,7 +96,7 @@ public class ChatListener extends CommonListener implements Listener {
 	}
 
 	private Set<Player> copyWithSpy(final Set<Player> a) {
-		final Set<Player> listSet = new HashSet<Player>();
+		final Set<Player> listSet = new HashSet<>();
 
 		listSet.addAll(a != null ? a : Collections.emptySet());
 		for (final Player player : Bukkit.getOnlinePlayers()) {

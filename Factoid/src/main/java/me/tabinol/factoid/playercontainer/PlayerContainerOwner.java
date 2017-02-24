@@ -17,13 +17,13 @@
  */
 package me.tabinol.factoid.playercontainer;
 
+import org.bukkit.entity.Player;
+
 import me.tabinol.factoid.parameters.FlagList;
 import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainerOwner;
-
-import org.bukkit.entity.Player;
 
 
 /**
@@ -79,13 +79,13 @@ public class PlayerContainerOwner extends PlayerContainer implements IPlayerCont
 		boolean value;
 		ILand parent;
 
-		if(land == null) {
+		if (land == null) {
 			return false;
 		}
 
 		value = land.getOwner().hasAccess(player);
 
-		if(!value && (parent = land.getParent()) != null
+		if (!value && (parent = land.getParent()) != null
 				&& land.getFlagAndInherit(FlagList.INHERIT_OWNER.getFlagType()).getValueBoolean() == true) {
 
 			return parent.getOwner().hasAccess(player);

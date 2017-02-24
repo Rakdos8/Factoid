@@ -17,10 +17,10 @@
  */
 package me.tabinol.factoidapi.event;
 
-import me.tabinol.factoidapi.lands.ILand;
-
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
+
+import me.tabinol.factoidapi.lands.ILand;
 
 
 /**

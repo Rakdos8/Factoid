@@ -21,14 +21,14 @@ import java.util.Collection;
 import java.util.EnumMap;
 
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoidapi.config.players.IPlayerConfEntry;
-import me.tabinol.factoidapi.lands.ILand;
-import me.tabinol.factoidapi.lands.areas.ICuboidArea;
 import me.tabinol.factoid.parameters.FlagList;
-import me.tabinol.factoidapi.parameters.IFlagType;
 import me.tabinol.factoid.selection.region.AreaSelection;
 import me.tabinol.factoid.selection.region.LandSelection;
 import me.tabinol.factoid.selection.region.RegionSelection;
+import me.tabinol.factoidapi.config.players.IPlayerConfEntry;
+import me.tabinol.factoidapi.lands.ILand;
+import me.tabinol.factoidapi.lands.areas.ICuboidArea;
+import me.tabinol.factoidapi.parameters.IFlagType;
 
 
 /**
@@ -65,7 +65,7 @@ public class PlayerSelection {
 	public PlayerSelection(final IPlayerConfEntry playerConfEntry) {
 
 		this.playerConfEntry = playerConfEntry;
-		selectionList = new EnumMap<SelectionType, RegionSelection>(SelectionType.class);
+		selectionList = new EnumMap<>(SelectionType.class);
 		areaToReplace = null;
 	}
 
@@ -138,7 +138,7 @@ public class PlayerSelection {
 
 		final ILand land = getLand();
 
-		if(land !=null) {
+		if (land !=null) {
 			removeSelection(SelectionType.LAND);
 			addSelection(new LandSelection(playerConfEntry.getPlayer(), land));
 		}
@@ -201,7 +201,7 @@ public class PlayerSelection {
 	 */
 	public double getLandCreatePrice() {
 
-		if(!isPlayerMustPay()) {
+		if (!isPlayerMustPay()) {
 			return 0;
 		}
 
@@ -234,7 +234,7 @@ public class PlayerSelection {
 	 */
 	public double getAreaAddPrice() {
 
-		if(!isPlayerMustPay()) {
+		if (!isPlayerMustPay()) {
 			return 0;
 		}
 
@@ -243,7 +243,7 @@ public class PlayerSelection {
 		double priceFlag;
 		final IFlagType flagType = FlagList.ECO_BLOCK_PRICE.getFlagType();
 
-		if(land == null) {
+		if (land == null) {
 			return 0;
 		}
 
@@ -274,7 +274,7 @@ public class PlayerSelection {
 	 */
 	public double getAreaReplacePrice(final int areaId) {
 
-		if(!isPlayerMustPay()) {
+		if (!isPlayerMustPay()) {
 			return 0;
 		}
 

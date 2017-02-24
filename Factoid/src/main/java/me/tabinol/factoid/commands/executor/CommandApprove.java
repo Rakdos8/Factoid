@@ -22,6 +22,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.bukkit.ChatColor;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.commands.CommandEntities;
@@ -29,14 +31,12 @@ import me.tabinol.factoid.commands.CommandExec;
 import me.tabinol.factoid.commands.InfoCommand;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoid.lands.approve.Approve;
 import me.tabinol.factoid.lands.approve.ApproveList;
-import me.tabinol.factoidapi.lands.areas.ICuboidArea;
 import me.tabinol.factoid.lands.collisions.Collisions;
+import me.tabinol.factoidapi.lands.ILand;
+import me.tabinol.factoidapi.lands.areas.ICuboidArea;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
-
-import org.bukkit.ChatColor;
 
 
 /**
@@ -69,7 +69,7 @@ public class CommandApprove extends CommandExec {
 
 		if (curArg.equalsIgnoreCase("clear")) {
 
-			if(!isApprover) {
+			if (!isApprover) {
 				throw new FactoidCommandException("Approve", entity.sender, "GENERAL.MISSINGPERMISSION");
 			}
 			approveList.removeAll();
@@ -80,7 +80,7 @@ public class CommandApprove extends CommandExec {
 			// List of Approve
 			final StringBuilder stList = new StringBuilder();
 			int t = 0;
-			final TreeMap<Date,Approve> approveTree = new TreeMap<Date,Approve>();
+			final TreeMap<Date,Approve> approveTree = new TreeMap<>();
 
 			//create list (short by date/time)
 			for (final Approve app : approveList.getApproveList().values()) {
@@ -88,7 +88,7 @@ public class CommandApprove extends CommandExec {
 			}
 
 			// show Approve List
-			for(final Map.Entry<Date,Approve> approveEntry : approveTree.descendingMap().entrySet()) {
+			for (final Map.Entry<Date,Approve> approveEntry : approveTree.descendingMap().entrySet()) {
 				final Approve app = approveEntry.getValue();
 				if (app != null && (isApprover || app.getOwner().hasAccess(entity.player))) {
 					stList.append(ChatColor.WHITE + Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.LIST",
@@ -141,7 +141,7 @@ public class CommandApprove extends CommandExec {
 			if (curArg.equalsIgnoreCase("info") || curArg.equalsIgnoreCase("confirm")) {
 
 				// Print area
-				if(newArea != null) {
+				if (newArea != null) {
 					entity.sender.sendMessage(newArea.getPrint());
 				}
 

@@ -38,7 +38,7 @@ public class ScoreBoard extends Thread{
 	private final ScoreboardManager manager;
 
 	/** The Scoreboard list. */
-	private final Map<Player,Scoreboard> scoreboardList = new HashMap<Player,Scoreboard>();
+	private final Map<Player,Scoreboard> scoreboardList = new HashMap<>();
 
 	/**
 	 * Instantiates a new score board.
@@ -61,7 +61,7 @@ public class ScoreBoard extends Thread{
 		scoreboard.registerNewObjective("land", "dummy");
 		scoreboard.getObjective("land").setDisplaySlot(DisplaySlot.SIDEBAR);
 		scoreboard.getObjective("land").setDisplayName(Factoid.getThisPlugin().iLanguage().getMessage("SCOREBOARD.LANDINFO"));
-		for(final Player p : playerlist){
+		for (final Player p : playerlist){
 			scoreboard.getObjective("land").getScore(p).setScore(0);
 		}
 		scoreboard.getObjective("land").getScore(player).setScore(0);// Note: A voir si preferable de se voir soi meme ou non dans le land.
@@ -95,7 +95,7 @@ public class ScoreBoard extends Thread{
 	 */
 	@SuppressWarnings("deprecation")
 	public void resetScoreboard(final Player player){
-		if(scoreboardList.containsKey(player)){
+		if (scoreboardList.containsKey(player)){
 			scoreboardList.get(player).getObjective("land").unregister();
 			scoreboardList.get(player).resetScores(player);
 			scoreboardList.remove(player);

@@ -17,9 +17,10 @@
  */
 package me.tabinol.factoid.event;
 
-import me.tabinol.factoid.lands.Land;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
+
+import me.tabinol.factoid.lands.Land;
 
 
 /**

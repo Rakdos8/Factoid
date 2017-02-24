@@ -258,32 +258,32 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 		int cz2;
 
 		// Create points
-		if(x1pos == -1) {
+		if (x1pos == -1) {
 			cx1 = x1;
 		} else {
 			cx1 = area2.getX1();
 		}
-		if(y1pos == -1) {
+		if (y1pos == -1) {
 			cy1 = y1;
 		} else {
 			cy1 = area2.getY1();
 		}
-		if(z1pos == -1) {
+		if (z1pos == -1) {
 			cz1 = z1;
 		} else {
 			cz1 = area2.getZ1();
 		}
-		if(x2pos == 1) {
+		if (x2pos == 1) {
 			cx2 = x2;
 		} else {
 			cx2 = area2.getX2();
 		}
-		if(y2pos == 1) {
+		if (y2pos == 1) {
 			cy2 = y2;
 		} else {
 			cy2 = area2.getY2();
 		}
-		if(z2pos == 1) {
+		if (z2pos == 1) {
 			cz2 = z2;
 		} else {
 			cz2 = area2.getZ2();

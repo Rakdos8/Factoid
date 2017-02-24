@@ -28,52 +28,45 @@ import me.tabinol.factoidflycreative.listeners.PlayerListener;
 
 public class FactoidFlyCreative extends JavaPlugin implements Listener {
 
-    private static PlayerListener playerListener;
-    private static FactoidFlyCreative thisPlugin;
-    private static FlyCreativeConfig config;
+	private static PlayerListener playerListener;
+	private static FactoidFlyCreative thisPlugin;
+	private static FlyCreativeConfig config;
 
+	@Override
+	public void onEnable() {
+		thisPlugin = this;
 
-    @Override
-    public void onEnable() {
+		// Config
+		config = new FlyCreativeConfig();
+		config.loadConfig();
 
-        thisPlugin = this;
+		// Activate listeners
+		playerListener = new PlayerListener();
+		getServer().getPluginManager().registerEvents(playerListener, this);
+	}
 
-        // Config
-        config = new FlyCreativeConfig();
-        config.loadConfig();
+	public static FactoidFlyCreative getThisPlugin() {
+		return thisPlugin;
+	}
 
-        // Activate listeners
-        playerListener = new PlayerListener();
-        getServer().getPluginManager().registerEvents(playerListener, this);
-    }
+	public static FlyCreativeConfig getConf() {
+		return config;
+	}
 
-    public static FactoidFlyCreative getThisPlugin() {
+	public static PlayerListener getPlayerListener() {
+		return playerListener;
+	}
 
-        return thisPlugin;
-    }
+	@Override
+	public boolean onCommand(final CommandSender sender, final Command cmd, final String commandLabel, final String[] args) {
+		if (cmd.getName().equalsIgnoreCase("fcreload")) {
 
-    public static FlyCreativeConfig getConf() {
+			FactoidFlyCreative.getConf().reLoadConfig();
+			sender.sendMessage("Configuration reloaded!");
 
-        return config;
-    }
+			return true;
 
-    public static PlayerListener getPlayerListener() {
-
-        return playerListener;
-    }
-
-    @Override
-    public boolean onCommand(final CommandSender sender, final Command cmd, final String commandLabel, final String[] args) {
-
-        if (cmd.getName().equalsIgnoreCase("fcreload")) {
-
-        	FactoidFlyCreative.getConf().reLoadConfig();
-            sender.sendMessage("Configuration reloaded!");
-
-            return true;
-
-        } else {
-            return false;
-        }
-    }
+		}
+		return false;
+	}
 }

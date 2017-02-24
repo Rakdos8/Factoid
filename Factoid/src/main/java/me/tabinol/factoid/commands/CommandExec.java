@@ -262,8 +262,8 @@ public abstract class CommandExec {
 	 * Removes the sign from hand.
 	 */
 	protected void removeSignFromHand() {
-		if(entity.player.getGameMode() != GameMode.CREATIVE) {
-			if(entity.player.getItemInHand().getAmount() == 1) {
+		if (entity.player.getGameMode() != GameMode.CREATIVE) {
+			if (entity.player.getItemInHand().getAmount() == 1) {
 				entity.player.setItemInHand(new ItemStack(Material.AIR));
 			} else {
 				entity.player.getItemInHand().setAmount(entity.player.getItemInHand().getAmount() - 1);

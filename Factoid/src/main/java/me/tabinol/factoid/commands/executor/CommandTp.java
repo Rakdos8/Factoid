@@ -25,8 +25,8 @@ import me.tabinol.factoid.commands.CommandExec;
 import me.tabinol.factoid.commands.InfoCommand;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.parameters.FlagList;
-import me.tabinol.factoidapi.parameters.IFlagValue;
 import me.tabinol.factoid.parameters.PermissionList;
+import me.tabinol.factoidapi.parameters.IFlagValue;
 import me.tabinol.factoidapi.utilities.StringChanges;
 
 
@@ -57,7 +57,7 @@ public class CommandTp extends CommandExec {
 		land = Factoid.getThisPlugin().iLands().getLand(curArg);
 
 		// Land not found
-		if(land == null) {
+		if (land == null) {
 			throw new FactoidCommandException("On land tp player", entity.player, "COMMAND.TP.LANDNOTFOUND");
 		}
 
@@ -67,13 +67,13 @@ public class CommandTp extends CommandExec {
 		// Try to get Location
 		final IFlagValue value = land.getFlagAndInherit(FlagList.SPAWN.getFlagType());
 
-		if(value.getValueString().isEmpty()) {
+		if (value.getValueString().isEmpty()) {
 			throw new FactoidCommandException("On land tp player", entity.player, "COMMAND.TP.NOSPAWN");
 		}
 
 		final Location location = StringChanges.stringToLocation(value.getValueString());
 
-		if(location == null) {
+		if (location == null) {
 			throw new FactoidCommandException("On land tp player", entity.player, "COMMAND.TP.INVALID");
 		}
 

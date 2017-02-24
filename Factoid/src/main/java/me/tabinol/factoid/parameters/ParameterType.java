@@ -89,7 +89,7 @@ public class ParameterType implements Comparable<ParameterType> {
 	 */
 	public String getPrint() {
 
-		if(isRegistered) {
+		if (isRegistered) {
 			return ChatColor.YELLOW + name;
 		} else {
 			return ChatColor.DARK_GRAY + name;

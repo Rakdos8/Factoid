@@ -1,17 +1,17 @@
 package com.mojang.api.profiles;
 
-import com.google.gson.Gson;
-import com.mojang.api.http.BasicHttpClient;
-import com.mojang.api.http.HttpBody;
-import com.mojang.api.http.HttpClient;
-import com.mojang.api.http.HttpHeader;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import com.google.gson.Gson;
+import com.mojang.api.http.BasicHttpClient;
+import com.mojang.api.http.HttpBody;
+import com.mojang.api.http.HttpClient;
+import com.mojang.api.http.HttpHeader;
 
 public class HttpProfileRepository implements ProfileRepository {
 
@@ -33,10 +33,10 @@ public class HttpProfileRepository implements ProfileRepository {
 
 	@Override
 	public Profile[] findProfilesByNames(final String... names) {
-		final List<Profile> profiles = new ArrayList<Profile>();
+		final List<Profile> profiles = new ArrayList<>();
 		try {
 
-			final List<HttpHeader> headers = new ArrayList<HttpHeader>();
+			final List<HttpHeader> headers = new ArrayList<>();
 			headers.add(new HttpHeader("Content-Type", "application/json"));
 
 			final int namesCount = names.length;

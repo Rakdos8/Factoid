@@ -364,18 +364,18 @@ public class Config {
 		overrideExplosions = config.getBoolean("general.OverrideExplosions", true);
 
 		config.addDefault("land.OwnerCanSet.Flags", new String[] {"MESSAGE_JOIN", "MESSAGE_QUIT"});
-		ownerConfigFlag = new TreeSet<FlagType>();
+		ownerConfigFlag = new TreeSet<>();
 		for (final String value : config.getStringList("land.OwnerCanSet.Flags")) {
 			ownerConfigFlag.add(Factoid.getThisPlugin().iParameters().getFlagTypeNoValid(value.toUpperCase()));
 		}
 		config.addDefault("land.OwnerCanSet.Permissions", new String[] {"BUILD", "OPEN", "USE"});
-		ownerConfigPerm = new TreeSet<PermissionType>();
+		ownerConfigPerm = new TreeSet<>();
 		for (final String value : config.getStringList("land.OwnerCanSet.Permissions")) {
 			ownerConfigPerm.add(Factoid.getThisPlugin().iParameters().getPermissionTypeNoValid(value.toUpperCase()));
 		}
 
 		// Add types
-		for(final String typeName : config.getStringList("land.Types.List")) {
+		for (final String typeName : config.getStringList("land.Types.List")) {
 			FactoidAPI.iTypes().addOrGetType(typeName);
 		}
 		typeAdminMod = FactoidAPI.iTypes().addOrGetType(getStringOrNull("land.Types.OnCreate.AdminMod", "admin"));
@@ -385,7 +385,7 @@ public class Config {
 	private String getStringOrNull(final String path, final String defaultSt) {
 
 		String result = config.getString(path, defaultSt);
-		if(result.equalsIgnoreCase("-null-")) {
+		if (result.equalsIgnoreCase("-null-")) {
 			result = null;
 		}
 

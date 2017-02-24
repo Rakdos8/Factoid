@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+
 import me.tabinol.factoidapi.FactoidAPI;
 import me.tabinol.factoidapi.lands.IDummyLand;
 import me.tabinol.factoidapi.parameters.IFlagType;
@@ -29,101 +32,97 @@ import me.tabinol.factoidapi.parameters.IFlagValue;
 import me.tabinol.factoidinventory.FactoidInventory;
 import me.tabinol.factoidinventory.inventories.InventorySpec;
 
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-
 public class InventoryConfig {
 
-    public static final String GLOBAL = "Default"; // Means it is assigned to all
-    public static final String PERM_USE = "finv.use";
-    public static final String PERM_RELOAD = "finv.reload";
-    public static final String PERM_FORCESAVE = "finv.forcesave";
-    public static final String PERM_DEFAULT = "finv.default";
-    public static final String PERM_LOADDEATH = "finv.loaddeath";
-    public static final String PERM_IGNORE_CREATIVE_INV = "finv.ignorecreativeinv";
-    public static final String PERM_IGNORE_INV = "finv.ignoreinv";
-    public static final String PERM_IGNORE_DISABLED_COMMANDS = "finv.ignoredisabledcommands";
-    private final IFlagType invFlag; // Registered inventory Flag (Factoid)
-    private final FactoidInventory thisPlugin;
-    private FileConfiguration config;
-    private HashMap<String, InventorySpec> invList; // World-->Land-->Inventory
+	public static final String GLOBAL = "Default"; // Means it is assigned to all
+	public static final String PERM_USE = "finv.use";
+	public static final String PERM_RELOAD = "finv.reload";
+	public static final String PERM_FORCESAVE = "finv.forcesave";
+	public static final String PERM_DEFAULT = "finv.default";
+	public static final String PERM_LOADDEATH = "finv.loaddeath";
+	public static final String PERM_IGNORE_CREATIVE_INV = "finv.ignorecreativeinv";
+	public static final String PERM_IGNORE_INV = "finv.ignoreinv";
+	public static final String PERM_IGNORE_DISABLED_COMMANDS = "finv.ignoredisabledcommands";
+	private final IFlagType invFlag; // Registered inventory Flag (Factoid)
+	private final FactoidInventory thisPlugin;
+	private FileConfiguration config;
+	private HashMap<String, InventorySpec> invList; // World-->Land-->Inventory
 
-    public InventoryConfig() {
+	public InventoryConfig() {
 
-        thisPlugin = FactoidInventory.getThisPlugin();
-        thisPlugin.saveDefaultConfig();
+		thisPlugin = FactoidInventory.getThisPlugin();
+		thisPlugin.saveDefaultConfig();
 
-        // Connect to the data file and register flag to Factoid
-        invFlag = FactoidAPI.iParameters().registerFlagType("INVENTORY", new String());
+		// Connect to the data file and register flag to Factoid
+		invFlag = FactoidAPI.iParameters().registerFlagType("INVENTORY", new String());
 
-        config = thisPlugin.getConfig();
-        invList = new HashMap<String, InventorySpec>();
-    }
+		config = thisPlugin.getConfig();
+		invList = new HashMap<>();
+	}
 
-    public void reLoadConfig() {
+	public void reLoadConfig() {
+		thisPlugin.reloadConfig();
+		config = thisPlugin.getConfig();
+		invList = new HashMap<>();
+		loadInventory();
+	}
 
-        thisPlugin.reloadConfig();
-        config = thisPlugin.getConfig();
-        invList = new HashMap<String, InventorySpec>();
-        loadInventory();
-    }
+	public void loadConfig() {
 
-    public void loadConfig() {
+		loadInventory();
+	}
 
-        loadInventory();
-    }
+	private void loadInventory() {
 
-    private void loadInventory() {
+		// Load World and Land inventories
+		final ConfigurationSection configSec = config.getConfigurationSection("Inventories");
+		for (final Map.Entry<String, Object> invEntry : configSec.getValues(false).entrySet()) {
+			if (invEntry.getValue() instanceof ConfigurationSection) {
+				final boolean isCreativeChange = ((ConfigurationSection) invEntry.getValue()).getBoolean("SeparateCreative", true);
+				final boolean isSaveInventory = ((ConfigurationSection) invEntry.getValue()).getBoolean("SaveInventory", true);
+				final boolean isAllowDrop = ((ConfigurationSection) invEntry.getValue()).getBoolean("AllowDrop", true);
+				final List<String> disabledCommands = ((ConfigurationSection) invEntry.getValue()).getStringList("DisabledCommands");
+				createInventoryEntry(invEntry.getKey(), isCreativeChange, isSaveInventory, isAllowDrop, disabledCommands);
+			}
+		}
+	}
 
-        // Load World and Land inventories
-        final ConfigurationSection configSec = config.getConfigurationSection("Inventories");
-        for (final Map.Entry<String, Object> invEntry : configSec.getValues(false).entrySet()) {
-            if (invEntry.getValue() instanceof ConfigurationSection) {
-                final boolean isCreativeChange = ((ConfigurationSection) invEntry.getValue()).getBoolean("SeparateCreative", true);
-                final boolean isSaveInventory = ((ConfigurationSection) invEntry.getValue()).getBoolean("SaveInventory", true);
-                final boolean isAllowDrop = ((ConfigurationSection) invEntry.getValue()).getBoolean("AllowDrop", true);
-                final List<String> disabledCommands = ((ConfigurationSection) invEntry.getValue()).getStringList("DisabledCommands");
-                createInventoryEntry(invEntry.getKey(), isCreativeChange, isSaveInventory, isAllowDrop, disabledCommands);
-            }
-        }
-    }
+	private void createInventoryEntry(final String key, final boolean creativeChange, final boolean saveInventory, final boolean allowDrop,
+			final List<String> disabledCommands) {
 
-    private void createInventoryEntry(final String key, final boolean creativeChange, final boolean saveInventory, final boolean allowDrop,
-            final List<String> disabledCommands) {
+		invList.put(key, new InventorySpec(key, creativeChange, saveInventory, allowDrop, disabledCommands));
+	}
 
-        invList.put(key, new InventorySpec(key, creativeChange, saveInventory, allowDrop, disabledCommands));
-    }
+	public InventorySpec getInvSpec(final IDummyLand dummyLand) {
 
-    public InventorySpec getInvSpec(final IDummyLand dummyLand) {
+		final IFlagValue invFlagValue = dummyLand.getFlagAndInherit(invFlag);
 
-        final IFlagValue invFlagValue = dummyLand.getFlagAndInherit(invFlag);
+		// If the flag is not set
+		if (invFlagValue.getValueString().isEmpty()) {
+			return invList.get(GLOBAL);
+		}
 
-        // If the flag is not set
-        if(invFlagValue.getValueString().isEmpty()) {
-            return invList.get(GLOBAL);
-        }
+		final InventorySpec invSpec = invList.get(invFlagValue.getValueString());
 
-        final InventorySpec invSpec = invList.get(invFlagValue.getValueString());
+		// If the flag is set with wrong inventory
+		if (invSpec == null) {
+			thisPlugin.getLogger().log(Level.WARNING, "Inventory name \"" + invFlagValue.getValueString() + "\" is not found "
+					+ "in " + thisPlugin.getName() + "/plugin.yml!");
+			return invList.get(GLOBAL);
+		}
 
-        // If the flag is set with wrong inventory
-        if(invSpec == null) {
-            thisPlugin.getLogger().log(Level.WARNING, "Inventory name \"" + invFlagValue.getValueString() + "\" is not found "
-                    + "in " + thisPlugin.getName() + "/plugin.yml!");
-            return invList.get(GLOBAL);
-        }
+		return invSpec;
+	}
 
-        return invSpec;
-    }
+	public InventorySpec getFromString(final String invName) {
 
-    public InventorySpec getFromString(final String invName) {
+		final InventorySpec invSpec = invList.get(invName);
 
-        final InventorySpec invSpec = invList.get(invName);
+		// Tu prevent null pointer
+		if (invSpec == null) {
+			return invList.get(GLOBAL);
+		}
 
-        // Tu prevent null pointer
-        if(invSpec == null) {
-            return invList.get(GLOBAL);
-        }
-
-        return invSpec;
-    }
+		return invSpec;
+	}
 }

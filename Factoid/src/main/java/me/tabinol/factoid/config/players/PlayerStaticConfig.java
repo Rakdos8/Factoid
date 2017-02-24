@@ -17,22 +17,21 @@
  */
 package me.tabinol.factoid.config.players;
 
-import me.tabinol.factoid.config.chat.Chat;
-import me.tabinol.factoid.config.chat.ChatEssentials;
-import me.tabinol.factoid.config.chat.ChatFactoid;
-import me.tabinol.factoid.config.vanish.VanishEssentials;
-
 import java.util.HashMap;
 import java.util.Map;
 
-import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.config.vanish.DummyVanish;
-import me.tabinol.factoid.config.vanish.Vanish;
-import me.tabinol.factoid.config.vanish.VanishNoPacket;
-import me.tabinol.factoidapi.config.players.IPlayerStaticConfig;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.config.chat.Chat;
+import me.tabinol.factoid.config.chat.ChatEssentials;
+import me.tabinol.factoid.config.chat.ChatFactoid;
+import me.tabinol.factoid.config.vanish.DummyVanish;
+import me.tabinol.factoid.config.vanish.Vanish;
+import me.tabinol.factoid.config.vanish.VanishEssentials;
+import me.tabinol.factoid.config.vanish.VanishNoPacket;
+import me.tabinol.factoidapi.config.players.IPlayerStaticConfig;
 
 
 // Contain lists for player (selection, ect, ...)
@@ -55,7 +54,7 @@ public class PlayerStaticConfig implements IPlayerStaticConfig {
 	 */
 	public PlayerStaticConfig() {
 
-		playerConfList = new HashMap<CommandSender, PlayerConfEntry>();
+		playerConfList = new HashMap<>();
 
 		// Check for VanishNoPacket plugin
 		if (Factoid.getThisPlugin().iDependPlugin().getVanishNoPacket() != null) {

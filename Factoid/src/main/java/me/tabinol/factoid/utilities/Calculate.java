@@ -79,10 +79,10 @@ public class Calculate {
 	 */
 	public static int comparePosition(final int nbSource, final int nb1, final int nb2) {
 
-		if(nbSource < nb1) {
+		if (nbSource < nb1) {
 			return -1;
 		}
-		if(nbSource > nb2) {
+		if (nbSource > nb2) {
 			return 1;
 		}
 		return 0;
@@ -97,7 +97,7 @@ public class Calculate {
 	 */
 	public static Double AdditionDouble(final Double a, final Double b){
 		Double t = null;
-		if(a<0){
+		if (a<0){
 			t = a-b;
 		}else{
 			t = a+b;
@@ -114,7 +114,7 @@ public class Calculate {
 	 */
 	public static int AdditionInt(final int a, final int b){
 		int t = 0;
-		if(a<0){
+		if (a<0){
 			t = a-b;
 		}else{
 			t = a+b;

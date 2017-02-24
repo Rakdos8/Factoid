@@ -20,6 +20,8 @@ package me.tabinol.factoid.commands.executor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.ChatColor;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ArgList;
 import me.tabinol.factoid.commands.CommandEntities;
@@ -28,17 +30,15 @@ import me.tabinol.factoid.commands.InfoCommand;
 import me.tabinol.factoid.config.BannedWords;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.exceptions.FactoidLandException;
-import me.tabinol.factoidapi.lands.ILand;
-import me.tabinol.factoidapi.lands.areas.ICuboidArea;
-import me.tabinol.factoidapi.lands.types.IType;
 import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoid.playercontainer.PlayerContainerNobody;
-import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
 import me.tabinol.factoid.selection.region.AreaSelection;
-
-import org.bukkit.ChatColor;
+import me.tabinol.factoidapi.lands.ILand;
+import me.tabinol.factoidapi.lands.areas.ICuboidArea;
+import me.tabinol.factoidapi.lands.types.IType;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 
 
 /**
@@ -90,7 +90,7 @@ public class CommandCreate extends CommandExec {
 
 			final String curString = entity.argList.getNext();
 
-			if(curString.equalsIgnoreCase("noparent")) {
+			if (curString.equalsIgnoreCase("noparent")) {
 
 				parent = null;
 			}
@@ -120,7 +120,7 @@ public class CommandCreate extends CommandExec {
 		// If the player is adminmod, the owner is nobody, and set type
 		IPlayerContainer owner;
 		IType type;
-		if(entity.playerConf.isAdminMod()) {
+		if (entity.playerConf.isAdminMod()) {
 			owner = new PlayerContainerNobody();
 			type = Factoid.getThisPlugin().iConf().getTypeAdminMod();
 		} else {

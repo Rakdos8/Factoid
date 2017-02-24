@@ -45,7 +45,7 @@ public class CommandParent extends CommandExec {
 		final String curArg = entity.argList.getNext();
 		Land parent = null;
 
-		if(!curArg.equalsIgnoreCase("unset")) {
+		if (!curArg.equalsIgnoreCase("unset")) {
 			parent = Factoid.getThisPlugin().iLands().getLand(curArg);
 
 			// Check if the parent exist
@@ -54,7 +54,7 @@ public class CommandParent extends CommandExec {
 			}
 
 			// Check if the land is a children
-			if(land.isDescendants(parent)) {
+			if (land.isDescendants(parent)) {
 				throw new FactoidCommandException("CommandParent", entity.player, "COMMAND.PARENT.NOTCHILD");
 			}
 		}
@@ -67,7 +67,7 @@ public class CommandParent extends CommandExec {
 
 		// Set parent
 		land.setParent(parent);
-		if(parent == null) {
+		if (parent == null) {
 			entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.PARENT.REMOVEDONE"));
 			Factoid.getThisPlugin().iLog().write(entity.playerName + " has set land " + land.getName() + " to no parent ");
 		} else {

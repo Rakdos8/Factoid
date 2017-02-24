@@ -17,12 +17,12 @@
  */
 package me.tabinol.factoidapi.config.players;
 
-import me.tabinol.factoidapi.lands.IDummyLand;
-import me.tabinol.factoidapi.playercontainer.IPlayerContainerPlayer;
-
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import me.tabinol.factoidapi.lands.IDummyLand;
+import me.tabinol.factoidapi.playercontainer.IPlayerContainerPlayer;
 
 /**
  * The Interface IPlayerConfEntry. Contains diver Factoid informations from a

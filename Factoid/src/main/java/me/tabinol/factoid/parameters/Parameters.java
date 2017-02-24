@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import me.tabinol.factoidapi.parameters.IParameters;
-
 import org.bukkit.Material;
+
+import me.tabinol.factoidapi.parameters.IParameters;
 
 
 /**
@@ -53,9 +53,9 @@ public class Parameters implements IParameters {
 	 */
 	public Parameters() {
 
-		permissions = new TreeMap<String, PermissionType>();
-		flags = new TreeMap<String, FlagType>();
-		unRegisteredFlags = new ArrayList<LandFlag>();
+		permissions = new TreeMap<>();
+		flags = new TreeMap<>();
+		unRegisteredFlags = new ArrayList<>();
 
 		// Add flags and permissions
 		for (final PermissionList permissionList : PermissionList.values()) {
@@ -65,11 +65,11 @@ public class Parameters implements IParameters {
 			flagList.setFlagType(registerFlagType(flagList.name(), flagList.baseValue));
 		}
 		// Add special permissions (PLACE_XXX and DESTROY_XXX, NOPLACE_XXX, NODESTROY_XXX)
-		specialPermMap = new EnumMap<SpecialPermPrefix, Map<Material, PermissionType>>(SpecialPermPrefix.class);
+		specialPermMap = new EnumMap<>(SpecialPermPrefix.class);
 
-		for(final SpecialPermPrefix pref : SpecialPermPrefix.values()) {
-			final Map<Material, PermissionType> matPerms = new EnumMap<Material, PermissionType>(Material.class);
-			for(final Material mat : Material.values()) {
+		for (final SpecialPermPrefix pref : SpecialPermPrefix.values()) {
+			final Map<Material, PermissionType> matPerms = new EnumMap<>(Material.class);
+			for (final Material mat : Material.values()) {
 				matPerms.put(mat, registerPermissionType(pref.name() + "_" + mat.name(), false));
 			}
 			specialPermMap.put(pref, matPerms);
@@ -108,7 +108,7 @@ public class Parameters implements IParameters {
 		FlagValue flagDefaultValue;
 
 		// Check is default value is raw or is FlagDefaultValue
-		if(defaultValue instanceof FlagValue) {
+		if (defaultValue instanceof FlagValue) {
 			flagDefaultValue = (FlagValue) defaultValue;
 		} else {
 			flagDefaultValue = new FlagValue(defaultValue);
@@ -123,7 +123,7 @@ public class Parameters implements IParameters {
 		final Iterator<LandFlag> iFlag = unRegisteredFlags.iterator();
 		while (iFlag.hasNext()) {
 		   final LandFlag flag = iFlag.next();
-		   if(flagType == flag.getFlagType()) {
+		   if (flagType == flag.getFlagType()) {
 			   final String str = flag.getValue().getValueString();
 			   flag.setValue(FlagValue.getFromString(str, flagType));
 			   iFlag.remove();
@@ -180,7 +180,7 @@ public class Parameters implements IParameters {
 
 		PermissionType pt = permissions.get(permissionName);
 
-		if(pt == null) {
+		if (pt == null) {
 			pt = new PermissionType(permissionName, false);
 			permissions.put(permissionName, pt);
 		}
@@ -198,7 +198,7 @@ public class Parameters implements IParameters {
 
 		FlagType ft = flags.get(flagName);
 
-		if(ft == null) {
+		if (ft == null) {
 			ft = new FlagType(flagName, new String());
 			flags.put(flagName, ft);
 		}
@@ -211,7 +211,7 @@ public class Parameters implements IParameters {
 
 		final Map<Material, PermissionType> matPerms = specialPermMap.get(prefix);
 
-		if(matPerms == null) {
+		if (matPerms == null) {
 			return null;
 		}
 

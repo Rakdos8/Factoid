@@ -17,11 +17,11 @@
  */
 package me.tabinol.factoid.commands;
 
-import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.config.players.PlayerConfEntry;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.config.players.PlayerConfEntry;
 
 /**
  * Contains general information for commandExecutor.

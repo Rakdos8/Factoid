@@ -17,154 +17,147 @@
  */
 package me.tabinol.factoidinventory;
 
-import java.io.File;
-
-import me.tabinol.factoidinventory.config.InventoryConfig;
-import me.tabinol.factoidinventory.inventories.InventorySpec;
 import static me.tabinol.factoidinventory.inventories.InventoryStorage.DEFAULT_INV;
 import static me.tabinol.factoidinventory.inventories.InventoryStorage.INV_DIR;
+
+import java.io.File;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import me.tabinol.factoidinventory.config.InventoryConfig;
+import me.tabinol.factoidinventory.inventories.InventorySpec;
+
 public class Commands {
 
-    private boolean comReturn;
-    private final CommandSender sender;
-    private final String[] args;
+	private boolean comReturn;
+	private final CommandSender sender;
+	private final String[] args;
 
-    public Commands(final CommandSender sender, final Command cmd, final String commandLabel, final String[] args) {
+	public Commands(
+		final CommandSender sender,
+		final Command cmd,
+		final String commandLabel,
+		final String[] args
+	) {
+		comReturn = true;
+		this.sender = sender;
+		this.args = args;
 
-        comReturn = true;
-        this.sender = sender;
-        this.args = args;
+		if (args.length == 0) {
+			sender.sendMessage("Possible commands are:");
+			sender.sendMessage("/finv loaddeath <player name> [(1-9)] : Reload a player inventory before death, 1 = last death");
+			sender.sendMessage("/finv default <save/remove>: Save (or remove) your inventory has the default inventory for players");
+			sender.sendMessage("/finv forcesave : Save configuration and inventories");
+			sender.sendMessage("/finv reload : Reload configuration");
+			return;
+		}
 
-        if (args.length == 0) {
-            sender.sendMessage("Possible commands are:");
-            sender.sendMessage("/finv loaddeath <player name> [(1-9)] : Reload a player inventory before death, 1 = last death");
-            sender.sendMessage("/finv default <save/remove>: Save (or remove) your inventory has the default inventory for players");
-            sender.sendMessage("/finv forcesave : Save configuration and inventories");
-            sender.sendMessage("/finv reload : Reload configuration");
-            return;
-        }
+		if (args[0].equalsIgnoreCase("default")) {
+			if (permissionOk(InventoryConfig.PERM_DEFAULT)) {
+				saveDefault();
+			}
+		} else if (args[0].equalsIgnoreCase("loaddeath")) {
+			if (permissionOk(InventoryConfig.PERM_LOADDEATH)) {
+				loadDeath();
+			}
+		} else if (args[0].equalsIgnoreCase("forcesave")) {
+			if (permissionOk(InventoryConfig.PERM_FORCESAVE)) {
+				forceSave();
+			}
+		} else if (args[0].equalsIgnoreCase("reload")) {
+			if (permissionOk(InventoryConfig.PERM_RELOAD)) {
+				reload();
+			}
+		} else {
+			sender.sendMessage("Invalid argument! type: \"/finv\" for information.");
+		}
+	}
 
-        if (args[0].equalsIgnoreCase("default")) {
-            if(permissionOk(InventoryConfig.PERM_DEFAULT)) {
-            saveDefault();
-            }
-        } else if (args[0].equalsIgnoreCase("loaddeath")) {
-            if(permissionOk(InventoryConfig.PERM_LOADDEATH)) {
-            loadDeath();
-            }
-        } else if (args[0].equalsIgnoreCase("forcesave")) {
-            if(permissionOk(InventoryConfig.PERM_FORCESAVE)) {
-            forceSave();
-            }
-        } else if (args[0].equalsIgnoreCase("reload")) {
-            if(permissionOk(InventoryConfig.PERM_RELOAD)) {
-            reload();
-            }
-        } else {
-            sender.sendMessage("Invalid argument! type: \"/finv\" for information.");
-        }
-    }
+	private boolean permissionOk(final String perm) {
+		if (sender.hasPermission(perm)) {
+			return true;
+		}
+		sender.sendMessage("You don't have the permission!");
+		return false;
+	}
 
-    private boolean permissionOk(final String perm) {
+	private void saveDefault() {
+		if (!(sender instanceof Player)) {
+			sender.sendMessage("This command is not available from console.");
+		}
 
-        if(sender.hasPermission(perm)) {
-            return true;
-        } else {
-            sender.sendMessage("You don't have the permission!");
-            return false;
-        }
-    }
+		final Player player = (Player) sender;
 
-    private void saveDefault() {
+		// Get the land name
+		final InventorySpec invSpec = FactoidInventory.getThisPlugin().getInventoryListener().getPlayerInvEntry(player).getActualInv();
 
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("This command is not available from console.");
-        }
+		if (args.length >= 1 && args[1].equalsIgnoreCase("save")) {
+			// Save the inventory
+			FactoidInventory.getThisPlugin().getInventoryListener().saveDefaultInventory(player, invSpec);
+			sender.sendMessage("Dafault inventory saved.");
 
-        final Player player = (Player) sender;
+		} else if (args.length >= 1 && args[1].equalsIgnoreCase("remove")) {
+			// Remove inventory
+			new File(FactoidInventory.getThisPlugin().getDataFolder()
+					+ "/" + INV_DIR + "/" + invSpec.getInventoryName() + "/" + DEFAULT_INV + ".yml").delete();
+			sender.sendMessage("Dafault inventory removed.");
 
-        // Get the land name
-        final InventorySpec invSpec = FactoidInventory.getThisPlugin().getInventoryListener().getPlayerInvEntry(player).getActualInv();
+		} else {
+			// Bad parameter
+			sender.sendMessage("You want to \"save\" or \"remove\" the default inventory?");
+		}
+	}
 
-        if(args.length >= 1 && args[1].equalsIgnoreCase("save")) {
+	private void loadDeath() {
+		if (args.length < 2) {
+			sender.sendMessage("You must specify a player!");
+			return;
+		}
 
-            // Save the inventory
-            FactoidInventory.getThisPlugin().getInventoryListener().saveDefaultInventory(player, invSpec);
-            sender.sendMessage("Dafault inventory saved.");
+		// Check for player
+		final Player player = Bukkit.getPlayer(args[1]);
 
-        } else if(args.length >= 1 && args[1].equalsIgnoreCase("remove")) {
+		if (player == null) {
+			sender.sendMessage("The player must be online!");
+			return;
+		}
 
-            // Remove inventory
-            new File(FactoidInventory.getThisPlugin().getDataFolder()
-                    + "/" + INV_DIR + "/" + invSpec.getInventoryName() + "/" + DEFAULT_INV + ".yml").delete();
-            sender.sendMessage("Dafault inventory removed.");
+		// Check for the last time version
+		int lastTime;
+		if (args.length > 2) {
+			try {
+				lastTime = Integer.parseInt(args[2]);
+			} catch (final NumberFormatException ex) {
+				sender.sendMessage("Number unreadable!");
+				return;
+			}
+		} else {
+			lastTime = 1;
+		}
 
-        } else {
+		// Execute
+		if (!FactoidInventory.getThisPlugin().getInventoryListener().loadDeathInventory(player, lastTime)) {
+				sender.sendMessage("This death save is not found or the player is at the wrong place!");
+				return;
+		}
 
-            // Bad parameter
-            sender.sendMessage("You want to \"save\" or \"remove\" the default inventory?");
-        }
-    }
+		sender.sendMessage("Reload inventory done for \"" + player.getName() + "\"!");
+	}
 
-    private void loadDeath() {
+	private void forceSave() {
+		FactoidInventory.getThisPlugin().getInventoryListener().forceSave();
+		sender.sendMessage("Save done!");
+	}
 
-        if (args.length < 2) {
-            sender.sendMessage("You must specify a player!");
-            return;
-        }
+	private void reload() {
+		FactoidInventory.getConf().reLoadConfig();
+		sender.sendMessage("Reload done!");
+	}
 
-        // Check for player
-
-        @SuppressWarnings("deprecation")
-		final
-		Player player = Bukkit.getPlayer(args[1]);
-
-        if (player == null) {
-            sender.sendMessage("The player must be online!");
-            return;
-        }
-
-        // Check for the last time version
-        int lastTime;
-        if (args.length > 2) {
-            try {
-                lastTime = Integer.parseInt(args[2]);
-            } catch (final NumberFormatException ex) {
-                sender.sendMessage("Number unreadable!");
-                return;
-            }
-        } else {
-            lastTime = 1;
-        }
-
-        // Execute
-        if (!FactoidInventory.getThisPlugin().getInventoryListener().loadDeathInventory(player, lastTime)) {
-                sender.sendMessage("This death save is not found or the player is at the wrong place!");
-                return;
-        }
-
-        sender.sendMessage("Reload inventory done for \"" + player.getName() + "\"!");
-    }
-
-    private void forceSave() {
-        FactoidInventory.getThisPlugin().getInventoryListener().forceSave();
-        sender.sendMessage("Save done!");
-    }
-
-    private void reload() {
-        FactoidInventory.getConf().reLoadConfig();
-        sender.sendMessage("Reload done!");
-
-    }
-
-public boolean getComReturn() {
-
-        return comReturn;
-    }
+	public boolean getComReturn() {
+		return comReturn;
+	}
 }

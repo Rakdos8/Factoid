@@ -99,7 +99,7 @@ public class LandListener extends CommonListener implements Listener {
 	 */
 	public LandListener() {
 		playerConf = Factoid.getThisPlugin().iPlayerConf();
-		playerHeal = new ArrayList<Player>();
+		playerHeal = new ArrayList<>();
 		landHeal = new LandHeal();
 		landHeal.runTaskTimer(Factoid.getThisPlugin(), 20, 20);
 
@@ -156,7 +156,7 @@ public class LandListener extends CommonListener implements Listener {
 				}
 			}
 
-			/*for(String playername : lastLand.getPlayersInLand()){
+			/*for (String playername : lastLand.getPlayersInLand()){
 			 Factoid.getThisPlugin().iScoreboard().sendScoreboard(lastLand.getPlayersInLand(), Factoid.getThisPlugin().getServer().getPlayer(playername), lastLand.getName());
 			 }
 			 Factoid.getThisPlugin().iScoreboard().sendScoreboard(lastLand.getPlayersInLand(), player, lastLand.getName());*/
@@ -203,7 +203,7 @@ public class LandListener extends CommonListener implements Listener {
 			}
 
 
-			/*for(String playername:land.getPlayersInLand()){
+			/*for (String playername:land.getPlayersInLand()){
 			 Factoid.getThisPlugin().iScoreboard().sendScoreboard(land.getPlayersInLand(), Factoid.getThisPlugin().getServer().getPlayer(playername), land.getName());
 			 }
 			 Factoid.getThisPlugin().iScoreboard().sendScoreboard(land.getPlayersInLand(), player, land.getName());*/

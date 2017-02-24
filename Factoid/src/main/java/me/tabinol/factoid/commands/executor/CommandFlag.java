@@ -87,7 +87,7 @@ public class CommandFlag extends CommandExec {
 
 			final ILandFlag landFlag = entity.argList.getFlagFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.player));
 
-			if(!landFlag.getFlagType().isRegistered()) {
+			if (!landFlag.getFlagType().isRegistered()) {
 				throw new FactoidCommandException("Flag not registered", entity.player, "COMMAND.FLAGS.FLAGNULL");
 			}
 
@@ -116,7 +116,7 @@ public class CommandFlag extends CommandExec {
 			importDisplayFlagsFrom(land, false);
 
 			// For default Type
-			if(land.getType() != null) {
+			if (land.getType() != null) {
 				stList.append(ChatColor.DARK_GRAY + Factoid.getThisPlugin().iLanguage().getMessage("GENERAL.FROMDEFAULTTYPE",
 						land.getType().getName())).append(Config.NEWLINE);
 				importDisplayFlagsFrom(((Lands) FactoidAPI.iLands()).getDefaultConf(land.getType()), false);
@@ -124,7 +124,7 @@ public class CommandFlag extends CommandExec {
 
 			// For parent (if exist)
 			ILand parLand = land;
-			while((parLand = parLand.getParent()) != null) {
+			while ((parLand = parLand.getParent()) != null) {
 				stList.append(ChatColor.DARK_GRAY + Factoid.getThisPlugin().iLanguage().getMessage("GENERAL.FROMPARENT",
 						ChatColor.GREEN + parLand.getName() + ChatColor.DARK_GRAY)).append(Config.NEWLINE);
 				importDisplayFlagsFrom(parLand, true);
@@ -149,12 +149,12 @@ public class CommandFlag extends CommandExec {
 			if (stSubList.length() != 0 && !stSubList.toString().endsWith(" ")) {
 				stSubList.append(" ");
 			}
-			if((!onlyInherit || flag.isHeritable()) && !flagInList(flag)) {
+			if ((!onlyInherit || flag.isHeritable()) && !flagInList(flag)) {
 				stSubList.append(flag.getFlagType().getPrint()).append(":").append(flag.getValue().getValuePrint());
 			}
 		}
 
-		if(stSubList.length() > 0) {
+		if (stSubList.length() > 0) {
 			stList.append(stSubList).append(Config.NEWLINE);
 			precDL.add(land);
 		}
@@ -162,9 +162,9 @@ public class CommandFlag extends CommandExec {
 
 	private boolean flagInList(final ILandFlag flag) {
 
-		for(final IDummyLand listLand : precDL) {
-			for(final ILandFlag listFlag : listLand.getFlags()) {
-				if(flag.getFlagType() == listFlag.getFlagType()) {
+		for (final IDummyLand listLand : precDL) {
+			for (final ILandFlag listFlag : listLand.getFlags()) {
+				if (flag.getFlagType() == listFlag.getFlagType()) {
 					return true;
 				}
 			}

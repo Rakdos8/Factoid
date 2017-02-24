@@ -52,7 +52,7 @@ public class Faction implements IFaction {
 
 		this.name = name.toLowerCase();
 		this.uuid = uuid;
-		this.players = new TreeSet<IPlayerContainerPlayer>();
+		this.players = new TreeSet<>();
 		doSave();
 	}
 
@@ -158,7 +158,7 @@ public class Faction implements IFaction {
 	 */
 	private void doSave() {
 
-		if(autoSave) {
+		if (autoSave) {
 			forceSave();
 		}
 	}

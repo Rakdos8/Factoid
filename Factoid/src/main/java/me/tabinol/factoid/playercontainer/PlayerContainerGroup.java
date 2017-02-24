@@ -17,14 +17,14 @@
  */
 package me.tabinol.factoid.playercontainer;
 
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainerGroup;
-
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 
 /**
@@ -68,7 +68,7 @@ public class PlayerContainerGroup extends PlayerContainer
 	@Override
 	public boolean hasAccess(final Player player) {
 
-		if(player != null) {
+		if (player != null) {
 			return Factoid.getThisPlugin().iDependPlugin().getPermission().playerInGroup(player, name);
 		} else {
 			return false;

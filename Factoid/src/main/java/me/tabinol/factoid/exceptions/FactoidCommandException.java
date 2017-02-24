@@ -17,9 +17,10 @@
  */
 package me.tabinol.factoid.exceptions;
 
-import me.tabinol.factoid.Factoid;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+
+import me.tabinol.factoid.Factoid;
 
 
 /**

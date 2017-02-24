@@ -18,6 +18,7 @@
 package me.tabinol.factoidapi.factions;
 
 import java.util.Collection;
+
 import me.tabinol.factoidapi.playercontainer.IPlayerContainerPlayer;
 
 public interface IFactions {

@@ -17,6 +17,9 @@
  */
 package me.tabinol.factoid.commands.executor;
 
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.CommandEntities;
 import me.tabinol.factoid.commands.CommandExec;
@@ -24,9 +27,6 @@ import me.tabinol.factoid.commands.InfoCommand;
 import me.tabinol.factoid.config.players.PlayerConfEntry;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
-
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 
 /**
@@ -85,7 +85,7 @@ public class CommandCancel extends CommandExec {
 			player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CANCEL.ACTION"));
 			Factoid.getThisPlugin().iLog().write(player.getName() + " cancel for action");
 
-			if(!fromAutoCancel) {
+			if (!fromAutoCancel) {
 				return;
 			}
 		}
@@ -96,7 +96,7 @@ public class CommandCancel extends CommandExec {
 			player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.CANCEL"));
 			Factoid.getThisPlugin().iLog().write(player.getName() + ": Select cancel");
 
-			if(!fromAutoCancel) {
+			if (!fromAutoCancel) {
 				return;
 			}
 		}
@@ -107,7 +107,7 @@ public class CommandCancel extends CommandExec {
 			playerConf.setSetFlagUI(null);
 			player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CANCEL.FLAGS"));
 
-			if(!fromAutoCancel) {
+			if (!fromAutoCancel) {
 				return;
 			}
 		}
@@ -121,13 +121,13 @@ public class CommandCancel extends CommandExec {
 			// Cancel selection (it is the last think selected)
 			playerConf.setAutoCancelSelect(false);
 
-			if(!fromAutoCancel) {
+			if (!fromAutoCancel) {
 				return;
 			}
 		}
 
 		// No cancel done
-		if(!fromAutoCancel) {
+		if (!fromAutoCancel) {
 			throw new FactoidCommandException("Nothing to confirm", player, "COMMAND.CANCEL.NOCANCEL");
 		}
 	}

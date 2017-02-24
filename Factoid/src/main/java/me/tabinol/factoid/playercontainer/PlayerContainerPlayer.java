@@ -19,16 +19,16 @@ package me.tabinol.factoid.playercontainer;
 
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainerPlayer;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 
 
 /**
@@ -77,7 +77,7 @@ public class PlayerContainerPlayer extends PlayerContainer
 	@Override
 	public boolean hasAccess(final Player player) {
 
-		if(player != null) {
+		if (player != null) {
 			return minecraftUUID.equals(player.getUniqueId());
 		} else {
 			return false;
@@ -101,7 +101,7 @@ public class PlayerContainerPlayer extends PlayerContainer
 
 		sb.append(ChatColor.DARK_RED).append("P:");
 
-		if(playerName != null) {
+		if (playerName != null) {
 			sb.append(ChatColor.WHITE).append(playerName);
 		} else {
 			// Player never connected on the server, show UUID
@@ -118,19 +118,19 @@ public class PlayerContainerPlayer extends PlayerContainer
 
 		// Pass 1 get in Online players
 		final Player player = Bukkit.getPlayer(minecraftUUID);
-		if(player != null) {
+		if (player != null) {
 			return player.getName();
 		}
 
 		// Pass 2 get from Factoid cache
 		playerName = Factoid.getThisPlugin().iPlayersCache().getNameFromUUID(minecraftUUID);
-		if(playerName != null) {
+		if (playerName != null) {
 			return playerName;
 		}
 
 		// Pass 3 get from offline players
 		final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(minecraftUUID);
-		if(offlinePlayer != null) {
+		if (offlinePlayer != null) {
 			return offlinePlayer.getName();
 		}
 

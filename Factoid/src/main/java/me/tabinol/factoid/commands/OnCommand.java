@@ -40,14 +40,14 @@ import me.tabinol.factoid.exceptions.FactoidCommandException;
  */
 public class OnCommand extends Thread implements CommandExecutor {
 
-	private final Map<MainCommand, Map<String, Class<?>>> commands = new EnumMap<MainCommand, Map<String, Class<?>>>(MainCommand.class);
+	private final Map<MainCommand, Map<String, Class<?>>> commands = new EnumMap<>(MainCommand.class);
 
 	/**
 	 * Instantiates a new on command.
 	 */
 	public OnCommand() {
 		// Create Command list
-		for(final MainCommand mainCommandList : MainCommand.values()) {
+		for (final MainCommand mainCommandList : MainCommand.values()) {
 			commands.put(mainCommandList, new TreeMap<String, Class<?>>());
 		}
 
@@ -55,13 +55,13 @@ public class OnCommand extends Thread implements CommandExecutor {
 		final Reflections reflections = new Reflections("me.tabinol.factoid.commands.executor");
 		final Set<Class<?>> classCommands = reflections.getTypesAnnotatedWith(InfoCommand.class);
 
-		for(final Class<?> presentClass : classCommands) {
+		for (final Class<?> presentClass : classCommands) {
 			// Store command information
 			final InfoCommand infoCommand = presentClass.getAnnotation(InfoCommand.class);
-			for(final MainCommand command : infoCommand.mainCommand()) {
+			for (final MainCommand command : infoCommand.mainCommand()) {
 				final Map<String, Class<?>> subCommand = commands.get(command);
 				subCommand.put(infoCommand.name().toLowerCase(), presentClass);
-				for(final String alias : infoCommand.aliases()) {
+				for (final String alias : infoCommand.aliases()) {
 					subCommand.put(alias.toLowerCase(), presentClass);
 				}
 			}
@@ -102,12 +102,12 @@ public class OnCommand extends Thread implements CommandExecutor {
 			final Class<?> cv = commands.get(mainCommand).get(command.toLowerCase());
 
 			// The command does not exist
-			if(cv == null) {
+			if (cv == null) {
 				throw new FactoidCommandException("Command not existing", sender, "COMMAND.NOTEXIST", mainCommand.name());
 			}
 
 			// Remove page from memory if needed
-			if(cv != commands.get(MainCommand.FACTOID).get("page")) {
+			if (cv != commands.get(MainCommand.FACTOID).get("page")) {
 				Factoid.getThisPlugin().iPlayerConf().get(sender).setChatPage(null);
 			}
 
@@ -144,7 +144,7 @@ public class OnCommand extends Thread implements CommandExecutor {
 	public InfoCommand getInfoCommand(final MainCommand mainCommand, final String command) {
 		final Class<?> infoClass = commands.get(mainCommand).get(command.toLowerCase());
 
-		if(infoClass == null) {
+		if (infoClass == null) {
 			return null;
 		}
 

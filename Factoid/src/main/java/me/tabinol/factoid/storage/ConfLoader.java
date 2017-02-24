@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.UUID;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.FileLoadException;
 
@@ -76,7 +77,7 @@ public class ConfLoader {
 		}
 		br = new BufferedReader(fr);
 		readVersion();
-		if(version >= 2) {
+		if (version >= 2) {
 			readUUID();
 		} else {
 			uuid = null;

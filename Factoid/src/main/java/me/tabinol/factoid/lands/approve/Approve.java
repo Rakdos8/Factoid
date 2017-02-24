@@ -23,10 +23,10 @@ import java.util.logging.Logger;
 
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.FactoidLandException;
+import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoidapi.lands.areas.ICuboidArea;
 import me.tabinol.factoidapi.lands.types.IType;
-import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 
 
@@ -185,25 +185,25 @@ public class Approve {
 	 */
 	public void createAction() {
 
-		if(action == LandAction.AREA_ADD) {
+		if (action == LandAction.AREA_ADD) {
 			Factoid.getThisPlugin().iLands().getLand(landName).addArea(newArea, price);
-		} else if(action == LandAction.AREA_REMOVE) {
+		} else if (action == LandAction.AREA_REMOVE) {
 			Factoid.getThisPlugin().iLands().getLand(landName).removeArea(removedAreaId);
-		} else if(action == LandAction.AREA_MODIFY) {
+		} else if (action == LandAction.AREA_MODIFY) {
 			Factoid.getThisPlugin().iLands().getLand(landName).replaceArea(removedAreaId, newArea, price);
-		} else if(action == LandAction.LAND_ADD) {
+		} else if (action == LandAction.LAND_ADD) {
 			try {
 				Factoid.getThisPlugin().iLands().createLand(landName, owner, newArea, parent, price, type);
 			} catch (final FactoidLandException ex) {
 				Logger.getLogger(Approve.class.getName()).log(Level.SEVERE, "On land create", ex);
 			}
-		} else if(action == LandAction.LAND_REMOVE) {
+		} else if (action == LandAction.LAND_REMOVE) {
 			try {
 				Factoid.getThisPlugin().iLands().removeLand(landName);
 			} catch (final FactoidLandException ex) {
 				Logger.getLogger(Approve.class.getName()).log(Level.SEVERE, "On land remove", ex);
 			}
-		} else if(action == LandAction.LAND_PARENT) {
+		} else if (action == LandAction.LAND_PARENT) {
 			Factoid.getThisPlugin().iLands().getLand(landName).setParent(parent);
 		}
 	}

@@ -20,15 +20,15 @@ package me.tabinol.factoidapi.lands;
 import java.util.Collection;
 import java.util.Set;
 
+import org.bukkit.World;
+import org.bukkit.entity.Player;
+
 import me.tabinol.factoidapi.parameters.IFlagType;
 import me.tabinol.factoidapi.parameters.IFlagValue;
 import me.tabinol.factoidapi.parameters.ILandFlag;
 import me.tabinol.factoidapi.parameters.IPermission;
 import me.tabinol.factoidapi.parameters.IPermissionType;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
-
-import org.bukkit.World;
-import org.bukkit.entity.Player;
 
 /**
  * The Interface IDummyLand. Represent a word in a non protected land.

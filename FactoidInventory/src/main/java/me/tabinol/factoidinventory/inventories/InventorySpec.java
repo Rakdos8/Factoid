@@ -21,53 +21,53 @@ import java.util.List;
 
 public class InventorySpec {
 
-    private final String inventoryName;
-    private final boolean isCreativeChange;
-    private final boolean isSaveInventory;
-    private final boolean isAllowDrop;
-    private final List<String> disabledCommands;
+	private final String inventoryName;
+	private final boolean isCreativeChange;
+	private final boolean isSaveInventory;
+	private final boolean isAllowDrop;
+	private final List<String> disabledCommands;
 
-    public InventorySpec(final String inventoryName, final boolean isCreativeChange,
-            final boolean isSaveInventory, final boolean isAllowDrop, final List<String> disabledCommands) {
+	public InventorySpec(final String inventoryName, final boolean isCreativeChange,
+			final boolean isSaveInventory, final boolean isAllowDrop, final List<String> disabledCommands) {
 
-        this.inventoryName = inventoryName;
-        this.isCreativeChange = isCreativeChange;
-        this.isSaveInventory = isSaveInventory;
-        this.isAllowDrop = isAllowDrop;
-        this.disabledCommands = disabledCommands;
-    }
+		this.inventoryName = inventoryName;
+		this.isCreativeChange = isCreativeChange;
+		this.isSaveInventory = isSaveInventory;
+		this.isAllowDrop = isAllowDrop;
+		this.disabledCommands = disabledCommands;
+	}
 
-    public String getInventoryName() {
+	public String getInventoryName() {
 
-        return inventoryName;
-    }
+		return inventoryName;
+	}
 
-    public boolean isCreativeChange() {
+	public boolean isCreativeChange() {
 
-        return isCreativeChange;
-    }
+		return isCreativeChange;
+	}
 
-    public boolean isSaveInventory() {
+	public boolean isSaveInventory() {
 
-        return isSaveInventory;
-    }
+		return isSaveInventory;
+	}
 
-    public boolean isAllowDrop() {
+	public boolean isAllowDrop() {
 
-        return isAllowDrop;
-    }
+		return isAllowDrop;
+	}
 
-    public boolean isDisabledCommand(final String command) {
+	public boolean isDisabledCommand(final String command) {
 
-        // We have to check for no cas sensitive
-        if (disabledCommands != null) {
-            for (final String cItem : disabledCommands) {
-                if (cItem.equalsIgnoreCase(command)) {
-                    return true;
-                }
-            }
-        }
+		// We have to check for no cas sensitive
+		if (disabledCommands != null) {
+			for (final String cItem : disabledCommands) {
+				if (cItem.equalsIgnoreCase(command)) {
+					return true;
+				}
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 }

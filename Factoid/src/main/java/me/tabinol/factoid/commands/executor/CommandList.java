@@ -19,18 +19,18 @@ package me.tabinol.factoid.commands.executor;
 
 import java.util.Collection;
 
+import org.bukkit.ChatColor;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.commands.CommandEntities;
 import me.tabinol.factoid.commands.CommandThreadExec;
 import me.tabinol.factoid.commands.InfoCommand;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
+import me.tabinol.factoid.playerscache.PlayerCacheEntry;
 import me.tabinol.factoidapi.FactoidAPI;
 import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoidapi.lands.types.IType;
-import me.tabinol.factoid.playerscache.PlayerCacheEntry;
-
-import org.bukkit.ChatColor;
 
 
 /**
@@ -79,11 +79,11 @@ public class CommandList extends CommandThreadExec {
 				// Get the category name
 				final String typeName = entity.argList.getNext();
 
-				if(typeName != null) {
+				if (typeName != null) {
 					type = FactoidAPI.iTypes().getType(typeName);
 				}
 
-				if(type == null) {
+				if (type == null) {
 					throw new FactoidCommandException("CommandList", entity.sender, "COMMAND.LAND.TYPENOTEXIST");
 				}
 

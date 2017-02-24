@@ -18,8 +18,8 @@
 package me.tabinol.factoid.parameters;
 
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoidapi.utilities.StringChanges;
 import me.tabinol.factoidapi.parameters.ILandFlag;
+import me.tabinol.factoidapi.utilities.StringChanges;
 
 
 /**
@@ -46,14 +46,14 @@ public class LandFlag implements ILandFlag {
 	public LandFlag(final FlagType flagType, final Object value, final boolean heritable) {
 
 		this.flagType = flagType;
-		if(value instanceof FlagValue) {
+		if (value instanceof FlagValue) {
 			this.value = (FlagValue) value;
 		} else {
 			this.value = new FlagValue(value);
 		}
 		this.heritable = heritable;
 
-		if(!flagType.isRegistered()) {
+		if (!flagType.isRegistered()) {
 			Factoid.getThisPlugin().iParameters().unRegisteredFlags.add(this);
 		}
 	}
@@ -125,25 +125,25 @@ public class LandFlag implements ILandFlag {
 	@Override
 	public String toString() {
 
-		if(!flagType.isRegistered()) {
+		if (!flagType.isRegistered()) {
 			return flagType.toString() + ":" + value.getValue() + ":" + heritable;
 		}
 
-		if(value.getValue() instanceof Boolean) {
+		if (value.getValue() instanceof Boolean) {
 			return flagType.toString() + ":" + value.getValueBoolean() + ":" + heritable;
 		}
 
-		if(value.getValue() instanceof Double) {
+		if (value.getValue() instanceof Double) {
 			return flagType.toString() + ":" + value.getValueDouble() + ":" + heritable;
 		}
 
-		if(value.getValue() instanceof String) {
+		if (value.getValue() instanceof String) {
 			return flagType.toString() + ":" + StringChanges.toQuote(value.getValueString()) + ":" + heritable;
 		}
 
-		if(value.getValue() instanceof String[]) {
+		if (value.getValue() instanceof String[]) {
 			final StringBuilder sb = new StringBuilder();
-			for(final String st : value.getValueStringList()) {
+			for (final String st : value.getValueStringList()) {
 				sb.append(StringChanges.toQuote(st)).append(";");
 			}
 			return flagType.toString() + ":" + sb.toString() + ":" + heritable;

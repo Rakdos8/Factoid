@@ -17,9 +17,9 @@
  */
 package me.tabinol.factoid.parameters;
 
-import me.tabinol.factoidapi.parameters.IPermission;
-
 import org.bukkit.ChatColor;
+
+import me.tabinol.factoidapi.parameters.IPermission;
 
 
 /**

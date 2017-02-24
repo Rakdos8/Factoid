@@ -17,11 +17,11 @@
  */
 package me.tabinol.factoid.event;
 
-import me.tabinol.factoid.lands.DummyLand;
-import me.tabinol.factoid.lands.Land;
-
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+
+import me.tabinol.factoid.lands.DummyLand;
+import me.tabinol.factoid.lands.Land;
 
 
 /**
@@ -49,7 +49,7 @@ public class LandEvent extends Event {
 
 		this.dummyLand = dummyLand;
 
-		if(dummyLand instanceof Land) {
+		if (dummyLand instanceof Land) {
 			land = (Land) dummyLand;
 		} else {
 			land = null;

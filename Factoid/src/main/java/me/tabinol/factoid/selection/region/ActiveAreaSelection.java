@@ -17,12 +17,12 @@
  */
 package me.tabinol.factoid.selection.region;
 
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoidapi.lands.areas.ICuboidArea;
-
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 
 /**

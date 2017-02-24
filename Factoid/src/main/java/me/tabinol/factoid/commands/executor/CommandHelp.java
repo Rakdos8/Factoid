@@ -17,6 +17,8 @@
  */
 package me.tabinol.factoid.commands.executor;
 
+import org.bukkit.command.CommandSender;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.commands.CommandEntities;
@@ -25,8 +27,6 @@ import me.tabinol.factoid.commands.InfoCommand;
 import me.tabinol.factoid.commands.MainCommand;
 import me.tabinol.factoid.commands.OnCommand;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-
-import org.bukkit.command.CommandSender;
 
 
 /**
@@ -95,7 +95,7 @@ public class CommandHelp extends CommandExec {
 				// Will throw an exception if the command name is invalid
 				try {
 					final InfoCommand infoCommand = onCommand.getInfoCommand(mainCommand, arg);
-					if(infoCommand != null) {
+					if (infoCommand != null) {
 						commandName = infoCommand.name().toUpperCase();
 					} else {
 						// Invalid command, just arg and will run Exception with showHelp()
@@ -120,7 +120,7 @@ public class CommandHelp extends CommandExec {
 		final String help = Factoid.getThisPlugin().iLanguage().getHelp(mainCommand.name(), commandName);
 
 		// If there is no help for this command
-		if(help == null) {
+		if (help == null) {
 			throw new FactoidCommandException("Command with no help", sender, "HELP.NOHELP");
 		}
 

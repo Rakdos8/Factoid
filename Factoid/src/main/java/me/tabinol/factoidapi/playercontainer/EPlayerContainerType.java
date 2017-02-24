@@ -124,8 +124,8 @@ public enum EPlayerContainerType {
 	 */
 	public static EPlayerContainerType getFromString(final String pcName) {
 
-		for(final EPlayerContainerType pct : values()) {
-			if(pct.toString().equalsIgnoreCase(pcName)) {
+		for (final EPlayerContainerType pct : values()) {
+			if (pct.toString().equalsIgnoreCase(pcName)) {
 				return pct;
 			}
 		}

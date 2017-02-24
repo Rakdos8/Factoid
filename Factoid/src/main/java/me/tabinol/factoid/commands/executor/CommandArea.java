@@ -19,20 +19,20 @@ package me.tabinol.factoid.commands.executor;
 
 import java.util.Map;
 
+import org.bukkit.ChatColor;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.commands.CommandEntities;
 import me.tabinol.factoid.commands.CommandExec;
 import me.tabinol.factoid.commands.ConfirmEntry;
-import me.tabinol.factoid.commands.InfoCommand;
 import me.tabinol.factoid.commands.ConfirmEntry.ConfirmType;
+import me.tabinol.factoid.commands.InfoCommand;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
-import me.tabinol.factoidapi.lands.areas.ICuboidArea;
-import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
 import me.tabinol.factoid.lands.Land;
-
-import org.bukkit.ChatColor;
+import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
+import me.tabinol.factoidapi.lands.areas.ICuboidArea;
 
 
 /**
@@ -98,7 +98,7 @@ public class CommandArea extends CommandExec {
 			}
 
 			// set area to the only one if there is only one area
-			if(land.getAreas().size() == 1 && areaNbStr == null && areaNb == 0) {
+			if (land.getAreas().size() == 1 && areaNbStr == null && areaNb == 0) {
 				areaNb = land.getAreas().iterator().next().getKey();
 			}
 

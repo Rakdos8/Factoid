@@ -210,14 +210,14 @@ public class Lang {
 		final ConfigurationSection helpSec = langconfig.getConfigurationSection("HELP." + mainCommand + "." + commandName);
 
 		// No help for this command?
-		if(helpSec == null) {
+		if (helpSec == null) {
 			return null;
 		}
 
 		final Map<String, Object> valueList = helpSec.getValues(false);
 		final StringBuilder sb = new StringBuilder();
 
-		for(int t = 1; t <= valueList.size(); t ++) {
+		for (int t = 1; t <= valueList.size(); t ++) {
 			sb.append((String) valueList.get(t + "")).append(Config.NEWLINE);
 		}
 

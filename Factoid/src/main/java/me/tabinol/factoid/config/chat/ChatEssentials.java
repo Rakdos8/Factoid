@@ -17,11 +17,11 @@
  */
 package me.tabinol.factoid.config.chat;
 
-import me.tabinol.factoid.Factoid;
-
 import org.bukkit.entity.Player;
 
 import com.earth2me.essentials.Essentials;
+
+import me.tabinol.factoid.Factoid;
 
 /**
  * The Class ChatEssentials.

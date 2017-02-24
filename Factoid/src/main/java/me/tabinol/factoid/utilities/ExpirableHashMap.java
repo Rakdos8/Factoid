@@ -18,9 +18,10 @@
 package me.tabinol.factoid.utilities;
 
 import java.util.HashMap;
-import me.tabinol.factoid.Factoid;
 
 import org.bukkit.scheduler.BukkitRunnable;
+
+import me.tabinol.factoid.Factoid;
 
 // TODO: Auto-generated Javadoc
 /**

@@ -43,7 +43,7 @@ public class StringChanges {
 			return null;
 		}
 
-		final ArrayList<String> listLower = new ArrayList<String>();
+		final ArrayList<String> listLower = new ArrayList<>();
 
 		for (final String str : list) {
 			listLower.add(str.toLowerCase());
@@ -96,7 +96,7 @@ public class StringChanges {
 	public static String[] splitKeepQuote(final String str, final String split) {
 
 		final String[] strs = str.split(split);
-		final ArrayList<String> strl = new ArrayList<String>();
+		final ArrayList<String> strl = new ArrayList<>();
 		StringBuffer sb = null;
 
 		for (final String strv : strs) {
@@ -109,7 +109,7 @@ public class StringChanges {
 			} else {
 				sb.append(split).append(strv);
 			}
-			if(sb != null && isEndQuote(strv)) {
+			if (sb != null && isEndQuote(strv)) {
 				strl.add(sb.toString());
 				sb = null;
 			}
@@ -157,7 +157,7 @@ public class StringChanges {
 
 		final String[] tlist = string.split(split);
 		final String[] result = new String[tlist.length + 1];
-		for(int t = 0; t < tlist.length; t ++) {
+		for (int t = 0; t < tlist.length; t ++) {
 			result[t] = tlist[t];
 		}
 		result[tlist.length] = "";
@@ -293,13 +293,13 @@ public class StringChanges {
 		final String[] strs = locStr.split("\\;");
 
 		// Wrong parameter
-		if(strs.length != 6) {
+		if (strs.length != 6) {
 			return null;
 		}
 
 		final World world = Bukkit.getWorld(strs[0]);
 
-		if(world == null) {
+		if (world == null) {
 			return null;
 		}
 

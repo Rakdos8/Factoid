@@ -29,13 +29,13 @@ public class Types implements ITypes {
 
 	public Types() {
 
-		types = new TreeMap<String, IType>();
+		types = new TreeMap<>();
 	}
 
 	@Override
 	public IType addOrGetType(final String arg0) {
 
-		if(arg0 == null || arg0.equals("")) {
+		if (arg0 == null || arg0.equals("")) {
 			return null;
 		}
 
@@ -43,7 +43,7 @@ public class Types implements ITypes {
 
 		IType type = types.get(typeName);
 
-		if(type != null) {
+		if (type != null) {
 			return type;
 		}
 

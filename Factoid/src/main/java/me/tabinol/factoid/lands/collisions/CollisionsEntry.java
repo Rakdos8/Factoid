@@ -18,8 +18,8 @@
 package me.tabinol.factoid.lands.collisions;
 
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoid.lands.collisions.Collisions.LandError;
+import me.tabinol.factoidapi.lands.ILand;
 
 
 /**

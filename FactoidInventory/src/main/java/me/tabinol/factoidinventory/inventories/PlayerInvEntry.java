@@ -19,32 +19,32 @@ package me.tabinol.factoidinventory.inventories;
 
 public class PlayerInvEntry {
 
-    private InventorySpec actualInv;
-    private boolean isCreativeInv;
+	private InventorySpec actualInv;
+	private boolean isCreativeInv;
 
-    public PlayerInvEntry(final InventorySpec actualInv, final boolean isCreativeInv) {
+	public PlayerInvEntry(final InventorySpec actualInv, final boolean isCreativeInv) {
 
-        this.actualInv = actualInv;
-        this.isCreativeInv = isCreativeInv;
-    }
+		this.actualInv = actualInv;
+		this.isCreativeInv = isCreativeInv;
+	}
 
-    public InventorySpec getActualInv() {
+	public InventorySpec getActualInv() {
 
-        return actualInv;
-    }
+		return actualInv;
+	}
 
-    public void setActualInv(final InventorySpec actualInv) {
+	public void setActualInv(final InventorySpec actualInv) {
 
-        this.actualInv = actualInv;
-    }
+		this.actualInv = actualInv;
+	}
 
-    public boolean isCreativeInv() {
+	public boolean isCreativeInv() {
 
-        return isCreativeInv;
-    }
+		return isCreativeInv;
+	}
 
-    public void setCreativeInv(final boolean isCreativeInv) {
+	public void setCreativeInv(final boolean isCreativeInv) {
 
-        this.isCreativeInv = isCreativeInv;
-    }
+		this.isCreativeInv = isCreativeInv;
+	}
 }

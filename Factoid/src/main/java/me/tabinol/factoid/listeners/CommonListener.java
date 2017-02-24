@@ -103,7 +103,7 @@ public class CommonListener {
 	 * @return true if the sign is attached
 	 */
 	private boolean hasEcoSign(final Block block, final Location ecoSignLoc) {
-		if((block.getRelative(BlockFace.UP).getLocation().equals(ecoSignLoc) && block.getRelative(BlockFace.UP).getType() == Material.SIGN_POST)
+		if ((block.getRelative(BlockFace.UP).getLocation().equals(ecoSignLoc) && block.getRelative(BlockFace.UP).getType() == Material.SIGN_POST)
 				|| isEcoSignAttached(block, BlockFace.NORTH, ecoSignLoc)
 				|| isEcoSignAttached(block, BlockFace.SOUTH, ecoSignLoc)
 				|| isEcoSignAttached(block, BlockFace.EAST, ecoSignLoc)
@@ -117,7 +117,7 @@ public class CommonListener {
 	private boolean isEcoSignAttached(final Block block, final BlockFace face, final Location ecoSignLoc) {
 		final Block checkBlock = block.getRelative(face);
 
-		if(checkBlock.getLocation().equals(ecoSignLoc) && checkBlock.getType() == Material.WALL_SIGN
+		if (checkBlock.getLocation().equals(ecoSignLoc) && checkBlock.getType() == Material.WALL_SIGN
 				&& ((org.bukkit.material.Sign) checkBlock.getState().getData()).getFacing() == face) {
 			return true;
 		}

@@ -17,22 +17,23 @@
  */
 package me.tabinol.factoid.commands.executor;
 
+import static me.tabinol.factoid.config.Config.NEWLINE;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ArgList;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.commands.CommandEntities;
 import me.tabinol.factoid.commands.CommandExec;
 import me.tabinol.factoid.commands.InfoCommand;
-import static me.tabinol.factoid.config.Config.NEWLINE;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
+import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoidapi.lands.areas.ICuboidArea;
-import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoidapi.parameters.IPermissionType;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 
 /**
@@ -114,21 +115,21 @@ public class CommandInfo extends CommandExec {
 					ChatColor.GREEN + land.getName() + ChatColor.YELLOW, ChatColor.GREEN + land.getUUID().toString() + ChatColor.YELLOW));
 			stList.append(NEWLINE);
 			stList.append(ChatColor.YELLOW + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.INFO.LAND.PRIORITY", land.getPriority() + ""));
-			if(land.isForSale()) {
+			if (land.isForSale()) {
 				stList.append(ChatColor.RED + " " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.INFO.LAND.FORSALE"));
 			}
-			if(land.isForRent() && !land.isRented()) {
+			if (land.isForRent() && !land.isRented()) {
 				stList.append(ChatColor.RED + " " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.INFO.LAND.FORRENT"));
 			}
 			stList.append(NEWLINE);
 			stList.append(ChatColor.YELLOW + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.INFO.LAND.TYPE",
 					land.getType() != null ? land.getType().getName() : "-null-"));
-			if(land.getParent() != null) {
+			if (land.getParent() != null) {
 			  	stList.append(ChatColor.YELLOW + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.INFO.LAND.PARENT", land.getParent().getName()));
 			}
 			stList.append(NEWLINE);
 			stList.append(ChatColor.YELLOW + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.INFO.LAND.OWNER", land.getOwner().getPrint()));
-			if(land.isRented()) {
+			if (land.isRented()) {
 				stList.append(ChatColor.YELLOW + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.INFO.LAND.TENANT", land.getTenant().getPrint()));
 			}
 			stList.append(NEWLINE);

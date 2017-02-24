@@ -26,20 +26,20 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import me.tabinol.factoid.Factoid;
-import me.tabinol.factoidapi.FactoidAPI;
-import me.tabinol.factoidapi.lands.ILand;
-import me.tabinol.factoidapi.lands.types.IType;
-import me.tabinol.factoid.lands.areas.CuboidArea;
-import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
-import me.tabinol.factoid.playercontainer.PlayerContainer;
-import me.tabinol.factoidapi.utilities.StringChanges;
-import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
-
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import me.tabinol.factoid.Factoid;
+import me.tabinol.factoid.lands.areas.CuboidArea;
+import me.tabinol.factoid.lands.collisions.Collisions.LandAction;
+import me.tabinol.factoid.playercontainer.PlayerContainer;
+import me.tabinol.factoidapi.FactoidAPI;
+import me.tabinol.factoidapi.lands.ILand;
+import me.tabinol.factoidapi.lands.types.IType;
+import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
+import me.tabinol.factoidapi.utilities.StringChanges;
 
 
 /**
@@ -63,7 +63,7 @@ public class ApproveList {
 
 		approveFile = new File(Factoid.getThisPlugin().getDataFolder() + "/approvelist.yml");
 		approveConfig = new YamlConfiguration();
-		landNames = new TreeSet<String>();
+		landNames = new TreeSet<>();
 		loadFile();
 	}
 
@@ -76,7 +76,7 @@ public class ApproveList {
 
 		landNames.add(approve.getLandName());
 		final ConfigurationSection section = approveConfig.createSection(approve.getLandName());
-		if(approve.getType() != null) {
+		if (approve.getType() != null) {
 			section.set("Type", approve.getType().getName());
 		}
 		section.set("Action", approve.getAction().toString());
@@ -91,7 +91,7 @@ public class ApproveList {
 		section.set("Price", approve.getPrice());
 		section.set("DateTime", approve.getDateTime().getTimeInMillis());
 		saveFile();
-		Factoid.getThisPlugin().iApproveNotif().notifyForApprove(approve.getLandName(), approve.getOwner().getPrint());
+		Factoid.getThisPlugin().iApproveNotif ().notifyForApprove(approve.getLandName(), approve.getOwner().getPrint());
 	}
 
 	/**
@@ -101,15 +101,15 @@ public class ApproveList {
 	 */
 	public TreeMap<String,Approve> getApproveList() {
 
-		final TreeMap<String,Approve> approves = new TreeMap<String,Approve>();
-		final TreeMap<String,Approve> approvesToRemove = new TreeMap<String,Approve>();
+		final TreeMap<String,Approve> approves = new TreeMap<>();
+		final TreeMap<String,Approve> approvesToRemove = new TreeMap<>();
 
 		// Check if land names are ok
-		for(final String landName : landNames) {
+		for (final String landName : landNames) {
 
 			final Approve app = getApprove(landName);
 
-			if(app != null) {
+			if (app != null) {
 
 				// Approve ok, put in list
 				approves.put(landName, app);
@@ -121,7 +121,7 @@ public class ApproveList {
 		}
 
 		// Remove wrong approves
-		for(final Map.Entry<String,Approve> appEntry : approvesToRemove.entrySet()) {
+		for (final Map.Entry<String,Approve> appEntry : approvesToRemove.entrySet()) {
 
 			removeApprove(appEntry.getKey());
 		}
@@ -158,7 +158,7 @@ public class ApproveList {
 
 		final String typeName = section.getString("Type");
 		IType type = null;
-		if(typeName != null) {
+		if (typeName != null) {
 			type = FactoidAPI.iTypes().addOrGetType(typeName);
 		}
 
@@ -177,14 +177,14 @@ public class ApproveList {
 			}
 		}
 
-		if(section.contains("NewArea")) {
+		if (section.contains("NewArea")) {
 			newArea = CuboidArea.getFromString(section.getString("NewArea"));
 		}
 
 		final LandAction action = LandAction.valueOf(section.getString("Action"));
 
 		// If the land was deleted
-		if(action != LandAction.LAND_ADD && Factoid.getThisPlugin().iLands().getLand(landName) == null) {
+		if (action != LandAction.LAND_ADD && Factoid.getThisPlugin().iLands().getLand(landName) == null) {
 			return null;
 		}
 

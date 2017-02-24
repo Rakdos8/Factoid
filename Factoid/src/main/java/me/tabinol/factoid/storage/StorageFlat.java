@@ -279,7 +279,7 @@ public class StorageFlat extends Storage implements StorageInt {
 			version = cf.getVersion();
 			uuid = cf.getUUID();
 			landName = cf.getName();
-			if(version >= 5) {
+			if (version >= 5) {
 				cf.readParam();
 				type = cf.getValueString();
 			}
@@ -359,10 +359,10 @@ public class StorageFlat extends Storage implements StorageInt {
 			}
 
 			// Economy
-			if(version >= 4) {
+			if (version >= 4) {
 				cf.readParam();
 				forSale = Boolean.parseBoolean(cf.getValueString());
-				if(forSale) {
+				if (forSale) {
 					cf.readParam();
 					forSaleSignLoc = StringChanges.stringToLocation(cf.getValueString());
 					cf.readParam();
@@ -370,7 +370,7 @@ public class StorageFlat extends Storage implements StorageInt {
 				}
 				cf.readParam();
 				forRent = Boolean.parseBoolean(cf.getValueString());
-				if(forRent) {
+				if (forRent) {
 					cf.readParam();
 					forRentSignLoc = StringChanges.stringToLocation(cf.getValueString());
 					cf.readParam();
@@ -381,7 +381,7 @@ public class StorageFlat extends Storage implements StorageInt {
 					rentAutoRenew = Boolean.parseBoolean(cf.getValueString());
 					cf.readParam();
 					rented = Boolean.parseBoolean(cf.getValueString());
-					if(rented) {
+					if (rented) {
 						cf.readParam();
 						tenant = (PlayerContainerPlayer) PlayerContainer.getFromString(cf.getValueString());
 						cf.readParam();
@@ -456,12 +456,12 @@ public class StorageFlat extends Storage implements StorageInt {
 
 		// Economy add
 		if (version >= 4) {
-			if(forSale) {
+			if (forSale) {
 				land.setForSale(true, salePrice, forSaleSignLoc);
 			}
-			if(forRent) {
+			if (forRent) {
 				land.setForRent(rentPrice, rentRenew, rentAutoRenew, forRentSignLoc);
-				if(rented) {
+				if (rented) {
 					land.setRented(tenant);
 					land.setLastPaymentTime(lastPayment);
 				}
@@ -552,18 +552,18 @@ public class StorageFlat extends Storage implements StorageInt {
 
 			// Economy
 			cb.writeParam("ForSale", land.isForSale() + "");
-			if(land.isForSale()) {
+			if (land.isForSale()) {
 				cb.writeParam("ForSaleSignLoc", StringChanges.locationToString(land.getSaleSignLoc()));
 				cb.writeParam("SalePrice", land.getSalePrice());
 			}
-			if(land.isForRent()) {
+			if (land.isForRent()) {
 				cb.writeParam("ForRent", land.isForRent() + "");
 				cb.writeParam("ForRentSignLoc", StringChanges.locationToString(land.getRentSignLoc()));
 				cb.writeParam("RentPrice", land.getRentPrice());
 				cb.writeParam("ForRenew", land.getRentRenew());
 				cb.writeParam("ForAutoRenew", land.getRentAutoRenew() + "");
 				cb.writeParam("Rented", land.isRented() + "");
-				if(land.isRented()) {
+				if (land.isRented()) {
 					cb.writeParam("Tenant", land.getTenant().toString());
 					cb.writeParam("LastPayment", land.getLastPaymentTime().toString());
 				}

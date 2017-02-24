@@ -63,7 +63,7 @@ public class PvpListener extends CommonListener implements Listener {
 	 */
 	public PvpListener() {
 		playerConf = Factoid.getThisPlugin().iPlayerConf();
-		playerFireLocation = new ExpirableHashMap<Location, IPlayerContainerPlayer>(FIRE_EXPIRE);
+		playerFireLocation = new ExpirableHashMap<>(FIRE_EXPIRE);
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class PvpListener extends CommonListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onBlockPlace(final BlockPlaceEvent event) {
 
-		if(event.getBlockPlaced().getType() == Material.FIRE) {
+		if (event.getBlockPlaced().getType() == Material.FIRE) {
 
 			final Player player = event.getPlayer();
 			checkForPvpFire(event, player);
@@ -135,7 +135,7 @@ public class PvpListener extends CommonListener implements Listener {
 		final Block blockSource = event.getSource();
 		final IPlayerContainerPlayer pc = playerFireLocation.get(blockSource.getLocation());
 
-		if(pc != null) {
+		if (pc != null) {
 
 			// Add fire for pvp listen
 			playerFireLocation.put(event.getBlock().getLocation(), pc);
@@ -151,24 +151,24 @@ public class PvpListener extends CommonListener implements Listener {
 	public void onEntityDamage(final EntityDamageEvent event) {
 
 		// Check for fire cancel
-		if(event.getEntity() instanceof Player &&
+		if (event.getEntity() instanceof Player &&
 				(event.getCause() == DamageCause.FIRE
 				|| event.getCause() == DamageCause.FIRE_TICK)) {
 
 			final Player player = (Player) event.getEntity();
 			final IPlayerConfEntry entry = playerConf.get(player);
 
-			if(entry != null) {
+			if (entry != null) {
 				final Location loc = player.getLocation();
 				final IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(loc);
 
 				// Check for fire near the player
-				for(final Map.Entry<Location, IPlayerContainerPlayer> fireEntry : playerFireLocation.entrySet()) {
+				for (final Map.Entry<Location, IPlayerContainerPlayer> fireEntry : playerFireLocation.entrySet()) {
 
-					if(loc.getWorld() == fireEntry.getKey().getWorld()
+					if (loc.getWorld() == fireEntry.getKey().getWorld()
 							&& loc.distanceSquared(fireEntry.getKey()) < 5) {
 						final Block block = loc.getBlock();
-						if((block.getType() == Material.FIRE || block.getType() == Material.AIR)
+						if ((block.getType() == Material.FIRE || block.getType() == Material.AIR)
 								&& !isPvpValid(land, fireEntry.getValue(), entry.getPlayerContainer())) {
 
 							// remove fire

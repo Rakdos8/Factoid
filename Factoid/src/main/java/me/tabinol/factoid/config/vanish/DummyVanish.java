@@ -17,10 +17,10 @@
  */
 package me.tabinol.factoid.config.vanish;
 
+import org.bukkit.entity.Player;
+
 import me.tabinol.factoid.BKVersion;
 import me.tabinol.factoid.Factoid;
-
-import org.bukkit.entity.Player;
 
 
 /**

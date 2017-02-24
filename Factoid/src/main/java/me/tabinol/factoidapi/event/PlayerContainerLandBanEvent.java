@@ -17,10 +17,10 @@
  */
 package me.tabinol.factoidapi.event;
 
+import org.bukkit.event.HandlerList;
+
 import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
-
-import org.bukkit.event.HandlerList;
 
 
 /**

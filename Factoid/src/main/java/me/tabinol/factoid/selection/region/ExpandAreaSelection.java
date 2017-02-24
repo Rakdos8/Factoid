@@ -17,10 +17,11 @@
  */
 package me.tabinol.factoid.selection.region;
 
-import me.tabinol.factoid.lands.areas.CuboidArea;
-import me.tabinol.factoidapi.lands.areas.ICuboidArea;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
+import me.tabinol.factoid.lands.areas.CuboidArea;
+import me.tabinol.factoidapi.lands.areas.ICuboidArea;
 
 
 /**
@@ -61,16 +62,16 @@ public class ExpandAreaSelection extends ActiveAreaSelection implements PlayerMo
 		final Location playerLoc = player.getLocation();
 
 		// Check where the player is outside the land
-		if(playerLoc.getBlockX() - 1 < area.getX1()) {
+		if (playerLoc.getBlockX() - 1 < area.getX1()) {
 			((CuboidArea) area).setX1(playerLoc.getBlockX() - 1);
 		}
-		if(playerLoc.getBlockX() + 1 > area.getX2()) {
+		if (playerLoc.getBlockX() + 1 > area.getX2()) {
 			((CuboidArea) area).setX2(playerLoc.getBlockX() + 1);
 		}
-		if(playerLoc.getBlockZ() - 1 < area.getZ1()) {
+		if (playerLoc.getBlockZ() - 1 < area.getZ1()) {
 			((CuboidArea) area).setZ1(playerLoc.getBlockZ() - 1);
 		}
-		if(playerLoc.getBlockZ() + 1 > area.getZ2()) {
+		if (playerLoc.getBlockZ() + 1 > area.getZ2()) {
 			((CuboidArea) area).setZ2(playerLoc.getBlockZ() + 1);
 		}
 

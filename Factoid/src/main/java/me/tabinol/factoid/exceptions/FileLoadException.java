@@ -18,6 +18,7 @@
 package me.tabinol.factoid.exceptions;
 
 import java.util.logging.Level;
+
 import me.tabinol.factoid.Factoid;
 
 

@@ -19,10 +19,10 @@ package me.tabinol.factoidapi.lands.areas;
 
 import java.util.Collection;
 
-import me.tabinol.factoidapi.lands.ILand;
-
 import org.bukkit.Location;
 import org.bukkit.World;
+
+import me.tabinol.factoidapi.lands.ILand;
 
 /**
  * The Interface ICuboidArea. Represent a 3 dimensions cuboid area.

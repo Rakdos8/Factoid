@@ -17,11 +17,11 @@
  */
 package me.tabinol.factoidapi.event;
 
-import me.tabinol.factoidapi.lands.IDummyLand;
-import me.tabinol.factoidapi.lands.ILand;
-
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+
+import me.tabinol.factoidapi.lands.IDummyLand;
+import me.tabinol.factoidapi.lands.ILand;
 
 
 /**
@@ -47,7 +47,7 @@ public class LandEvent extends Event {
 
 		this.dummyLand = dummyLand;
 
-		if(dummyLand instanceof ILand) {
+		if (dummyLand instanceof ILand) {
 			land = (ILand) dummyLand;
 		} else {
 			land = null;

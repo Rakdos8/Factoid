@@ -69,10 +69,10 @@ public class AreaIndex implements Comparable<AreaIndex> {
 	 */
 	@Override
 	public int compareTo(final AreaIndex t) {
-		if(indexNb < t.indexNb) {
+		if (indexNb < t.indexNb) {
 			return -1;
 		}
-		if(indexNb > t.indexNb) {
+		if (indexNb > t.indexNb) {
 			return 1;
 		}
 		return ((CuboidArea) area).compareTo((CuboidArea) t.area);

@@ -51,7 +51,7 @@ public class AreaSelection extends RegionSelection implements Listener {
 	private final byte by = 0;
 
 	/** The block list. */
-	private final Map<Location, Material> blockList = new HashMap<Location, Material>();
+	private final Map<Location, Material> blockList = new HashMap<>();
 
 	/** The is from land. */
 	private boolean isFromLand = false;
@@ -142,7 +142,7 @@ public class AreaSelection extends RegionSelection implements Listener {
 		final IDummyLand Land8 = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(new Location(
 				area.getWord(), area.getX2(), area.getY2(), area.getZ2()));
 
-		if(Land1 == Land2 && Land1 == Land3 && Land1 == Land4 && Land1 == Land5 && Land1 == Land6
+		if (Land1 == Land2 && Land1 == Land3 && Land1 == Land4 && Land1 == Land5 && Land1 == Land6
 				&& Land1 == Land7 && Land1 == Land8) {
 			parentDetected = Land1;
 		} else {
@@ -240,7 +240,7 @@ public class AreaSelection extends RegionSelection implements Listener {
 
 	public ILand getParentDetected() {
 
-		if(parentDetected instanceof ILand) {
+		if (parentDetected instanceof ILand) {
 			return (ILand) parentDetected;
 		} else {
 			return null;

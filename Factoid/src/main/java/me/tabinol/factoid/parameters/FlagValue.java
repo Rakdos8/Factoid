@@ -47,15 +47,15 @@ public class FlagValue implements IFlagValue {
 	@Override
 	public FlagValue copyOf() {
 
-		if(value instanceof Boolean) {
+		if (value instanceof Boolean) {
 			return new FlagValue(Boolean.valueOf((Boolean)value));
-		} else if(value instanceof Double) {
+		} else if (value instanceof Double) {
 			return new FlagValue(Double.valueOf((Double)value));
-		} else if(value instanceof String) {
+		} else if (value instanceof String) {
 			return new FlagValue(String.valueOf(value));
-		} else if(value instanceof String[]) {
+		} else if (value instanceof String[]) {
 			final String[] newStr = new String[((String[]) value).length];
-			for(int t = 0; t < ((String[]) value).length; t ++) {
+			for (int t = 0; t < ((String[]) value).length; t ++) {
 				newStr[t] = String.valueOf(((String[]) value)[t]);
 			}
 			return new FlagValue(newStr);
@@ -136,26 +136,26 @@ public class FlagValue implements IFlagValue {
 	@Override
 	public final String getValuePrint() {
 
-		if(value instanceof Boolean) {
-			if((Boolean) value) {
+		if (value instanceof Boolean) {
+			if ((Boolean) value) {
 				return "" + ChatColor.GREEN + true;
 			} else {
 				return "" + ChatColor.RED + false;
 			}
 		}
 
-		if(value instanceof Double) {
+		if (value instanceof Double) {
 			return ((Double) value).toString();
 		}
 
-		if(value instanceof String) {
+		if (value instanceof String) {
 			return (String) value;
 		}
 
-		if(value instanceof String[]) {
+		if (value instanceof String[]) {
 			final StringBuilder sb = new StringBuilder();
-			for(final String st : (String[]) value) {
-				if(sb.length() != 0) {
+			for (final String st : (String[]) value) {
+				if (sb.length() != 0) {
 					sb.append("; ");
 				}
 				sb.append(StringChanges.toQuote(st));
@@ -177,7 +177,7 @@ public class FlagValue implements IFlagValue {
 
 		FlagValue value;
 
-		if(ft.isRegistered()) {
+		if (ft.isRegistered()) {
 			if (ft.getDefaultValue().getValue() instanceof Boolean) {
 				final String[] strs = str.split(" ");
 				value = new FlagValue(Boolean.parseBoolean(strs[0]));

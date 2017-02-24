@@ -208,7 +208,7 @@ public class Factoid extends JavaPlugin implements IFactoid {
 		chatListener = new ChatListener();
 		CommandListener = new OnCommand();
 		Scoreboard = new ScoreBoard();
-		approveNotif = new ApproveNotif();
+		approveNotif = new ApproveNotif ();
 		approveNotif.runApproveNotifLater();
 		ecoScheduler = new EcoScheduler();
 		ecoScheduler.runTaskTimer(this, ECO_SCHEDULE_INTERVAL, ECO_SCHEDULE_INTERVAL);
@@ -367,7 +367,7 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	 *
 	 * @return the approve notif
 	 */
-	public ApproveNotif iApproveNotif() {
+	public ApproveNotif iApproveNotif () {
 
 		return approveNotif;
 	}

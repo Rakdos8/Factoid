@@ -17,14 +17,17 @@
  */
 package me.tabinol.factoid.config;
 
+import static org.bukkit.Bukkit.getServer;
+
 import java.util.logging.Level;
+
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
+
 import me.tabinol.factoid.Factoid;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
-import static org.bukkit.Bukkit.getServer;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredServiceProvider;
 
 
 /**

@@ -43,8 +43,8 @@ public class Factions implements IFactions {
 	 */
 	public Factions() {
 
-		factionList = new TreeMap<String, IFaction>();
-		factionUUIDList = new TreeMap<UUID, IFaction>();
+		factionList = new TreeMap<>();
+		factionUUIDList = new TreeMap<>();
 	}
 
 	/**

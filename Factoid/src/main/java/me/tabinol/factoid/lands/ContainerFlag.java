@@ -17,8 +17,9 @@
  */
 package me.tabinol.factoid.lands;
 
-import me.tabinol.factoid.parameters.LandFlag;
 import java.util.HashSet;
+
+import me.tabinol.factoid.parameters.LandFlag;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 
 
@@ -42,8 +43,8 @@ public class ContainerFlag {
 	public ContainerFlag(final PlayerContainer pc, final HashSet <LandFlag> flags) {
 
 		this.pc = pc;
-		if(flags == null) {
-			this.flags = new HashSet<LandFlag>();
+		if (flags == null) {
+			this.flags = new HashSet<>();
 		} else {
 			this.flags = flags;
 		}

@@ -20,12 +20,12 @@ package me.tabinol.factoidapi.lands;
 import java.util.Collection;
 import java.util.UUID;
 
+import org.bukkit.Location;
+
 import me.tabinol.factoidapi.exceptions.AFactoidLandException;
 import me.tabinol.factoidapi.lands.areas.ICuboidArea;
 import me.tabinol.factoidapi.lands.types.IType;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
-
-import org.bukkit.Location;
 
 /**
  * The Interface ILands. Can give access to all lands.

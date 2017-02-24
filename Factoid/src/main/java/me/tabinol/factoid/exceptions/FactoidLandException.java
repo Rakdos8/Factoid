@@ -48,7 +48,7 @@ public class FactoidLandException extends AFactoidLandException {
 		final StringBuilder bf = new StringBuilder();
 
 		bf.append("Error: Land: ").append(landName);
-		if(area != null) {
+		if (area != null) {
 			bf.append(", area: ").append(area.getPrint());
 		}
 		bf.append(", Action: ").append(action.toString()).append(", Error: ").append(error.toString());

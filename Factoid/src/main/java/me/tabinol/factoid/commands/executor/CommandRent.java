@@ -46,7 +46,7 @@ public class CommandRent extends CommandExec {
 	public void commandExecute() throws FactoidCommandException {
 		checkSelections(true, null);
 		checkPermission(true, true, null, null);
-		if(!entity.playerConf.isAdminMod()) {
+		if (!entity.playerConf.isAdminMod()) {
 			// If the player not adminmod, he must be owner && permission true
 			checkPermission(false, false, PermissionList.ECO_LAND_FOR_RENT.getPermissionType(), null);
 		}
@@ -58,13 +58,13 @@ public class CommandRent extends CommandExec {
 		EcoSign ecoSign = null;
 
 		// Check for sign in hand
-		if(entity.player.getGameMode() != GameMode.CREATIVE && entity.player.getItemInHand().getType() != Material.SIGN) {
+		if (entity.player.getGameMode() != GameMode.CREATIVE && entity.player.getItemInHand().getType() != Material.SIGN) {
 			throw new FactoidCommandException("Must have a sign in hand", entity.player, "COMMAND.ECONOMY.MUSTHAVEISIGN");
 		}
 
 		// If 'recreate'
-		if(curArg.equalsIgnoreCase("recreate")) {
-			if(!land.isForRent()) {
+		if (curArg.equalsIgnoreCase("recreate")) {
+			if (!land.isForRent()) {
 				throw new FactoidCommandException("The land is not for rent", entity.player, "COMMAND.ECONOMY.ERRORCREATESIGN");
 			}
 			try {
@@ -72,7 +72,7 @@ public class CommandRent extends CommandExec {
 				ecoSign.createSignForRent(land.getRentPrice(), land.getRentRenew(), land.getRentAutoRenew(),
 						land.isRented() ? land.getTenant().getPlayerName() : null); // Tenant name if the land is rented
 				removeSignFromHand();
-				if(!ecoSign.getLocation().getBlock().equals(land.getRentSignLoc().getBlock())) {
+				if (!ecoSign.getLocation().getBlock().equals(land.getRentSignLoc().getBlock())) {
 					ecoSign.removeSign(land.getRentSignLoc());
 					((Land) land).setRentSignLoc(ecoSign.getLocation());
 				}
@@ -103,7 +103,7 @@ public class CommandRent extends CommandExec {
 
 		// get auto renew
 		curArg = entity.argList.getNext();
-		if(curArg != null) {
+		if (curArg != null) {
 			try {
 				rentAutoRenew = Boolean.parseBoolean(curArg);
 			} catch (final NumberFormatException ex) {
@@ -113,7 +113,7 @@ public class CommandRent extends CommandExec {
 		}
 
 		// Land already for rent?
-		if(land.isForRent()) {
+		if (land.isForRent()) {
 			throw new FactoidCommandException("Land already for rent", entity.player, "COMMAND.ECONOMY.ALREADYRENT");
 		}
 

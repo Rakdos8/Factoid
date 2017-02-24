@@ -18,10 +18,12 @@
 package me.tabinol.factoid.selection.region;
 
 import java.util.TreeMap;
+
+import org.bukkit.entity.Player;
+
+import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
 import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoidapi.lands.areas.ICuboidArea;
-import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
-import org.bukkit.entity.Player;
 
 
 /**
@@ -45,10 +47,10 @@ public class LandSelection extends RegionSelection {
 
 		super(SelectionType.LAND, player);
 		this.land = land;
-		visualAreas = new TreeMap<ICuboidArea, AreaSelection>();
+		visualAreas = new TreeMap<>();
 
 		// Add visual areas
-		for(final ICuboidArea area : land.getAreas()) {
+		for (final ICuboidArea area : land.getAreas()) {
 			visualAreas.put(area, new AreaSelection(player, area, true));
 		}
 	}
@@ -69,7 +71,7 @@ public class LandSelection extends RegionSelection {
 	@Override
 	public void removeSelection() {
 
-		for(final AreaSelection areaSel : visualAreas.values()) {
+		for (final AreaSelection areaSel : visualAreas.values()) {
 			areaSel.removeSelection();
 		}
 

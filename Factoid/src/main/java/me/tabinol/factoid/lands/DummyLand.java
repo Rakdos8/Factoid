@@ -22,6 +22,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.bukkit.World;
+import org.bukkit.entity.Player;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
@@ -36,9 +39,6 @@ import me.tabinol.factoidapi.parameters.ILandFlag;
 import me.tabinol.factoidapi.parameters.IPermission;
 import me.tabinol.factoidapi.parameters.IPermissionType;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
-
-import org.bukkit.World;
-import org.bukkit.entity.Player;
 
 
 /**
@@ -62,8 +62,8 @@ public class DummyLand implements IDummyLand {
 	 */
 	public DummyLand(final String worldName) {
 
-		permissions = new TreeMap<IPlayerContainer, TreeMap<IPermissionType, IPermission>>();
-		flags = new TreeMap<IFlagType, ILandFlag>();
+		permissions = new TreeMap<>();
+		flags = new TreeMap<>();
 		this.worldName = worldName;
 	}
 
@@ -93,17 +93,17 @@ public class DummyLand implements IDummyLand {
 	public void copyPermsFlagsTo(final IDummyLand desLand) {
 
 		// copy permissions
-		for(final Map.Entry<IPlayerContainer, TreeMap<IPermissionType, IPermission>> pcEntry : permissions.entrySet()) {
+		for (final Map.Entry<IPlayerContainer, TreeMap<IPermissionType, IPermission>> pcEntry : permissions.entrySet()) {
 
-			final TreeMap<IPermissionType, IPermission> perms = new TreeMap<IPermissionType, IPermission>();
-			for(final Map.Entry<IPermissionType, IPermission> permEntry : pcEntry.getValue().entrySet()) {
+			final TreeMap<IPermissionType, IPermission> perms = new TreeMap<>();
+			for (final Map.Entry<IPermissionType, IPermission> permEntry : pcEntry.getValue().entrySet()) {
 				perms.put(permEntry.getKey(), permEntry.getValue().copyOf());
 			}
 			((DummyLand) desLand).permissions.put(pcEntry.getKey(), perms);
 		}
 
 		// copy flags
-		for(final Map.Entry<IFlagType, ILandFlag> flagEntry : flags.entrySet()) {
+		for (final Map.Entry<IFlagType, ILandFlag> flagEntry : flags.entrySet()) {
 
 			((DummyLand) desLand).flags.put(flagEntry.getKey(), flagEntry.getValue().copyOf());
 		}
@@ -125,7 +125,7 @@ public class DummyLand implements IDummyLand {
 		}
 
 		if (!permissions.containsKey(pc)) {
-			permPlayer = new TreeMap<IPermissionType, IPermission>();
+			permPlayer = new TreeMap<>();
 			permissions.put(pc, permPlayer);
 		} else {
 			permPlayer = permissions.get(pc);
@@ -182,7 +182,7 @@ public class DummyLand implements IDummyLand {
 
 		doSave();
 
-		if(this instanceof Land) {
+		if (this instanceof Land) {
 			// Start Event
 			Factoid.getThisPlugin().getServer().getPluginManager().callEvent(
 					new LandModifyEvent((Land) this, LandModifyReason.PERMISSION_UNSET, perm));
@@ -241,7 +241,7 @@ public class DummyLand implements IDummyLand {
 
 		final Boolean value = getPermission(player, pt, false);
 
-		if(value != null) {
+		if (value != null) {
 			return value;
 		} else {
 			return pt.getDefaultValue();
@@ -285,7 +285,7 @@ public class DummyLand implements IDummyLand {
 
 		for (final Map.Entry<IPlayerContainer, TreeMap<IPermissionType, IPermission>> permissionEntry : permissions.entrySet()) {
 			boolean value;
-			if(land != null) {
+			if (land != null) {
 				value = permissionEntry.getKey().hasAccess(player, land);
 			} else {
 				value = permissionEntry.getKey().hasAccess(player);
@@ -302,7 +302,7 @@ public class DummyLand implements IDummyLand {
 		}
 
 		// Check in default permissions
-		if(!onlyInherit && this instanceof Land) {
+		if (!onlyInherit && this instanceof Land) {
 
 			return ((Lands) FactoidAPI.iLands()).getDefaultConf(((Land) this).getType()).getPermission(
 					player, pt, onlyInherit, (Land) this);
@@ -321,7 +321,7 @@ public class DummyLand implements IDummyLand {
 		flags.put(flag.getFlagType(), flag);
 		doSave();
 
-		if(this instanceof Land) {
+		if (this instanceof Land) {
 			// Start Event
 			Factoid.getThisPlugin().getServer().getPluginManager().callEvent(
 					new LandModifyEvent((Land) this, LandModifyReason.FLAG_SET, flag));
@@ -343,7 +343,7 @@ public class DummyLand implements IDummyLand {
 		}
 		doSave();
 
-		if(this instanceof Land) {
+		if (this instanceof Land) {
 			// Start Event
 			Factoid.getThisPlugin().getServer().getPluginManager().callEvent(
 					new LandModifyEvent((Land) this, LandModifyReason.FLAG_UNSET, flag));
@@ -380,7 +380,7 @@ public class DummyLand implements IDummyLand {
 
 		final IFlagValue value = getFlag(ft, false);
 
-		if(value != null) {
+		if (value != null) {
 			return value;
 		} else {
 			return ft.getDefaultValue();
@@ -422,7 +422,7 @@ public class DummyLand implements IDummyLand {
 		}
 
 		// Check in default flags
-		if(!onlyInherit && this instanceof Land) {
+		if (!onlyInherit && this instanceof Land) {
 
 			return ((Lands) FactoidAPI.iLands()).getDefaultConf(((Land) this).getType()).getFlag(ft, onlyInherit);
 		}

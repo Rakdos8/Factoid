@@ -18,13 +18,6 @@
  */
 package me.tabinol.factoidflycreative.creative;
 
-import me.tabinol.factoidapi.FactoidAPI;
-import me.tabinol.factoidapi.event.PlayerLandChangeEvent;
-import me.tabinol.factoidapi.lands.IDummyLand;
-import me.tabinol.factoidapi.parameters.IPermissionType;
-import me.tabinol.factoidflycreative.FactoidFlyCreative;
-import me.tabinol.factoidflycreative.config.FlyCreativeConfig;
-
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,118 +31,109 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
+import me.tabinol.factoidapi.FactoidAPI;
+import me.tabinol.factoidapi.event.PlayerLandChangeEvent;
+import me.tabinol.factoidapi.lands.IDummyLand;
+import me.tabinol.factoidapi.parameters.IPermissionType;
+import me.tabinol.factoidflycreative.FactoidFlyCreative;
+import me.tabinol.factoidflycreative.config.FlyCreativeConfig;
+
 public class Creative {
 
-    public final static String CREATIVE_IGNORE_PERM = "flycreative.ignorecreative";
-    public final static String OVERRIDE_NODROP_PERM = "flycreative.override.nodrop";
-    public final static String OVERRIDE_NOOPENCHEST_PERM = "flycreative.override.noopenchest";
-    public final static String OVERRIDE_NOBUILDOUTSIDE_PERM = "flycreative.override.nobuildoutside";
-    public final static String OVERRIDE_BANNEDITEMS_PERM = "flycreative.override.allowbanneditems";
-    private final FlyCreativeConfig conf;
-    private final IPermissionType permissionType;
+	public final static String CREATIVE_IGNORE_PERM = "flycreative.ignorecreative";
+	public final static String OVERRIDE_NODROP_PERM = "flycreative.override.nodrop";
+	public final static String OVERRIDE_NOOPENCHEST_PERM = "flycreative.override.noopenchest";
+	public final static String OVERRIDE_NOBUILDOUTSIDE_PERM = "flycreative.override.nobuildoutside";
+	public final static String OVERRIDE_BANNEDITEMS_PERM = "flycreative.override.allowbanneditems";
+	private final FlyCreativeConfig conf;
+	private final IPermissionType permissionType;
 
-    public Creative() {
+	public Creative() {
+		FactoidFlyCreative.getThisPlugin();
+		conf = FactoidFlyCreative.getConf();
 
-        FactoidFlyCreative.getThisPlugin();
-        conf = FactoidFlyCreative.getConf();
+		// Register flags
+		permissionType = FactoidAPI.iParameters().registerPermissionType("CREATIVE", false);
+	}
 
-        // Register flags
-        permissionType = FactoidAPI.iParameters().registerPermissionType("CREATIVE", false);
-    }
+	public boolean creative(final Event event, final Player player, final IDummyLand dummyLand) {
+		if (!player.hasPermission(CREATIVE_IGNORE_PERM)) {
+			if (askCreativeFlag(player, dummyLand)) {
+				if (player.getGameMode() != GameMode.CREATIVE) {
+					FactoidFlyCreative.getPlayerListener().addIgnoredGMPlayers(player);
+					player.setGameMode(GameMode.CREATIVE);
+				}
+			} else {
+				if (player.getGameMode() == GameMode.CREATIVE) {
+					if (player.isFlying() && event instanceof PlayerLandChangeEvent
+							&& !((PlayerLandChangeEvent) event).isTp()) {
+						// Return the player in the last cuboid if he is flying.
+						((PlayerLandChangeEvent) event).setCancelled(true);
+					} else {
+						FactoidFlyCreative.getPlayerListener().addIgnoredGMPlayers(player);
+						player.setGameMode(GameMode.SURVIVAL);
+					}
+				}
+			}
+		}
 
-    public boolean creative(final Event event, final Player player, final IDummyLand dummyLand) {
+		return player.getGameMode() == GameMode.CREATIVE;
+	}
 
-        if (!player.hasPermission(CREATIVE_IGNORE_PERM)) {
-            if (askCreativeFlag(player, dummyLand)) {
-                if (player.getGameMode() != GameMode.CREATIVE) {
-                    FactoidFlyCreative.getPlayerListener().addIgnoredGMPlayers(player);
-                	player.setGameMode(GameMode.CREATIVE);
-                }
-            } else {
-                if (player.getGameMode() == GameMode.CREATIVE) {
-                    if (player.isFlying() && event instanceof PlayerLandChangeEvent
-                            && !((PlayerLandChangeEvent) event).isTp()) {
-                        // Return the player in the last cuboid if he is flying.
-                        ((PlayerLandChangeEvent) event).setCancelled(true);
-                    } else {
-                        FactoidFlyCreative.getPlayerListener().addIgnoredGMPlayers(player);
-                        player.setGameMode(GameMode.SURVIVAL);
-                    }
-                }
-            }
-        }
+	public void setGM(final Player player, final GameMode gm) {
+		if (!player.hasPermission(CREATIVE_IGNORE_PERM)) {
+			FactoidFlyCreative.getPlayerListener().addIgnoredGMPlayers(player);
+			player.setGameMode(gm);
+		}
+	}
 
-        return player.getGameMode() == GameMode.CREATIVE;
-    }
+	public boolean dropItem(final PlayerDropItemEvent event, final Player player) {
+		if (conf.isNoDrop() && !player.hasPermission(OVERRIDE_NODROP_PERM)) {
+			return true;
+		}
+		return false;
+	}
 
-    public void setGM(final Player player, final GameMode gm) {
+	public void invOpen(final InventoryOpenEvent event, final HumanEntity player) {
+		if (conf.isNoOpenChest() && !player.hasPermission(OVERRIDE_NOOPENCHEST_PERM)) {
+			final InventoryType it = event.getView().getType();
+			if (it == InventoryType.CHEST || it == InventoryType.DISPENSER
+					|| it == InventoryType.DROPPER || it == InventoryType.ENDER_CHEST
+					|| it == InventoryType.FURNACE || it == InventoryType.HOPPER) {
+				event.setCancelled(true);
+			}
+		}
+	}
 
-        if (!player.hasPermission(CREATIVE_IGNORE_PERM)) {
-            FactoidFlyCreative.getPlayerListener().addIgnoredGMPlayers(player);
-            player.setGameMode(gm);
-        }
-    }
+	// Return «true» if the event must be cancelled
+	public boolean build(final Event event, final Player player) {
+		Location blockLoc;
 
-    public boolean dropItem(final PlayerDropItemEvent event, final Player player) {
+		if (conf.isNoBuildOutside()
+				&& !player.hasPermission(OVERRIDE_NOBUILDOUTSIDE_PERM)) {
 
-        if (conf.isNoDrop()
-                && !player.hasPermission(OVERRIDE_NODROP_PERM)) {
+			if (event instanceof BlockBreakEvent) {
+				blockLoc = ((BlockBreakEvent) event).getBlock().getLocation();
+			} else {
+				blockLoc = ((BlockPlaceEvent) event).getBlockPlaced().getLocation();
+			}
+			if (!askCreativeFlag(player, FactoidAPI.iLands().getLandOrOutsideArea(blockLoc))) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-            return true;
-        }
+	public void checkBannedItems(final InventoryCloseEvent event, final HumanEntity player) {
+		if (!player.hasPermission(OVERRIDE_BANNEDITEMS_PERM)) {
+			for (final Material mat : conf.getBannedItems()) {
+				event.getPlayer().getInventory().remove(mat);
+			}
+		}
+	}
 
-        return false;
-    }
+	private boolean askCreativeFlag(final Player player, final IDummyLand dummyLand) {
+		return dummyLand.checkPermissionAndInherit(player, permissionType);
+	}
 
-    public void invOpen(final InventoryOpenEvent event, final HumanEntity player) {
-
-        if (conf.isNoOpenChest()
-                && !player.hasPermission(OVERRIDE_NOOPENCHEST_PERM)) {
-
-            final InventoryType it = event.getView().getType();
-
-            if (it == InventoryType.CHEST || it == InventoryType.DISPENSER
-                    || it == InventoryType.DROPPER || it == InventoryType.ENDER_CHEST
-                    || it == InventoryType.FURNACE || it == InventoryType.HOPPER) {
-
-                event.setCancelled(true);
-            }
-        }
-    }
-
-    // Return «true» if the event must be cancelled
-    public boolean build(final Event event, final Player player) {
-
-        Location blockLoc;
-
-        if (conf.isNoBuildOutside()
-                && !player.hasPermission(OVERRIDE_NOBUILDOUTSIDE_PERM)) {
-
-            if (event instanceof BlockBreakEvent) {
-                blockLoc = ((BlockBreakEvent) event).getBlock().getLocation();
-            } else {
-                blockLoc = ((BlockPlaceEvent) event).getBlockPlaced().getLocation();
-            }
-            if (!askCreativeFlag(player, FactoidAPI.iLands().getLandOrOutsideArea(blockLoc))) {
-
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void checkBannedItems(final InventoryCloseEvent event, final HumanEntity player) {
-
-        if (!player.hasPermission(OVERRIDE_BANNEDITEMS_PERM)) {
-
-            for(final Material mat : conf.getBannedItems()) {
-                event.getPlayer().getInventory().remove(mat);
-            }
-        }
-    }
-
-    private boolean askCreativeFlag(final Player player, final IDummyLand dummyLand) {
-
-        return dummyLand.checkPermissionAndInherit(player, permissionType);
-    }
 }

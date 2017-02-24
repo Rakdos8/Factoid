@@ -128,14 +128,14 @@ public class Lands implements ILands {
 		DummyLand land;
 
 		// No type? Return default config
-		if(type == null) {
+		if (type == null) {
 			return defaultConfNoType;
 		}
 
 		land = defaultConf.get(type);
 
 		// Type not found? Return default config
-		if(land == null) {
+		if (land == null) {
 			return defaultConfNoType;
 		}
 
@@ -575,7 +575,7 @@ public class Lands implements ILands {
 	 */
 	protected boolean getPriceFromPlayer(final String worldName, final IPlayerContainer pc, final double price) {
 
-		if(pc.getContainerType() == EPlayerContainerType.PLAYER && price > 0) {
+		if (pc.getContainerType() == EPlayerContainerType.PLAYER && price > 0) {
 			return Factoid.getThisPlugin().iPlayerMoney().getFromPlayer(((IPlayerContainerPlayer)pc).getOfflinePlayer(), worldName, price);
 		}
 
@@ -704,9 +704,9 @@ public class Lands implements ILands {
 		Location resLoc; // Resolved location
 
 		// Give the position from the sky to underbedrock if the Y is greater than 255 or lower than 0
-		if(loc.getBlockY() >= loc.getWorld().getMaxHeight()) {
+		if (loc.getBlockY() >= loc.getWorld().getMaxHeight()) {
 			resLoc = new Location(loc.getWorld(), loc.getX(), loc.getWorld().getMaxHeight() - 1, loc.getZ());
-		} else if(loc.getBlockY() < 0){
+		} else if (loc.getBlockY() < 0){
 			resLoc = new Location(loc.getWorld(), loc.getX(), 0, loc.getZ());
 		} else {
 			resLoc = loc;

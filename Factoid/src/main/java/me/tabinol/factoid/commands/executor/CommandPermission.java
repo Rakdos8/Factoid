@@ -19,6 +19,8 @@ package me.tabinol.factoid.commands.executor;
 
 import java.util.LinkedList;
 
+import org.bukkit.ChatColor;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ChatPage;
 import me.tabinol.factoid.commands.CommandEntities;
@@ -36,8 +38,6 @@ import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoidapi.parameters.IPermission;
 import me.tabinol.factoidapi.parameters.IPermissionType;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
-
-import org.bukkit.ChatColor;
 
 
 /**
@@ -85,14 +85,14 @@ public class CommandPermission extends CommandThreadExec {
 
 		} else if (fonction.equalsIgnoreCase("list")) {
 
-			precDL = new LinkedList<IDummyLand>();
+			precDL = new LinkedList<>();
 			stList = new StringBuilder();
 
 			// For the actual land
 			importDisplayPermsFrom(land, false);
 
 			// For default Type
-			if(land.getType() != null) {
+			if (land.getType() != null) {
 				stList.append(ChatColor.DARK_GRAY + Factoid.getThisPlugin().iLanguage().getMessage("GENERAL.FROMDEFAULTTYPE",
 						land.getType().getName())).append(Config.NEWLINE);
 				importDisplayPermsFrom(((Lands) FactoidAPI.iLands()).getDefaultConf(land.getType()), false);
@@ -100,7 +100,7 @@ public class CommandPermission extends CommandThreadExec {
 
 			// For parent (if exist)
 			ILand parLand = land;
-			while((parLand = parLand.getParent()) != null) {
+			while ((parLand = parLand.getParent()) != null) {
 				stList.append(ChatColor.DARK_GRAY + Factoid.getThisPlugin().iLanguage().getMessage("GENERAL.FROMPARENT",
 						ChatColor.GREEN + parLand.getName() + ChatColor.DARK_GRAY)).append(Config.NEWLINE);
 				importDisplayPermsFrom(parLand, true);
@@ -126,32 +126,32 @@ public class CommandPermission extends CommandThreadExec {
 			final StringBuilder stSubList = new StringBuilder();
 
 			for (final IPermission perm : land.getPermissionsForPC(pc)) {
-				if((!onlyInherit || perm.isHeritable()) && !permInList(pc, perm)) {
+				if ((!onlyInherit || perm.isHeritable()) && !permInList(pc, perm)) {
 					addToList = true;
 					stSubList.append(" ").append(perm.getPermType().getPrint()).append(":").append(perm.getValuePrint());
 				}
 			}
 
 			// Append to list
-			if(stSubList.length() > 0) {
+			if (stSubList.length() > 0) {
 				stList.append(ChatColor.WHITE).append(pc.getPrint()).append(":");
 				stList.append(stSubList).append(Config.NEWLINE);
 			}
 
 		}
 
-		if(addToList) {
+		if (addToList) {
 			precDL.add(land);
 		}
 	}
 
 	private boolean permInList(final IPlayerContainer pc, final IPermission perm) {
 
-		for(final IDummyLand listLand : precDL) {
+		for (final IDummyLand listLand : precDL) {
 
-			if(listLand.getSetPCHavePermission().contains(pc)) {
-				for(final IPermission listPerm : listLand.getPermissionsForPC(pc)) {
-					if(perm.getPermType() == listPerm.getPermType()) {
+			if (listLand.getSetPCHavePermission().contains(pc)) {
+				for (final IPermission listPerm : listLand.getPermissionsForPC(pc)) {
+					if (perm.getPermType() == listPerm.getPermType()) {
 						return true;
 					}
 				}
@@ -174,7 +174,7 @@ public class CommandPermission extends CommandThreadExec {
 
 			final IPermission perm = entity.argList.getPermissionFromArg(entity.playerConf.isAdminMod(), land.isOwner(entity.player));
 
-			if(!perm.getPermType().isRegistered()) {
+			if (!perm.getPermType().isRegistered()) {
 				throw new FactoidCommandException("Permission not registered", entity.player, "COMMAND.PERMISSIONTYPE.TYPENULL");
 			}
 

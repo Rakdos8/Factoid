@@ -194,7 +194,7 @@ public class ArgList {
 
 		final FlagValue flagValue = FlagValue.getFromString(getNextToEnd(), flagType);
 
-		if(flagValue != null) {
+		if (flagValue != null) {
 			return new LandFlag(flagType, flagValue, true);
 		}
 		return null;

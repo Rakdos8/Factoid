@@ -94,11 +94,11 @@ public class StorageThread extends Thread {
 		lock.lock();
 
 		// Output request loop (waiting for a command)
-		while(!exitRequest) {
+		while (!exitRequest) {
 			// Save Lands or Factions
 			while (!saveList.isEmpty()) {
 				final Object saveEntry = saveList.remove(0);
-				if(saveEntry instanceof Land) {
+				if (saveEntry instanceof Land) {
 					storage.saveLand((Land) saveEntry);
 				} else {
 					storage.saveFaction((Faction) saveEntry);
@@ -108,9 +108,9 @@ public class StorageThread extends Thread {
 			// Remove Lands or Factions
 			while (!removeList.isEmpty()) {
 				final Object removeEntry = removeList.remove(0);
-				if(removeEntry instanceof Land) {
+				if (removeEntry instanceof Land) {
 					storage.removeLand((Land) removeEntry);
-				} else if( removeEntry instanceof NameGenealogy){
+				} else if ( removeEntry instanceof NameGenealogy){
 					storage.removeLand(((NameGenealogy) removeEntry).landName,
 							((NameGenealogy) removeEntry).landGenealogy);
 				} else {
@@ -135,7 +135,7 @@ public class StorageThread extends Thread {
 	 * Stop next run.
 	 */
 	public void stopNextRun() {
-		if(!isAlive()) {
+		if (!isAlive()) {
 			Factoid.getThisPlugin().getLogger().log(Level.SEVERE, "Problem with save Thread. Possible data loss!");
 			return;
 		}

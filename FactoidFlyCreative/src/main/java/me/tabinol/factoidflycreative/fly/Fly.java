@@ -18,63 +18,63 @@
  */
 package me.tabinol.factoidflycreative.fly;
 
-import me.tabinol.factoidapi.FactoidAPI;
-import me.tabinol.factoidapi.event.PlayerLandChangeEvent;
-import me.tabinol.factoidapi.lands.IDummyLand;
-import me.tabinol.factoidapi.parameters.IPermissionType;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
+import me.tabinol.factoidapi.FactoidAPI;
+import me.tabinol.factoidapi.event.PlayerLandChangeEvent;
+import me.tabinol.factoidapi.lands.IDummyLand;
+import me.tabinol.factoidapi.parameters.IPermissionType;
+
 public class Fly {
 
-    public final static String FLY_IGNORE_PERM = "flycreative.ignorefly";
-    private final IPermissionType permissionType;
+	public final static String FLY_IGNORE_PERM = "flycreative.ignorefly";
+	private final IPermissionType permissionType;
 
-    public Fly() {
+	public Fly() {
 
-        // Register flags
-        permissionType = FactoidAPI.iParameters().registerPermissionType("FLY", false);
-    }
+		// Register flags
+		permissionType = FactoidAPI.iParameters().registerPermissionType("FLY", false);
+	}
 
-    public void fly(final Event event, final Player player, final IDummyLand dummyLand) {
+	public void fly(final Event event, final Player player, final IDummyLand dummyLand) {
 
-        if (!player.hasPermission(FLY_IGNORE_PERM)) {
-            if (askFlyFlag(player, dummyLand)) {
-                if (!player.getAllowFlight()) {
-                    player.setAllowFlight(true);
+		if (!player.hasPermission(FLY_IGNORE_PERM)) {
+			if (askFlyFlag(player, dummyLand)) {
+				if (!player.getAllowFlight()) {
+					player.setAllowFlight(true);
 
-                    // Bug fix : Prevent player fall
-                    final Location loc = player.getLocation().clone();
-                    final Block block = loc.subtract(0, 1, 0).getBlock();
-                    if (block.isLiquid() || block.getType() == Material.AIR) {
-                        player.setFlying(true);
-                    }
-                }
-            } else {
-                if (player.isFlying() && event instanceof PlayerLandChangeEvent
-                        && !((PlayerLandChangeEvent) event).isTp()) {
-                    // Return the player in the last cuboid if he is flying.
-                    ((PlayerLandChangeEvent) event).setCancelled(true);
-                } else {
-                    player.setAllowFlight(false);
-                }
-            }
-        }
-    }
+					// Bug fix : Prevent player fall
+					final Location loc = player.getLocation().clone();
+					final Block block = loc.subtract(0, 1, 0).getBlock();
+					if (block.isLiquid() || block.getType() == Material.AIR) {
+						player.setFlying(true);
+					}
+				}
+			} else {
+				if (player.isFlying() && event instanceof PlayerLandChangeEvent
+						&& !((PlayerLandChangeEvent) event).isTp()) {
+					// Return the player in the last cuboid if he is flying.
+					((PlayerLandChangeEvent) event).setCancelled(true);
+				} else {
+					player.setAllowFlight(false);
+				}
+			}
+		}
+	}
 
-    public void removeFly(final Player player) {
+	public void removeFly(final Player player) {
 
-        if (!player.hasPermission(FLY_IGNORE_PERM)) {
-            player.setAllowFlight(false);
-        }
-    }
+		if (!player.hasPermission(FLY_IGNORE_PERM)) {
+			player.setAllowFlight(false);
+		}
+	}
 
-    private boolean askFlyFlag(final Player player, final IDummyLand dummyLand) {
+	private boolean askFlyFlag(final Player player, final IDummyLand dummyLand) {
 
-    	return dummyLand.checkPermissionAndInherit(player, permissionType);
-    }
+		return dummyLand.checkPermissionAndInherit(player, permissionType);
+	}
 }

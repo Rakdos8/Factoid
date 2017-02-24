@@ -70,7 +70,7 @@ public class PlayerContainerTenant extends PlayerContainer implements IPlayerCon
 
 	@Override
 	public boolean hasAccess(final Player player, final ILand land) {
-		if(land == null) {
+		if (land == null) {
 			return false;
 		}
 
@@ -78,7 +78,7 @@ public class PlayerContainerTenant extends PlayerContainer implements IPlayerCon
 		ILand actual = land;
 		ILand parent;
 
-		while(!value && actual.getParent() != null &&
+		while (!value && actual.getParent() != null &&
 			actual.getFlagAndInherit(FlagList.INHERIT_TENANT.getFlagType()).getValueBoolean() == true
 		) {
 			parent = actual.getParent();

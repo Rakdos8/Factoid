@@ -17,13 +17,13 @@
  */
 package me.tabinol.factoid.playercontainer;
 
+import org.bukkit.entity.Player;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainerFactionTerritory;
-
-import org.bukkit.entity.Player;
 
 
 /**
@@ -71,7 +71,7 @@ public class PlayerContainerFactionTerritory extends PlayerContainer
 	@Override
 	public boolean hasAccess(final Player player) {
 
-		if(land.getFactionTerritory() == null) {
+		if (land.getFactionTerritory() == null) {
 			return false;
 		}
 

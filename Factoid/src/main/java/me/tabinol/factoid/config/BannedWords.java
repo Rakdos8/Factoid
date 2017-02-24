@@ -113,8 +113,8 @@ public enum BannedWords {
 		}
 
 		// Pass 2 check for an invalid character
-		for(final String invalidChar : INVALID_CHARACTERS) {
-			if(name.contains(invalidChar)) {
+		for (final String invalidChar : INVALID_CHARACTERS) {
+			if (name.contains(invalidChar)) {
 				return true;
 			}
 		}

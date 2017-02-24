@@ -145,7 +145,7 @@ public class PlayersCache extends Thread {
 
 		final PlayerCacheEntry entry = playersRevCacheList.get(uuid);
 
-		if(entry != null) {
+		if (entry != null) {
 			return entry.getName();
 		}
 
@@ -160,7 +160,7 @@ public class PlayersCache extends Thread {
 	 */
 	public void getUUIDWithNames(final CommandThreadExec commandExec, final IPlayerContainer pc) {
 
-		if(pc != null && pc instanceof PlayerContainerPlayerName) {
+		if (pc != null && pc instanceof PlayerContainerPlayerName) {
 			getUUIDWithNames(commandExec, pc.getName());
 		} else {
 			// Start a null player name, nothing to resolve
@@ -192,39 +192,39 @@ public class PlayersCache extends Thread {
 		lock.lock();
 
 		// Output request loop (waiting for a command)
-		while(!exitRequest) {
+		while (!exitRequest) {
 
    			// Check if the list is empty and execute the list
-   			while(!outputList.isEmpty()) {
+   			while (!outputList.isEmpty()) {
    				final OutputRequest outputRequest = outputList.remove(0);
    				final int length = outputRequest.playerNames.length;
 
    				final PlayerCacheEntry[] entries = new PlayerCacheEntry[length];
 
    				// Pass 1 check in playersCache or null
-				final ArrayList<String> names = new ArrayList<String>(); // Pass 2 list
-   				for(int t = 0; t < length; t++) {
+				final ArrayList<String> names = new ArrayList<>(); // Pass 2 list
+   				for (int t = 0; t < length; t++) {
    					entries[t] = playersCacheList.get(outputRequest.playerNames[t].toLowerCase());
-   					if(entries[t] == null) {
+   					if (entries[t] == null) {
    						// Add in a list for pass 2
    						names.add(outputRequest.playerNames[t]);
    					}
    				}
 
    				// Pass 2 check in Minecraft website
-   				if(!names.isEmpty()) {
+   				if (!names.isEmpty()) {
    					Factoid.getThisPlugin().iLog().write("HTTP profile request: " + names);
    					final Profile[] profiles = httpProfileRepository.findProfilesByNames(names.toArray(new String[0]));
-   					for(final Profile profile : profiles) {
+   					for (final Profile profile : profiles) {
    						// Put in the correct position
    						int compt = 0;
    						final boolean found = false;
 
-   						while(compt != length && !found) {
-   							if(entries[compt] == null) {
+   						while (compt != length && !found) {
+   							if (entries[compt] == null) {
    								Factoid.getThisPlugin().iLog().write("HTTP Found : " + profile.getName() + ", " + profile.getId());
    								final UUID uuid = stringToUUID(profile.getId());
-   								if(uuid != null) {
+   								if (uuid != null) {
    									entries[compt] = new PlayerCacheEntry(uuid,
    											profile.getName());
    									// Update now
@@ -241,7 +241,7 @@ public class PlayersCache extends Thread {
    			}
 
    			// Update playerList
-   			while(!updateList.isEmpty()) {
+   			while (!updateList.isEmpty()) {
    				updatePlayerInlist(updateList.remove(0));
    			}
 
@@ -262,10 +262,10 @@ public class PlayersCache extends Thread {
 	private void updatePlayerInlist(final PlayerCacheEntry entry) {
 
 		final String nameLower = entry.getName().toLowerCase();
-		if(playersCacheList.get(nameLower) == null) {
+		if (playersCacheList.get(nameLower) == null) {
 
 			// Update to do
-			if(playersRevCacheList.get(entry.getUUID()) != null) {
+			if (playersRevCacheList.get(entry.getUUID()) != null) {
 				// Player exist, but name changed
 				playersCacheList.remove(nameLower);
 			}
@@ -281,7 +281,7 @@ public class PlayersCache extends Thread {
 	 */
 	public void stopNextRun() {
 
-		if(!isAlive()) {
+		if (!isAlive()) {
 			Factoid.getThisPlugin().getLogger().log(Level.SEVERE, "Problem with Players Cache Thread. Possible data loss!");
 			return;
 		}
@@ -302,8 +302,8 @@ public class PlayersCache extends Thread {
 	 * Load all.
 	 */
 	public void loadAll() {
-		playersCacheList = new TreeMap<String, PlayerCacheEntry>();
-		playersRevCacheList = new TreeMap<UUID, PlayerCacheEntry>();
+		playersCacheList = new TreeMap<>();
+		playersRevCacheList = new TreeMap<>();
 
 		try {
 			try(final BufferedReader br = new BufferedReader(new FileReader(file))) {

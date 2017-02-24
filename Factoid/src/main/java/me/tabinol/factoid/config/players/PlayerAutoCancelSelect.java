@@ -19,6 +19,7 @@ package me.tabinol.factoid.config.players;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import me.tabinol.factoid.commands.executor.CommandCancel;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
 import me.tabinol.factoid.utilities.FactoidRunnable;

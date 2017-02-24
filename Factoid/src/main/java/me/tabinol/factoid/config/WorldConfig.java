@@ -23,6 +23,10 @@ import java.io.File;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.DummyLand;
 import me.tabinol.factoid.parameters.FlagType;
@@ -33,10 +37,6 @@ import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoidapi.FactoidAPI;
 import me.tabinol.factoidapi.lands.types.IType;
 import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
-
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 
 // Started by Lands.Class
@@ -86,19 +86,19 @@ public class WorldConfig {
 	 */
 	public TreeMap<String, DummyLand> getLandOutsideArea() {
 
-		final TreeMap<String, DummyLand> landList = new TreeMap<String, DummyLand>();
+		final TreeMap<String, DummyLand> landList = new TreeMap<>();
 		final Set<String> keys = worldConfig.getConfigurationSection("").getKeys(false);
 
 		// We have to take _global_ first then others
 		for (final String worldName : keys) {
-			if(worldName.equalsIgnoreCase(GLOBAL)) {
+			if (worldName.equalsIgnoreCase(GLOBAL)) {
 				createConfForWorld(worldName, landList, false);
 			}
 		}
 
 		// The none-global
 		for (final String worldName : keys) {
-			if(!worldName.equalsIgnoreCase(GLOBAL)) {
+			if (!worldName.equalsIgnoreCase(GLOBAL)) {
 				createConfForWorld(worldName, landList, true);
 			}
 		}
@@ -111,7 +111,7 @@ public class WorldConfig {
 		final String worldNameLower = worldName.toLowerCase();
 		Factoid.getThisPlugin().iLog().write("Create conf for World: " + worldNameLower);
 		final DummyLand dl = new DummyLand(worldName);
-		if(copyFromGlobal) {
+		if (copyFromGlobal) {
 			landList.get(GLOBAL).copyPermsFlagsTo(dl);
 		}
 		landList.put(worldNameLower, landModify(dl, worldConfig,
@@ -145,9 +145,9 @@ public class WorldConfig {
 	public TreeMap<IType, DummyLand> getTypeDefaultConf() {
 
 		Factoid.getThisPlugin().iLog().write("Create default conf for lands");
-		final TreeMap<IType, DummyLand> defaultConf = new TreeMap<IType, DummyLand>();
+		final TreeMap<IType, DummyLand> defaultConf = new TreeMap<>();
 
-		for(final IType type : FactoidAPI.iTypes().getTypes()) {
+		for (final IType type : FactoidAPI.iTypes().getTypes()) {
 			final ConfigurationSection typeConf = landDefault.getConfigurationSection(type.getName());
 			final DummyLand dl = new DummyLand(type.getName());
 			defaultConfNoType.copyPermsFlagsTo(dl);
@@ -163,7 +163,7 @@ public class WorldConfig {
 		ConfigurationSection csPerm = null;
 		ConfigurationSection csFlags = null;
 
-		if(fc != null) {
+		if (fc != null) {
 			csPerm = fc.getConfigurationSection(perms);
 			csFlags = fc.getConfigurationSection(flags);
 		}
@@ -181,7 +181,7 @@ public class WorldConfig {
 
 							// Remove _ if it is a Bukkit Permission
 							String containerNameLower;
-							if(pcType == EPlayerContainerType.PERMISSION) {
+							if (pcType == EPlayerContainerType.PERMISSION) {
 								containerNameLower = containerName.toLowerCase().replaceAll("_", ".");
 							} else {
 								containerNameLower = containerName.toLowerCase();

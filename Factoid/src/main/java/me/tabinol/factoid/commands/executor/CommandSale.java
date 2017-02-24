@@ -47,7 +47,7 @@ public class CommandSale extends CommandExec {
 
 		checkSelections(true, null);
 		checkPermission(true, true, null, null);
-		if(!entity.playerConf.isAdminMod()) {
+		if (!entity.playerConf.isAdminMod()) {
 			// If the player not adminmod, he must be owner && permission true
 			checkPermission(false, false, PermissionList.ECO_LAND_FOR_SALE.getPermissionType(), null);
 		}
@@ -57,20 +57,20 @@ public class CommandSale extends CommandExec {
 		EcoSign ecoSign = null;
 
 		// Check for sign in hand
-		if(entity.player.getGameMode() != GameMode.CREATIVE && entity.player.getItemInHand().getType() != Material.SIGN) {
+		if (entity.player.getGameMode() != GameMode.CREATIVE && entity.player.getItemInHand().getType() != Material.SIGN) {
 			throw new FactoidCommandException("Must have a sign in hand", entity.player, "COMMAND.ECONOMY.MUSTHAVEISIGN");
 		}
 
 		// If 'recreate'
-		if(curArg.equalsIgnoreCase("recreate")) {
-			if(!land.isForSale()) {
+		if (curArg.equalsIgnoreCase("recreate")) {
+			if (!land.isForSale()) {
 				throw new FactoidCommandException("The land is not for sale", entity.player, "COMMAND.ECONOMY.ERRORCREATESIGN");
 			}
 			try {
 				ecoSign = new EcoSign(land, entity.player);
 				ecoSign.createSignForSale(land.getSalePrice());
 				removeSignFromHand();
-				if(!ecoSign.getLocation().getBlock().equals(land.getSaleSignLoc().getBlock())) {
+				if (!ecoSign.getLocation().getBlock().equals(land.getSaleSignLoc().getBlock())) {
 					ecoSign.removeSign(land.getSaleSignLoc());
 					((Land) land).setSaleSignLoc(ecoSign.getLocation());
 				}
@@ -92,7 +92,7 @@ public class CommandSale extends CommandExec {
 		}
 
 		// Land already for sale?
-		if(land.isForSale()) {
+		if (land.isForSale()) {
 			throw new FactoidCommandException("Land already for sale", entity.player, "COMMAND.ECONOMY.ALREADYSALE");
 		}
 

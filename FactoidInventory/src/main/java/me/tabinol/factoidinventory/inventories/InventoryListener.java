@@ -108,20 +108,20 @@ public class InventoryListener implements Listener {
 		final LandModifyReason reason = event.getLandModifyReason();
 
 		// Test to be specific (take specific players)
-		if(reason == LandModifyReason.AREA_ADD || reason == LandModifyReason.AREA_REMOVE
+		if (reason == LandModifyReason.AREA_ADD || reason == LandModifyReason.AREA_REMOVE
 				|| reason == LandModifyReason.AREA_REPLACE) {
 
 			// Land area change, all players in the world affected
-			for(final Player player : event.getLand().getWorld().getPlayers()) {
+			for (final Player player : event.getLand().getWorld().getPlayers()) {
 				inventoryStorage.switchInventory(player,
 						FactoidAPI.iLands().getLandOrOutsideArea(player.getLocation()),
 						player.getGameMode() == GameMode.CREATIVE, InventoryStorage.PlayerAction.CHANGE);
 			}
-		} else if(reason != LandModifyReason.PERMISSION_SET && reason != LandModifyReason.PERMISSION_SET
+		} else if (reason != LandModifyReason.PERMISSION_SET && reason != LandModifyReason.PERMISSION_SET
 				&& reason != LandModifyReason.RENAME) {
 
 			// No land resize or area replace, only players in the land affected
-			for(final Player player : event.getLand().getPlayersInLandAndChildren()) {
+			for (final Player player : event.getLand().getPlayersInLandAndChildren()) {
 				inventoryStorage.switchInventory(player,
 						FactoidAPI.iLands().getLandOrOutsideArea(player.getLocation()),
 						player.getGameMode() == GameMode.CREATIVE, InventoryStorage.PlayerAction.CHANGE);
@@ -159,7 +159,7 @@ public class InventoryListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onEntityDeath(final EntityDeathEvent event) {
 		// Not a player
-		if(event.getEntityType() != EntityType.PLAYER) {
+		if (event.getEntityType() != EntityType.PLAYER) {
 			return;
 		}
 
@@ -167,7 +167,7 @@ public class InventoryListener implements Listener {
 		final PlayerInvEntry invEntry = inventoryStorage.getPlayerInvEntry(player);
 
 		// Is from Citizens plugin
-		if(invEntry == null) {
+		if (invEntry == null) {
 			return;
 		}
 

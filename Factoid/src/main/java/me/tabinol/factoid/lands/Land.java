@@ -223,7 +223,7 @@ public class Land extends DummyLand implements ILand {
 	 */
 	public void addArea(final ICuboidArea area, final double price) {
 
-		if(price > 0) {
+		if (price > 0) {
 			Factoid.getThisPlugin().iLands().getPriceFromPlayer(worldName, owner, price);
 		}
 		addArea(area);
@@ -757,7 +757,7 @@ public class Land extends DummyLand implements ILand {
 		Factoid.getThisPlugin().iStorageThread().removeLand(name, genealogy);
 
 		// remove parent (if needed)
-		if(parent != null) {
+		if (parent != null) {
 			((Land)parent).removeChild(uuid);
 			parent = null;
 			genealogy = 0;
@@ -765,7 +765,7 @@ public class Land extends DummyLand implements ILand {
 		}
 
 		// Add parent
-		if(newParent != null) {
+		if (newParent != null) {
 			((Land)newParent).addChild(this);
 			parent = newParent;
 			priority = parent.getPriority();
@@ -782,7 +782,7 @@ public class Land extends DummyLand implements ILand {
 
 	private void removeChildFiles() {
 
-		for(final ILand child : children.values()) {
+		for (final ILand child : children.values()) {
 			child.setAutoSave(false);
 			Factoid.getThisPlugin().iStorageThread().removeLand((Land)child);
 			((Land)child).removeChildFiles();
@@ -791,7 +791,7 @@ public class Land extends DummyLand implements ILand {
 
 	private void saveChildFiles() {
 
-		for(final ILand child : children.values()) {
+		for (final ILand child : children.values()) {
 			child.setPriority(priority);
 			((Land)child).genealogy = genealogy + 1;
 			child.setAutoSave(true);
@@ -1144,7 +1144,7 @@ public class Land extends DummyLand implements ILand {
 
 		playLandChild.addAll(playersInLand);
 
-		for(final ILand child : children.values()) {
+		for (final ILand child : children.values()) {
 			playLandChild.addAll(child.getPlayersInLandAndChildren());
 		}
 

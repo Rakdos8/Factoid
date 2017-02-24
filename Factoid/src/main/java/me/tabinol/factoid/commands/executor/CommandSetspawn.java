@@ -56,7 +56,7 @@ public class CommandSetspawn extends CommandExec {
 		final Location loc = entity.player.getLocation();
 
 		// If the player is not inside the land
-		if(!land.isLocationInside(loc)) {
+		if (!land.isLocationInside(loc)) {
 			throw new FactoidCommandException("On land tp create", entity.player, "COMMAND.TP.OUTSIDE");
 		}
 

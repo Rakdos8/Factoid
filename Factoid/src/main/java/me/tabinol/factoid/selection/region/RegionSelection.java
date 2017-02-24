@@ -17,8 +17,9 @@
  */
 package me.tabinol.factoid.selection.region;
 
-import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
 import org.bukkit.entity.Player;
+
+import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
 
 
 /**

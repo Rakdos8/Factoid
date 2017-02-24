@@ -17,13 +17,13 @@
  */
 package me.tabinol.factoidapi.event;
 
-import me.tabinol.factoidapi.lands.IDummyLand;
-import me.tabinol.factoidapi.lands.ILand;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
+
+import me.tabinol.factoidapi.lands.IDummyLand;
+import me.tabinol.factoidapi.lands.ILand;
 
 
 /**
@@ -72,7 +72,7 @@ public class PlayerLandChangeEvent extends LandEvent implements Cancellable {
 		super(dummyLand);
 		this.lastDummyLand = lastDummyLand;
 
-		if(lastDummyLand instanceof ILand) {
+		if (lastDummyLand instanceof ILand) {
 			lastLand = (ILand) lastDummyLand;
 		} else {
 			lastLand = null;
