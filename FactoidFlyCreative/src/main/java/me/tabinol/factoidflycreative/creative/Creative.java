@@ -29,7 +29,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerDropItemEvent;
 
 import me.tabinol.factoidapi.FactoidAPI;
 import me.tabinol.factoidapi.event.PlayerLandChangeEvent;
@@ -87,7 +86,7 @@ public class Creative {
 		}
 	}
 
-	public boolean dropItem(final PlayerDropItemEvent event, final Player player) {
+	public boolean dropItem(final Player player) {
 		if (conf.isNoDrop() && !player.hasPermission(OVERRIDE_NODROP_PERM)) {
 			return true;
 		}

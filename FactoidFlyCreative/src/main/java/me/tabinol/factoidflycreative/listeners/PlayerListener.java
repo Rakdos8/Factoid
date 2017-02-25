@@ -136,8 +136,9 @@ public class PlayerListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onPlayerDropItem(final PlayerDropItemEvent event) {
-		if (event.getPlayer().getGameMode() == GameMode.CREATIVE
-			&& creative.dropItem(event, event.getPlayer())) {
+		if (event.getPlayer().getGameMode() == GameMode.CREATIVE &&
+			creative.dropItem(event.getPlayer())
+		) {
 			event.setCancelled(true);
 		}
 	}

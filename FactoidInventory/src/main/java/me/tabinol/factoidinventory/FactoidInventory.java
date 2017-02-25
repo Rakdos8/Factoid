@@ -32,7 +32,6 @@ public class FactoidInventory extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-
 		thisPlugin = this;
 
 		// Config
@@ -46,31 +45,27 @@ public class FactoidInventory extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-
 		if (inventoryListener != null) {
 			// Save inventories and remove online players
 			inventoryListener.removeAndSave();
 		}
 	}
 
-	public static FactoidInventory getThisPlugin() {
-
-		return thisPlugin;
-	}
-
-	public static InventoryConfig getConf() {
-
-		return config;
-	}
-
 	public InventoryListener getInventoryListener() {
-
 		return inventoryListener;
 	}
 
 	@Override
 	public boolean onCommand(final CommandSender sender, final Command cmd, final String commandLabel, final String[] args) {
-
-		return new Commands(sender, cmd, commandLabel, args).getComReturn();
+		return new Commands(sender, args).getComReturn();
 	}
+
+	public static FactoidInventory getThisPlugin() {
+		return thisPlugin;
+	}
+
+	public static InventoryConfig getConf() {
+		return config;
+	}
+
 }

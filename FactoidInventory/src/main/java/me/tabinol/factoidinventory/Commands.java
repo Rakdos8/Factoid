@@ -23,7 +23,6 @@ import static me.tabinol.factoidinventory.inventories.InventoryStorage.INV_DIR;
 import java.io.File;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -38,8 +37,6 @@ public class Commands {
 
 	public Commands(
 		final CommandSender sender,
-		final Command cmd,
-		final String commandLabel,
 		final String[] args
 	) {
 		comReturn = true;
@@ -55,22 +52,14 @@ public class Commands {
 			return;
 		}
 
-		if (args[0].equalsIgnoreCase("default")) {
-			if (permissionOk(InventoryConfig.PERM_DEFAULT)) {
-				saveDefault();
-			}
-		} else if (args[0].equalsIgnoreCase("loaddeath")) {
-			if (permissionOk(InventoryConfig.PERM_LOADDEATH)) {
-				loadDeath();
-			}
-		} else if (args[0].equalsIgnoreCase("forcesave")) {
-			if (permissionOk(InventoryConfig.PERM_FORCESAVE)) {
-				forceSave();
-			}
-		} else if (args[0].equalsIgnoreCase("reload")) {
-			if (permissionOk(InventoryConfig.PERM_RELOAD)) {
-				reload();
-			}
+		if (args[0].equalsIgnoreCase("default") && permissionOk(InventoryConfig.PERM_DEFAULT)) {
+			saveDefault();
+		} else if (args[0].equalsIgnoreCase("loaddeath") && permissionOk(InventoryConfig.PERM_LOADDEATH)) {
+			loadDeath();
+		} else if (args[0].equalsIgnoreCase("forcesave") && permissionOk(InventoryConfig.PERM_FORCESAVE)) {
+			forceSave();
+		} else if (args[0].equalsIgnoreCase("reload") && permissionOk(InventoryConfig.PERM_RELOAD)) {
+			reload();
 		} else {
 			sender.sendMessage("Invalid argument! type: \"/finv\" for information.");
 		}
@@ -140,8 +129,8 @@ public class Commands {
 
 		// Execute
 		if (!FactoidInventory.getThisPlugin().getInventoryListener().loadDeathInventory(player, lastTime)) {
-				sender.sendMessage("This death save is not found or the player is at the wrong place!");
-				return;
+			sender.sendMessage("This death save is not found or the player is at the wrong place!");
+			return;
 		}
 
 		sender.sendMessage("Reload inventory done for \"" + player.getName() + "\"!");
@@ -160,4 +149,5 @@ public class Commands {
 	public boolean getComReturn() {
 		return comReturn;
 	}
+
 }

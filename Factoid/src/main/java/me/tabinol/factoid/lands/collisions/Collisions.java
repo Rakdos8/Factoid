@@ -225,8 +225,9 @@ public class Collisions {
 			}
 
 			// Pass 9 check if the player has more than the maximum number of land
-			if (action == LandAction.LAND_ADD && owner != null
-					&& Factoid.getThisPlugin().iLands().getLands(owner).size() >= Factoid.getThisPlugin().iConf().getMaxLandPerPlayer()) {
+			if (action == LandAction.LAND_ADD &&
+				Factoid.getThisPlugin().iLands().getLands(owner).size() >= Factoid.getThisPlugin().iConf().getMaxLandPerPlayer()
+			) {
 				coll.add(new CollisionsEntry(LandError.MAX_LAND_FOR_PLAYER, null, 0));
 			}
 		}
