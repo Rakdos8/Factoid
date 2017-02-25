@@ -63,7 +63,6 @@ public class CommandCreate extends CommandExec {
 	 */
 	@Override
 	public void commandExecute() throws FactoidCommandException {
-
 		checkSelections(null, true);
 		// checkPermission(false, false, null, null);
 
@@ -87,39 +86,32 @@ public class CommandCreate extends CommandExec {
 
 		// Check for parent
 		if (!entity.argList.isLast()) {
-
 			final String curString = entity.argList.getNext();
-
 			if (curString.equalsIgnoreCase("noparent")) {
-
 				parent = null;
-			}
-
-			else {
-
+			} else {
 				parent = Factoid.getThisPlugin().iLands().getLand(curString);
-
 				if (parent == null) {
 					throw new FactoidCommandException("CommandCreate", entity.player, "COMMAND.CREATE.PARENTNOTEXIST");
 				}
 			}
 		} else {
-
 			// Autodetect parent
 			parent = select.getParentDetected();
 		}
 
 		// Not complicated! The player must be AdminMod, or access to create (in world)
 		// or access to create in parent if it is a subland.
-		if (!entity.playerConf.isAdminMod()
-				&& ((parent == null && !Factoid.getThisPlugin().iLands().getOutsideArea(area.getWorldName()).checkPermissionAndInherit(entity.player, PermissionList.LAND_CREATE.getPermissionType()))
-				|| (parent != null && !parent.checkPermissionAndInherit(entity.player, PermissionList.LAND_CREATE.getPermissionType())))) {
+		if (!entity.playerConf.isAdminMod() &&
+			((parent == null && !Factoid.getThisPlugin().iLands().getOutsideArea(area.getWorldName()).checkPermissionAndInherit(entity.player, PermissionList.LAND_CREATE.getPermissionType())) ||
+			(parent != null && !parent.checkPermissionAndInherit(entity.player, PermissionList.LAND_CREATE.getPermissionType())))
+		) {
 			throw new FactoidCommandException("CommandCreate", entity.player, "GENERAL.MISSINGPERMISSION");
 		}
 
 		// If the player is adminmod, the owner is nobody, and set type
-		IPlayerContainer owner;
-		IType type;
+		final IType type;
+		final IPlayerContainer owner;
 		if (entity.playerConf.isAdminMod()) {
 			owner = new PlayerContainerNobody();
 			type = Factoid.getThisPlugin().iConf().getTypeAdminMod();

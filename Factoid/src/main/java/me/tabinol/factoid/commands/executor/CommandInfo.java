@@ -159,13 +159,9 @@ public class CommandInfo extends CommandExec {
 	 * @return the permission in col for pl
 	 */
 	private String getPermissionInColForPl(final ILand land, final IPermissionType pt) {
-
-		final boolean result = land.checkPermissionAndInherit(player, pt);
-
-		if (result) {
+		if (land.checkPermissionAndInherit(player, pt)) {
 			return ChatColor.GREEN + pt.getName();
-		} else {
-			return ChatColor.RED + pt.getName();
 		}
+		return ChatColor.RED + pt.getName();
 	}
 }
