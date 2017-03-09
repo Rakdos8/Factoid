@@ -100,6 +100,10 @@ public class WorldListener extends CommonListener implements Listener {
 				entityType == EntityType.ENDER_CRYSTAL &&
 				!land.getFlagAndInherit(FlagList.END_CRYSTAL_EXPLOSION.getFlagType()).getValueBoolean()
 			) ||
+			(
+				entityType == EntityType.FIREWORK &&
+				!land.getFlagAndInherit(FlagList.FIREWORK_EXPLOSION.getFlagType()).getValueBoolean()
+			) ||
 			!land.getFlagAndInherit(FlagList.EXPLOSION.getFlagType()).getValueBoolean()
 		) {
 			event.setCancelled(true);
@@ -159,6 +163,12 @@ public class WorldListener extends CommonListener implements Listener {
 				final boolean isAllowed = land.getFlagAndInherit(FlagList.END_CRYSTAL_EXPLOSION.getFlagType()).getValueBoolean();
 				explodeBlocks(event, event.blockList(), FlagList.END_CRYSTAL_DAMAGE.getFlagType(), event.getLocation(),
 					event.getYield(), isAllowed ? 4L : 0L, false);
+
+			// Firework
+			} else if (event.getEntityType() == EntityType.FIREWORK) {
+				final boolean isAllowed = land.getFlagAndInherit(FlagList.FIREWORK_EXPLOSION.getFlagType()).getValueBoolean();
+				explodeBlocks(event, event.blockList(), FlagList.FIREWORK_DAMAGE.getFlagType(), event.getLocation(),
+					event.getYield(), isAllowed ? 0L : 0L, false);
 			}
 		}
 	}
@@ -351,10 +361,12 @@ public class WorldListener extends CommonListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public final void onEntityDamage(final EntityDamageEvent event) {
-		if (conf.isOverrideExplosions()
-				&& event.getEntity() instanceof Hanging
-				&& (event.getCause() == DamageCause.BLOCK_EXPLOSION || event.getCause() == DamageCause.ENTITY_EXPLOSION
-				|| event.getCause() == DamageCause.PROJECTILE)) {
+		if (conf.isOverrideExplosions() &&
+			event.getEntity() instanceof Hanging &&
+			(event.getCause() == DamageCause.BLOCK_EXPLOSION ||
+			event.getCause() == DamageCause.ENTITY_EXPLOSION ||
+			event.getCause() == DamageCause.PROJECTILE)
+		) {
 			// Check for ItemFrame
 			Factoid.getThisPlugin().iLog().write("Cancel HangingBreak : " + event.getEntity() + ", Cause: " + event.getCause());
 			event.setCancelled(true);

@@ -28,70 +28,72 @@ public enum FlagList {
 	UNDEFINED(new String()),
 
 	/** The firespread. */
-	FIRESPREAD(new Boolean(true)),
+	FIRESPREAD(Boolean.TRUE),
 
 	/** The fire. */
-	FIRE(new Boolean(true)),
+	FIRE(Boolean.TRUE),
 
 	/** The explosion. */
-	EXPLOSION(new Boolean(true)),
+	EXPLOSION(Boolean.TRUE),
 
 	/** The creeper explosion. */
-	CREEPER_EXPLOSION(new Boolean(true)),
+	CREEPER_EXPLOSION(Boolean.TRUE),
+	/** The creeper damage. */
+	CREEPER_DAMAGE(Boolean.TRUE),
 
 	/** The tnt explosion. */
-	TNT_EXPLOSION(new Boolean(true)),
+	TNT_EXPLOSION(Boolean.TRUE),
+	/** The tnt damage. */
+	TNT_DAMAGE(Boolean.TRUE),
 
 	/** The end crystal explosion. */
-	END_CRYSTAL_EXPLOSION(new Boolean(true)),
-
-	/** The creeper damage. */
-	CREEPER_DAMAGE(new Boolean(true)),
-
-	/** The tnt damage. */
-	TNT_DAMAGE(new Boolean(true)),
-
+	END_CRYSTAL_EXPLOSION(Boolean.TRUE),
 	/** The end crystal damage. */
-	END_CRYSTAL_DAMAGE(new Boolean(true)),
+	END_CRYSTAL_DAMAGE(Boolean.TRUE),
+
+	/** The firework explosion. */
+	FIREWORK_EXPLOSION(Boolean.TRUE),
+	/** The firework damage. */
+	FIREWORK_DAMAGE(Boolean.TRUE),
 
 	/** The enderman damage. */
-	ENDERMAN_DAMAGE(new Boolean(true)),
+	ENDERMAN_DAMAGE(Boolean.TRUE),
 
 	/** The chorus fruit random tp. */
-	CHORUS_FRUIT_TP(new Boolean(false)),
+	CHORUS_FRUIT_TP(Boolean.FALSE),
 
 	/** The wither damage. */
-	WITHER_DAMAGE(new Boolean(true)),
+	WITHER_DAMAGE(Boolean.TRUE),
 
 	/** The ghast damage. */
-	GHAST_DAMAGE(new Boolean(true)),
+	GHAST_DAMAGE(Boolean.TRUE),
 
 	/** The enderdragon damage. */
-	ENDERDRAGON_DAMAGE(new Boolean(true)),
+	ENDERDRAGON_DAMAGE(Boolean.TRUE),
 
 	/** The mob spawn. */
-	MOB_SPAWN(new Boolean(true)),
+	MOB_SPAWN(Boolean.TRUE),
 
 	/** The animal spawn. */
-	ANIMAL_SPAWN(new Boolean(true)),
+	ANIMAL_SPAWN(Boolean.TRUE),
 
 	/** The leaves decay */
-	LEAF_DECAY(new Boolean(true)),
+	LEAF_DECAY(Boolean.TRUE),
 
 	/** The crop trample */
-	CROP_TRAMPLE(new Boolean(true)),
+	CROP_TRAMPLE(Boolean.TRUE),
 
 	/** The lava flow */
-	LAVA_FLOW(new Boolean(true)),
+	LAVA_FLOW(Boolean.TRUE),
 
 	/** The water flow */
-	WATER_FLOW(new Boolean(true)),
+	WATER_FLOW(Boolean.TRUE),
 
 	/** The full pvp. */
-	FULL_PVP(new Boolean(true)),
+	FULL_PVP(Boolean.TRUE),
 
 	/** The faction pvp. */
-	FACTION_PVP(new Boolean(true)),
+	FACTION_PVP(Boolean.TRUE),
 
 	/** The message join. */
 	MESSAGE_JOIN(new String()),
@@ -109,13 +111,13 @@ public enum FlagList {
 	SPAWN(new String("")),
 
 	/** Inherit from parent owner */
-	INHERIT_OWNER(new Boolean(true)),
+	INHERIT_OWNER(Boolean.TRUE),
 
 	/** Inherit from parent residents */
-	INHERIT_RESIDENTS(new Boolean(true)),
+	INHERIT_RESIDENTS(Boolean.TRUE),
 
 	/** Inherit from parent tenant */
-	INHERIT_TENANT(new Boolean(true));
+	INHERIT_TENANT(Boolean.TRUE);
 
 	/** The base value. */
 	final FlagValue baseValue;

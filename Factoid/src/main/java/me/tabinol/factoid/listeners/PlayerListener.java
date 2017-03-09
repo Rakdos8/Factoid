@@ -1084,10 +1084,19 @@ public class PlayerListener extends CommonListener implements Listener {
 		}
 		// If it's in a real cubo and it's an ArmorStand or a passive monster (or can be tamed)
 		else if (land instanceof Land &&
-			(event.getCause() == DamageCause.PROJECTILE || event.getCause() == DamageCause.FIRE_TICK) &&
-			(event.getEntity() instanceof ArmorStand || event.getEntity() instanceof Animals || event.getEntity() instanceof Tameable)
+			(event.getEntity() instanceof ArmorStand ||
+			event.getEntity() instanceof Animals ||
+			event.getEntity() instanceof Tameable)
 		) {
-			event.setCancelled(true);
+			if (event.getCause() == DamageCause.PROJECTILE ||
+				event.getCause() == DamageCause.FIRE_TICK
+			) {
+				event.setCancelled(true);
+			} else if (event.getCause() == DamageCause.ENTITY_EXPLOSION &&
+				!land.getFlagAndInherit(FlagList.FIREWORK_DAMAGE.getFlagType()).getValueBoolean()
+			) {
+				event.setCancelled(true);
+			}
 		}
 	}
 
