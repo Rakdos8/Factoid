@@ -19,7 +19,6 @@ package me.tabinol.factoid.parameters;
 
 import me.tabinol.factoidapi.parameters.IPermissionType;
 
-
 /**
  * The Class PermissionType.
  */
@@ -35,7 +34,6 @@ public class PermissionType extends ParameterType implements IPermissionType {
 	 * @param defaultValue the default value
 	 */
 	PermissionType(final String permissionName, final boolean defaultValue) {
-
 		super(permissionName);
 		this.defaultValue = defaultValue;
 	}
@@ -46,7 +44,6 @@ public class PermissionType extends ParameterType implements IPermissionType {
 	 * @param defaultValue the new default value
 	 */
 	void setDefaultValue(final boolean defaultValue) {
-
 		this.defaultValue = defaultValue;
 	}
 
@@ -57,7 +54,6 @@ public class PermissionType extends ParameterType implements IPermissionType {
 	 */
 	@Override
 	public boolean getDefaultValue() {
-
 		return defaultValue;
 	}
 }

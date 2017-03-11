@@ -79,9 +79,8 @@ public class PlayerContainerPlayer extends PlayerContainer
 
 		if (player != null) {
 			return minecraftUUID.equals(player.getUniqueId());
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	@Override

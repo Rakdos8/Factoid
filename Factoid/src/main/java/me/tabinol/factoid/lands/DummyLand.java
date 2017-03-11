@@ -19,6 +19,7 @@ package me.tabinol.factoid.lands;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -47,13 +48,13 @@ import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 public class DummyLand implements IDummyLand {
 
 	/** The permissions. */
-	protected TreeMap<IPlayerContainer, TreeMap<IPermissionType, IPermission>> permissions; // String for playerName
+	protected final TreeMap<IPlayerContainer, TreeMap<IPermissionType, IPermission>> permissions; // String for playerName
 
 	/** The flags. */
-	protected TreeMap<IFlagType, ILandFlag> flags;
+	protected final TreeMap<IFlagType, ILandFlag> flags;
 
 	/** The world name. */
-	protected String worldName;
+	protected final String worldName;
 
 	/**
 	 * Instantiates a new dummy land.
@@ -61,9 +62,8 @@ public class DummyLand implements IDummyLand {
 	 * @param worldName the world name
 	 */
 	public DummyLand(final String worldName) {
-
-		permissions = new TreeMap<>();
-		flags = new TreeMap<>();
+		this.permissions = new TreeMap<>();
+		this.flags = new TreeMap<>();
 		this.worldName = worldName;
 	}
 
@@ -74,7 +74,6 @@ public class DummyLand implements IDummyLand {
 	 */
 	@Override
 	public String getWorldName() {
-
 		return worldName;
 	}
 
@@ -85,13 +84,11 @@ public class DummyLand implements IDummyLand {
 	 */
 	@Override
 	public World getWorld() {
-
 		return Factoid.getThisPlugin().getServer().getWorld(worldName);
 	}
 
 	@Override
 	public void copyPermsFlagsTo(final IDummyLand desLand) {
-
 		// copy permissions
 		for (final Map.Entry<IPlayerContainer, TreeMap<IPermissionType, IPermission>> pcEntry : permissions.entrySet()) {
 
@@ -104,7 +101,6 @@ public class DummyLand implements IDummyLand {
 
 		// copy flags
 		for (final Map.Entry<IFlagType, ILandFlag> flagEntry : flags.entrySet()) {
-
 			((DummyLand) desLand).flags.put(flagEntry.getKey(), flagEntry.getValue().copyOf());
 		}
 	}
@@ -117,8 +113,7 @@ public class DummyLand implements IDummyLand {
 	 */
 	@SuppressWarnings("deprecation")
 	public void addPermission(final IPlayerContainer pc, final IPermission perm) {
-
-		TreeMap<IPermissionType, IPermission> permPlayer;
+		final TreeMap<IPermissionType, IPermission> permPlayer;
 
 		if (this instanceof Land) {
 			((PlayerContainer)pc).setLand((Land) this);
@@ -160,9 +155,10 @@ public class DummyLand implements IDummyLand {
 	 * @param permType the perm type
 	 * @return true, if successful
 	 */
-	public boolean removePermission(final IPlayerContainer pc,
-			final me.tabinol.factoidapi.parameters.IPermissionType permType) {
-
+	public boolean removePermission(
+		final IPlayerContainer pc,
+		final IPermissionType permType
+	) {
 		TreeMap<IPermissionType, IPermission> permPlayer;
 		IPermission perm;
 
@@ -198,7 +194,6 @@ public class DummyLand implements IDummyLand {
 	 */
 	@Override
 	public final Set<IPlayerContainer> getSetPCHavePermission() {
-
 		return permissions.keySet();
 	}
 
@@ -210,7 +205,6 @@ public class DummyLand implements IDummyLand {
 	 */
 	@Override
 	public final Collection<IPermission> getPermissionsForPC(final IPlayerContainer pc) {
-
 		return permissions.get(pc).values();
 	}
 
@@ -223,7 +217,7 @@ public class DummyLand implements IDummyLand {
 	 */
 	@Override
 	public boolean checkPermissionAndInherit(final Player player,
-			final me.tabinol.factoidapi.parameters.IPermissionType pt) {
+			final IPermissionType pt) {
 
 		return checkPermissionAndInherit(player, pt, false);
 	}
@@ -237,15 +231,14 @@ public class DummyLand implements IDummyLand {
 	 */
 	@Override
 	public boolean checkPermissionNoInherit(final Player player,
-			final me.tabinol.factoidapi.parameters.IPermissionType pt) {
+			final IPermissionType pt) {
 
 		final Boolean value = getPermission(player, pt, false);
 
 		if (value != null) {
 			return value;
-		} else {
-			return pt.getDefaultValue();
 		}
+		return pt.getDefaultValue();
 	}
 
 	/**
@@ -256,9 +249,11 @@ public class DummyLand implements IDummyLand {
 	 * @param onlyInherit the only inherit
 	 * @return the boolean
 	 */
-	protected Boolean checkPermissionAndInherit(final Player player,
-			final me.tabinol.factoidapi.parameters.IPermissionType pt, final boolean onlyInherit) {
-
+	protected Boolean checkPermissionAndInherit(
+		final Player player,
+		final IPermissionType pt,
+		final boolean onlyInherit
+	) {
 		if (this instanceof Land) {
 			return ((Land) this).checkLandPermissionAndInherit(player, pt, onlyInherit);
 		}
@@ -273,26 +268,44 @@ public class DummyLand implements IDummyLand {
 	 * @param onlyInherit the only inherit
 	 * @return the permission
 	 */
-	protected Boolean getPermission(final Player player,
-			final me.tabinol.factoidapi.parameters.IPermissionType pt, final boolean onlyInherit) {
-
+	protected Boolean getPermission(
+		final Player player,
+		final IPermissionType pt,
+		final boolean onlyInherit
+	) {
 		return getPermission(player, pt, onlyInherit, null);
 	}
 
 	// Land parameter is only to paste to default parameters for a land
-	private Boolean getPermission(final Player player,
-			final me.tabinol.factoidapi.parameters.IPermissionType pt, final boolean onlyInherit, final Land land) {
-
-		for (final Map.Entry<IPlayerContainer, TreeMap<IPermissionType, IPermission>> permissionEntry : permissions.entrySet()) {
-			boolean value;
+	private Boolean getPermission(
+		final Player player,
+		final IPermissionType pt,
+		final boolean onlyInherit,
+		final Land land
+	) {
+		for (final Entry<IPlayerContainer, TreeMap<IPermissionType, IPermission>> permissionEntry : permissions.entrySet()) {
+			final boolean value;
 			if (land != null) {
 				value = permissionEntry.getKey().hasAccess(player, land);
 			} else {
 				value = permissionEntry.getKey().hasAccess(player);
 			}
+
 			if (value) {
 				final IPermission perm = permissionEntry.getValue().get(pt);
-				if (perm != null) {
+				if (perm == null) {
+					if (pt.getName().startsWith("USE_")) {
+						final IPermission permUse = permissionEntry.getValue().get(PermissionList.USE.getPermissionType());
+						if ((onlyInherit && permUse.isHeritable()) || !onlyInherit) {
+							return permUse.getValue();
+						}
+					} else if (pt.getName().startsWith("OPEN_")) {
+						final IPermission permOpen = permissionEntry.getValue().get(PermissionList.OPEN.getPermissionType());
+						if ((onlyInherit && permOpen.isHeritable()) || !onlyInherit) {
+							return permOpen.getValue();
+						}
+					}
+				} else {
 					Factoid.getThisPlugin().iLog().write("Container: " + permissionEntry.getKey().toString() + ", PermissionType: " + perm.getPermType() + ", Value: " + perm.getValue() + ", Heritable: " + perm.isHeritable());
 					if ((onlyInherit && perm.isHeritable()) || !onlyInherit) {
 						return perm.getValue();
@@ -303,11 +316,9 @@ public class DummyLand implements IDummyLand {
 
 		// Check in default permissions
 		if (!onlyInherit && this instanceof Land) {
-
 			return ((Lands) FactoidAPI.iLands()).getDefaultConf(((Land) this).getType()).getPermission(
 					player, pt, onlyInherit, (Land) this);
 		}
-
 		return null;
 	}
 

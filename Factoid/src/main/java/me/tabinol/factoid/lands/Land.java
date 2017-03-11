@@ -184,8 +184,8 @@ public class Land extends DummyLand implements ILand {
 		owner = new PlayerContainerNobody();
 		residents = new TreeSet<>();
 		playerNotify = new TreeSet<>();
-		permissions = new TreeMap<>();
-		flags = new TreeMap<>();
+		permissions.clear();
+		flags.clear();
 		doSave();
 	}
 

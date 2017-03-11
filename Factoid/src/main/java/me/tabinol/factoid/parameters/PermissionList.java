@@ -240,7 +240,7 @@ public enum PermissionList {
 	final boolean baseValue;
 
 	/** The Permission type. */
-	private PermissionType PermissionType;
+	private PermissionType permissionType;
 
 	/**
 	 * Instantiates a new permission list.
@@ -248,17 +248,16 @@ public enum PermissionList {
 	 * @param baseValue the base value
 	 */
 	private PermissionList(final boolean baseValue) {
-
 		this.baseValue = baseValue;
 	}
 
 	/**
 	 * Sets the permission type.
 	 *
-	 * @param PermissionType the new permission type
+	 * @param permissionType the new permission type
 	 */
-	void setPermissionType(final PermissionType PermissionType) {
-		this.PermissionType = PermissionType;
+	void setPermissionType(final PermissionType permissionType) {
+		this.permissionType = permissionType;
 	}
 
 	/**
@@ -267,7 +266,6 @@ public enum PermissionList {
 	 * @return the permission type
 	 */
 	public PermissionType getPermissionType() {
-
-		return PermissionType;
+		return permissionType;
 	}
 }
