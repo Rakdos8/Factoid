@@ -296,12 +296,12 @@ public class DummyLand implements IDummyLand {
 				if (perm == null) {
 					if (pt.getName().startsWith("USE_")) {
 						final IPermission permUse = permissionEntry.getValue().get(PermissionList.USE.getPermissionType());
-						if ((onlyInherit && permUse.isHeritable()) || !onlyInherit) {
+						if (permUse != null && ((onlyInherit && permUse.isHeritable()) || !onlyInherit)) {
 							return permUse.getValue();
 						}
 					} else if (pt.getName().startsWith("OPEN_")) {
 						final IPermission permOpen = permissionEntry.getValue().get(PermissionList.OPEN.getPermissionType());
-						if ((onlyInherit && permOpen.isHeritable()) || !onlyInherit) {
+						if (permOpen != null && ((onlyInherit && permOpen.isHeritable()) || !onlyInherit)) {
 							return permOpen.getValue();
 						}
 					}
