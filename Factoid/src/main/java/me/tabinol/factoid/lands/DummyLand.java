@@ -393,9 +393,8 @@ public class DummyLand implements IDummyLand {
 
 		if (value != null) {
 			return value;
-		} else {
-			return ft.getDefaultValue();
 		}
+		return ft.getDefaultValue();
 	}
 
 	/**
