@@ -21,7 +21,7 @@
 		<spigot-version>1.11.2-R0.1-SNAPSHOT</spigot-version>
 
 		<!-- Other plugin versions -->
-		<vault-version>1.5</vault-version>
+		<vault-version>1.6</vault-version>
 		<worldedit-version>6.1.5</worldedit-version>
 		<essentialsx-version>2.0.1</essentialsx-version>
 	</properties>
