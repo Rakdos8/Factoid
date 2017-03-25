@@ -133,6 +133,7 @@ public class CommandCreate extends CommandExec {
 			land = Factoid.getThisPlugin().iLands().createLand(curArg, owner, area, parent, price, type);
 		} catch (final FactoidLandException ex) {
 			Logger.getLogger(CommandCreate.class.getName()).log(Level.SEVERE, "On land create", ex);
+			return;
 		}
 
 		entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CREATE.DONE"));
