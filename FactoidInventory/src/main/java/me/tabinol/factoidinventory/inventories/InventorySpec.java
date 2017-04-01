@@ -58,7 +58,6 @@ public class InventorySpec {
 	}
 
 	public boolean isDisabledCommand(final String command) {
-
 		// We have to check for no cas sensitive
 		if (disabledCommands != null) {
 			for (final String cItem : disabledCommands) {

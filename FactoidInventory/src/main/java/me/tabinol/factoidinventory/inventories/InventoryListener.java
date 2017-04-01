@@ -88,7 +88,7 @@ public class InventoryListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void PlayerGameModeChange(final PlayerGameModeChangeEvent event) {
+	public void onPlayerGameModeChange(final PlayerGameModeChangeEvent event) {
 		final Player player = event.getPlayer();
 
 		inventoryStorage.switchInventory(player,
@@ -178,16 +178,17 @@ public class InventoryListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerCommandPreprocess(final PlayerCommandPreprocessEvent event) {
 		final Player player = event.getPlayer();
+		final String message = event.getMessage().length() > 1 ? event.getMessage().substring(1) : event.getMessage();
 		final PlayerConfEntry factoidPlayer = Factoid.getThisPlugin().iPlayerConf().get(player);
 
 		if (!factoidPlayer.isAdminMod() &&
-			inventoryStorage.getPlayerInvEntry(player).getActualInv().isDisabledCommand(event.getMessage().substring(1).split(" ")[0])
+			inventoryStorage.getPlayerInvEntry(player).getActualInv().isDisabledCommand(message.split(" ")[0])
 		) {
 			event.setCancelled(true);
-			player.sendMessage(ChatColor.RED
-				+ "[Factoid] "
-				+ Factoid.getThisPlugin().iLanguage().getMessage(
-						"GENERAL.MISSINGPERMISSIONHERE"));
+			player.sendMessage(
+				ChatColor.RED + "[Factoid] " +
+				Factoid.getThisPlugin().iLanguage().getMessage("GENERAL.MISSINGPERMISSIONHERE")
+			);
 			return;
 		}
 	}
