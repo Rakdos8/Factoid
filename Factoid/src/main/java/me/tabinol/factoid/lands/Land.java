@@ -944,10 +944,12 @@ public class Land extends DummyLand implements ILand {
 	 * @return the boolean
 	 */
 	protected Boolean checkLandPermissionAndInherit(final Player player, final IPermissionType pt, final boolean onlyInherit) {
+		if (isBanned(player)) {
+			return false;
+		}
 
-		Boolean permValue;
-
-		if ((permValue = getPermission(player, pt, onlyInherit)) != null) {
+		final Boolean permValue = getPermission(player, pt, onlyInherit);
+		if (permValue != null) {
 			return permValue;
 		} else if (parent != null) {
 			return ((Land) parent).checkPermissionAndInherit(player, pt, true);

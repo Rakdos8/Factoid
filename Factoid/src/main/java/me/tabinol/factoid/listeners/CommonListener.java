@@ -49,8 +49,7 @@ public class CommonListener {
 	 * @return true, if successful
 	 */
 	protected boolean checkPermission(final IDummyLand land, final Player player, final IPermissionType pt) {
-		return land.checkPermissionAndInherit(player, pt) == pt
-				.getDefaultValue();
+		return land.checkPermissionAndInherit(player, pt) == pt.getDefaultValue();
 	}
 
 	/**

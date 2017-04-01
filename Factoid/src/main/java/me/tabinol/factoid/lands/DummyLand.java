@@ -216,9 +216,7 @@ public class DummyLand implements IDummyLand {
 	 * @return the boolean
 	 */
 	@Override
-	public boolean checkPermissionAndInherit(final Player player,
-			final IPermissionType pt) {
-
+	public boolean checkPermissionAndInherit(final Player player, final IPermissionType pt) {
 		return checkPermissionAndInherit(player, pt, false);
 	}
 

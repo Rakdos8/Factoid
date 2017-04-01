@@ -19,6 +19,7 @@ package me.tabinol.factoid.economy;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.logging.Level;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -35,33 +36,32 @@ public class EcoScheduler extends BukkitRunnable {
 	 */
 	@Override
 	public void run() {
-
 		final Calendar now = Calendar.getInstance();
-
 		// Check for rent renew
 		for (final ILand land : Factoid.getThisPlugin().iLands().getForRent()) {
-
-			final long nextPaymentTime = land.getLastPaymentTime().getTime() + (86400000 * land.getRentRenew());
-
+			final long nextPaymentTime = land.getLastPaymentTime().getTime() + (86400000L * land.getRentRenew());
 			if (land.isRented() && nextPaymentTime < now.getTimeInMillis()) {
-
 				//Check if the tenant has enough money or time limit whit no auto renew
 				if (Factoid.getThisPlugin().iPlayerMoney().getPlayerBalance(land.getTenant().getOfflinePlayer(), land.getWorldName()) < land.getRentPrice()
 						|| !land.getRentAutoRenew()) {
-
 					// Unrent
 					((Land) land).unSetRented();
 					try {
-						new EcoSign(land, land.getRentSignLoc()).createSignForRent(
-								land.getRentPrice(), land.getRentRenew(),
-								land.getRentAutoRenew(), null);
-					} catch (final SignException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						new EcoSign(
+							land,
+							land.getRentSignLoc()
+						).createSignForRent(
+							land.getRentPrice(),
+							land.getRentRenew(),
+							land.getRentAutoRenew(),
+							null
+						);
+					} catch (final SignException ex) {
+						Factoid.getThisPlugin().getLogger().log(Level.SEVERE, ex.getMessage(), ex);
 					}
-				} else {
-
-					// renew rent
+				}
+				// Renew rent
+				else {
 					Factoid.getThisPlugin().iPlayerMoney().getFromPlayer(land.getTenant().getOfflinePlayer(),
 						land.getWorldName(), land.getRentPrice());
 					if (land.getOwner() instanceof IPlayerContainerPlayer) {

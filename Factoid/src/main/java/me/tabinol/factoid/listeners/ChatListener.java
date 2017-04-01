@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -16,6 +15,7 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.config.players.PlayerStaticConfig;
 import me.tabinol.factoid.lands.Land;
+import net.md_5.bungee.api.ChatColor;
 
 /**
  *
@@ -44,11 +44,11 @@ public class ChatListener extends CommonListener implements Listener {
 			return;
 		}
 
-		final String firstChar = event.getMessage().substring(0, 1);
 		final Player player = event.getPlayer();
+		final String firstChar = event.getMessage().substring(0, 1);
 
 		// Chat in a land
-		if ("=".equals(firstChar) || ">".equals(firstChar) || "<".equals(firstChar)) {
+		if (("=".equals(firstChar) || ">".equals(firstChar) || "<".equals(firstChar)) && event.getMessage().length() > 1) {
 			event.setCancelled(true);
 			final Land land = Factoid.getThisPlugin().iLands().getLand(player.getLocation());
 
@@ -83,8 +83,8 @@ public class ChatListener extends CommonListener implements Listener {
 			final String messageToSend = ChatColor.WHITE + "[" + player.getDisplayName() +
 				ChatColor.WHITE + " " + firstChar + " " + "'" +
 				ChatColor.GREEN + land.getName() + ChatColor.WHITE + "'] " +
-				ChatColor.GRAY + message;
- 			System.out.println(messageToSend);
+				ChatColor.GRAY + message.replace(ChatColor.RESET.toString(), ChatColor.RESET.toString() + ChatColor.GRAY.toString());
+			Bukkit.getConsoleSender().sendMessage(messageToSend);
 			for (final Player playerToMsg : playersToMsg) {
 				playerToMsg.sendMessage(
 					(playerConf.getChat().isSpy(playerToMsg) ?

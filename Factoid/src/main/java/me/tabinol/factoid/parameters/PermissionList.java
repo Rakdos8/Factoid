@@ -18,6 +18,7 @@
 package me.tabinol.factoid.parameters;
 
 import org.bukkit.entity.Tameable;
+import org.bukkit.inventory.Merchant;
 
 /**
  * The Enum PermissionList.
@@ -62,6 +63,9 @@ public enum PermissionList {
 	/** The open chest. */
 	OPEN_CHEST(true),
 
+	/** The open trapped chest. */
+	OPEN_TRAPPEDCHEST(true),
+
 	/** The open enderchest. */
 	OPEN_ENDERCHEST(true),
 
@@ -98,9 +102,6 @@ public enum PermissionList {
 	/** The use pressureplate. */
 	USE_PRESSUREPLATE(true),
 
-	/** The use trappedchest. */
-	USE_TRAPPEDCHEST(true),
-
 	/** The use string. */
 	USE_STRING(true),
 
@@ -128,8 +129,11 @@ public enum PermissionList {
 	/** For {@link Tameable} **/
 	USE_TAMEABLE(true),
 
+	/** For trading with a {@link Merchant} **/
+	TRADE(true),
+
 	/** The place end crystal **/
-	PLACE_END_CRYSTAL(false),
+	PLACE_END_CRYSTAL(true),
 
 	/** The place end crystal **/
 	FROST_WALKER(true),
@@ -268,4 +272,5 @@ public enum PermissionList {
 	public PermissionType getPermissionType() {
 		return permissionType;
 	}
+
 }

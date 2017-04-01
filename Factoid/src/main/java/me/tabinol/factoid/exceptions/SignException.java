@@ -30,7 +30,6 @@ public class SignException extends Exception {
 	 * The Constructor.
 	 */
 	public SignException() {
-
 		super("Can not create the sign!");
 	}
 }

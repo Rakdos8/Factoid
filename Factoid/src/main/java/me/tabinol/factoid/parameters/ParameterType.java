@@ -39,7 +39,6 @@ public class ParameterType implements Comparable<ParameterType> {
 	 * @param name the name
 	 */
 	ParameterType(final String name) {
-
 		this.name = name;
 	}
 
@@ -48,8 +47,7 @@ public class ParameterType implements Comparable<ParameterType> {
 	 */
 	@Override
 	public int compareTo(final ParameterType t) {
-
-		return name.compareTo(t.name);
+		return getName().compareTo(t.getName());
 	}
 
 	/**
@@ -59,7 +57,6 @@ public class ParameterType implements Comparable<ParameterType> {
 	 * @return true, if successful
 	 */
 	public boolean equals(final ParameterType t) {
-
 		return name.equals(t.name);
 	}
 
@@ -69,7 +66,6 @@ public class ParameterType implements Comparable<ParameterType> {
 	 * @return the name
 	 */
 	public String getName() {
-
 		return name;
 	}
 
@@ -78,7 +74,6 @@ public class ParameterType implements Comparable<ParameterType> {
 	 */
 	@Override
 	public String toString() {
-
 		return name;
 	}
 
@@ -88,12 +83,7 @@ public class ParameterType implements Comparable<ParameterType> {
 	 * @return the prints the
 	 */
 	public String getPrint() {
-
-		if (isRegistered) {
-			return ChatColor.YELLOW + name;
-		} else {
-			return ChatColor.DARK_GRAY + name;
-		}
+		return (isRegistered ? ChatColor.YELLOW : ChatColor.DARK_GRAY) + name;
 	}
 
 	/**
@@ -102,7 +92,6 @@ public class ParameterType implements Comparable<ParameterType> {
 	 * @return true, if is registered
 	 */
 	public boolean isRegistered() {
-
 		return isRegistered;
 	}
 
@@ -110,7 +99,6 @@ public class ParameterType implements Comparable<ParameterType> {
 	 * Sets the registered.
 	 */
 	void setRegistered() {
-
 		isRegistered = true;
 	}
 }

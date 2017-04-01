@@ -37,42 +37,37 @@ import me.tabinol.factoidapi.parameters.IParameters;
 public class Parameters implements IParameters {
 
 	/** The permissions. */
-	private final TreeMap<String, PermissionType> permissions;
+	private final TreeMap<String, PermissionType> permissions = new TreeMap<>();
 
 	/** The flags. */
-	private final TreeMap<String, FlagType> flags;
+	private final TreeMap<String, FlagType> flags = new TreeMap<>();
 
 	/** List of unregistered flags for an update **/
-	protected final List<LandFlag> unRegisteredFlags;
+	protected final List<LandFlag> unRegisteredFlags = new ArrayList<>();
 
 	/** Special permission Map Prefix-->Material-->PermissionType */
-	private final Map<SpecialPermPrefix, Map<Material, PermissionType>> specialPermMap;
+	private final Map<SpecialPermPrefix, Map<Material, PermissionType>> specialPermMap = new EnumMap<>(SpecialPermPrefix.class);
 
 	/**
 	 * Instantiates a new parameters.
 	 */
 	public Parameters() {
-
-		permissions = new TreeMap<>();
-		flags = new TreeMap<>();
-		unRegisteredFlags = new ArrayList<>();
-
-		// Add flags and permissions
-		for (final PermissionList permissionList : PermissionList.values()) {
-			permissionList.setPermissionType(registerPermissionType(permissionList.name(), permissionList.baseValue));
-		}
-		for (final FlagList flagList : FlagList.values()) {
-			flagList.setFlagType(registerFlagType(flagList.name(), flagList.baseValue));
-		}
 		// Add special permissions (PLACE_XXX and DESTROY_XXX, NOPLACE_XXX, NODESTROY_XXX)
-		specialPermMap = new EnumMap<>(SpecialPermPrefix.class);
-
 		for (final SpecialPermPrefix pref : SpecialPermPrefix.values()) {
 			final Map<Material, PermissionType> matPerms = new EnumMap<>(Material.class);
 			for (final Material mat : Material.values()) {
 				matPerms.put(mat, registerPermissionType(pref.name() + "_" + mat.name(), false));
 			}
 			specialPermMap.put(pref, matPerms);
+		}
+
+		// Add all permissions
+		for (final PermissionList permissionList : PermissionList.values()) {
+			permissionList.setPermissionType(registerPermissionType(permissionList.name(), permissionList.baseValue));
+		}
+		// Add all flags
+		for (final FlagList flagList : FlagList.values()) {
+			flagList.setFlagType(registerFlagType(flagList.name(), flagList.baseValue));
 		}
 	}
 
@@ -85,7 +80,6 @@ public class Parameters implements IParameters {
 	 */
 	@Override
 	public final PermissionType registerPermissionType(final String permissionName, final boolean defaultValue) {
-
 		final String permissionNameUpper = permissionName.toUpperCase();
 		final PermissionType permissionType = getPermissionTypeNoValid(permissionNameUpper);
 		permissionType.setDefaultValue(defaultValue);
@@ -102,9 +96,7 @@ public class Parameters implements IParameters {
 	 * @return the flag type
 	 */
 	@Override
-	public final FlagType  registerFlagType(final String flagName,
-			final Object defaultValue) {
-
+	public final FlagType  registerFlagType(final String flagName, final Object defaultValue) {
 		FlagValue flagDefaultValue;
 
 		// Check is default value is raw or is FlagDefaultValue
@@ -142,14 +134,12 @@ public class Parameters implements IParameters {
 	 */
 	@Override
 	public final PermissionType getPermissionType(final String permissionName) {
-
 		final PermissionType pt = permissions.get(permissionName);
 
 		if (pt != null && pt.isRegistered()) {
 			return permissions.get(permissionName);
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -160,14 +150,12 @@ public class Parameters implements IParameters {
 	 */
 	@Override
 	public final FlagType getFlagType(final String flagName) {
-
 		final FlagType ft = flags.get(flagName);
 
 		if (ft != null && ft.isRegistered()) {
 			return flags.get(flagName);
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -177,14 +165,12 @@ public class Parameters implements IParameters {
 	 * @return the permission type no valid
 	 */
 	public final PermissionType getPermissionTypeNoValid(final String permissionName) {
-
 		PermissionType pt = permissions.get(permissionName);
 
 		if (pt == null) {
 			pt = new PermissionType(permissionName, false);
 			permissions.put(permissionName, pt);
 		}
-
 		return pt;
 	}
 
@@ -195,26 +181,22 @@ public class Parameters implements IParameters {
 	 * @return the flag type no valid
 	 */
 	public final FlagType getFlagTypeNoValid(final String flagName) {
-
 		FlagType ft = flags.get(flagName);
 
 		if (ft == null) {
 			ft = new FlagType(flagName, new String());
 			flags.put(flagName, ft);
 		}
-
 		return ft;
 	}
 
 	@Override
 	public final PermissionType getSpecialPermission(final SpecialPermPrefix prefix, final Material mat) {
-
 		final Map<Material, PermissionType> matPerms = specialPermMap.get(prefix);
 
 		if (matPerms == null) {
 			return null;
 		}
-
 		return matPerms.get(mat);
 	}
 }

@@ -70,6 +70,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.inventory.Merchant;
 import org.bukkit.plugin.PluginManager;
 
 import me.tabinol.factoid.BKVersion;
@@ -252,7 +253,6 @@ public class PlayerListener extends CommonListener implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteract(final PlayerInteractEvent event) {
-
 		IDummyLand land;
 		final Material ml = event.getClickedBlock().getType();
 		final Player player = event.getPlayer();
@@ -266,8 +266,9 @@ public class PlayerListener extends CommonListener implements Listener {
 						+ ", Material: " + ml.name());
 
 		// For infoItem
-		if (player.getItemInHand() != null && action == Action.LEFT_CLICK_BLOCK
-				&& player.getItemInHand().getTypeId() == conf.getInfoItem()) {
+		if (player.getInventory().getItemInMainHand() != null
+				&& action == Action.LEFT_CLICK_BLOCK
+				&& player.getInventory().getItemInMainHand().getTypeId() == conf.getInfoItem()) {
 			try {
 				new CommandInfo(player,
 						Factoid.getThisPlugin().iLands().getCuboidArea(
@@ -278,12 +279,11 @@ public class PlayerListener extends CommonListener implements Listener {
 						Level.SEVERE, "Error when trying to get area", ex);
 			}
 			event.setCancelled(true);
-
-			// For Select
-		} else if (player.getItemInHand() != null
+		}
+		// For Select
+		else if (player.getInventory().getItemInMainHand() != null
 				&& action == Action.LEFT_CLICK_BLOCK
-				&& player.getItemInHand().getTypeId() == conf.getSelectItem()) {
-
+				&& player.getInventory().getItemInMainHand().getTypeId() == conf.getSelectItem()) {
 			try {
 				new CommandSelect(player, new ArgList(new String[] { "here" },
 						player), event.getClickedBlock().getLocation())
@@ -291,35 +291,27 @@ public class PlayerListener extends CommonListener implements Listener {
 			} catch (final FactoidCommandException ex) {
 				// Empty, message is sent by the catch
 			}
-
 			event.setCancelled(true);
-
-			// For Select Cancel
-		} else if (player.getItemInHand() != null
+		}
+		// For Select Cancel
+		else if (player.getInventory().getItemInMainHand() != null
 				&& action == Action.RIGHT_CLICK_BLOCK
-				&& player.getItemInHand().getTypeId() == conf.getSelectItem()
-				&& (entry = playerConf.get(player)).getSelection()
-						.hasSelection()) {
-
+				&& player.getInventory().getItemInMainHand().getTypeId() == conf.getSelectItem()
+				&& (entry = playerConf.get(player)).getSelection().hasSelection()) {
 			try {
 				new CommandCancel(entry, false).commandExecute();
 			} catch (final FactoidCommandException ex) {
 				// Empty, message is sent by the catch
 			}
-
 			event.setCancelled(true);
-
-			// For economy (buy or rent/unrent)
-		} else if ((action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK)
+		}
+		// For economy (buy or rent/unrent)
+		else if ((action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK)
 				&& (ml == Material.SIGN_POST || ml == Material.WALL_SIGN)) {
-
 			final ILand trueLand = Factoid.getThisPlugin().iLands().getLand(loc);
 
-
 			if (trueLand != null) {
-
 				Factoid.getThisPlugin().iLog().write("EcoSignClick: ClickLoc: " + loc + ", SignLoc" + trueLand.getSaleSignLoc());
-
 				try {
 					if (trueLand.getSaleSignLoc() != null
 							&& trueLand.getSaleSignLoc().getBlock().equals(loc.getBlock())) {
@@ -337,20 +329,10 @@ public class PlayerListener extends CommonListener implements Listener {
 					// Empty, message is sent by the catch
 				}
 			}
-
-			// Citizen bug, check if entry exist before
-		} else if ((entry = playerConf.get(player)) != null && !entry.isAdminMod()) {
+		}
+		// Citizen bug, check if entry exist before
+		else if ((entry = playerConf.get(player)) != null && !entry.isAdminMod()) {
 			land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(loc);
-
-			// Checks if the player is in a cubo ?? >> Factoid.getThisPlugin().iLands().getLand(loc)
-			if (Factoid.getThisPlugin().iLands().getLand(loc) != null &&
-				action == Action.RIGHT_CLICK_BLOCK &&
-				Material.END_CRYSTAL == event.getMaterial() &&
-				checkPermission(land, player, PermissionList.PLACE_END_CRYSTAL.getPermissionType())
-			) {
-				messagePermission(player);
-				event.setCancelled(true);
-			}
 
 			if ((land instanceof ILand && ((ILand) land).isBanned(player))
 					|| (((action == Action.RIGHT_CLICK_BLOCK // BEGIN of USE
@@ -358,14 +340,17 @@ public class PlayerListener extends CommonListener implements Listener {
 							|| ml == Material.STONE_BUTTON
 							|| ml == Material.WOOD_BUTTON
 							|| ml == Material.LEVER
-							|| ml == Material.TRAPPED_CHEST
-							|| ml == Material.ENCHANTMENT_TABLE || ml == Material.ANVIL
-							|| ml == Material.MOB_SPAWNER || ml == Material.DAYLIGHT_DETECTOR
+							|| ml == Material.ENCHANTMENT_TABLE
+							|| ml == Material.ANVIL
+							|| ml == Material.MOB_SPAWNER
+							|| ml == Material.DAYLIGHT_DETECTOR
 							|| ml == Material.DAYLIGHT_DETECTOR_INVERTED))
 							|| (action == Action.PHYSICAL && (ml == Material.WOOD_PLATE
-							|| ml == Material.STONE_PLATE || ml == Material.STRING))) && !checkPermission(
+							|| ml == Material.STONE_PLATE || ml == Material.STRING))
+						) && !checkPermission(
 								land, player,
-								PermissionList.USE.getPermissionType())) // End of USE
+								PermissionList.USE.getPermissionType())
+						) // End of USE
 					|| (action == Action.RIGHT_CLICK_BLOCK
 							&& BKVersion.isDoor(ml) && !checkPermission(
 								land, player,
@@ -382,11 +367,6 @@ public class PlayerListener extends CommonListener implements Listener {
 							&& (ml == Material.WOOD_PLATE || ml == Material.STONE_PLATE) && !checkPermission(
 								land, player,
 								PermissionList.USE_PRESSUREPLATE
-										.getPermissionType()))
-					|| (action == Action.RIGHT_CLICK_BLOCK
-							&& ml == Material.TRAPPED_CHEST && !checkPermission(
-								land, player,
-								PermissionList.USE_TRAPPEDCHEST
 										.getPermissionType()))
 					|| (action == Action.PHYSICAL && ml == Material.STRING && !checkPermission(
 							land, player,
@@ -410,22 +390,30 @@ public class PlayerListener extends CommonListener implements Listener {
 					messagePermission(player);
 				}
 				event.setCancelled(true);
-
-			} else if (action == Action.RIGHT_CLICK_BLOCK
+			}
+			else if (action == Action.RIGHT_CLICK_BLOCK
 					&& (((ml == Material.CHEST // Begin of OPEN
+							|| ml == Material.TRAPPED_CHEST
 							|| ml == Material.ENDER_CHEST
 							|| ml == Material.WORKBENCH
 							|| ml == Material.BREWING_STAND
 							|| ml == Material.BURNING_FURNACE
-							|| ml == Material.FURNACE || ml == Material.BEACON
-							|| ml == Material.DROPPER || ml == Material.HOPPER
-							|| ml == Material.DISPENSER || ml == Material.JUKEBOX ||
-							event.getClickedBlock().getState() instanceof ShulkerBox)
-							&& !checkPermission(land, player,
-								PermissionList.OPEN.getPermissionType())) // End of OPEN
+							|| ml == Material.FURNACE
+							|| ml == Material.BEACON
+							|| ml == Material.DROPPER
+							|| ml == Material.HOPPER
+							|| ml == Material.DISPENSER
+							|| ml == Material.JUKEBOX
+							|| event.getClickedBlock().getState() instanceof ShulkerBox
+						) && !checkPermission(land, player, PermissionList.OPEN.getPermissionType())
+						) // End of OPEN
 							|| (ml == Material.CHEST && !checkPermission(land,
 									player,
 									PermissionList.OPEN_CHEST
+											.getPermissionType()))
+							|| (ml == Material.TRAPPED_CHEST && !checkPermission(land,
+									player,
+									PermissionList.OPEN_TRAPPEDCHEST
 											.getPermissionType()))
 							|| (event.getClickedBlock().getState() instanceof ShulkerBox && !checkPermission(
 									land, player,
@@ -471,11 +459,11 @@ public class PlayerListener extends CommonListener implements Listener {
 							PermissionList.BUILD_DESTROY.getPermissionType())))) {
 				messagePermission(player);
 				event.setCancelled(true);
-
-				// For armor stand
-			} else if (player.getItemInHand() != null
+			}
+			// For armor stand
+			else if (player.getInventory().getItemInMainHand() != null
 					&& action == Action.RIGHT_CLICK_BLOCK
-					&& BKVersion.isArmorStand(player.getItemInHand().getType())
+					&& BKVersion.isArmorStand(player.getInventory().getItemInMainHand().getType())
 					&& ((land instanceof ILand && ((ILand) land).isBanned(event.getPlayer()))
 						|| !checkPermission(land, event.getPlayer(),
 								PermissionList.BUILD.getPermissionType())
@@ -483,16 +471,21 @@ public class PlayerListener extends CommonListener implements Listener {
 								PermissionList.BUILD_PLACE.getPermissionType()))) {
 				messagePermission(player);
 				event.setCancelled(true);
-
-				// For head place fix (do not spawn a wither)
-			} else if (player.getItemInHand() != null
-					&& action == Action.RIGHT_CLICK_BLOCK
-					&& player.getItemInHand().getType() == Material.SKULL_ITEM
-					&& ((land instanceof ILand && ((ILand) land).isBanned(event.getPlayer()))
-						|| !checkPermission(land, event.getPlayer(),
-								PermissionList.BUILD.getPermissionType())
-						|| !checkPermission(land, event.getPlayer(),
-								PermissionList.BUILD_PLACE.getPermissionType()))) {
+			}
+			// For head place fix (do not spawn a wither)
+			else if (action == Action.RIGHT_CLICK_BLOCK
+					&& event.getMaterial() == Material.SKULL_ITEM
+					&& (!checkPermission(land, event.getPlayer(), PermissionList.BUILD.getPermissionType()) ||
+						!checkPermission(land, event.getPlayer(), PermissionList.BUILD_PLACE.getPermissionType()))
+			) {
+				messagePermission(player);
+				event.setCancelled(true);
+			}
+			// End Crystal placed
+			else if (action == Action.RIGHT_CLICK_BLOCK &&
+				Material.END_CRYSTAL == event.getMaterial() &&
+				!checkPermission(land, player, PermissionList.PLACE_END_CRYSTAL.getPermissionType())
+			) {
 				messagePermission(player);
 				event.setCancelled(true);
 			}
@@ -583,6 +576,12 @@ public class PlayerListener extends CommonListener implements Listener {
 				if (event.getRightClicked() instanceof Tameable &&
 					!event.getPlayer().equals(((Tameable) event.getRightClicked()).getOwner()) &&
 					!checkPermission(land, player, PermissionList.USE_TAMEABLE.getPermissionType())
+				) {
+					messagePermission(player);
+					event.setCancelled(true);
+				}
+				if (event.getRightClicked() instanceof Merchant &&
+					!checkPermission(land, player, PermissionList.TRADE.getPermissionType())
 				) {
 					messagePermission(player);
 					event.setCancelled(true);
@@ -764,9 +763,7 @@ public class PlayerListener extends CommonListener implements Listener {
 					getShootByFlameArrow.put(entity, true);
 					return;
 				}
-				else {
-					getShootByFlameArrow.put(entity, false);
-				}
+				getShootByFlameArrow.put(entity, false);
 
 				// kill an entity (none player)
 				if (!entry.isAdminMod()
