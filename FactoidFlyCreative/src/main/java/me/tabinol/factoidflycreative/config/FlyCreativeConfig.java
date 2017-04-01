@@ -89,7 +89,7 @@ public class FlyCreativeConfig {
 			try {
 				gameModeList.add(GameMode.valueOf(gameModeName.toUpperCase()));
 			} catch(final IllegalArgumentException ex) {
-				thisPlugin.getLogger().log(Level.WARNING, gameModeName + " is not a valid game mode!");
+				thisPlugin.getLogger().log(Level.WARNING, gameModeName + " is not a valid game mode!", ex);
 			}
 		}
 
@@ -103,7 +103,7 @@ public class FlyCreativeConfig {
 			try {
 				materialList.add(Material.valueOf(materialName.toUpperCase()));
 			} catch(final IllegalArgumentException ex) {
-				thisPlugin.getLogger().log(Level.WARNING, materialName + " is not a valid material!");
+				thisPlugin.getLogger().log(Level.WARNING, materialName + " is not a valid material!", ex);
 			}
 		}
 

@@ -108,18 +108,14 @@ public class InventoryListener implements Listener {
 		final LandModifyReason reason = event.getLandModifyReason();
 
 		// Test to be specific (take specific players)
-		if (reason == LandModifyReason.AREA_ADD || reason == LandModifyReason.AREA_REMOVE
-				|| reason == LandModifyReason.AREA_REPLACE) {
-
+		if (reason == LandModifyReason.AREA_ADD || reason == LandModifyReason.AREA_REMOVE || reason == LandModifyReason.AREA_REPLACE) {
 			// Land area change, all players in the world affected
 			for (final Player player : event.getLand().getWorld().getPlayers()) {
 				inventoryStorage.switchInventory(player,
 						FactoidAPI.iLands().getLandOrOutsideArea(player.getLocation()),
 						player.getGameMode() == GameMode.CREATIVE, InventoryStorage.PlayerAction.CHANGE);
 			}
-		} else if (reason != LandModifyReason.PERMISSION_SET && reason != LandModifyReason.PERMISSION_SET
-				&& reason != LandModifyReason.RENAME) {
-
+		} else if (reason != LandModifyReason.PERMISSION_SET && reason != LandModifyReason.RENAME) {
 			// No land resize or area replace, only players in the land affected
 			for (final Player player : event.getLand().getPlayersInLandAndChildren()) {
 				inventoryStorage.switchInventory(player,
@@ -132,7 +128,6 @@ public class InventoryListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerDeath(final PlayerDeathEvent event) {
 		final Player player = event.getEntity();
-
 		inventoryStorage.switchInventory(player,
 				getDummyLand(player.getLocation()), player.getGameMode() == GameMode.CREATIVE, InventoryStorage.PlayerAction.DEATH);
 	}
