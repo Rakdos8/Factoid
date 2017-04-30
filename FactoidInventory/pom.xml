@@ -9,7 +9,7 @@
 	<url>http://modulmonde.com</url>
 
 	<properties>
-		<plugin.version>1.0.2</plugin.version>
+		<plugin.version>1.0.3</plugin.version>
 	</properties>
 
 	<packaging>jar</packaging>

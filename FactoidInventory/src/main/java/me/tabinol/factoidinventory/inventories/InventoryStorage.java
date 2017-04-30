@@ -207,7 +207,7 @@ public class InventoryStorage {
 			ConfigPlayerItemFile.save(playerItemFile);
 
 		} catch (final IOException ex) {
-			Logger.getLogger(InventoryStorage.class.getName()).log(Level.SEVERE,
+			Logger.getLogger(getClass().getName()).log(Level.SEVERE,
 					"Error on inventory save for player " + player.getName() + ", filename: " + playerItemFile.getPath(), ex);
 		}
 	}
@@ -255,7 +255,8 @@ public class InventoryStorage {
 
 				player.setTotalExperience(configPlayerItemFile.getInt("Experience"));
 				player.setLevel(configPlayerItemFile.getInt("Level"));
-				player.setExp((float) configPlayerItemFile.getDouble("Exp"));
+				final float invExp = (float) configPlayerItemFile.getDouble("Exp", 0D);
+				player.setExp(invExp < 0 ? 0F : invExp > 1 ? (invExp - ((int) invExp)) : invExp);
 
 				if (!fromDeath) {
 					final double healt = configPlayerItemFile.getDouble("Health");
