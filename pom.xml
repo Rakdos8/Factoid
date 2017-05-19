@@ -7,7 +7,7 @@
 	<name>FactoidPlugin</name>
 	<version>1.1.1-SNAPSHOT</version>
 	<description>Méta projet pour tous les plugins Factoid.</description>
-	<url>http://modulmonde.com</url>
+	<url>https://www.modulmonde.com</url>
 
 	<packaging>pom</packaging>
 
@@ -107,7 +107,6 @@
 			</plugin>
 		</plugins>
 	</build>
-	
 
 	<scm>
 		<connection>scm:hg:http://scm.modulmonde.com/hg/prod/FactoidPlugins</connection>
@@ -122,7 +121,7 @@
 	<distributionManagement>
 		<repository>
 			<id>Modulmonde.com</id>
-			<name>ModulPlugins</name>
+			<name>Factoid</name>
 			<url>http://nexus.modulmonde.com/content/repositories/factoid/</url>
 		</repository>
 	</distributionManagement>
