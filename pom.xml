@@ -5,7 +5,7 @@
 	<artifactId>FactoidPlugin</artifactId>
 
 	<name>FactoidPlugin</name>
-	<version>1.2.0-SNAPSHOT</version>
+	<version>1.2.1-SNAPSHOT</version>
 	<description>Méta projet pour tous les plugins Factoid.</description>
 	<url>https://www.modulmonde.com</url>
 
@@ -13,6 +13,8 @@
 
 	<properties>
 		<build.number>b???</build.number>
+		<plugin.version>${project.version}</plugin.version>
+
 		<sonar.language>java</sonar.language>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
