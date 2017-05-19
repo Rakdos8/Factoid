@@ -13,7 +13,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<build.number>SNAPSHOT</build.number>
+		<build.number>b???</build.number>
 		<sonar.language>java</sonar.language>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -108,4 +108,22 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+
+	<scm>
+		<connection>scm:hg:http://scm.modulmonde.com/hg/prod/FactoidPlugins</connection>
+	</scm>
+
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>http://jenkins.modulmonde.com/</url>
+	</ciManagement>
+
+	<distributionManagement>
+		<repository>
+			<id>Modulmonde.com</id>
+			<name>ModulPlugins</name>
+			<url>http://nexus.modulmonde.com/content/repositories/factoid/</url>
+		</repository>
+	</distributionManagement>
 </project>
