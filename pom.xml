@@ -5,7 +5,7 @@
 	<artifactId>FactoidPlugin</artifactId>
 
 	<name>FactoidPlugin</name>
-	<version>1.1.0</version>
+	<version>1.1.1-SNAPSHOT</version>
 	<description>Méta projet pour tous les plugins Factoid.</description>
 	<url>http://modulmonde.com</url>
 
@@ -111,7 +111,7 @@
 
 	<scm>
 		<connection>scm:hg:http://scm.modulmonde.com/hg/prod/FactoidPlugins</connection>
-	  <tag>FactoidPlugin-1.1.0</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<ciManagement>
