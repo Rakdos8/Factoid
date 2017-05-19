@@ -12,7 +12,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<build.number>b???</build.number>
+		<build.number>-SNAPSHOT</build.number>
 		<plugin.version>${project.version}</plugin.version>
 
 		<sonar.language>java</sonar.language>
@@ -52,7 +52,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>${project.artifactId}-${plugin.version}-${build.number}</finalName>
+		<finalName>${project.artifactId}-${plugin.version}${build.number}</finalName>
 
 		<resources>
 			<resource>
