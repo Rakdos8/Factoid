@@ -143,9 +143,7 @@ public class InventoryListener implements Listener {
 		}
 
 		// Cancel if the world is no drop
-		final InventorySpec invSpec = entry.getActualInv();
-
-		if (!invSpec.isAllowDrop()) {
+		if (!entry.getActualInv().isAllowDrop()) {
 			event.setCancelled(true);
 		}
 	}

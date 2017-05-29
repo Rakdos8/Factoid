@@ -8,7 +8,7 @@
 	<url>http://modulmonde.com</url>
 
 	<properties>
-		<plugin.version>1.0.3</plugin.version>
+		<plugin.version>1.0.4</plugin.version>
 	</properties>
 
 	<packaging>jar</packaging>
