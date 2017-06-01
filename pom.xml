@@ -24,6 +24,7 @@
 		<!-- Other plugin versions -->
 		<vault-version>1.6</vault-version>
 		<worldedit-version>6.1.5</worldedit-version>
+		<worldedit-api-version>6.1</worldedit-api-version>
 		<essentialsx-version>2.0.1</essentialsx-version>
 	</properties>
 
