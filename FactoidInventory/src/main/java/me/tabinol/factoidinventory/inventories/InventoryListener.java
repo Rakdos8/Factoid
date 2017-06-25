@@ -128,6 +128,9 @@ public class InventoryListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerDeath(final PlayerDeathEvent event) {
 		final Player player = event.getEntity();
+		player.setExp(0F);
+		player.setLevel(0);
+		player.setTotalExperience(0);
 		inventoryStorage.switchInventory(player,
 				getDummyLand(player.getLocation()), player.getGameMode() == GameMode.CREATIVE, InventoryStorage.PlayerAction.DEATH);
 	}
@@ -216,4 +219,5 @@ public class InventoryListener implements Listener {
 			false
 		);
 	}
+
 }

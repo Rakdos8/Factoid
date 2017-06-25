@@ -45,8 +45,8 @@ public class InventoryConfig {
 	public static final String PERM_IGNORE_DISABLED_COMMANDS = "finv.ignoredisabledcommands";
 	private final IFlagType invFlag; // Registered inventory Flag (Factoid)
 	private final FactoidInventory thisPlugin;
-	private FileConfiguration config;
-	private HashMap<String, InventorySpec> invList; // World-->Land-->Inventory
+	private final FileConfiguration config;
+	private final HashMap<String, InventorySpec> invList = new HashMap<>(); // World-->Land-->Inventory
 
 	public InventoryConfig() {
 
@@ -57,18 +57,15 @@ public class InventoryConfig {
 		invFlag = FactoidAPI.iParameters().registerFlagType("INVENTORY", new String());
 
 		config = thisPlugin.getConfig();
-		invList = new HashMap<>();
 	}
 
-	public void reLoadConfig() {
+	public void reloadConfig() {
 		thisPlugin.reloadConfig();
-		config = thisPlugin.getConfig();
-		invList = new HashMap<>();
+		invList.clear();
 		loadInventory();
 	}
 
 	public void loadConfig() {
-
 		loadInventory();
 	}
 

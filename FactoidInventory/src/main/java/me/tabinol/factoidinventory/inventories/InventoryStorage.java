@@ -104,7 +104,7 @@ public class InventoryStorage {
 		final boolean isDefaultInv,
 		final boolean enderChestOnly
 	) {
-		// If for some reasons whe have to skip save (ex: SaveInventory = false)
+		// If for some reasons we have to skip save (ex: SaveInventory = false)
 		if (!isSaveAllowed) {
 			return;
 		}
@@ -143,7 +143,6 @@ public class InventoryStorage {
 		} else if (isDefaultInv) {
 			// Save default inventory
 			filePreName = DEFAULT_INV;
-
 		} else {
 			// Save normal inventory
 			filePreName = player.getUniqueId().toString() + "." + gmName;
@@ -172,8 +171,8 @@ public class InventoryStorage {
 				}
 			// Save all
 			} else {
-				configPlayerItemFile.set("Level", player.getLevel());
-				configPlayerItemFile.set("Exp", player.getExp());
+				configPlayerItemFile.set("Level", isDeath ? 0 : player.getLevel());
+				configPlayerItemFile.set("Exp", isDeath ? 0f : player.getExp());
 				configPlayerItemFile.set("Health", player.getHealth());
 				configPlayerItemFile.set("FoodLevel", player.getFoodLevel());
 
@@ -341,7 +340,7 @@ public class InventoryStorage {
 		final InventorySpec toInv = FactoidInventory.getConf().getInvSpec(dummyLand);
 		boolean fromIsCreative = invEntry != null ? invEntry.isCreativeInv() : false;
 
-		// check if we have to do this action
+		// Check if we have to do this action
 		if (player.hasPermission(InventoryConfig.PERM_IGNORE_INV)) {
 			return;
 		}

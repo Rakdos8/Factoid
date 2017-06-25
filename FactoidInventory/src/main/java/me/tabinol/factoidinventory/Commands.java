@@ -142,7 +142,7 @@ public class Commands {
 	}
 
 	private void reload() {
-		FactoidInventory.getConf().reLoadConfig();
+		FactoidInventory.getConf().reloadConfig();
 		sender.sendMessage("Reload done!");
 	}
 

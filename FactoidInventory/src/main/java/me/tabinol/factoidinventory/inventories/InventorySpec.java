@@ -29,7 +29,6 @@ public class InventorySpec {
 
 	public InventorySpec(final String inventoryName, final boolean isCreativeChange,
 			final boolean isSaveInventory, final boolean isAllowDrop, final List<String> disabledCommands) {
-
 		this.inventoryName = inventoryName;
 		this.isCreativeChange = isCreativeChange;
 		this.isSaveInventory = isSaveInventory;
@@ -38,22 +37,18 @@ public class InventorySpec {
 	}
 
 	public String getInventoryName() {
-
 		return inventoryName;
 	}
 
 	public boolean isCreativeChange() {
-
 		return isCreativeChange;
 	}
 
 	public boolean isSaveInventory() {
-
 		return isSaveInventory;
 	}
 
 	public boolean isAllowDrop() {
-
 		return isAllowDrop;
 	}
 
