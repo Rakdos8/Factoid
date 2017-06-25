@@ -242,9 +242,8 @@ public class AreaSelection extends RegionSelection implements Listener {
 
 		if (parentDetected instanceof ILand) {
 			return (ILand) parentDetected;
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**

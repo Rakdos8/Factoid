@@ -139,9 +139,8 @@ public class FlagValue implements IFlagValue {
 		if (value instanceof Boolean) {
 			if ((Boolean) value) {
 				return "" + ChatColor.GREEN + true;
-			} else {
-				return "" + ChatColor.RED + false;
 			}
+			return "" + ChatColor.RED + false;
 		}
 
 		if (value instanceof Double) {

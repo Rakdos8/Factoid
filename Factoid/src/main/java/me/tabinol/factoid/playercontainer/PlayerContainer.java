@@ -69,9 +69,8 @@ public abstract class PlayerContainer implements IPlayerContainer, Comparable<Pl
 			final Faction faction = Factoid.getThisPlugin().iFactions().getFaction(name);
 			if (faction != null) {
 				return new PlayerContainerFaction(faction);
-			} else {
-				return null;
 			}
+			return null;
 		} else if (pct == EPlayerContainerType.GROUP) {
 			return new PlayerContainerGroup(name);
 		} else if (pct == EPlayerContainerType.RESIDENT) {

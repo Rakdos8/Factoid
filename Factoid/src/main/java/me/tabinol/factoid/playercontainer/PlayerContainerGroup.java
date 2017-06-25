@@ -70,9 +70,8 @@ public class PlayerContainerGroup extends PlayerContainer
 
 		if (player != null) {
 			return Factoid.getThisPlugin().iDependPlugin().getPermission().playerInGroup(player, name);
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	@Override

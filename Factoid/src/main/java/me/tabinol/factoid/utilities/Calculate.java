@@ -31,12 +31,10 @@ public class Calculate {
 	 * @return the int
 	 */
 	public static int greaterInt(final int nb1, final int nb2) {
-
 		if (nb1 > nb2) {
 			return nb1;
-		} else {
-			return nb2;
 		}
+		return nb2;
 	}
 
 	/**
@@ -47,12 +45,10 @@ public class Calculate {
 	 * @return the int
 	 */
 	public static int lowerInt(final int nb1, final int nb2) {
-
 		if (nb1 < nb2) {
 			return nb1;
-		} else {
-			return nb2;
 		}
+		return nb2;
 	}
 
 	/**
@@ -64,7 +60,6 @@ public class Calculate {
 	 * @return true, if is in interval
 	 */
 	public static boolean isInInterval(final int nbSource, final int nb1, final int nb2) {
-
 		return nbSource >= nb1 && nbSource <= nb2;
 	}
 
@@ -78,11 +73,9 @@ public class Calculate {
 	 * @return the int
 	 */
 	public static int comparePosition(final int nbSource, final int nb1, final int nb2) {
-
 		if (nbSource < nb1) {
 			return -1;
-		}
-		if (nbSource > nb2) {
+		} else if (nbSource > nb2) {
 			return 1;
 		}
 		return 0;
@@ -97,10 +90,10 @@ public class Calculate {
 	 */
 	public static Double AdditionDouble(final Double a, final Double b){
 		Double t = null;
-		if (a<0){
-			t = a-b;
-		}else{
-			t = a+b;
+		if (a < 0){
+			t = a - b;
+		} else{
+			t = a + b;
 		}
 		return t;
 	}
@@ -114,10 +107,10 @@ public class Calculate {
 	 */
 	public static int AdditionInt(final int a, final int b){
 		int t = 0;
-		if (a<0){
-			t = a-b;
-		}else{
-			t = a+b;
+		if (a < 0){
+			t = a - b;
+		} else{
+			t = a + b;
 		}
 		return t;
 	}

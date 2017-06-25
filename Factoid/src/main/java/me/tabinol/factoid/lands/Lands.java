@@ -353,9 +353,8 @@ public class Lands implements ILands {
 
 		if (land != null) {
 			return renameLand(land, newName);
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
@@ -372,9 +371,8 @@ public class Lands implements ILands {
 
 		if (land != null) {
 			return renameLand(land, newName);
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**

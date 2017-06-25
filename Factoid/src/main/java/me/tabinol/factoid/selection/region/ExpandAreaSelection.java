@@ -27,7 +27,7 @@ import me.tabinol.factoidapi.lands.areas.ICuboidArea;
 /**
  * The Class ExpandAreaSelection.
  */
-public class ExpandAreaSelection extends ActiveAreaSelection implements PlayerMoveListen {
+public class ExpandAreaSelection extends ActiveAreaSelection {
 
 	/**
 	 * Instantiates a new expand area selection.

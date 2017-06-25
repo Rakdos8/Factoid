@@ -179,11 +179,10 @@ public class LandListener extends CommonListener implements Listener {
 					if (land == lastLand || lastLand == null) {
 						tpSpawn(player, land, message);
 						return;
-					} else {
-						player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage(message, land.getName()));
-						event.setCancelled(true);
-						return;
 					}
+					player.sendMessage(ChatColor.GRAY + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage(message, land.getName()));
+					event.setCancelled(true);
+					return;
 				}
 			}
 

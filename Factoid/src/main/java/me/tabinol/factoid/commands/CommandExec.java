@@ -158,16 +158,14 @@ public abstract class CommandExec {
 		if (result != neededResult) {
 			if (result == true) {
 				throw new FactoidCommandException("Player Select", entity.player, messageTrue);
-			} else {
-				throw new FactoidCommandException("Player Select", entity.player, messageFalse);
 			}
-		} else {
-			if (startSelectCancel && !resetSelectCancel && result == true) {
+			throw new FactoidCommandException("Player Select", entity.player, messageFalse);
+		}
+		if (startSelectCancel && !resetSelectCancel && result == true) {
 
-				// Reset autocancel if there is a command executed that need it
-				entity.playerConf.setAutoCancelSelect(true);
-				resetSelectCancel = true;
-			}
+			// Reset autocancel if there is a command executed that need it
+			entity.playerConf.setAutoCancelSelect(true);
+			resetSelectCancel = true;
 		}
 	}
 

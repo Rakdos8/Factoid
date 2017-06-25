@@ -154,9 +154,8 @@ public class PlayerSelection {
 		final LandSelection sel = (LandSelection) selectionList.get(SelectionType.LAND);
 		if (sel != null) {
 			return sel.getLand();
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -169,9 +168,8 @@ public class PlayerSelection {
 		final AreaSelection sel = (AreaSelection) selectionList.get(SelectionType.AREA);
 		if (sel != null) {
 			return sel.getCuboidArea();
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	/**
@@ -269,11 +267,9 @@ public class PlayerSelection {
 	/**
 	 * Gets the area replace price.
 	 *
-	 * @param areaId the area id
 	 * @return the area replace price
 	 */
-	public double getAreaReplacePrice(final int areaId) {
-
+	public double getAreaReplacePrice() {
 		if (!isPlayerMustPay()) {
 			return 0;
 		}

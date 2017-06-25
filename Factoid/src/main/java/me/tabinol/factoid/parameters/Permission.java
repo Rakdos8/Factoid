@@ -88,9 +88,8 @@ public class Permission implements IPermission {
 
 		if (value) {
 			return "" + ChatColor.GREEN + value;
-		} else {
-			return "" + ChatColor.RED + value;
 		}
+		return "" + ChatColor.RED + value;
 	}
 
 	/**

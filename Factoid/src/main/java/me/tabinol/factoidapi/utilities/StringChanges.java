@@ -81,9 +81,8 @@ public class StringChanges {
 
 		if (isStartQuote(str) && isEndQuote(str)) {
 			return (new StringBuffer(str).deleteCharAt(str.length() - 1).deleteCharAt(0)).toString().replaceAll("''", "'");
-		} else {
-			return str;
 		}
+		return str;
 	}
 
 	/**

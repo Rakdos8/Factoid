@@ -55,7 +55,7 @@ import me.tabinol.factoidapi.utilities.StringChanges;
 /**
  * The Class StorageFlat.
  */
-public class StorageFlat extends Storage implements StorageInt {
+public class StorageFlat extends Storage {
 
 	/** The Constant EXT_CONF. */
 	public static final String EXT_CONF = ".conf";

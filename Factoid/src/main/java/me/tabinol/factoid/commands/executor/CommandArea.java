@@ -141,7 +141,7 @@ public class CommandArea extends CommandExec {
 				checkSelections(true, true);
 
 				final ICuboidArea area = entity.playerConf.getSelection().getCuboidArea();
-				final double price = entity.playerConf.getSelection().getAreaReplacePrice(areaNb);
+				final double price = entity.playerConf.getSelection().getAreaReplacePrice();
 
 				// Check for collision
 				if (checkCollision(land.getName(), land, null, LandAction.AREA_MODIFY, areaNb, area, land.getParent(),
