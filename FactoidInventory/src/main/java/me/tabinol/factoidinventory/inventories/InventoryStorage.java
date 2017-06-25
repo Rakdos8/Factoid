@@ -218,8 +218,7 @@ public class InventoryStorage {
 		final boolean fromDeath,
 		final int deathVersion
 	) {
-		boolean invExist = false;
-		String suffixName;
+		final String suffixName;
 
 		// Get the suffix name
 		final String gmName = InventoryType.getFromBoolean(isCreative).name();
@@ -242,9 +241,8 @@ public class InventoryStorage {
 					+ invName + "/" + DEFAULT_INV + ".yml");
 		}
 
+		final boolean invExist = playerItemFile.exists();
 		if (playerItemFile.exists()) {
-			invExist = true;
-
 			try {
 				// load Inventory
 				configPlayerItemFile.load(playerItemFile);
@@ -303,10 +301,10 @@ public class InventoryStorage {
 				}
 
 			} catch (final IOException ex) {
-				Logger.getLogger(InventoryStorage.class.getName()).log(Level.SEVERE,
+				Logger.getLogger(getClass().getName()).log(Level.SEVERE,
 						"Error on inventory load for player " + player.getName() + ", filename: " + playerItemFile.getPath(), ex);
 			} catch (final InvalidConfigurationException ex) {
-				Logger.getLogger(InventoryStorage.class.getName()).log(Level.SEVERE,
+				Logger.getLogger(getClass().getName()).log(Level.SEVERE,
 						"Invalid configuration on inventory load for player " + player.getName() + ", filename: " + playerItemFile.getPath(), ex);
 			}
 		} else if (!fromDeath) {
@@ -394,4 +392,5 @@ public class InventoryStorage {
 	public PlayerInvEntry getPlayerInvEntry(final Player player) {
 		return playerInvList.get(player);
 	}
+
 }
