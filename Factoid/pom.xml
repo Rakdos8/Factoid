@@ -32,7 +32,7 @@
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
 			<artifactId>VaultAPI</artifactId>
-			<version>${vault-version}</version>
+			<version>${vault.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>*</groupId>
@@ -45,7 +45,7 @@
 		<dependency>
 			<groupId>net.ess3</groupId>
 			<artifactId>EssentialsX</artifactId>
-			<version>${essentialsx-version}</version>
+			<version>${essentialsx.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>*</groupId>
@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>com.sk89q.worldedit</groupId>
 			<artifactId>worldedit-bukkit</artifactId>
-			<version>${worldedit-version}</version>
+			<version>${worldedit.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>*</groupId>
@@ -69,7 +69,7 @@
 		<dependency>
 			<groupId>com.sk89q.worldedit</groupId>
 			<artifactId>worldedit-core</artifactId>
-			<version>${worldedit-api-version}</version>
+			<version>${worldedit.api.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>*</groupId>

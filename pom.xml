@@ -19,13 +19,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Spigot Server -->
-		<spigot-version>1.11.2-R0.1-SNAPSHOT</spigot-version>
+		<spigot.version>1.12-R0.1-SNAPSHOT</spigot.version>
 
 		<!-- Other plugin versions -->
-		<vault-version>1.6</vault-version>
-		<worldedit-version>6.1.5</worldedit-version>
-		<worldedit-api-version>6.1</worldedit-api-version>
-		<essentialsx-version>2.0.1</essentialsx-version>
+		<vault.version>1.6</vault.version>
+		<worldedit.version>6.1.5</worldedit.version>
+		<worldedit.api.version>6.1</worldedit.api.version>
+		<essentialsx.version>2.0.1</essentialsx.version>
 	</properties>
 
 	<modules>
@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>${spigot-version}</version>
+			<version>${spigot.version}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
