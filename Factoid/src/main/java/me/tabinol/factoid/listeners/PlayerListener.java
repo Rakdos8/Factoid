@@ -50,6 +50,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.event.entity.PotionSplashEvent;
@@ -65,7 +66,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -692,19 +692,19 @@ public class PlayerListener extends CommonListener implements Listener {
 	/**
 	 * On player pickup item.
 	 *
-	 * @param event
-	 *			the event
+	 * @param event the event
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onPlayerPickupItem(final PlayerPickupItemEvent event) {
+	public void onPlayerPickupItem(final EntityPickupItemEvent event) {
+		if (!(event.getEntity() instanceof Player)) {
+			return;
+		}
+		final Player player = (Player) event.getEntity();
 
-		if (!playerConf.get(event.getPlayer()).isAdminMod()) {
-			final IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(
-					event.getPlayer().getLocation());
-
-			if (!checkPermission(land, event.getPlayer(),
-					PermissionList.PICKETUP.getPermissionType())) {
-				messagePermission(event.getPlayer());
+		if (!playerConf.get(player).isAdminMod()) {
+			final IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(player.getLocation());
+			if (!checkPermission(land, player, PermissionList.PICKETUP.getPermissionType())) {
+				messagePermission(player);
 				event.setCancelled(true);
 			}
 		}
