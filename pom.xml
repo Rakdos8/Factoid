@@ -19,7 +19,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Spigot Server -->
-		<spigot.version>1.12-R0.1-SNAPSHOT</spigot.version>
+		<spigot.version>1.12.1-R0.1-SNAPSHOT</spigot.version>
 
 		<!-- Other plugin versions -->
 		<vault.version>1.6</vault.version>
