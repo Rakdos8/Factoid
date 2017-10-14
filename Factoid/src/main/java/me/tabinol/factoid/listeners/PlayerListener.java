@@ -105,32 +105,22 @@ import me.tabinol.factoidapi.utilities.StringChanges;
  */
 public class PlayerListener extends CommonListener implements Listener {
 
-	/** The conf. */
-	private final Config conf;
-
-	/** The player conf. */
-	private final PlayerStaticConfig playerConf;
-
 	/** The Constant DEFAULT_TIME_LAPS. */
 	public static final int DEFAULT_TIME_LAPS = 500; // in milliseconds
 
+	/** The conf. */
+	private final Config conf = Factoid.getThisPlugin().iConf();
+
+	/** The player conf. */
+	private final PlayerStaticConfig playerConf = Factoid.getThisPlugin().iPlayerConf();
+
 	/** The time check. */
-	private final int timeCheck;
+	private final int timeCheck = DEFAULT_TIME_LAPS;
 
 	/** The pm. */
-	private final PluginManager pm;
+	private final PluginManager pm = Factoid.getThisPlugin().getServer().getPluginManager();
 
 	private final Map<Entity, Boolean> getShootByFlameArrow = new HashMap<>();
-
-	/**
-	 * Instantiates a new player listener.
-	 */
-	public PlayerListener() {
-		conf = Factoid.getThisPlugin().iConf();
-		playerConf = Factoid.getThisPlugin().iPlayerConf();
-		timeCheck = DEFAULT_TIME_LAPS;
-		pm = Factoid.getThisPlugin().getServer().getPluginManager();
-	}
 
 	/**
 	 * On player join.
@@ -253,11 +243,10 @@ public class PlayerListener extends CommonListener implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteract(final PlayerInteractEvent event) {
-		IDummyLand land;
 		final Material ml = event.getClickedBlock().getType();
 		final Player player = event.getPlayer();
 		final Action action = event.getAction();
-		PlayerConfEntry entry;
+		final PlayerConfEntry entry = playerConf.get(player);
 		final Location loc = event.getClickedBlock().getLocation();
 
 		Factoid.getThisPlugin().iLog().write(
@@ -297,7 +286,8 @@ public class PlayerListener extends CommonListener implements Listener {
 		else if (player.getInventory().getItemInMainHand() != null
 				&& action == Action.RIGHT_CLICK_BLOCK
 				&& player.getInventory().getItemInMainHand().getTypeId() == conf.getSelectItem()
-				&& (entry = playerConf.get(player)).getSelection().hasSelection()) {
+				&& entry != null
+				&& entry.getSelection().hasSelection()) {
 			try {
 				new CommandCancel(entry, false).commandExecute();
 			} catch (final FactoidCommandException ex) {
@@ -331,8 +321,8 @@ public class PlayerListener extends CommonListener implements Listener {
 			}
 		}
 		// Citizen bug, check if entry exist before
-		else if ((entry = playerConf.get(player)) != null && !entry.isAdminMod()) {
-			land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(loc);
+		else if (entry != null && !entry.isAdminMod()) {
+			final IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(loc);
 
 			if ((land instanceof ILand && ((ILand) land).isBanned(player))
 					|| (((action == Action.RIGHT_CLICK_BLOCK // BEGIN of USE

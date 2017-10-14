@@ -17,11 +17,8 @@
  */
 package me.tabinol.factoid.utilities;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 
 /**
@@ -29,24 +26,17 @@ import java.util.Locale;
  */
 public class Dates {
 
-	/** The locale. */
-	static Locale locale = Locale.getDefault();
-
-	/** The actuelle. */
-	static Date actuelle = new Date();
-
-	/** The date format. */
-	static DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+	/** The date at server startup. */
+	private static final Date STARTUP_DATE = new Date();
 
 	/**
 	 * Date.
 	 *
 	 * @return the string
 	 */
-	public static String date()
-	{
-			final String dat = dateFormat.format(actuelle);
-			return dat;
+	public static String date() {
+		final String dat = new SimpleDateFormat("yyyy-MM-dd").format(STARTUP_DATE);
+		return dat;
 	}
 
 	/**
@@ -54,12 +44,7 @@ public class Dates {
 	 *
 	 * @return the string
 	 */
-	public static String time()
-	{
-			final Calendar cal = Calendar.getInstance();
-			cal.getTime();
-			final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-			final String dat = sdf.format(cal.getTime());
-			return dat;
+	public static String time() {
+		return new SimpleDateFormat("HH:mm:ss").format(new Date());
 	}
 }

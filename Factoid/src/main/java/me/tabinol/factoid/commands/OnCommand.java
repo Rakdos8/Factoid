@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -75,14 +74,16 @@ public class OnCommand extends Thread implements CommandExecutor {
 	public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] arg) {
 		// Others commands then /factoid, /claim and /fd will not be send.
 		final ArgList argList = new ArgList(arg, sender);
-			try {
-				// Check the command to send
-				getCommand(sender, cmd, argList);
-				return true;
-				// If error on command, send the message to the player
-			} catch (final FactoidCommandException ex) {
-				return true;
-			}
+		try {
+			// Check the command to send
+			getCommand(sender, cmd, argList);
+			// If error on command, send the message to the player
+		} catch (final FactoidCommandException ex) {
+			// Already logged in getCommand method
+			Factoid.getThisPlugin().getLogger().log(Level.FINE, "General Error on Command class find", ex);
+			sender.sendMessage(ex.getMessage());
+		}
+		return true;
 	}
 
 	// Get command from args
@@ -118,25 +119,24 @@ public class OnCommand extends Thread implements CommandExecutor {
 			if (ce.isExecutable()) {
 				ce.commandExecute();
 			}
-
 			// a huge number of Exception to catch!
 		} catch (final NoSuchMethodException ex) {
-			Logger.getLogger(OnCommand.class.getName()).log(Level.SEVERE, "General Error on Command class find", ex);
+			Factoid.getThisPlugin().getLogger().log(Level.SEVERE, "General Error on Command class find", ex);
 			throw new FactoidCommandException("General Error on Command class find", sender, "GENERAL.ERROR");
 		} catch (final SecurityException ex) {
-			Logger.getLogger(OnCommand.class.getName()).log(Level.SEVERE, "General Error on Command class find", ex);
+			Factoid.getThisPlugin().getLogger().log(Level.SEVERE, "General Error on Command class find", ex);
 			throw new FactoidCommandException("General Error on Command class find", sender, "GENERAL.ERROR");
 		} catch (final InstantiationException ex) {
-			Logger.getLogger(OnCommand.class.getName()).log(Level.SEVERE, "General Error on Command class find", ex);
+			Factoid.getThisPlugin().getLogger().log(Level.SEVERE, "General Error on Command class find", ex);
 			throw new FactoidCommandException("General Error on Command class find", sender, "GENERAL.ERROR");
 		} catch (final IllegalAccessException ex) {
-			Logger.getLogger(OnCommand.class.getName()).log(Level.SEVERE, "General Error on Command class find", ex);
+			Factoid.getThisPlugin().getLogger().log(Level.SEVERE, "General Error on Command class find", ex);
 			throw new FactoidCommandException("General Error on Command class find", sender, "GENERAL.ERROR");
 		} catch (final IllegalArgumentException ex) {
-			Logger.getLogger(OnCommand.class.getName()).log(Level.SEVERE, "General Error on Command class find", ex);
+			Factoid.getThisPlugin().getLogger().log(Level.SEVERE, "General Error on Command class find", ex);
 			throw new FactoidCommandException("General Error on Command class find", sender, "GENERAL.ERROR");
 		} catch (final InvocationTargetException ex) {
-			Logger.getLogger(OnCommand.class.getName()).log(Level.SEVERE, "General Error on Command class find", ex);
+			Factoid.getThisPlugin().getLogger().log(Level.SEVERE, "General Error on Command class find", ex);
 			throw new FactoidCommandException("General Error on Command class find", sender, "GENERAL.ERROR");
 		}
 	}

@@ -41,7 +41,7 @@ import me.tabinol.factoidapi.config.players.IPlayerStaticConfig;
 public class PlayerStaticConfig implements IPlayerStaticConfig {
 
 	/** The player conf list. */
-	private final Map<CommandSender, PlayerConfEntry> playerConfList;
+	private final Map<CommandSender, PlayerConfEntry> playerConfList = new HashMap<>();
 
 	/** The vanish. */
 	private final Vanish vanish;
@@ -53,17 +53,12 @@ public class PlayerStaticConfig implements IPlayerStaticConfig {
 	 * Instantiates a new player static config.
 	 */
 	public PlayerStaticConfig() {
-
-		playerConfList = new HashMap<>();
-
 		// Check for VanishNoPacket plugin
 		if (Factoid.getThisPlugin().iDependPlugin().getVanishNoPacket() != null) {
 			vanish = new VanishNoPacket();
-
 			// Check for Essentials plugin
 		} else if (Factoid.getThisPlugin().iDependPlugin().getEssentials() != null) {
 			vanish = new VanishEssentials();
-
 			// Dummy Vanish if no plugins
 		} else {
 			vanish = new DummyVanish();
@@ -85,7 +80,6 @@ public class PlayerStaticConfig implements IPlayerStaticConfig {
 	 * @return the player conf entry
 	 */
 	public PlayerConfEntry add(final CommandSender sender) {
-
 		final PlayerConfEntry entry = new PlayerConfEntry(sender);
 		playerConfList.put(sender, entry);
 
@@ -98,7 +92,6 @@ public class PlayerStaticConfig implements IPlayerStaticConfig {
 	 * @param sender the sender
 	 */
 	public void remove(final CommandSender sender) {
-
 		final PlayerConfEntry entry = playerConfList.get(sender);
 
 		// First, remove AutoCancelSelect
@@ -112,7 +105,6 @@ public class PlayerStaticConfig implements IPlayerStaticConfig {
 	 */
 	@Override
 	public PlayerConfEntry get(final CommandSender sender) {
-
 		return playerConfList.get(sender);
 	}
 
@@ -120,7 +112,6 @@ public class PlayerStaticConfig implements IPlayerStaticConfig {
 	 * Adds the all.
 	 */
 	public void addAll() {
-
 		// Add the consle in the list
 		add(Factoid.getThisPlugin().getServer().getConsoleSender());
 
@@ -134,9 +125,7 @@ public class PlayerStaticConfig implements IPlayerStaticConfig {
 	 * Removes the all.
 	 */
 	public void removeAll() {
-
 		for (final PlayerConfEntry entry : playerConfList.values()) {
-
 			// First, remove AutoCancelSelect
 			entry.setAutoCancelSelect(false);
 
@@ -149,12 +138,10 @@ public class PlayerStaticConfig implements IPlayerStaticConfig {
 	 */
 	@Override
 	public boolean isVanished(final Player player) {
-
 		return vanish.isVanished(player);
 	}
 
 	public Chat getChat() {
-
 		return chat;
 	}
 }

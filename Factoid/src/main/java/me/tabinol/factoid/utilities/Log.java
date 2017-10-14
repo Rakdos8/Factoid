@@ -53,7 +53,6 @@ public class Log {
 	 * @param text the text
 	 */
 	public void write(final String text) {
-
 		if (debug) {
 			final File filename = new File(Folder, "log_" + Dates.date() + ".log");
 
