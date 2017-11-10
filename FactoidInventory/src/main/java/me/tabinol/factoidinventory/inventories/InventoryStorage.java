@@ -108,34 +108,29 @@ public class InventoryStorage {
 		if (!isSaveAllowed) {
 			return;
 		}
-		File file;
-		String filePreName;
 
 		// Create directories (if not here)
-		file = new File(thisPlugin.getDataFolder() + "/" + INV_DIR);
-		if (!file.exists()) {
-			file.mkdir();
-		}
-		file = new File(thisPlugin.getDataFolder() + "/" + INV_DIR + "/" + invName);
-		if (!file.exists()) {
-			file.mkdir();
+		final File invFolder = new File(thisPlugin.getDataFolder().getPath() + "/" + INV_DIR + "/" + invName);
+		if (!invFolder.exists()) {
+			invFolder.mkdirs();
 		}
 
 		// Get the suffix name
 		final String gmName = InventoryType.getFromBoolean(isCreative).name();
 
+		final String filePreName;
 		if (isDeath) {
 			filePreName = player.getUniqueId().toString() + "." + gmName + "." + DEATH + ".1";
 			// Death rename
-			File actFile = new File(file, "/" + player.getUniqueId().toString() + "." + gmName + "." + DEATH + ".9.yml");
+			final File actFile = new File(invFolder, "/" + player.getUniqueId().toString() + "." + gmName + "." + DEATH + ".9.yml");
 			if (actFile.exists()) {
 				actFile.delete();
 			}
 			for (int t = 8; t >= 1; t--) {
-				actFile = new File(file, "/"
+				final File moveFile = new File(invFolder, "/"
 						+ player.getUniqueId().toString() + "." + gmName + "." + DEATH + "." + t + ".yml");
-				if (actFile.exists()) {
-					actFile.renameTo(new File(file, "/"
+				if (moveFile.exists()) {
+					moveFile.renameTo(new File(invFolder, "/"
 							+ player.getUniqueId().toString() + "." + gmName + "." + DEATH + "." + (t + 1) + ".yml"));
 				}
 			}
@@ -150,7 +145,7 @@ public class InventoryStorage {
 
 		// Save Inventory
 		final YamlConfiguration configPlayerItemFile = new YamlConfiguration();
-		final File playerItemFile = new File(file, "/" + filePreName + ".yml");
+		final File playerItemFile = new File(invFolder, "/" + filePreName + ".yml");
 
 		try {
 			configPlayerItemFile.set("Version", STORAGE_VERSION);

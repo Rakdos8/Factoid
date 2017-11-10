@@ -86,13 +86,13 @@ public class Commands {
 		if (args.length >= 1 && args[1].equalsIgnoreCase("save")) {
 			// Save the inventory
 			FactoidInventory.getThisPlugin().getInventoryListener().saveDefaultInventory(player, invSpec);
-			sender.sendMessage("Dafault inventory saved.");
+			sender.sendMessage("Default inventory saved.");
 
 		} else if (args.length >= 1 && args[1].equalsIgnoreCase("remove")) {
 			// Remove inventory
 			new File(FactoidInventory.getThisPlugin().getDataFolder()
 					+ "/" + INV_DIR + "/" + invSpec.getInventoryName() + "/" + DEFAULT_INV + ".yml").delete();
-			sender.sendMessage("Dafault inventory removed.");
+			sender.sendMessage("Default inventory removed.");
 
 		} else {
 			// Bad parameter
