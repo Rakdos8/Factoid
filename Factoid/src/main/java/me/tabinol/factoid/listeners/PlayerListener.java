@@ -1041,8 +1041,15 @@ public class PlayerListener extends CommonListener implements Listener {
 
 				for (final String commandTest : excludedCommands) {
 					final String sanitizedCommand = commandTest.replace("/", "");
-					if (sanitizedCommand.equalsIgnoreCase(plCommand.getLabel()) ||
-						plCommand.getAliases().contains(sanitizedCommand)
+					if ((plCommand == null && sanitizedCommand.equalsIgnoreCase(commandTyped)) ||
+						(
+							plCommand != null &&
+							(
+								sanitizedCommand.equalsIgnoreCase(plCommand.getLabel()) ||
+								plCommand.getAliases().stream()
+									.anyMatch(alias -> alias.equalsIgnoreCase(sanitizedCommand))
+							)
+						)
 					) {
 						event.setCancelled(true);
 						player.sendMessage(ChatColor.RED
