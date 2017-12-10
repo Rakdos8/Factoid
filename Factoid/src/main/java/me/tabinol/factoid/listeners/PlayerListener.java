@@ -22,11 +22,13 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.ShulkerBox;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -301,7 +303,7 @@ public class PlayerListener extends CommonListener implements Listener {
 			final ILand trueLand = Factoid.getThisPlugin().iLands().getLand(loc);
 
 			if (trueLand != null) {
-				Factoid.getThisPlugin().iLog().write("EcoSignClick: ClickLoc: " + loc + ", SignLoc" + trueLand.getSaleSignLoc());
+				Factoid.getThisPlugin().iLog().write("EcoSignClick: ClickLoc: " + loc + ", SignLoc: " + trueLand.getSaleSignLoc());
 				try {
 					if (trueLand.getSaleSignLoc() != null
 							&& trueLand.getSaleSignLoc().getBlock().equals(loc.getBlock())) {
@@ -1035,9 +1037,13 @@ public class PlayerListener extends CommonListener implements Listener {
 
 			if (excludedCommands.length > 0) {
 				final String commandTyped = event.getMessage().substring(1).split(" ")[0];
+				final PluginCommand plCommand = Bukkit.getPluginCommand(commandTyped);
 
 				for (final String commandTest : excludedCommands) {
-					if (commandTest.replace("/", "").equalsIgnoreCase(commandTyped)) {
+					final String sanitizedCommand = commandTest.replace("/", "");
+					if (sanitizedCommand.equalsIgnoreCase(plCommand.getLabel()) ||
+						plCommand.getAliases().contains(sanitizedCommand)
+					) {
 						event.setCancelled(true);
 						player.sendMessage(ChatColor.RED
 								+ "[Factoid] "
