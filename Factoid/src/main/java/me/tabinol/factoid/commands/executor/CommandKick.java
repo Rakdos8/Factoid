@@ -76,9 +76,7 @@ public class CommandKick extends CommandExec {
 			throw new FactoidCommandException("Kicked", player, "COMMAND.KICK.PLAYERNULL");
 		}
 
-		@SuppressWarnings("deprecation")
-		final
-		Player playerKick = Factoid.getThisPlugin().getServer().getPlayer(playerKickName);
+		final Player playerKick = Factoid.getThisPlugin().getServer().getPlayer(playerKickName);
 
 		// Player not in land?
 		if (playerKick == null || !land.isPlayerinLandNoVanish(playerKick, player)

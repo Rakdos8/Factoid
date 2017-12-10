@@ -210,7 +210,6 @@ public class StorageFlat extends Storage {
 			}
 
 			cf.close();
-
 			// Catch errors here
 		} catch (final NullPointerException ex) {
 			try {

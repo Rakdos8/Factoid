@@ -187,16 +187,15 @@ public class FlagValue implements IFlagValue {
 				value = new FlagValue(StringChanges.fromQuote(str));
 			} else if (ft.getDefaultValue().getValue() instanceof String[]) {
 				final ArrayList<String> result = new ArrayList<>();
-					final String[] strs = StringChanges.splitKeepQuote(str, ";");
+				final String[] strs = StringChanges.splitKeepQuote(str, ";");
 				for (final String st : strs) {
-				result.add(StringChanges.fromQuote(st));
+					result.add(StringChanges.fromQuote(st));
 				}
 				value = new FlagValue(result.toArray(new String[0]));
 			} else {
 				value = null;
 			}
-		}else {
-
+		} else {
 			// not registered save raw information
 			value = new FlagValue(str);
 		}
