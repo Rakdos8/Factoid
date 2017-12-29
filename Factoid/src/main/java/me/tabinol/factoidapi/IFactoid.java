@@ -18,7 +18,6 @@
 package me.tabinol.factoidapi;
 
 import me.tabinol.factoidapi.config.players.IPlayerStaticConfig;
-import me.tabinol.factoidapi.factions.IFactions;
 import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoidapi.lands.ILands;
 import me.tabinol.factoidapi.lands.areas.ICuboidArea;
@@ -38,13 +37,6 @@ public interface IFactoid {
 	/*
 	 * Normal gets
 	 */
-
-	/**
-	 * Gets all faction informations
-	 *
-	 * @return the factions
-	 */
-	public IFactions iFactions();
 
 	/**
 	 * Gets all faction informations

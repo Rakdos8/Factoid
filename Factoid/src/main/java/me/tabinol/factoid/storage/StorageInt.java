@@ -17,9 +17,7 @@
  */
 package me.tabinol.factoid.storage;
 
-import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.Land;
-
 
 /**
  * The Interface StorageInt.
@@ -54,26 +52,7 @@ public interface StorageInt {
 	public void removeLand(String landName, int landGenealogy);
 
 	/**
-	 * Load factions.
-	 */
-	public void loadFactions();
-
-	/**
 	 * Load lands.
 	 */
 	public void loadLands();
-
-	/**
-	 * Save faction.
-	 *
-	 * @param faction the faction
-	 */
-	public void saveFaction(Faction faction);
-
-	/**
-	 * Removes the faction.
-	 *
-	 * @param faction the faction
-	 */
-	public void removeFaction(Faction faction);
 }

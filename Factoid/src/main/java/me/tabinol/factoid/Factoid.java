@@ -25,7 +25,6 @@ import me.tabinol.factoid.config.DependPlugin;
 import me.tabinol.factoid.config.players.PlayerStaticConfig;
 import me.tabinol.factoid.economy.EcoScheduler;
 import me.tabinol.factoid.economy.PlayerMoney;
-import me.tabinol.factoid.factions.Factions;
 import me.tabinol.factoid.lands.Lands;
 import me.tabinol.factoid.lands.approve.ApproveNotif;
 import me.tabinol.factoid.lands.areas.CuboidArea;
@@ -39,7 +38,6 @@ import me.tabinol.factoid.listeners.WorldListener;
 import me.tabinol.factoid.parameters.Parameters;
 import me.tabinol.factoid.playercontainer.PlayerContainer;
 import me.tabinol.factoid.playerscache.PlayersCache;
-import me.tabinol.factoid.scoreboard.ScoreBoard;
 import me.tabinol.factoid.storage.StorageThread;
 import me.tabinol.factoid.utilities.Lang;
 import me.tabinol.factoid.utilities.Log;
@@ -59,9 +57,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 
 	/** The this plugin. */
 	private static Factoid thisPlugin;
-
-	/** The factions. */
-	protected static Factions factions;
 
 	/** The types */
 	protected static Types types;
@@ -120,9 +115,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	/** The player money. */
 	private PlayerMoney playerMoney;
 
-	/** The Scoreboard. */
-	private ScoreBoard Scoreboard;
-
 	/** The players cache. */
 	private PlayersCache playersCache;
 
@@ -134,18 +126,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	public static Factoid getThisPlugin() {
 
 		return thisPlugin;
-	}
-
-	/**
-	 * Gets the factions.
-	 *
-	 * @return the factions
-	 * @deprecated Please use FactoidAPI
-	 */
-	@Deprecated
-	public static Factions getFactions() {
-
-		return factions;
 	}
 
 	/**
@@ -195,7 +175,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 		playerConf.addAll();
 		language = new Lang();
 		storageThread = new StorageThread();
-		factions = new Factions();
 		lands = new Lands();
 		storageThread.loadAllAndStart();
 		worldListener = new WorldListener();
@@ -207,7 +186,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 		landListener = new LandListener();
 		chatListener = new ChatListener();
 		CommandListener = new OnCommand();
-		Scoreboard = new ScoreBoard();
 		approveNotif = new ApproveNotif ();
 		approveNotif.runApproveNotifLater();
 		ecoScheduler = new EcoScheduler();
@@ -243,7 +221,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 		}
 		log.setDebug(conf.isDebug());
 		language.reloadConfig();
-		factions = new Factions();
 		lands = new Lands();
 		storageThread.stopNextRun();
 		storageThread = new StorageThread();
@@ -293,16 +270,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	}
 
 	/**
-	 * I scoreboard.
-	 *
-	 * @return the score board
-	 */
-	public ScoreBoard iScoreboard() {
-
-		return Scoreboard;
-	}
-
-	/**
 	 * I log.
 	 *
 	 * @return the log
@@ -310,14 +277,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	public Log iLog() {
 
 		return log;
-	}
-
-	/* (non-Javadoc)
-	 * @see me.tabinol.factoidapi.IFactoid#iFactions() */
-	@Override
-	public Factions iFactions() {
-
-		return factions;
 	}
 
 	/* (non-Javadoc)

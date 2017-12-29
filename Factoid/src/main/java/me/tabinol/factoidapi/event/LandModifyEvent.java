@@ -69,7 +69,7 @@ public class LandModifyEvent extends LandEvent {
 	}
 
 	/** The Constant handlers. */
-	private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList HANDLERS = new HandlerList();
 
 	/** The land modify reason. */
 	private final LandModifyReason landModifyReason;
@@ -97,7 +97,7 @@ public class LandModifyEvent extends LandEvent {
 	@Override
 	public HandlerList getHandlers() {
 
-		return handlers;
+		return HANDLERS;
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class LandModifyEvent extends LandEvent {
 	 */
 	public static HandlerList getHandlerList() {
 
-		return handlers;
+		return HANDLERS;
 	}
 
 	/**

@@ -40,7 +40,6 @@ import me.tabinol.factoid.parameters.FlagList;
 import me.tabinol.factoid.utilities.ExpirableHashMap;
 import me.tabinol.factoidapi.config.players.IPlayerConfEntry;
 import me.tabinol.factoidapi.config.players.IPlayerStaticConfig;
-import me.tabinol.factoidapi.factions.IFaction;
 import me.tabinol.factoidapi.lands.IDummyLand;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainerPlayer;
 
@@ -74,9 +73,6 @@ public class PvpListener extends CommonListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityDamageByEntity(final EntityDamageByEntityEvent event) {
 
-		IPlayerConfEntry entry;
-		IPlayerConfEntry entryVictim;
-
 		// Check if a player break a ItemFrame
 		final Player player = getSourcePlayer(event.getDamager());
 
@@ -86,10 +82,7 @@ public class PvpListener extends CommonListener implements Listener {
 			final Entity entity = event.getEntity();
 
 			// For PVP
-			if (entity instanceof Player &&  (entry = playerConf.get(player)) != null
-					&& (entryVictim = playerConf.get(entity)) != null
-					&& !isPvpValid(land, entry.getPlayerContainer(),
-							entryVictim.getPlayerContainer())) {
+			if (entity instanceof Player && !isPvpValid(land)) {
 				event.setCancelled(true);
 			}
 		}
@@ -169,7 +162,7 @@ public class PvpListener extends CommonListener implements Listener {
 							&& loc.distanceSquared(fireEntry.getKey()) < 5) {
 						final Block block = loc.getBlock();
 						if ((block.getType() == Material.FIRE || block.getType() == Material.AIR)
-								&& !isPvpValid(land, fireEntry.getValue(), entry.getPlayerContainer())) {
+								&& !isPvpValid(land)) {
 
 							// remove fire
 							Factoid.getThisPlugin().iLog().write("Anti-pvp from "
@@ -214,25 +207,14 @@ public class PvpListener extends CommonListener implements Listener {
 	 * Checks if pvp is valid.
 	 *
 	 * @param land the land
-	 * @param attacker the attacker
-	 * @param victim the victim
 	 * @return true, if is pvp valid
 	 */
-	private boolean isPvpValid(final IDummyLand land, final IPlayerContainerPlayer attacker,
-			final IPlayerContainerPlayer victim) {
-
-		final IFaction faction = Factoid.getThisPlugin().iFactions().getPlayerFaction(attacker);
-		final IFaction factionVictime = Factoid.getThisPlugin().iFactions().getPlayerFaction(victim);
-
-		if (faction != null && faction == factionVictime
-				&& land.getFlagAndInherit(FlagList.FACTION_PVP.getFlagType()).getValueBoolean() == false) {
-
-			return false;
-		} else if (land.getFlagAndInherit(FlagList.FULL_PVP.getFlagType()).getValueBoolean() == false) {
-
+	private boolean isPvpValid(
+		final IDummyLand land
+	) {
+		if (land.getFlagAndInherit(FlagList.FULL_PVP.getFlagType()).getValueBoolean() == false) {
 			return false;
 		}
-
 		return true;
 	}
 }

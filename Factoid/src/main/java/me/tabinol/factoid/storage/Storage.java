@@ -18,7 +18,6 @@
 package me.tabinol.factoid.storage;
 
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoidapi.factions.IFaction;
 import me.tabinol.factoidapi.lands.ILand;
 
 
@@ -47,8 +46,6 @@ public abstract class Storage implements StorageInt {
 	 */
 	@Override
 	public void loadAll() {
-
-		loadFactions();
 		loadLands();
 
 		// New version, we have to save all
@@ -61,15 +58,8 @@ public abstract class Storage implements StorageInt {
 	 * Save all.
 	 */
 	private void saveAll() {
-
 		for (final ILand land : Factoid.getThisPlugin().iLands().getLands()) {
-
 			land.forceSave();
-		}
-
-		for (final IFaction faction : Factoid.getThisPlugin().iFactions().getFactions()) {
-
-			faction.forceSave();
 		}
 	}
 }

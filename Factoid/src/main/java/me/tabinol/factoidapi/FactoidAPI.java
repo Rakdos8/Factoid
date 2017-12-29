@@ -20,7 +20,6 @@ package me.tabinol.factoidapi;
 import java.lang.reflect.InvocationTargetException;
 
 import me.tabinol.factoidapi.config.players.IPlayerStaticConfig;
-import me.tabinol.factoidapi.factions.IFactions;
 import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoidapi.lands.ILands;
 import me.tabinol.factoidapi.lands.areas.ICuboidArea;
@@ -29,7 +28,6 @@ import me.tabinol.factoidapi.parameters.IParameters;
 import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Factoid API. This is the static way to access the Factoid API.
  * To use this API, be sure to put this line in your plugin.yml: <br>
@@ -67,17 +65,6 @@ public final class FactoidAPI {
 	/*
 	 * Normal gets
 	 */
-
-	/**
-	 * I factions.
-	 *
-	 * @return the i factions
-	 * @see IFactoid#iFactions()
-	 */
-	public static IFactions iFactions() {
-
-		return iFactoid.iFactions();
-	}
 
 	/**
 	 * I lands.

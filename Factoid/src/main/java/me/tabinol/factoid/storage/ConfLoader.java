@@ -18,6 +18,7 @@
 package me.tabinol.factoid.storage;
 
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -31,7 +32,7 @@ import me.tabinol.factoid.exceptions.FileLoadException;
 /**
  * The Class ConfLoader.
  */
-public class ConfLoader {
+public class ConfLoader implements Closeable {
 
 	/** The version. */
 	private int version;
@@ -324,11 +325,12 @@ public class ConfLoader {
 	 *
 	 * @throws FileLoadException the file load exception
 	 */
-	public void close() throws FileLoadException {
+	@Override
+	public void close() {
 		try {
 			br.close();
 		} catch (final IOException ex) {
-			throw new FileLoadException(file.getName(), actLine, actLineNb, "Impossible to close the file.");
+			throw new IllegalStateException("Impossible to close the file " + file.getName(), ex);
 		}
 	}
 }

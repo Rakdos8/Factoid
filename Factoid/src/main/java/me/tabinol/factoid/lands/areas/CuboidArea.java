@@ -19,6 +19,7 @@ package me.tabinol.factoid.lands.areas;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -55,7 +56,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 * @param z2 the z2
 	 */
 	public CuboidArea(final String worldName, final int x1, final int y1, final int z1, final int x2, final int y2, final int z2) {
-
 		this.worldName = worldName;
 		this.x1 = Calculate.lowerInt(x1, x2);
 		this.x2 = Calculate.greaterInt(x1, x2);
@@ -302,7 +302,7 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	public Collection<ICuboidArea>
 		getOutside(final ICuboidArea area2) {
 
-		final HashSet<ICuboidArea> areaList = new HashSet<>();
+		final Set<ICuboidArea> areaList = new HashSet<>();
 
 		if (!worldName.equals(area2.getWorldName())) {
 			areaList.add(area2);

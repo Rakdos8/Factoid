@@ -30,10 +30,10 @@ import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 public class PlayerContainerLandBanEvent extends LandEvent {
 
 	/** The Constant handlers. */
-	private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList HANDLERS = new HandlerList();
 
 	/** The player container. */
-	IPlayerContainer playerContainer;
+	private final IPlayerContainer playerContainer;
 
 	/**
 	 * Instantiates a new player container land ban event.
@@ -53,7 +53,7 @@ public class PlayerContainerLandBanEvent extends LandEvent {
 	@Override
 	public HandlerList getHandlers() {
 
-		return handlers;
+		return HANDLERS;
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class PlayerContainerLandBanEvent extends LandEvent {
 	 */
 	public static HandlerList getHandlerList() {
 
-		return handlers;
+		return HANDLERS;
 	}
 
 	/**

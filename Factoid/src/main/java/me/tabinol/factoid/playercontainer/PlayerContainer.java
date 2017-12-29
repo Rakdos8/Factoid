@@ -19,8 +19,6 @@ package me.tabinol.factoid.playercontainer;
 
 import java.util.UUID;
 
-import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
@@ -65,20 +63,12 @@ public abstract class PlayerContainer implements IPlayerContainer, Comparable<Pl
 	 */
 	public static PlayerContainer create(final ILand land, final EPlayerContainerType pct, final String name) {
 
-		if (pct == EPlayerContainerType.FACTION) {
-			final Faction faction = Factoid.getThisPlugin().iFactions().getFaction(name);
-			if (faction != null) {
-				return new PlayerContainerFaction(faction);
-			}
-			return null;
-		} else if (pct == EPlayerContainerType.GROUP) {
+		if (pct == EPlayerContainerType.GROUP) {
 			return new PlayerContainerGroup(name);
 		} else if (pct == EPlayerContainerType.RESIDENT) {
 			return new PlayerContainerResident(land);
 		} else if (pct == EPlayerContainerType.VISITOR) {
 			return new PlayerContainerVisitor(land);
-		} else if (pct == EPlayerContainerType.FACTION_TERRITORY) {
-			return new PlayerContainerFactionTerritory(land);
 		} else if (pct == EPlayerContainerType.OWNER) {
 			return new PlayerContainerOwner(land);
 		} else if (pct == EPlayerContainerType.EVERYBODY) {

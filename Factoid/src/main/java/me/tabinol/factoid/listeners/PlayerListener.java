@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -897,7 +898,7 @@ public class PlayerListener extends CommonListener implements Listener {
 		// For repsawn after death
 		if (loc != null &&
 			entry != null &&
-			!strLoc.isEmpty() &&
+			!StringUtils.isEmpty(strLoc) &&
 			land.checkPermissionAndInherit(player, PermissionList.TP_DEATH.getPermissionType())
 		) {
 			// Respawn in the bed if its in the land zone

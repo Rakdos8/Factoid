@@ -30,13 +30,13 @@ import me.tabinol.factoidapi.lands.ILand;
 public class LandEvent extends Event {
 
 	/** The Constant handlers. */
-	private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList HANDLERS = new HandlerList();
 
 	/** The dummy land. */
 	private final IDummyLand dummyLand;
 
 	/** The land. */
-	private ILand land;
+	private final ILand land;
 
 	/**
 	 * Instantiates a new land event.
@@ -60,7 +60,7 @@ public class LandEvent extends Event {
 	@Override
 	public HandlerList getHandlers() {
 
-		return handlers;
+		return HANDLERS;
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class LandEvent extends Event {
 	 */
 	public static HandlerList getHandlerList() {
 
-		return handlers;
+		return HANDLERS;
 	}
 
 	/**

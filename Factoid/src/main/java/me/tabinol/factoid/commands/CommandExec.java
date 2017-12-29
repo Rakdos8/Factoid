@@ -246,7 +246,6 @@ public abstract class CommandExec {
 		return false;
 	}
 
-	// The name says what it does!!!
 	/**
 	 * Gets the land from command if no land selected.
 	 */

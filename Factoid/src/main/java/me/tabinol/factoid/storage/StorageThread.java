@@ -26,7 +26,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 
 import me.tabinol.factoid.Factoid;
-import me.tabinol.factoid.factions.Faction;
 import me.tabinol.factoid.lands.Land;
 
 
@@ -51,29 +50,30 @@ public class StorageThread extends Thread {
 	private final List<Object> removeList = Collections.synchronizedList(new ArrayList<>());
 
 	/** The lock. */
-	final Lock lock = new ReentrantLock();
+	private final Lock lock = new ReentrantLock();
 
 	/** The lock command request. */
-	final Condition commandRequest  = lock.newCondition();
+	private final Condition commandRequest  = lock.newCondition();
 
 	/** The lock not saved. */
-	final Condition notSaved = lock.newCondition();
+	private final Condition notSaved = lock.newCondition();
 
 	/**
 	 * Instantiates a new storage thread.
 	 */
 	public StorageThread() {
 		this.setName("Factoid Storage");
-		storage = new StorageFlat();
+		this.storage = new StorageFlat();
 	}
 
 	/**
 	 * Load all and start.
 	 */
 	public void loadAllAndStart() {
-		inLoad = true;
-		storage.loadAll();
-		inLoad = false;
+		this.inLoad = true;
+		this.storage.loadAll();
+		this.inLoad = false;
+
 		this.start();
 	}
 
@@ -100,8 +100,6 @@ public class StorageThread extends Thread {
 				final Object saveEntry = saveList.remove(0);
 				if (saveEntry instanceof Land) {
 					storage.saveLand((Land) saveEntry);
-				} else {
-					storage.saveFaction((Faction) saveEntry);
 				}
 			}
 
@@ -113,8 +111,6 @@ public class StorageThread extends Thread {
 				} else if ( removeEntry instanceof NameGenealogy){
 					storage.removeLand(((NameGenealogy) removeEntry).landName,
 							((NameGenealogy) removeEntry).landGenealogy);
-				} else {
-					storage.removeFaction((Faction)removeEntry);
 				}
 			}
 
@@ -144,9 +140,8 @@ public class StorageThread extends Thread {
 		commandRequest.signal();
 		try {
 			notSaved.await();
-		} catch (final InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		} catch (final InterruptedException ex) {
+			Factoid.getThisPlugin().getLogger().log(Level.SEVERE, ex.getMessage(), ex);
 		} finally {
 			lock.unlock();
 		}
@@ -159,18 +154,6 @@ public class StorageThread extends Thread {
 	 */
 	public void saveLand(final Land land) {
 		storage.saveLand(land);
-		if (!inLoad) {
-			wakeUp();
-		}
-	}
-
-	/**
-	 * Save faction.
-	 *
-	 * @param faction the faction
-	 */
-	public void saveFaction(final Faction faction) {
-		storage.saveFaction(faction);
 		if (!inLoad) {
 			wakeUp();
 		}
@@ -201,18 +184,6 @@ public class StorageThread extends Thread {
 		}
 	}
 
-	/**
-	 * Removes the faction.
-	 *
-	 * @param faction the faction
-	 */
-	public void removeFaction(final Faction faction) {
-		storage.removeFaction(faction);
-		if (!inLoad) {
-			wakeUp();
-		}
-	}
-
 	private void wakeUp() {
 		lock.lock();
 		commandRequest.signal();
@@ -220,7 +191,7 @@ public class StorageThread extends Thread {
 		lock.unlock();
 	}
 
-	/** Class internally used to store landName et LandGenealogy in a list */
+	/** Class internally used to store landName and LandGenealogy in a list */
 	private static class NameGenealogy {
 		private final String landName;
 		private final int landGenealogy;

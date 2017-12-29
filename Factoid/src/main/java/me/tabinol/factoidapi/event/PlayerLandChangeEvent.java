@@ -33,28 +33,28 @@ import me.tabinol.factoidapi.lands.ILand;
 public class PlayerLandChangeEvent extends LandEvent implements Cancellable {
 
 	/** The Constant handlers. */
-	private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList HANDLERS = new HandlerList();
 
 	/** The cancelled. */
 	protected boolean cancelled = false;
 
 	/** The player. */
-	Player player;
+	private final Player player;
 
-	/** The from loc. */
-	Location fromLoc;
+	/** The from {@link Location}. */
+	private final Location fromLoc;
 
-	/** The to loc. */
-	Location toLoc;
+	/** The to {@link Location}. */
+	private final Location toLoc;
 
 	/** The last land. */
-	ILand lastLand;
+	private final ILand lastLand;
 
 	/** The last dummy land. */
-	IDummyLand lastDummyLand;
+	private final IDummyLand lastDummyLand;
 
 	/** The if this is a player teleport. */
-	boolean isTp;
+	private final boolean isTp;
 
 	/**
 	 * Instantiates a new player land change event.
@@ -66,9 +66,14 @@ public class PlayerLandChangeEvent extends LandEvent implements Cancellable {
 	 * @param toLoc the to location
 	 * @param isTp the is a player teleport
 	 */
-	public PlayerLandChangeEvent(final IDummyLand lastDummyLand, final IDummyLand dummyLand, final Player player,
-			final Location fromLoc, final Location toLoc, final boolean isTp) {
-
+	public PlayerLandChangeEvent(
+		final IDummyLand lastDummyLand,
+		final IDummyLand dummyLand,
+		final Player player,
+		final Location fromLoc,
+		final Location toLoc,
+		final boolean isTp
+	) {
 		super(dummyLand);
 		this.lastDummyLand = lastDummyLand;
 
@@ -89,8 +94,7 @@ public class PlayerLandChangeEvent extends LandEvent implements Cancellable {
 	 */
 	@Override
 	public HandlerList getHandlers() {
-
-		return handlers;
+		return HANDLERS;
 	}
 
 	/**
@@ -99,8 +103,7 @@ public class PlayerLandChangeEvent extends LandEvent implements Cancellable {
 	 * @return the handler list
 	 */
 	public static HandlerList getHandlerList() {
-
-		return handlers;
+		return HANDLERS;
 	}
 
 	/* (non-Javadoc)
@@ -108,7 +111,6 @@ public class PlayerLandChangeEvent extends LandEvent implements Cancellable {
 	 */
 	@Override
 	public boolean isCancelled() {
-
 		return cancelled;
 	}
 
@@ -116,9 +118,8 @@ public class PlayerLandChangeEvent extends LandEvent implements Cancellable {
 	 * @see org.bukkit.event.Cancellable#setCancelled(boolean)
 	 */
 	@Override
-	public void setCancelled(final boolean bln) {
-
-		cancelled = bln;
+	public void setCancelled(final boolean cancelled) {
+		this.cancelled = cancelled;
 	}
 
 	/**
@@ -127,7 +128,6 @@ public class PlayerLandChangeEvent extends LandEvent implements Cancellable {
 	 * @return the player
 	 */
 	public Player getPlayer() {
-
 		return player;
 	}
 
@@ -137,7 +137,6 @@ public class PlayerLandChangeEvent extends LandEvent implements Cancellable {
 	 * @return the last land
 	 */
 	public ILand getLastLand() {
-
 		return lastLand;
 	}
 
@@ -147,7 +146,6 @@ public class PlayerLandChangeEvent extends LandEvent implements Cancellable {
 	 * @return the last land or dummy land (World)
 	 */
 	public IDummyLand getLastLandOrOutside() {
-
 		return lastDummyLand;
 	}
 
@@ -157,7 +155,6 @@ public class PlayerLandChangeEvent extends LandEvent implements Cancellable {
 	 * @return the from location
 	 */
 	public Location getFromLoc() {
-
 		return fromLoc;
 	}
 
@@ -167,7 +164,6 @@ public class PlayerLandChangeEvent extends LandEvent implements Cancellable {
 	 * @return the to location
 	 */
 	public Location getToLoc() {
-
 		return toLoc;
 	}
 
@@ -177,7 +173,7 @@ public class PlayerLandChangeEvent extends LandEvent implements Cancellable {
 	 * @return true, if it is a player teleport
 	 */
 	public boolean isTp() {
-
 		return isTp;
 	}
+
 }

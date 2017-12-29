@@ -29,7 +29,7 @@ import me.tabinol.factoidapi.lands.ILand;
 public class LandDeleteEvent extends LandEvent implements Cancellable {
 
 	/** The Constant handlers. */
-	private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList HANDLERS = new HandlerList();
 
 	/** The event is cancelled. */
 	protected boolean cancelled = false;
@@ -50,7 +50,7 @@ public class LandDeleteEvent extends LandEvent implements Cancellable {
 	@Override
 	public HandlerList getHandlers() {
 
-		return handlers;
+		return HANDLERS;
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class LandDeleteEvent extends LandEvent implements Cancellable {
 	 */
 	public static HandlerList getHandlerList() {
 
-		return handlers;
+		return HANDLERS;
 	}
 
 	/* (non-Javadoc)

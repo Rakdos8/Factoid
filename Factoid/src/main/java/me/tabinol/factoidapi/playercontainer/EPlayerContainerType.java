@@ -43,17 +43,11 @@ public enum EPlayerContainerType {
 	/** The land visitor. */
 	VISITOR(5, "Visitor", false),
 
-	/** The group from permision system. */
+	/** The group from permission system. */
 	GROUP(6, "Group", true),
 
 	/** The Bukkit permission. */
 	PERMISSION(7, "Permission", true),
-
-	/** The faction. */
-	FACTION(8, "Faction", true),
-
-	/** The faction territory (siege). */
-	FACTION_TERRITORY(9, "FactionTerritory", false),
 
 	/** Everybody. */
 	EVERYBODY(10, "Everybody", false),

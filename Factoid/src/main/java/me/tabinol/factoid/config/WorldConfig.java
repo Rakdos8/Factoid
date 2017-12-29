@@ -159,19 +159,12 @@ public class WorldConfig {
 	}
 
 	private DummyLand landModify(final DummyLand dl, final ConfigurationSection fc, final String perms, final String flags) {
-
-		ConfigurationSection csPerm = null;
-		ConfigurationSection csFlags = null;
-
-		if (fc != null) {
-			csPerm = fc.getConfigurationSection(perms);
-			csFlags = fc.getConfigurationSection(flags);
-		}
+		final ConfigurationSection csPerm = fc.getConfigurationSection(perms);
+		final ConfigurationSection csFlags = fc.getConfigurationSection(flags);
 
 		// Add permissions
 		if (csPerm != null) {
 			for (final String container : csPerm.getKeys(false)) {
-
 				final EPlayerContainerType pcType = EPlayerContainerType.getFromString(container);
 
 				if (pcType.hasParameter()) {
@@ -180,7 +173,7 @@ public class WorldConfig {
 							Factoid.getThisPlugin().iLog().write("Container: " + container + ":" + containerName + ", " + perm);
 
 							// Remove _ if it is a Bukkit Permission
-							String containerNameLower;
+							final String containerNameLower;
 							if (pcType == EPlayerContainerType.PERMISSION) {
 								containerNameLower = containerName.toLowerCase().replaceAll("_", ".");
 							} else {
@@ -188,20 +181,22 @@ public class WorldConfig {
 							}
 
 							dl.addPermission(
-									PlayerContainer.create(null, pcType, containerNameLower),
-									new Permission(Factoid.getThisPlugin().iParameters().getPermissionTypeNoValid(perm.toUpperCase()),
-											fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Value"),
-											fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Heritable")));
+								PlayerContainer.create(null, pcType, containerNameLower),
+								new Permission(Factoid.getThisPlugin().iParameters().getPermissionTypeNoValid(perm.toUpperCase()),
+									fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Value"),
+									fc.getBoolean(perms + "." + container + "." + containerName + "." + perm + ".Heritable"))
+							);
 						}
 					}
 				} else {
 					for (final String perm : fc.getConfigurationSection(perms + "." + container).getKeys(false)) {
 						Factoid.getThisPlugin().iLog().write("Container: " + container + ", " + perm);
 						dl.addPermission(
-								PlayerContainer.create(null, pcType, null),
-								new Permission(Factoid.getThisPlugin().iParameters().getPermissionTypeNoValid(perm.toUpperCase()),
-										fc.getBoolean(perms + "." + container + "." + perm + ".Value"),
-										fc.getBoolean(perms + "." + container + "." + perm + ".Heritable")));
+							PlayerContainer.create(null, pcType, null),
+							new Permission(Factoid.getThisPlugin().iParameters().getPermissionTypeNoValid(perm.toUpperCase()),
+								fc.getBoolean(perms + "." + container + "." + perm + ".Value"),
+								fc.getBoolean(perms + "." + container + "." + perm + ".Heritable"))
+						);
 					}
 				}
 			}
