@@ -322,8 +322,6 @@ public class ConfLoader implements Closeable {
 
 	/**
 	 * Close.
-	 *
-	 * @throws FileLoadException the file load exception
 	 */
 	@Override
 	public void close() {
