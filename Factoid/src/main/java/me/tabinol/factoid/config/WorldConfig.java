@@ -143,7 +143,6 @@ public class WorldConfig {
 	 * @return a TreeMap of default configuration
 	 */
 	public TreeMap<IType, DummyLand> getTypeDefaultConf() {
-
 		Factoid.getThisPlugin().iLog().write("Create default conf for lands");
 		final TreeMap<IType, DummyLand> defaultConf = new TreeMap<>();
 
@@ -159,10 +158,13 @@ public class WorldConfig {
 	}
 
 	private DummyLand landModify(final DummyLand dl, final ConfigurationSection fc, final String perms, final String flags) {
+		if (fc == null) {
+			return dl;
+		}
 		final ConfigurationSection csPerm = fc.getConfigurationSection(perms);
 		final ConfigurationSection csFlags = fc.getConfigurationSection(flags);
 
-		// Add permissions
+		// Permissions
 		if (csPerm != null) {
 			for (final String container : csPerm.getKeys(false)) {
 				final EPlayerContainerType pcType = EPlayerContainerType.getFromString(container);
@@ -202,7 +204,7 @@ public class WorldConfig {
 			}
 		}
 
-		// add flags
+		// Flags
 		if (csFlags != null) {
 			for (final String flag : csFlags.getKeys(false)) {
 				Factoid.getThisPlugin().iLog().write("Flag: " + flag);

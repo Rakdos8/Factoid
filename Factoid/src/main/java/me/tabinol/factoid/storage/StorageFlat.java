@@ -158,8 +158,8 @@ public class StorageFlat extends Storage {
 		String type = null;
 		final Map<Integer, CuboidArea> areas = new TreeMap<>();
 		PlayerContainer owner;
-		String parentName;
 		final Set<PlayerContainer> residents = new TreeSet<>();
+		String parentName;
 		final Set<PlayerContainer> banneds = new TreeSet<>();
 		final Map<PlayerContainer, TreeMap<PermissionType, Permission>> permissions = new TreeMap<>();
 		final Set<LandFlag> flags = new HashSet<>();
@@ -300,7 +300,9 @@ public class StorageFlat extends Storage {
 		}
 
 		Land land = null;
-		final Land parent = Factoid.getThisPlugin().iLands().getLand(UUID.fromString(parentName));
+		final Land parent = parentName != null ?
+			Factoid.getThisPlugin().iLands().getLand(UUID.fromString(parentName)) :
+			null;
 		boolean isLandCreated = false;
 		// Create land
 		for (final Entry<Integer, CuboidArea> entry : areas.entrySet()) {
@@ -310,9 +312,7 @@ public class StorageFlat extends Storage {
 						landName,
 						owner,
 						entry.getValue(),
-						parentName != null ?
-							parent :
-							null,
+						parent,
 						entry.getKey(),
 						uuid,
 						FactoidAPI.iTypes().addOrGetType(type)
