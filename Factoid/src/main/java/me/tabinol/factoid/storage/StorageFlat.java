@@ -384,13 +384,6 @@ public class StorageFlat extends Storage {
 				cb.writeParam("Parent", land.getParent().getUUID().toString());
 			}
 
-			//factionTerritory
-			if (land.getFactionTerritory() == null) {
-				cb.writeParam("FactionTerritory", (String) null);
-			} else {
-				cb.writeParam("FactionTerritory", land.getFactionTerritory().getName());
-			}
-
 			//CuboidAreas
 			strs = new ArrayList<>();
 			for (final int index : land.getAreasKey()) {
