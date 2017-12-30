@@ -83,21 +83,11 @@ public class PlayerListener implements Listener {
 		setFlyCreative(event, event.getPlayer(), event.getLandOrOutside());
 	}
 
-	// Bugfix when tp is from an other worlds
+	// Bugfix when tp is from an other world
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerTeleport(final PlayerTeleportEvent event) {
-		final Player player = event.getPlayer();
-
-		if (event.getFrom().getWorld() != event.getTo().getWorld()) {
-			Bukkit.getScheduler().runTaskLater(FactoidFlyCreative.getThisPlugin(), new Runnable() {
-				@Override
-				public void run() {
-					if (player.isOnline()) {
-						setFlyCreative(null, player,
-								FactoidAPI.iLands().getLandOrOutsideArea(player.getLocation()));
-					}
-				}
-				}, 1);
+		if (!event.getFrom().getWorld().equals(event.getTo().getWorld())) {
+			runTaskLater(event.getPlayer());
 		}
 	}
 
@@ -105,11 +95,14 @@ public class PlayerListener implements Listener {
 	public void onPlayerGameModeChangeEvent(final PlayerGameModeChangeEvent event) {
 		final Player player = event.getPlayer();
 
-		if (!ignoredGMPlayers.remove(player)
-				&& !conf.getIgnoredGameMode().contains(event.getNewGameMode())
-				&& !player.hasPermission(Creative.CREATIVE_IGNORE_PERM)) {
+		if (!ignoredGMPlayers.remove(player) &&
+			!conf.getIgnoredGameMode().contains(event.getNewGameMode()) &&
+			!player.hasPermission(Creative.CREATIVE_IGNORE_PERM)
+		) {
 			event.setCancelled(true);
 		}
+
+		runTaskLater(event.getPlayer());
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
@@ -183,7 +176,21 @@ public class PlayerListener implements Listener {
 		}
 	}
 
-	public Creative getCreative() {
-		return creative;
+	private void runTaskLater(final Player player) {
+		Bukkit.getScheduler().runTaskLater(
+			FactoidFlyCreative.getThisPlugin(),
+			() -> {
+				if (player.isOnline()) {
+					setFlyCreative(
+						null,
+						player,
+						FactoidAPI.iLands().getLandOrOutsideArea(player.getLocation())
+					);
+				}
+			},
+			// 1.5 seconds of delay
+			30
+		);
 	}
+
 }

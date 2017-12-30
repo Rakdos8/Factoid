@@ -41,7 +41,6 @@ public class Fly {
 	}
 
 	public void fly(final Event event, final Player player, final IDummyLand dummyLand) {
-
 		if (!player.hasPermission(FLY_IGNORE_PERM)) {
 			if (askFlyFlag(player, dummyLand)) {
 				if (!player.getAllowFlight()) {
