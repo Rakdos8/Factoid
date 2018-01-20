@@ -36,10 +36,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Hanging;
 import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Tameable;
+import org.bukkit.entity.Vehicle;
 import org.bukkit.entity.minecart.StorageMinecart;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -74,6 +76,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.event.vehicle.VehicleDamageEvent;
+import org.bukkit.event.vehicle.VehicleDestroyEvent;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.plugin.PluginManager;
 
@@ -454,10 +458,11 @@ public class PlayerListener extends CommonListener implements Listener {
 				messagePermission(player);
 				event.setCancelled(true);
 			}
-			// For armor stand
+			// For armor stand and every type of minecart (tnt, storage, regular, etc)
 			else if (player.getInventory().getItemInMainHand() != null
 					&& action == Action.RIGHT_CLICK_BLOCK
-					&& BKVersion.isArmorStand(player.getInventory().getItemInMainHand().getType())
+					&& (BKVersion.isArmorStand(player.getInventory().getItemInMainHand().getType()) ||
+						player.getInventory().getItemInMainHand().getType().name().contains("MINECART"))
 					&& ((land instanceof ILand && ((ILand) land).isBanned(event.getPlayer()))
 						|| !checkPermission(land, event.getPlayer(),
 								PermissionList.BUILD.getPermissionType())
@@ -580,6 +585,11 @@ public class PlayerListener extends CommonListener implements Listener {
 					event.setCancelled(true);
 				} else if (event.getRightClicked() instanceof StorageMinecart &&
 					!checkPermission(land, player, PermissionList.OPEN_CHEST.getPermissionType())
+				) {
+					messagePermission(player);
+					event.setCancelled(true);
+				} else if (event.getRightClicked() instanceof Minecart &&
+					!checkPermission(land, player, PermissionList.USE.getPermissionType())
 				) {
 					messagePermission(player);
 					event.setCancelled(true);
@@ -771,6 +781,11 @@ public class PlayerListener extends CommonListener implements Listener {
 										PermissionList.BUILD.getPermissionType())
 								|| !checkPermission(land, player,
 										PermissionList.BUILD_DESTROY.getPermissionType())))
+						|| (entity instanceof Minecart)
+								&& (!checkPermission(land, player,
+										PermissionList.BUILD.getPermissionType())
+								|| !checkPermission(land, player,
+										PermissionList.BUILD_DESTROY.getPermissionType()))
 						|| (entity instanceof Animals && !checkPermission(
 								land, player,
 								PermissionList.ANIMAL_KILL
@@ -1069,6 +1084,22 @@ public class PlayerListener extends CommonListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onVehicleDamage(final VehicleDamageEvent event) {
+		if (checkVehiclePermission(event.getAttacker(), event.getVehicle())) {
+			messagePermission((Player) event.getAttacker());
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onVehicleDestroy(final VehicleDestroyEvent event) {
+		if (checkVehiclePermission(event.getAttacker(), event.getVehicle())) {
+			messagePermission((Player) event.getAttacker());
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityDamage(final EntityDamageEvent event) {
 		final DummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(event.getEntity().getLocation());
 
@@ -1079,8 +1110,7 @@ public class PlayerListener extends CommonListener implements Listener {
 				event.setCancelled(true);
 			}
 			// Or the player were shot by a flame bow
-			else if (
-				Boolean.TRUE.equals(getShootByFlameArrow.get(event.getEntity())) &&
+			else if (Boolean.TRUE.equals(getShootByFlameArrow.get(event.getEntity())) &&
 				!land.getFlagAndInherit(FlagList.FULL_PVP.getFlagType()).getValueBoolean() &&
 				(event.getCause() == DamageCause.FIRE || event.getCause() == DamageCause.FIRE_TICK)
 			) {
@@ -1090,6 +1120,7 @@ public class PlayerListener extends CommonListener implements Listener {
 		// If it's in a real cubo and it's an ArmorStand or a passive monster (or can be tamed)
 		else if (land instanceof Land &&
 			(event.getEntity() instanceof ArmorStand ||
+			event.getEntity() instanceof Minecart ||
 			event.getEntity() instanceof Animals ||
 			event.getEntity() instanceof Tameable)
 		) {
@@ -1103,6 +1134,30 @@ public class PlayerListener extends CommonListener implements Listener {
 				event.setCancelled(true);
 			}
 		}
+	}
+
+	private boolean checkVehiclePermission(
+		final Entity attacker,
+		final Vehicle vehicle
+	) {
+		if (!(attacker instanceof Player)) {
+			return false;
+		}
+		final Player player = (Player) attacker;
+		final IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(
+			vehicle.getLocation()
+		);
+		final IPlayerConfEntry entry = playerConf.get(player);
+
+		// Forget if it's a Citizens or AdminMod
+		if (entry == null || entry.isAdminMod()) {
+			return false;
+		}
+
+		// If attacker banned, or can don't have BUILD_DESTROY permission
+		return (land instanceof ILand && ((ILand) land).isBanned(player)) ||
+			!checkPermission(land, player, PermissionList.BUILD.getPermissionType()) ||
+			!checkPermission(land, player, PermissionList.BUILD_DESTROY.getPermissionType());
 	}
 
 	/**
