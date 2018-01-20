@@ -40,6 +40,7 @@ import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Tameable;
+import org.bukkit.entity.minecart.StorageMinecart;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -572,14 +573,17 @@ public class PlayerListener extends CommonListener implements Listener {
 				) {
 					messagePermission(player);
 					event.setCancelled(true);
-				}
-				if (event.getRightClicked() instanceof Merchant &&
+				} else if (event.getRightClicked() instanceof Merchant &&
 					!checkPermission(land, player, PermissionList.TRADE.getPermissionType())
 				) {
 					messagePermission(player);
 					event.setCancelled(true);
-				}
-				else if (event.getRightClicked() instanceof ItemFrame &&
+				} else if (event.getRightClicked() instanceof StorageMinecart &&
+					!checkPermission(land, player, PermissionList.OPEN_CHEST.getPermissionType())
+				) {
+					messagePermission(player);
+					event.setCancelled(true);
+				} else if (event.getRightClicked() instanceof ItemFrame &&
 					(!checkPermission(land, player,PermissionList.BUILD.getPermissionType()) ||
 					!checkPermission(land, player,PermissionList.BUILD_PLACE.getPermissionType()))
 				) {
@@ -1132,36 +1136,33 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * @param loc the loc
 	 * @param newPlayer the new player
 	 */
-	private void updatePosInfo(final Event event, final PlayerConfEntry entry,
-			final Location loc, final boolean newPlayer) {
-
-		IDummyLand land;
-		IDummyLand landOld;
-		PlayerLandChangeEvent landEvent;
-		me.tabinol.factoid.event.PlayerLandChangeEvent oldLandEvent = null;
-		Boolean isTp;
+	private void updatePosInfo(
+		final Event event,
+		final PlayerConfEntry entry,
+		final Location loc,
+		final boolean newPlayer
+	) {
 		final Player player = entry.getPlayer();
-
-		land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(loc);
+		final boolean isTp = event instanceof PlayerTeleportEvent;
+		final IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(loc);
+		final IDummyLand landOld = newPlayer ? land : entry.getLastLand();
 
 		if (newPlayer) {
-			entry.setLastLand(landOld = land);
-		} else {
-			landOld = entry.getLastLand();
+			entry.setLastLand(land);
 		}
+		final PlayerLandChangeEvent landEvent = new PlayerLandChangeEvent(newPlayer ? null : (DummyLand) landOld,
+			land, player, entry.getLastLoc(), loc, isTp);
+		final me.tabinol.factoid.event.PlayerLandChangeEvent oldLandEvent = new me.tabinol.factoid.event.PlayerLandChangeEvent(
+			newPlayer ? null : (DummyLand) landOld,
+			(DummyLand) land, player, entry.getLastLoc(), loc, isTp);
+
 		if (newPlayer || land != landOld) {
-			isTp = event instanceof PlayerTeleportEvent;
 			// First parameter : If it is a new player, it is null, if not new
 			// player, it is "landOld"
-			landEvent = new PlayerLandChangeEvent(newPlayer ? null : (DummyLand) landOld,
-					land, player, entry.getLastLoc(), loc, isTp);
 			pm.callEvent(landEvent);
 
 			// Deprecated old land change event
 			if (!landEvent.isCancelled()) {
-				oldLandEvent = new me.tabinol.factoid.event.PlayerLandChangeEvent(
-						newPlayer ? null : (DummyLand) landOld,
-						(DummyLand) land, player, entry.getLastLoc(), loc, isTp);
 				pm.callEvent(oldLandEvent);
 			}
 
