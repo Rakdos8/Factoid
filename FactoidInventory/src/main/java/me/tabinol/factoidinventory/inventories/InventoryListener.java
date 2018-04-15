@@ -56,7 +56,7 @@ public class InventoryListener implements Listener {
 		final Player player = event.getPlayer();
 
 		inventoryStorage.switchInventory(player,
-				getDummyLand(player.getLocation()), player.getGameMode() == GameMode.CREATIVE, InventoryStorage.PlayerAction.JOIN);
+			getDummyLand(player.getLocation()), player.getGameMode() == GameMode.CREATIVE, InventoryStorage.PlayerAction.JOIN);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -78,13 +78,13 @@ public class InventoryListener implements Listener {
 			inventoryStorage.saveInventory(player, null, true, true, false, false, false);
 			final InventorySpec invSpec = FactoidInventory.getConf().getInvSpec(getDummyLand(player.getLocation()));
 			inventoryStorage.saveInventory(player, invSpec.getInventoryName(),
-					player.getGameMode() == GameMode.CREATIVE, false, false, false, false);
+				player.getGameMode() == GameMode.CREATIVE, false, false, false, false);
 		}
 	}
 
 	public void removePlayer(final Player player) {
 		inventoryStorage.switchInventory(player,
-				getDummyLand(player.getLocation()), player.getGameMode() == GameMode.CREATIVE, InventoryStorage.PlayerAction.QUIT);
+			getDummyLand(player.getLocation()), player.getGameMode() == GameMode.CREATIVE, InventoryStorage.PlayerAction.QUIT);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -92,7 +92,7 @@ public class InventoryListener implements Listener {
 		final Player player = event.getPlayer();
 
 		inventoryStorage.switchInventory(player,
-				getDummyLand(player.getLocation()), event.getNewGameMode() == GameMode.CREATIVE, InventoryStorage.PlayerAction.CHANGE);
+			getDummyLand(player.getLocation()), event.getNewGameMode() == GameMode.CREATIVE, InventoryStorage.PlayerAction.CHANGE);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -100,7 +100,7 @@ public class InventoryListener implements Listener {
 		final Player player = event.getPlayer();
 
 		inventoryStorage.switchInventory(player,
-				event.getLandOrOutside(), player.getGameMode() == GameMode.CREATIVE, InventoryStorage.PlayerAction.CHANGE);
+			event.getLandOrOutside(), player.getGameMode() == GameMode.CREATIVE, InventoryStorage.PlayerAction.CHANGE);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -112,15 +112,15 @@ public class InventoryListener implements Listener {
 			// Land area change, all players in the world affected
 			for (final Player player : event.getLand().getWorld().getPlayers()) {
 				inventoryStorage.switchInventory(player,
-						FactoidAPI.iLands().getLandOrOutsideArea(player.getLocation()),
-						player.getGameMode() == GameMode.CREATIVE, InventoryStorage.PlayerAction.CHANGE);
+					FactoidAPI.iLands().getLandOrOutsideArea(player.getLocation()),
+					player.getGameMode() == GameMode.CREATIVE, InventoryStorage.PlayerAction.CHANGE);
 			}
 		} else if (reason != LandModifyReason.PERMISSION_SET && reason != LandModifyReason.RENAME) {
 			// No land resize or area replace, only players in the land affected
 			for (final Player player : event.getLand().getPlayersInLandAndChildren()) {
 				inventoryStorage.switchInventory(player,
-						FactoidAPI.iLands().getLandOrOutsideArea(player.getLocation()),
-						player.getGameMode() == GameMode.CREATIVE, InventoryStorage.PlayerAction.CHANGE);
+					FactoidAPI.iLands().getLandOrOutsideArea(player.getLocation()),
+					player.getGameMode() == GameMode.CREATIVE, InventoryStorage.PlayerAction.CHANGE);
 			}
 		}
 	}
@@ -132,7 +132,7 @@ public class InventoryListener implements Listener {
 		player.setLevel(0);
 		player.setTotalExperience(0);
 		inventoryStorage.switchInventory(player,
-				getDummyLand(player.getLocation()), player.getGameMode() == GameMode.CREATIVE, InventoryStorage.PlayerAction.DEATH);
+			getDummyLand(player.getLocation()), player.getGameMode() == GameMode.CREATIVE, InventoryStorage.PlayerAction.DEATH);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -184,13 +184,12 @@ public class InventoryListener implements Listener {
 
 		if (!factoidPlayer.isAdminMod() &&
 			inventoryStorage.getPlayerInvEntry(player).getActualInv().isDisabledCommand(message.split(" ")[0])
-		) {
+			) {
 			event.setCancelled(true);
 			player.sendMessage(
 				ChatColor.RED + "[Factoid] " +
-				Factoid.getThisPlugin().iLanguage().getMessage("GENERAL.MISSINGPERMISSIONHERE")
+					Factoid.getThisPlugin().iLanguage().getMessage("GENERAL.MISSINGPERMISSIONHERE")
 			);
-			return;
 		}
 	}
 
