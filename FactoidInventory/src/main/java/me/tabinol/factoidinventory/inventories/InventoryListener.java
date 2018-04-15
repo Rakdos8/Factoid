@@ -21,6 +21,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,6 +29,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
@@ -49,6 +51,18 @@ public class InventoryListener implements Listener {
 
 	public InventoryListener() {
 		inventoryStorage = new InventoryStorage();
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void onPrePlayerJoin(final AsyncPlayerPreLoginEvent event) {
+		// Avoids the player to connect if he just left to avoid item duplication see https://redmine.modulmonde.com/issues/284
+		final OfflinePlayer player = Bukkit.getOfflinePlayer(event.getUniqueId());
+		if (player != null && player.isOnline()) {
+			event.disallow(
+				AsyncPlayerPreLoginEvent.Result.KICK_OTHER,
+				"Vous êtes déjà connecté !"
+			);
+		}
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

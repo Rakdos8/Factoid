@@ -331,7 +331,7 @@ public class InventoryStorage {
 		final PlayerInvEntry invEntry = playerInvList.get(player);
 		final InventorySpec fromInv = invEntry != null ? invEntry.getActualInv() : null;
 		final InventorySpec toInv = FactoidInventory.getConf().getInvSpec(dummyLand);
-		boolean fromIsCreative = invEntry != null ? invEntry.isCreativeInv() : false;
+		boolean fromIsCreative = invEntry != null && invEntry.isCreativeInv();
 
 		// Check if we have to do this action
 		if (player.hasPermission(InventoryConfig.PERM_IGNORE_INV)) {
