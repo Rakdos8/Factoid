@@ -25,6 +25,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 import me.tabinol.factoid.BKVersion;
 import me.tabinol.factoid.Factoid;
@@ -50,10 +51,12 @@ public class PlayerListener18 extends CommonListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteractAtEntity(final PlayerInteractAtEntityEvent event) {
-		IDummyLand land;
+		final IDummyLand land;
 		final EntityType et = event.getRightClicked().getType();
 		final Player player = event.getPlayer();
-		final Material mat = player.getItemInHand().getType();
+		final Material mat = event.getHand() == EquipmentSlot.OFF_HAND ?
+			player.getInventory().getItemInMainHand().getType() :
+			player.getInventory().getItemInOffHand().getType();
 		final PlayerConfEntry entry = playerConf.get(player);
 		final Location loc = event.getRightClicked().getLocation();
 

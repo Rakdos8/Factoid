@@ -256,7 +256,7 @@ public class Land extends DummyLand implements ILand {
 	@Override
 	public boolean removeArea(final int key) {
 
-		ICuboidArea area;
+		final ICuboidArea area;
 
 		if ((area = areas.remove(key)) != null) {
 			Factoid.getThisPlugin().iLands().removeAreaFromList(area);
@@ -317,7 +317,7 @@ public class Land extends DummyLand implements ILand {
 	@Override
 	public boolean replaceArea(final int key, final ICuboidArea newArea) {
 
-		ICuboidArea area;
+		final ICuboidArea area;
 
 		if ((area = areas.remove(key)) != null) {
 			Factoid.getThisPlugin().iLands().removeAreaFromList(area);
@@ -648,10 +648,6 @@ public class Land extends DummyLand implements ILand {
 		// Start Event
 		Factoid.getThisPlugin().getServer().getPluginManager().callEvent(
 				new PlayerContainerLandBanEvent(this, banned));
-
-		// Deprecated to remove
-		Factoid.getThisPlugin().getServer().getPluginManager().callEvent(
-				new me.tabinol.factoid.event.PlayerContainerLandBanEvent(this, (PlayerContainer) banned));
 	}
 
 	/**
@@ -967,7 +963,7 @@ public class Land extends DummyLand implements ILand {
 	 */
 	protected IFlagValue getLandFlagAndInherit(final IFlagType ft, final boolean onlyInherit) {
 
-		IFlagValue flagValue;
+		final IFlagValue flagValue;
 
 		if ((flagValue = getFlag(ft, onlyInherit)) != null) {
 			return flagValue;

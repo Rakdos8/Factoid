@@ -58,8 +58,10 @@ public class CommandRent extends CommandExec {
 		EcoSign ecoSign = null;
 
 		// Check for sign in hand
-		if (entity.player.getGameMode() != GameMode.CREATIVE && entity.player.getItemInHand().getType() != Material.SIGN) {
-			throw new FactoidCommandException("Must have a sign in hand", entity.player, "COMMAND.ECONOMY.MUSTHAVEISIGN");
+		if (entity.player.getGameMode() != GameMode.CREATIVE &&
+			entity.player.getInventory().getItemInMainHand().getType() != Material.SIGN
+		) {
+			throw new FactoidCommandException("Must have a sign in main hand", entity.player, "COMMAND.ECONOMY.MUSTHAVEISIGN");
 		}
 
 		// If 'recreate'

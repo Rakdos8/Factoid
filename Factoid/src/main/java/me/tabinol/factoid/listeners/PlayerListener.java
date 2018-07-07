@@ -189,7 +189,7 @@ public class PlayerListener extends CommonListener implements Listener {
 		final Location loc = event.getTo();
 		final Player player = event.getPlayer();
 		final PlayerConfEntry entry = playerConf.get(player);
-		IDummyLand land;
+		final IDummyLand land;
 
 		// BugFix Citizens plugin
 		if (entry == null) {
@@ -652,7 +652,7 @@ public class PlayerListener extends CommonListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onHangingBreakByEntity(final HangingBreakByEntityEvent event) {
 
-		Player player;
+		final Player player;
 
 		if (event.getRemover() instanceof Player
 				&& !playerConf.get((player = (Player) event.getRemover()))
@@ -891,7 +891,7 @@ public class PlayerListener extends CommonListener implements Listener {
 				event.getBlock().getLocation());
 		final Material matFrom = event.getBlock().getType();
 		final Material matTo = event.getTo();
-		Player player;
+		final Player player;
 
 		if (event.getEntity() instanceof Player
 				&& playerConf.get(player = (Player) event.getEntity()) != null // Citizens bugfix
@@ -998,8 +998,8 @@ public class PlayerListener extends CommonListener implements Listener {
 	public void onEntityRegainHealth(final EntityRegainHealthEvent event) {
 
 		final Entity entity = event.getEntity();
-		Player player;
-		IPlayerConfEntry entry;
+		final Player player;
+		final IPlayerConfEntry entry;
 
 		if (entity != null && event.getEntity() instanceof Player
 				&& (event.getRegainReason() == RegainReason.REGEN
@@ -1207,21 +1207,13 @@ public class PlayerListener extends CommonListener implements Listener {
 		}
 		final PlayerLandChangeEvent landEvent = new PlayerLandChangeEvent(newPlayer ? null : (DummyLand) landOld,
 			land, player, entry.getLastLoc(), loc, isTp);
-		final me.tabinol.factoid.event.PlayerLandChangeEvent oldLandEvent = new me.tabinol.factoid.event.PlayerLandChangeEvent(
-			newPlayer ? null : (DummyLand) landOld,
-			(DummyLand) land, player, entry.getLastLoc(), loc, isTp);
 
 		if (newPlayer || land != landOld) {
 			// First parameter : If it is a new player, it is null, if not new
 			// player, it is "landOld"
 			pm.callEvent(landEvent);
 
-			// Deprecated old land change event
-			if (!landEvent.isCancelled()) {
-				pm.callEvent(oldLandEvent);
-			}
-
-			if (landEvent.isCancelled() || oldLandEvent.isCancelled()) {
+			if (landEvent.isCancelled()) {
 				if (isTp) {
 					((PlayerTeleportEvent) event).setCancelled(true);
 					return;

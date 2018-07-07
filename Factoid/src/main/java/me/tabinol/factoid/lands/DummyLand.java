@@ -135,11 +135,6 @@ public class DummyLand implements IDummyLand {
 				// Start Event for kick
 				Factoid.getThisPlugin().getServer().getPluginManager().callEvent(
 						new PlayerContainerAddNoEnterEvent((Land) this, pc));
-
-				// Deprecated to remove
-				Factoid.getThisPlugin().getServer().getPluginManager().callEvent(
-						new me.tabinol.factoid.event.PlayerContainerAddNoEnterEvent((Land) this,
-								(PlayerContainer) pc));
 			}
 
 			// Start Event
@@ -159,8 +154,8 @@ public class DummyLand implements IDummyLand {
 		final IPlayerContainer pc,
 		final IPermissionType permType
 	) {
-		TreeMap<IPermissionType, IPermission> permPlayer;
-		IPermission perm;
+		final TreeMap<IPermissionType, IPermission> permPlayer;
+		final IPermission perm;
 
 		if (!permissions.containsKey(pc)) {
 			return false;

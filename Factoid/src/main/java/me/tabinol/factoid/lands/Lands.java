@@ -125,7 +125,7 @@ public class Lands implements ILands {
 
 	public DummyLand getDefaultConf(final IType type) {
 
-		DummyLand land;
+		final DummyLand land;
 
 		// No type? Return default config
 		if (type == null) {
@@ -230,8 +230,8 @@ public class Lands implements ILands {
 
 		final String landNameLower = landName.toLowerCase();
 		int genealogy = 0;
-		Land land;
-		UUID landUUID;
+		final Land land;
+		final UUID landUUID;
 
 		if (uuid == null) {
 			landUUID = UUID.randomUUID();
@@ -282,8 +282,6 @@ public class Lands implements ILands {
 		}
 
 		final LandDeleteEvent landEvent = new LandDeleteEvent(land);
-		final me.tabinol.factoid.event.LandDeleteEvent oldLandEvent =
-				new me.tabinol.factoid.event.LandDeleteEvent((Land) land);
 
 		if (!landList.containsKey(land.getName())) {
 			return false;
@@ -297,12 +295,7 @@ public class Lands implements ILands {
 		// Call Land Event and check if it is cancelled
 		pm.callEvent(landEvent);
 
-		// Deprecated to remove
-		if (!landEvent.isCancelled()) {
-			pm.callEvent(oldLandEvent);
-		}
-
-		if (landEvent.isCancelled() || oldLandEvent.isCancelled()) {
+		if (landEvent.isCancelled()) {
 			return false;
 		}
 
@@ -435,7 +428,7 @@ public class Lands implements ILands {
 	@Override
 	public Land getLand(final Location loc) {
 
-		ICuboidArea ca;
+		final ICuboidArea ca;
 
 		if ((ca = getCuboidArea(loc)) == null) {
 			return null;
@@ -591,8 +584,8 @@ public class Lands implements ILands {
 	 */
 	protected boolean getPermissionInWorld(final String worldName, final Player player, final IPermissionType pt, final boolean onlyInherit) {
 
-		Boolean result;
-		DummyLand dl;
+		final Boolean result;
+		final DummyLand dl;
 
 		if ((dl = outsideArea.get(worldName.toLowerCase())) != null && (result = dl.getPermission(player, pt, onlyInherit)) != null) {
 			return result;
@@ -611,8 +604,8 @@ public class Lands implements ILands {
 	 */
 	protected IFlagValue getFlagInWorld(final String worldName, final IFlagType ft, final boolean onlyInherit) {
 
-		IFlagValue result;
-		DummyLand dl;
+		final IFlagValue result;
+		final DummyLand dl;
 
 		if ((dl = outsideArea.get(worldName.toLowerCase())) != null && (result = dl.getFlag(ft, onlyInherit)) != null) {
 			return result;
@@ -632,12 +625,12 @@ public class Lands implements ILands {
 
 		final Collection<ICuboidArea> areas = new ArrayList<>();
 		final String worldName = loc.getWorld().getName();
-		int SearchIndex;
-		int nbToFind;
-		boolean ForwardSearch;
-		TreeSet<AreaIndex> ais;
+		final int SearchIndex;
+		final int nbToFind;
+		final boolean ForwardSearch;
+		final TreeSet<AreaIndex> ais;
 		AreaIndex ai;
-		Iterator<AreaIndex> it;
+		final Iterator<AreaIndex> it;
 
 		// First, determinate if what is the highest number between x1, x2, z1 and z2
 		if (Math.abs(loc.getBlockX()) > Math.abs(loc.getBlockZ())) {
@@ -699,7 +692,7 @@ public class Lands implements ILands {
 		int actualGen = 0;
 		int curGen;
 		ICuboidArea actualArea = null;
-		Location resLoc; // Resolved location
+		final Location resLoc; // Resolved location
 
 		// Give the position from the sky to underbedrock if the Y is greater than 255 or lower than 0
 		if (loc.getBlockY() >= loc.getWorld().getMaxHeight()) {
@@ -781,7 +774,7 @@ public class Lands implements ILands {
 
 		if (!areaList[0].containsKey(area.getWorldName())) {
 			for (int t = 0; t < 4; t++) {
-				areaList[t].put(area.getWorldName(), new TreeSet<AreaIndex>());
+				areaList[t].put(area.getWorldName(), new TreeSet<>());
 			}
 		}
 		Factoid.getThisPlugin().iLog().write("Add area for " + area.getLand().getName());
