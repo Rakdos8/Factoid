@@ -121,7 +121,7 @@ public class EcoSign {
 
 		if (blockPlace.getType() == Material.WALL_SIGN) {
 			isWallSign = true;
-		} else if (blockPlace.getType() == Material.SIGN_POST) {
+		} else if (blockPlace.getType() == Material.SIGN) {
 			isWallSign = false;
 		} else {
 			throw new SignException();
@@ -222,12 +222,11 @@ public class EcoSign {
 		}
 
 		// Determinate material
-		Material mat;
+		final Material mat;
 		if (isWallSign) {
-
 			mat = Material.WALL_SIGN;
 		} else {
-			mat = Material.SIGN_POST;
+			mat = Material.SIGN;
 		}
 
 		// Create sign
@@ -266,7 +265,7 @@ public class EcoSign {
 		block.getChunk().load();
 
 		// Remove only if it is a sign;
-		if (block.getType() == Material.SIGN_POST
+		if (block.getType() == Material.SIGN
 				|| block.getType() == Material.WALL_SIGN) {
 			block.setType(Material.AIR);
 
@@ -283,7 +282,7 @@ public class EcoSign {
 	 */
 	private BlockFace signFacing(float yaw) {
 
-		BlockFace facing;
+		final BlockFace facing;
 
 		if (yaw < 0) {
 			yaw += 360;
@@ -334,7 +333,7 @@ public class EcoSign {
 	 */
 	private BlockFace wallFacing(float yaw) {
 
-		BlockFace facing;
+		final BlockFace facing;
 
 		if (yaw < 0) {
 			yaw += 360;

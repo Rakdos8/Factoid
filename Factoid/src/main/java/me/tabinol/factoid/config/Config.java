@@ -18,7 +18,9 @@
 package me.tabinol.factoid.config;
 
 import java.util.TreeSet;
+import java.util.logging.Level;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import me.tabinol.factoid.Factoid;
@@ -27,8 +29,6 @@ import me.tabinol.factoid.parameters.PermissionType;
 import me.tabinol.factoidapi.FactoidAPI;
 import me.tabinol.factoidapi.lands.types.IType;
 
-
-// TODO: Auto-generated Javadoc
 /**
  * The Class Config.
  */
@@ -79,24 +79,24 @@ public class Config {
 	public boolean useEconomy() { return useEconomy; }
 
 	/** The info item. */
-	private int infoItem;
+	private Material infoItem;
 
 	/**
 	 * Gets the info item.
 	 *
 	 * @return the info item
 	 */
-	public int getInfoItem() { return infoItem; }
+	public Material getInfoItem() { return infoItem; }
 
 	/** The select item. */
-	private int selectItem;
+	private Material selectItem;
 
 	/**
 	 * Gets the select item.
 	 *
 	 * @return the select item
 	 */
-	public int getSelectItem() { return selectItem; }
+	public Material getSelectItem() { return selectItem; }
 
 	/**
 	 * The Enum AllowCollisionType.
@@ -340,8 +340,10 @@ public class Config {
 		config.addDefault("general.worlds", new String[] {"world", "world_nether", "world_the_end"});
 		lang = config.getString("general.lang", "english");
 		useEconomy = config.getBoolean("general.UseEconomy", false);
-		infoItem = config.getInt("general.InfoItem", 352);
-		selectItem = config.getInt("general.SelectItem", 367);
+
+		infoItem = getMaterialFromString("general.InfoItem", Material.BONE);
+		selectItem = getMaterialFromString("general.SelectItem", Material.ROTTEN_FLESH);
+
 		// Remove error if the parameter is not here (AllowCollision)
 		try {
 			allowCollision = AllowCollisionType.valueOf(config.getString("land.AllowCollision", "approve").toUpperCase());
@@ -383,7 +385,6 @@ public class Config {
 	}
 
 	private String getStringOrNull(final String path, final String defaultSt) {
-
 		String result = config.getString(path, defaultSt);
 		if (result.equalsIgnoreCase("-null-")) {
 			result = null;
@@ -391,4 +392,16 @@ public class Config {
 
 		return result;
 	}
+
+	private Material getMaterialFromString(final String path, final Material defaultMaterial) {
+		final String material = config.getString(path, null);
+		try {
+			return Material.valueOf(Material.class, material);
+		} catch (final IllegalArgumentException ex) {
+			Factoid.getThisPlugin().getLogger().log(Level.WARNING, "Invalid Material name for path " + path + " (" + ex.getMessage() + ")");
+			Factoid.getThisPlugin().getLogger().log(Level.FINE, ex.getMessage(), ex);
+			return defaultMaterial;
+		}
+	}
+
 }

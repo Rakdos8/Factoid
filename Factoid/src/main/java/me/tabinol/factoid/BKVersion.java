@@ -18,6 +18,7 @@
 package me.tabinol.factoid;
 
 import java.util.EnumSet;
+import java.util.logging.Level;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -26,7 +27,6 @@ import org.bukkit.entity.Player;
 
 /**
  * This class is for compatibility to BK 1.7.x
- *
  */
 public class BKVersion {
 
@@ -34,49 +34,67 @@ public class BKVersion {
 
 	private static GameMode spectatorMode = null;
 
-	private static EnumSet<Material> doors = EnumSet.noneOf(Material.class);
+	private static final EnumSet<Material> doors = EnumSet.noneOf(Material.class);
+	private static final EnumSet<Material> buttons = EnumSet.noneOf(Material.class);
 
 	private static Material armorStand = null;
 
 	private static EntityType armorStandEntity = null;
 
 	protected static void initVersion() {
-
 		// org.bukkit.event.player.PlayerInteractAtEntityEvent (for ArmorStand)
 		try {
 			final Class<?> plInAtEnEv = Class.forName("org.bukkit.event.player.PlayerInteractAtEntityEvent");
 			if (plInAtEnEv != null) {
 				existPlayerInteractAtEntityEvent = true;
 			}
-
 		} catch (final ClassNotFoundException ex) {
-			// This is 1.7 version
+			Factoid.getThisPlugin().getLogger().log(Level.WARNING, "Event (PlayerInteractAtEntityEvent) not found : " + ex.getMessage(), ex);
 		}
 
 		// Spectator mode
 		try {
 			spectatorMode = GameMode.valueOf("SPECTATOR");
 		} catch (final IllegalArgumentException ex) {
-			// This is 1.7 version
+			Factoid.getThisPlugin().getLogger().log(Level.WARNING, "Invalid GameMode: " + ex.getMessage(), ex);
 		}
 
 		// Doors
-		doors.add(Material.WOODEN_DOOR);
-		doors.add(Material.TRAP_DOOR);
-		doors.add(Material.FENCE_GATE);
 		try {
 			doors.add(Material.valueOf("SPRUCE_DOOR"));
+			doors.add(Material.valueOf("SPRUCE_TRAPDOOR"));
 			doors.add(Material.valueOf("SPRUCE_FENCE_GATE"));
 			doors.add(Material.valueOf("BIRCH_DOOR"));
+			doors.add(Material.valueOf("BIRCH_TRAPDOOR"));
 			doors.add(Material.valueOf("BIRCH_FENCE_GATE"));
 			doors.add(Material.valueOf("JUNGLE_DOOR"));
+			doors.add(Material.valueOf("JUNGLE_TRAPDOOR"));
 			doors.add(Material.valueOf("JUNGLE_FENCE_GATE"));
 			doors.add(Material.valueOf("ACACIA_DOOR"));
+			doors.add(Material.valueOf("ACACIA_TRAPDOOR"));
 			doors.add(Material.valueOf("ACACIA_FENCE_GATE"));
 			doors.add(Material.valueOf("DARK_OAK_DOOR"));
+			doors.add(Material.valueOf("DARK_OAK_TRAPDOOR"));
 			doors.add(Material.valueOf("DARK_OAK_FENCE_GATE"));
+			doors.add(Material.valueOf("OAK_DOOR"));
+			doors.add(Material.valueOf("OAK_TRAPDOOR"));
+			doors.add(Material.valueOf("OAK_FENCE_GATE"));
+			doors.add(Material.valueOf("IRON_DOOR"));
+			doors.add(Material.valueOf("IRON_TRAPDOOR"));
 		} catch (final IllegalArgumentException ex) {
-			// This is 1.7 version
+			Factoid.getThisPlugin().getLogger().log(Level.WARNING, "Invalid door: " + ex.getMessage(), ex);
+		}
+
+		// Buttons
+		try {
+			buttons.add(Material.valueOf("SPRUCE_BUTTON"));
+			buttons.add(Material.valueOf("BIRCH_BUTTON"));
+			buttons.add(Material.valueOf("JUNGLE_BUTTON"));
+			buttons.add(Material.valueOf("ACACIA_BUTTON"));
+			buttons.add(Material.valueOf("DARK_OAK_BUTTON"));
+			buttons.add(Material.valueOf("OAK_BUTTON"));
+		} catch (final IllegalArgumentException ex) {
+			Factoid.getThisPlugin().getLogger().log(Level.WARNING, "Invalid button: " + ex.getMessage(), ex);
 		}
 
 		// ArmorStand
@@ -84,7 +102,7 @@ public class BKVersion {
 			armorStand = Material.valueOf("ARMOR_STAND");
 			armorStandEntity = EntityType.valueOf("ARMOR_STAND");
 		} catch (final IllegalArgumentException ex) {
-			// This is 1.7 version
+			Factoid.getThisPlugin().getLogger().log(Level.WARNING, "Invalid Material/Entity: " + ex.getMessage(), ex);
 		}
 
 	}
@@ -101,12 +119,16 @@ public class BKVersion {
 		return doors.contains(material);
 	}
 
+	public static boolean isButton(final Material material) {
+		return buttons.contains(material);
+	}
+
 	public static boolean isArmorStand(final Material material) {
-		return armorStand != null ? material == armorStand : false;
+		return armorStand != null && material == armorStand;
 	}
 
 	public static boolean isArmorStand(final EntityType entityType) {
-		return armorStandEntity != null ? entityType == armorStandEntity : false;
+		return armorStandEntity != null && entityType == armorStandEntity;
 	}
 
 }
