@@ -101,7 +101,7 @@ HELP:
     PERMISSION:
       1: "/factoid permission list : Affiche les permissions."
       2: "/factoid permission set <contenant joueur> <perm> <valeur> : Ajoute une permission."
-      3: "/factoid flag unset unset <contenant joueur> <perm> : Enlève une permission."
+      3: "/factoid permission unset <contenant joueur> <perm> : Enlève une permission."
     PRIORITY:
       1: "/factoid priority <nombre> : Change la priorité du terrain."
     REMOVE:
@@ -292,7 +292,7 @@ COMMAND:
     AREA:
       EMPTY: "Vous devez préciser un numéro d'étendue."
       INVALID: "Le numéro d'étendue est invalide."
-    DONE: 
+    DONE:
       LAND: "Vous avez enlevé le terrain % (% étendues)."
       AREA: "Vous avez enlevé une étendue du terrain % ."
   PRIORITY:
