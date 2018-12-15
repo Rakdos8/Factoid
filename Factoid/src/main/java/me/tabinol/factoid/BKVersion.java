@@ -41,7 +41,7 @@ public class BKVersion {
 
 	private static EntityType armorStandEntity = null;
 
-	protected static void initVersion() {
+	static void initVersion() {
 		// org.bukkit.event.player.PlayerInteractAtEntityEvent (for ArmorStand)
 		try {
 			final Class<?> plInAtEnEv = Class.forName("org.bukkit.event.player.PlayerInteractAtEntityEvent");
@@ -61,50 +61,49 @@ public class BKVersion {
 
 		// Doors
 		try {
-			doors.add(Material.valueOf("SPRUCE_DOOR"));
-			doors.add(Material.valueOf("SPRUCE_TRAPDOOR"));
-			doors.add(Material.valueOf("SPRUCE_FENCE_GATE"));
-			doors.add(Material.valueOf("BIRCH_DOOR"));
-			doors.add(Material.valueOf("BIRCH_TRAPDOOR"));
-			doors.add(Material.valueOf("BIRCH_FENCE_GATE"));
-			doors.add(Material.valueOf("JUNGLE_DOOR"));
-			doors.add(Material.valueOf("JUNGLE_TRAPDOOR"));
-			doors.add(Material.valueOf("JUNGLE_FENCE_GATE"));
-			doors.add(Material.valueOf("ACACIA_DOOR"));
-			doors.add(Material.valueOf("ACACIA_TRAPDOOR"));
-			doors.add(Material.valueOf("ACACIA_FENCE_GATE"));
-			doors.add(Material.valueOf("DARK_OAK_DOOR"));
-			doors.add(Material.valueOf("DARK_OAK_TRAPDOOR"));
-			doors.add(Material.valueOf("DARK_OAK_FENCE_GATE"));
-			doors.add(Material.valueOf("OAK_DOOR"));
-			doors.add(Material.valueOf("OAK_TRAPDOOR"));
-			doors.add(Material.valueOf("OAK_FENCE_GATE"));
-			doors.add(Material.valueOf("IRON_DOOR"));
-			doors.add(Material.valueOf("IRON_TRAPDOOR"));
+			doors.add(Material.SPRUCE_DOOR);
+			doors.add(Material.SPRUCE_TRAPDOOR);
+			doors.add(Material.SPRUCE_FENCE_GATE);
+			doors.add(Material.BIRCH_DOOR);
+			doors.add(Material.BIRCH_TRAPDOOR);
+			doors.add(Material.BIRCH_FENCE_GATE);
+			doors.add(Material.JUNGLE_DOOR);
+			doors.add(Material.JUNGLE_TRAPDOOR);
+			doors.add(Material.JUNGLE_FENCE_GATE);
+			doors.add(Material.ACACIA_DOOR);
+			doors.add(Material.ACACIA_TRAPDOOR);
+			doors.add(Material.ACACIA_FENCE_GATE);
+			doors.add(Material.DARK_OAK_DOOR);
+			doors.add(Material.DARK_OAK_TRAPDOOR);
+			doors.add(Material.DARK_OAK_FENCE_GATE);
+			doors.add(Material.OAK_DOOR);
+			doors.add(Material.OAK_TRAPDOOR);
+			doors.add(Material.OAK_FENCE_GATE);
+			doors.add(Material.IRON_DOOR);
+			doors.add(Material.IRON_TRAPDOOR);
 		} catch (final IllegalArgumentException ex) {
 			Factoid.getThisPlugin().getLogger().log(Level.WARNING, "Invalid door: " + ex.getMessage(), ex);
 		}
 
 		// Buttons
 		try {
-			buttons.add(Material.valueOf("SPRUCE_BUTTON"));
-			buttons.add(Material.valueOf("BIRCH_BUTTON"));
-			buttons.add(Material.valueOf("JUNGLE_BUTTON"));
-			buttons.add(Material.valueOf("ACACIA_BUTTON"));
-			buttons.add(Material.valueOf("DARK_OAK_BUTTON"));
-			buttons.add(Material.valueOf("OAK_BUTTON"));
+			buttons.add(Material.SPRUCE_BUTTON);
+			buttons.add(Material.BIRCH_BUTTON);
+			buttons.add(Material.JUNGLE_BUTTON);
+			buttons.add(Material.ACACIA_BUTTON);
+			buttons.add(Material.DARK_OAK_BUTTON);
+			buttons.add(Material.OAK_BUTTON);
 		} catch (final IllegalArgumentException ex) {
 			Factoid.getThisPlugin().getLogger().log(Level.WARNING, "Invalid button: " + ex.getMessage(), ex);
 		}
 
 		// ArmorStand
 		try {
-			armorStand = Material.valueOf("ARMOR_STAND");
+			armorStand = Material.ARMOR_STAND;
 			armorStandEntity = EntityType.valueOf("ARMOR_STAND");
 		} catch (final IllegalArgumentException ex) {
 			Factoid.getThisPlugin().getLogger().log(Level.WARNING, "Invalid Material/Entity: " + ex.getMessage(), ex);
 		}
-
 	}
 
 	public static boolean isPlayerInteractAtEntityEventExist() {

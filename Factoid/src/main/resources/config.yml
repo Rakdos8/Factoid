@@ -5,7 +5,7 @@
 # Contact: dev.kazoo@gmail.com                	                 #
 ##################################################################
 general:                             # ----General Config----
-  debug: false                       # Set to true to show DebugLog 
+  debug: false                       # Set to true to show DebugLog
   lang: english                      # english, french for now
   Storage: flat                      # Only flat is supported for now
   # The next value is if you want the Factoid explosion protection.
@@ -13,8 +13,8 @@ general:                             # ----General Config----
   # or avoiding plugin conflicts. Flags (???_DAMAGE) will be ignored.
   OverrideExplosions: true
   UseEconomy: false
-  InfoItem: 352                      # Item that give Land information
-  SelectItem: 367                    # Item that give Land selection
+  InfoItem: "BONE"                      # Item that give Land information
+  SelectItem: "ROTTEN_FLESH"                    # Item that give Land selection
 land:
   Types:
     List:                            # land types or categories
@@ -30,8 +30,8 @@ land:
   # false: No collision permitted.
   AllowCollision: approve            # true, approve, false
   LandChat: true                     # Allow private chat in lands (=, < and >)
-  SpectatorIsVanish: true            # true, Spectator players are not show in 
-                                     # land players list 
+  SpectatorIsVanish: true            # true, Spectator players are not show in
+                                     # land players list
   ApproveNotifyTime: 24002           # Time to notify for Approval (in ticks)
                                      # or 0 for disabling
   SelectAutoCancel: 12000            # Time before auto cancel a selection

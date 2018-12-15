@@ -146,6 +146,11 @@ public class PlayerListener extends CommonListener implements Listener {
 		// Create a new static config
 		final PlayerConfEntry entry = playerConf.add(player);
 
+		// BugFix Citizens plugin
+		if (entry == null) {
+			return;
+		}
+
 		updatePosInfo(event, entry, player.getLocation(), true);
 
 		// Check if AdminMod is auto
@@ -164,6 +169,14 @@ public class PlayerListener extends CommonListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerQuit(final PlayerQuitEvent event) {
 		final Player player = event.getPlayer();
+
+		// Get static config
+		final PlayerConfEntry entry = playerConf.get(player);
+
+		// BugFix Citizens plugin
+		if (entry == null) {
+			return;
+		}
 
 		// Remove player from the land
 		final IDummyLand land = playerConf.get(player).getLastLand();
@@ -1167,6 +1180,11 @@ public class PlayerListener extends CommonListener implements Listener {
 		final Location loc,
 		final boolean newPlayer
 	) {
+		// BugFix Citizens plugin
+		if (entry == null) {
+			return;
+		}
+
 		final Player player = entry.getPlayer();
 		final boolean isTp = event instanceof PlayerTeleportEvent;
 		final IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(loc);

@@ -1,6 +1,7 @@
 name: Factoid
 main: me.tabinol.factoid.Factoid
 version: ${plugin.version}
+api-version: 1.13
 description: Factoid
 author: [Kaz00,Tabinol]
 depend: [Vault]
@@ -62,4 +63,3 @@ permissions:
     factoid.faction.use:
         description: Can use faction command
         default: op
-        

@@ -20,6 +20,7 @@ package me.tabinol.factoid.config;
 import java.util.TreeSet;
 import java.util.logging.Level;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -395,13 +396,17 @@ public class Config {
 
 	private Material getMaterialFromString(final String path, final Material defaultMaterial) {
 		final String material = config.getString(path, null);
+		if (StringUtils.isBlank(material)) {
+			return Material.TNT;
+		}
+
 		try {
-			return Material.valueOf(Material.class, material);
+			return Enum.valueOf(Material.class, material);
 		} catch (final IllegalArgumentException ex) {
 			Factoid.getThisPlugin().getLogger().log(Level.WARNING, "Invalid Material name for path " + path + " (" + ex.getMessage() + ")");
 			Factoid.getThisPlugin().getLogger().log(Level.FINE, ex.getMessage(), ex);
-			return defaultMaterial;
 		}
+		return defaultMaterial;
 	}
 
 }

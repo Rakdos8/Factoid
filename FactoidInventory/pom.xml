@@ -7,10 +7,6 @@
 	<description>Plugin permettant de gérer le flag INVENTORY pour Factoid.</description>
 	<url>http://modulmonde.com</url>
 
-	<properties>
-		<plugin.version>1.0.4</plugin.version>
-	</properties>
-
 	<packaging>jar</packaging>
 
 	<parent>

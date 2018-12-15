@@ -1,6 +1,7 @@
 name: FactoidFlyCreative
 main: me.tabinol.factoidflycreative.FactoidFlyCreative
 version: ${plugin.version}
+api-version: 1.13
 depend: [Factoid]
 commands:
     fcreload:
@@ -42,7 +43,7 @@ permissions:
         description: Can drop items in creative
         default: false
     flycreative.override.noopenchest:
-        description: Can open chests in creative 
+        description: Can open chests in creative
         default: false
     flycreative.override.nobuildoutside:
         description: Can build outside the zone in creative
