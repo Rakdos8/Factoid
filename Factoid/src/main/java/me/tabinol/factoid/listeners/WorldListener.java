@@ -57,7 +57,6 @@ import me.tabinol.factoidapi.lands.IDummyLand;
 import me.tabinol.factoidapi.parameters.IFlagType;
 import me.tabinol.factoidapi.parameters.IFlagValue;
 
-
 /**
  * World listener
  */
@@ -70,7 +69,7 @@ public class WorldListener extends CommonListener implements Listener {
 	 * Instantiates a new world listener.
 	 */
 	public WorldListener() {
-		conf = Factoid.getThisPlugin().iConf();
+		this.conf = Factoid.getThisPlugin().iConf();
 	}
 
 	/**
@@ -108,7 +107,7 @@ public class WorldListener extends CommonListener implements Listener {
 		) {
 			event.setCancelled(true);
 
-			//TODO: Checks when the EnderCrystal will be removeable...
+			//TODO: Checks when the EnderCrystal will be removable...
 			if (entityType == EntityType.CREEPER) {
 				event.getEntity().remove();
 			}
@@ -236,16 +235,16 @@ public class WorldListener extends CommonListener implements Listener {
 
 		// Enderman removeblock
 		if ((event.getEntityType() == EntityType.ENDERMAN
-				&& land.getFlagAndInherit(FlagList.ENDERMAN_DAMAGE.getFlagType()).getValueBoolean() == false)
+				&& !land.getFlagAndInherit(FlagList.ENDERMAN_DAMAGE.getFlagType()).getValueBoolean())
 				|| (event.getEntityType() == EntityType.WITHER
-				&& land.getFlagAndInherit(FlagList.WITHER_DAMAGE.getFlagType()).getValueBoolean() == false)) {
+				&& !land.getFlagAndInherit(FlagList.WITHER_DAMAGE.getFlagType()).getValueBoolean())) {
 			event.setCancelled(true);
 
 		}
 		// Crop trample
 		else if (matFrom == Material.FARMLAND
 				&& matTo == Material.DIRT
-				&& land.getFlagAndInherit(FlagList.CROP_TRAMPLE.getFlagType()).getValueBoolean() == false) {
+				&& !land.getFlagAndInherit(FlagList.CROP_TRAMPLE.getFlagType()).getValueBoolean()) {
 			event.setCancelled(true);
 		}
 	}
@@ -280,8 +279,8 @@ public class WorldListener extends CommonListener implements Listener {
 		final IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(event.getBlock().getLocation());
 
 		if (((event.getCause() == IgniteCause.SPREAD || event.getCause() == IgniteCause.LAVA)
-				&& land.getFlagAndInherit(FlagList.FIRESPREAD.getFlagType()).getValueBoolean() == false)
-				|| land.getFlagAndInherit(FlagList.FIRE.getFlagType()).getValueBoolean() == false) {
+				&& !land.getFlagAndInherit(FlagList.FIRESPREAD.getFlagType()).getValueBoolean())
+				|| !land.getFlagAndInherit(FlagList.FIRE.getFlagType()).getValueBoolean()) {
 			event.setCancelled(true);
 		}
 	}
@@ -295,8 +294,8 @@ public class WorldListener extends CommonListener implements Listener {
 	public final void onBlockBurn(final BlockBurnEvent event) {
 		final IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(event.getBlock().getLocation());
 
-		if ((land.getFlagAndInherit(FlagList.FIRESPREAD.getFlagType()).getValueBoolean() == false)
-				|| (land.getFlagAndInherit(FlagList.FIRE.getFlagType()).getValueBoolean() == false)) {
+		if ((!land.getFlagAndInherit(FlagList.FIRESPREAD.getFlagType()).getValueBoolean())
+				|| (!land.getFlagAndInherit(FlagList.FIRE.getFlagType()).getValueBoolean())) {
 			event.setCancelled(true);
 		}
 	}
@@ -311,11 +310,11 @@ public class WorldListener extends CommonListener implements Listener {
 		final IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(event.getEntity().getLocation());
 
 		if ((event.getEntity() instanceof Animals
-				&& land.getFlagAndInherit(FlagList.ANIMAL_SPAWN.getFlagType()).getValueBoolean() == false)
+				&& !land.getFlagAndInherit(FlagList.ANIMAL_SPAWN.getFlagType()).getValueBoolean())
 				|| ((event.getEntity() instanceof Monster
 				|| event.getEntity() instanceof Slime
 				|| event.getEntity() instanceof Flying)
-				&& land.getFlagAndInherit(FlagList.MOB_SPAWN.getFlagType()).getValueBoolean() == false)) {
+				&& !land.getFlagAndInherit(FlagList.MOB_SPAWN.getFlagType()).getValueBoolean())) {
 			event.setCancelled(true);
 		}
 	}
@@ -327,10 +326,9 @@ public class WorldListener extends CommonListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public final void onLeavesDecay(final LeavesDecayEvent event) {
-
 		final IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(event.getBlock().getLocation());
 
-		if (land.getFlagAndInherit(FlagList.LEAF_DECAY.getFlagType()).getValueBoolean() == false) {
+		if (!land.getFlagAndInherit(FlagList.LEAF_DECAY.getFlagType()).getValueBoolean()) {
 			event.setCancelled(true);
 		}
 	}
@@ -347,9 +345,9 @@ public class WorldListener extends CommonListener implements Listener {
 
 		// Liquid flow
 		if ((ml == Material.LAVA
-				&& land.getFlagAndInherit(FlagList.LAVA_FLOW.getFlagType()).getValueBoolean() == false)
+				&& !land.getFlagAndInherit(FlagList.LAVA_FLOW.getFlagType()).getValueBoolean())
 				|| (ml == Material.WATER
-				&& land.getFlagAndInherit(FlagList.WATER_FLOW.getFlagType()).getValueBoolean() == false)
+				&& !land.getFlagAndInherit(FlagList.WATER_FLOW.getFlagType()).getValueBoolean())
 		) {
 			event.setCancelled(true);
 		}

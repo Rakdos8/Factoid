@@ -49,7 +49,7 @@ import me.tabinol.factoidapi.playercontainer.IPlayerContainerPlayer;
 public class PvpListener extends CommonListener implements Listener {
 
 	/** The Constant FIRE_EXPIRE. */
-	public final static long FIRE_EXPIRE = 20 * 30;
+	private final static long FIRE_EXPIRE = 20 * 30;
 
 	/** The player conf. */
 	private final IPlayerStaticConfig playerConf;
@@ -61,8 +61,8 @@ public class PvpListener extends CommonListener implements Listener {
 	 * Instantiates a new pvp listener.
 	 */
 	public PvpListener() {
-		playerConf = Factoid.getThisPlugin().iPlayerConf();
-		playerFireLocation = new ExpirableHashMap<>(FIRE_EXPIRE);
+		this.playerConf = Factoid.getThisPlugin().iPlayerConf();
+		this.playerFireLocation = new ExpirableHashMap<>(FIRE_EXPIRE);
 	}
 
 	/**
@@ -72,7 +72,6 @@ public class PvpListener extends CommonListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityDamageByEntity(final EntityDamageByEntityEvent event) {
-
 		// Check if a player break a ItemFrame
 		final Player player = getSourcePlayer(event.getDamager());
 
@@ -95,13 +94,10 @@ public class PvpListener extends CommonListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onBlockPlace(final BlockPlaceEvent event) {
-
 		if (event.getBlockPlaced().getType() == Material.FIRE) {
-
 			final Player player = event.getPlayer();
 			checkForPvpFire(event, player);
 		}
-
 	}
 
 	/**
@@ -112,7 +108,6 @@ public class PvpListener extends CommonListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onBlockIgnite(final BlockIgniteEvent event) {
-
 		final Player player = event.getPlayer();
 		checkForPvpFire(event, player);
 	}
@@ -124,12 +119,10 @@ public class PvpListener extends CommonListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onBlockSpread(final BlockSpreadEvent event) {
-
 		final Block blockSource = event.getSource();
 		final IPlayerContainerPlayer pc = playerFireLocation.get(blockSource.getLocation());
 
 		if (pc != null) {
-
 			// Add fire for pvp listen
 			playerFireLocation.put(event.getBlock().getLocation(), pc);
 		}
@@ -142,12 +135,10 @@ public class PvpListener extends CommonListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityDamage(final EntityDamageEvent event) {
-
 		// Check for fire cancel
 		if (event.getEntity() instanceof Player &&
 				(event.getCause() == DamageCause.FIRE
 				|| event.getCause() == DamageCause.FIRE_TICK)) {
-
 			final Player player = (Player) event.getEntity();
 			final IPlayerConfEntry entry = playerConf.get(player);
 
@@ -157,13 +148,11 @@ public class PvpListener extends CommonListener implements Listener {
 
 				// Check for fire near the player
 				for (final Map.Entry<Location, IPlayerContainerPlayer> fireEntry : playerFireLocation.entrySet()) {
-
 					if (loc.getWorld() == fireEntry.getKey().getWorld()
 							&& loc.distanceSquared(fireEntry.getKey()) < 5) {
 						final Block block = loc.getBlock();
 						if ((block.getType() == Material.FIRE || block.getType() == Material.AIR)
 								&& !isPvpValid(land)) {
-
 							// remove fire
 							Factoid.getThisPlugin().iLog().write("Anti-pvp from "
 									+ entry.getPlayerContainer().getPlayer().getName()
@@ -186,17 +175,14 @@ public class PvpListener extends CommonListener implements Listener {
 	 * @param player the player
 	 */
 	private void checkForPvpFire(final BlockEvent event, final Player player) {
-
-		IPlayerConfEntry entry;
+		final IPlayerConfEntry entry;
 
 		if (player != null && (entry = playerConf.get(player)) != null) {
-
 			final Location loc = event.getBlock().getLocation();
 			final IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(loc);
 
-			if (land.getFlagAndInherit(FlagList.FULL_PVP.getFlagType()).getValueBoolean() == false
-					|| land.getFlagAndInherit(FlagList.FULL_PVP.getFlagType()).getValueBoolean() == false) {
-
+			if (!land.getFlagAndInherit(FlagList.FULL_PVP.getFlagType()).getValueBoolean()
+					|| !land.getFlagAndInherit(FlagList.FULL_PVP.getFlagType()).getValueBoolean()) {
 				// Add fire for pvp listen
 				playerFireLocation.put(loc, entry.getPlayerContainer());
 			}
@@ -212,9 +198,6 @@ public class PvpListener extends CommonListener implements Listener {
 	private boolean isPvpValid(
 		final IDummyLand land
 	) {
-		if (land.getFlagAndInherit(FlagList.FULL_PVP.getFlagType()).getValueBoolean() == false) {
-			return false;
-		}
-		return true;
+		return land.getFlagAndInherit(FlagList.FULL_PVP.getFlagType()).getValueBoolean();
 	}
 }

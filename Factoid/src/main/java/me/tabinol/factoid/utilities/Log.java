@@ -33,18 +33,17 @@ import me.tabinol.factoid.Factoid;
 public class Log {
 
 	/** The Folder. */
-	public File Folder;
+	private final File folder;
 
 	/** The debug. */
-	private boolean debug = false;
+	private boolean debug;
 
 	/**
 	 * Instantiates a new log.
 	 */
 	public Log() {
-
 		this.debug = Factoid.getThisPlugin().iConf().isDebug();
-		this.Folder = Factoid.getThisPlugin().getDataFolder();
+		this.folder = Factoid.getThisPlugin().getDataFolder();
 	}
 
 	/**
@@ -54,7 +53,7 @@ public class Log {
 	 */
 	public void write(final String text) {
 		if (debug) {
-			final File filename = new File(Folder, "log_" + Dates.date() + ".log");
+			final File filename = new File(folder, "log_" + Dates.date() + ".log");
 
 			if (!filename.exists()) {
 				try {
@@ -70,7 +69,6 @@ public class Log {
 				bufWriter.newLine();
 				bufWriter.write("[Factoid][v." + Factoid.getThisPlugin().getDescription().getVersion()
 						+ "][" + Dates.time() + "]" + text);
-				bufWriter.close();
 			} catch (final IOException ex) {
 				Logger.getLogger(Log.class.getName()).log(Level.SEVERE, null, ex);
 			}
@@ -80,10 +78,9 @@ public class Log {
 	/**
 	 * Sets the debug.
 	 *
-	 * @param newdebug the new debug
+	 * @param newDebug the new debug
 	 */
-	public void setDebug(final boolean newdebug) {
-
-		this.debug = newdebug;
+	public void setDebug(final boolean newDebug) {
+		this.debug = newDebug;
 	}
 }
