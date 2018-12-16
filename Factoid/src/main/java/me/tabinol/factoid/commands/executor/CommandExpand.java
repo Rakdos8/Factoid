@@ -53,7 +53,6 @@ public class CommandExpand extends CommandExec {
 	 */
 	@Override
 	public void commandExecute() throws FactoidCommandException {
-
 		checkSelections(null, null);
 		// checkPermission(false, false, null, null);
 
@@ -61,7 +60,6 @@ public class CommandExpand extends CommandExec {
 		final String curArg = entity.argList.getNext();
 
 		if (curArg == null) {
-
 			if (entity.playerConf.getSelection().getSelection(SelectionType.AREA) instanceof ExpandAreaSelection) {
 				throw new FactoidCommandException("Player Expand", entity.player, "COMMAND.EXPAND.ALREADY");
 			}
@@ -74,7 +72,6 @@ public class CommandExpand extends CommandExec {
 			ICuboidArea area = entity.playerConf.getSelection().getCuboidArea();
 
 			if (area == null && land != null && (area = land.getArea(1)) != null) {
-
 				// Expand an existing area?
 				entity.playerConf.getSelection().setAreaToReplace(area);
 			}
@@ -84,9 +81,7 @@ public class CommandExpand extends CommandExec {
 			} else {
 				entity.playerConf.getSelection().addSelection(new ExpandAreaSelection(entity.player, area.copyOf()));
 			}
-
 		} else if (curArg.equalsIgnoreCase("done")) {
-
 			// Expand done
 			entity.player.sendMessage(ChatColor.GREEN + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.EXPAND.COMPLETE"));
 			entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.EXPAND.QUITMODE"));
@@ -94,7 +89,6 @@ public class CommandExpand extends CommandExec {
 
 			final ICuboidArea area = entity.playerConf.getSelection().getCuboidArea();
 			if (area != null) {
-
 				entity.playerConf.getSelection().addSelection(new AreaSelection(entity.player, area));
 
 				if (!((AreaSelection) entity.playerConf.getSelection().getSelection(SelectionType.AREA)).getCollision()) {
@@ -105,9 +99,9 @@ public class CommandExpand extends CommandExec {
 							+ Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.SELECT.LAND.COLLISION"));
 				}
 			}
-
 		} else {
 			throw new FactoidCommandException("Missing information command", entity.player, "GENERAL.MISSINGINFO");
 		}
 	}
+
 }

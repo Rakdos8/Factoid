@@ -29,7 +29,6 @@ import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoid.utilities.Calculate;
 import me.tabinol.factoidapi.lands.areas.ICuboidArea;
 
-
 /**
  * The Class CuboidArea.
  */
@@ -73,10 +72,13 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 */
 	@Override
 	public boolean equals(final ICuboidArea area2) {
-
 		return worldName.equals(area2.getWorldName())
-				&& x1 == area2.getX1() && y1 == area2.getY1() && z1 == area2.getZ1()
-				&& x2 == area2.getX2() && y2 == area2.getY2() && z2 == area2.getZ2();
+				&& x1 == area2.getX1()
+				&& y1 == area2.getY1()
+				&& z1 == area2.getZ1()
+				&& x2 == area2.getX2()
+				&& y2 == area2.getY2()
+				&& z2 == area2.getZ2();
 	}
 
 	/**
@@ -86,7 +88,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 */
 	@Override
 	public CuboidArea copyOf() {
-
 		return new CuboidArea(worldName, x1, y1, z1, x2, y2, z2);
 	}
 
@@ -95,7 +96,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 */
 	@Override
 	public int compareTo(final CuboidArea t) {
-
 		final int worldCompare = worldName.compareTo(t.worldName);
 		if (worldCompare != 0) {
 			return worldCompare;
@@ -144,7 +144,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 */
 	@Override
 	public String toString() {
-
 		return worldName + ":" + x1 + ":" + y1 + ":" + z1 + ":" + x2 + ":" + y2 + ":" + z2;
 	}
 
@@ -155,7 +154,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 */
 	@Override
 	public String getPrint() {
-
 		return worldName + ":(" + x1 + ", " + y1 + ", " + z1 + ")-(" + x2 + ", " + y2 + ", " + z2 + ")";
 	}
 
@@ -166,12 +164,9 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 */
 	@Override
 	public Integer getKey() {
-
-		if (land != null) {
-			return land.getAreaKey(this);
-		}
-
-		return null;
+		return land != null
+				? land.getAreaKey(this)
+				: null;
 	}
 
 	/**
@@ -181,8 +176,19 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 */
 	@Override
 	public long getTotalBlock() {
-
-		return (x2 - x1 + 1) * (y2 - y1 + 1) * (z2 - z1 + 1);
+		final World world = getWord();
+		final int y1;
+		final int y2;
+		if (world == null) {
+			Factoid.getThisPlugin().getLogger().warning("World is null when retrieving total block !");
+			y1 = this.y1;
+			y2 = this.y2;
+		} else {
+			y1 = world.getHighestBlockYAt(x1, z1);
+			y2 = world.getHighestBlockYAt(x2, z2);
+		}
+		final int mean = (y2 + y1) / 2;
+		return (x2 - x1 + 1) * mean * (z2 - z1 + 1);
 	}
 
 	/**
@@ -193,7 +199,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 */
 	@Override
 	public boolean isCollision(final ICuboidArea area2) {
-
 		return (worldName.equals(area2.getWorldName())
 				&& (Calculate.isInInterval(x1, area2.getX1(), area2.getX2())
 				|| Calculate.isInInterval(area2.getX1(), x1, x2)))
@@ -250,12 +255,12 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 
 		// At this point, there is a collision
 
-		int cx1;
-		int cx2;
-		int cy1;
-		int cy2;
-		int cz1;
-		int cz2;
+		final int cx1;
+		final int cx2;
+		final int cy1;
+		final int cy2;
+		final int cz1;
+		final int cz2;
 
 		// Create points
 		if (x1pos == -1) {
@@ -301,7 +306,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	@Override
 	public Collection<ICuboidArea>
 		getOutside(final ICuboidArea area2) {
-
 		final Set<ICuboidArea> areaList = new HashSet<>();
 
 		if (!worldName.equals(area2.getWorldName())) {
@@ -411,7 +415,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 * @param land the new land
 	 */
 	public final void setLand(final Land land) {
-
 		this.land = land;
 	}
 
@@ -421,7 +424,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 * @param worldName the new world name
 	 */
 	public void setWorldName(final String worldName) {
-
 		this.worldName = worldName;
 	}
 
@@ -431,7 +433,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 * @param x1 the new x1
 	 */
 	public void setX1(final int x1) {
-
 		this.x1 = x1;
 	}
 
@@ -441,7 +442,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 * @param y1 the new y1
 	 */
 	public void setY1(final int y1) {
-
 		this.y1 = y1;
 	}
 
@@ -451,7 +451,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 * @param z1 the new z1
 	 */
 	public void setZ1(final int z1) {
-
 		this.z1 = z1;
 	}
 
@@ -461,7 +460,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 * @param x2 the new x2
 	 */
 	public void setX2(final int x2) {
-
 		this.x2 = x2;
 	}
 
@@ -471,7 +469,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 * @param y2 the new y2
 	 */
 	public void setY2(final int y2) {
-
 		this.y2 = y2;
 	}
 
@@ -481,7 +478,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 * @param z2 the new z2
 	 */
 	public void setZ2(final int z2) {
-
 		this.z2 = z2;
 	}
 
@@ -492,7 +488,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 */
 	@Override
 	public Land getLand() {
-
 		return land;
 	}
 
@@ -503,7 +498,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 */
 	@Override
 	public String getWorldName() {
-
 		return worldName;
 	}
 
@@ -514,7 +508,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 */
 	@Override
 	public World getWord() {
-
 		return Factoid.getThisPlugin().getServer().getWorld(worldName);
 	}
 
@@ -525,7 +518,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 */
 	@Override
 	public int getX1() {
-
 		return x1;
 	}
 
@@ -536,7 +528,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 */
 	@Override
 	public int getY1() {
-
 		return y1;
 	}
 
@@ -547,7 +538,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 */
 	@Override
 	public int getZ1() {
-
 		return z1;
 	}
 
@@ -558,7 +548,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 */
 	@Override
 	public int getX2() {
-
 		return x2;
 	}
 
@@ -569,7 +558,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 */
 	@Override
 	public int getY2() {
-
 		return y2;
 	}
 
@@ -580,7 +568,6 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 */
 	@Override
 	public int getZ2() {
-
 		return z2;
 	}
 
@@ -591,15 +578,16 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	 * @return the from string
 	 */
 	public static CuboidArea getFromString(final String str) {
-
 		final String[] multiStr = str.split(":");
 
-		return new CuboidArea(multiStr[0],
+		return new CuboidArea(
+				multiStr[0],
 				Integer.parseInt(multiStr[1]),
 				Integer.parseInt(multiStr[2]),
 				Integer.parseInt(multiStr[3]),
 				Integer.parseInt(multiStr[4]),
 				Integer.parseInt(multiStr[5]),
-				Integer.parseInt(multiStr[6]));
+				Integer.parseInt(multiStr[6])
+		);
 	}
 }

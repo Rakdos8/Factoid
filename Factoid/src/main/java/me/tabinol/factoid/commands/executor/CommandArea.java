@@ -61,7 +61,6 @@ public class CommandArea extends CommandExec {
 		final String curArg = entity.argList.getNext();
 
 		if (curArg.equalsIgnoreCase("add")) {
-
 			checkPermission(true, true, null, null);
 			checkSelections(true, true);
 
@@ -83,10 +82,8 @@ public class CommandArea extends CommandExec {
 			entity.playerConf.getSelection().refreshLand();
 
 		} else if (curArg.equalsIgnoreCase("remove") || curArg.equalsIgnoreCase("replace")) {
-
 			checkPermission(true, true, null, null);
 			checkSelections(true, null);
-
 
 			final String areaNbStr = entity.argList.getNext();
 			int areaNb = 0;
@@ -119,7 +116,6 @@ public class CommandArea extends CommandExec {
 
 			// Only for a remove
 			if (curArg.equalsIgnoreCase("remove")) {
-
 				// Check for collision
 				if (checkCollision(curArg, land, null, LandAction.AREA_REMOVE, areaNb, null, land.getParent(),
 						land.getOwner(), 0, true)) {
@@ -136,7 +132,6 @@ public class CommandArea extends CommandExec {
 				entity.player.sendMessage(ChatColor.YELLOW + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COMMAND.CONFIRM"));
 
 			} else {
-
 				//Only for a replace
 				checkSelections(true, true);
 
@@ -159,7 +154,6 @@ public class CommandArea extends CommandExec {
 			}
 
 		} else if (curArg.equalsIgnoreCase("list")) {
-
 			checkSelections(true, null);
 			final StringBuilder stList = new StringBuilder();
 			for (final Map.Entry<Integer, ICuboidArea> entry : land.getIdsAndAreas().entrySet()) {

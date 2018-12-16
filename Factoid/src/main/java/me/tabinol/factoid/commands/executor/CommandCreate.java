@@ -69,8 +69,7 @@ public class CommandCreate extends CommandExec {
 		final AreaSelection select = (AreaSelection) entity.playerConf.getSelection().getSelection(SelectionType.AREA);
 
 		final ICuboidArea area = select.getCuboidArea();
-		final Double price = entity.playerConf.getSelection().getLandCreatePrice();
-		ILand parent;
+		final double price = entity.playerConf.getSelection().getLandCreatePrice();
 
 		// Quit select mod
 		// entity.playerConf.setAreaSelection(null);
@@ -85,6 +84,7 @@ public class CommandCreate extends CommandExec {
 		}
 
 		// Check for parent
+		final ILand parent;
 		if (!entity.argList.isLast()) {
 			final String curString = entity.argList.getNext();
 			if (curString.equalsIgnoreCase("noparent")) {
@@ -127,8 +127,7 @@ public class CommandCreate extends CommandExec {
 		}
 
 		// Create Land
-		ILand land = null;
-
+		final ILand land;
 		try {
 			land = Factoid.getThisPlugin().iLands().createLand(curArg, owner, area, parent, price, type);
 		} catch (final FactoidLandException ex) {
@@ -141,7 +140,6 @@ public class CommandCreate extends CommandExec {
 
 		// Cancel and select the land
 		new CommandCancel(entity.playerConf, true).commandExecute();
-		new CommandSelect(entity.player, new ArgList(new String[] {land.getName()},
-				entity.player), null).commandExecute();
+		new CommandSelect(entity.player, new ArgList(new String[] {land.getName()}, entity.player), null).commandExecute();
 	}
 }
