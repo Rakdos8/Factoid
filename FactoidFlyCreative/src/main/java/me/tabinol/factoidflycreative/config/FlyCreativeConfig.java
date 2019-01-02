@@ -103,7 +103,8 @@ public class FlyCreativeConfig {
 			try {
 				materialList.add(Material.valueOf(materialName.toUpperCase()));
 			} catch(final IllegalArgumentException ex) {
-				thisPlugin.getLogger().log(Level.WARNING, materialName + " is not a valid material!", ex);
+				thisPlugin.getLogger().log(Level.WARNING, materialName + " is not a valid material!");
+				thisPlugin.getLogger().log(Level.FINE, ex.getMessage(), ex);
 			}
 		}
 

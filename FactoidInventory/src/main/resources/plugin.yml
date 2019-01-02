@@ -1,6 +1,7 @@
 name: FactoidInventory
 main: me.tabinol.factoidinventory.FactoidInventory
 version: ${plugin.version}
+api-version: 1.13
 description: Multiple inventories for Factoid
 author: [Tabinol]
 depend: [Factoid]

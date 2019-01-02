@@ -196,9 +196,9 @@ public class InventoryListener implements Listener {
 		final String message = event.getMessage().length() > 1 ? event.getMessage().substring(1) : event.getMessage();
 		final PlayerConfEntry factoidPlayer = Factoid.getThisPlugin().iPlayerConf().get(player);
 
-		if (!factoidPlayer.isAdminMod() &&
-			inventoryStorage.getPlayerInvEntry(player).getActualInv().isDisabledCommand(message.split(" ")[0])
-			) {
+		if (!factoidPlayer.isAdminMod()
+				&& inventoryStorage.getPlayerInvEntry(player).getActualInv().isDisabledCommand(message.split(" ")[0])
+		) {
 			event.setCancelled(true);
 			player.sendMessage(
 				ChatColor.RED + "[Factoid] " +
@@ -207,7 +207,7 @@ public class InventoryListener implements Listener {
 		}
 	}
 
-	public IDummyLand getDummyLand(final Location location) {
+	private IDummyLand getDummyLand(final Location location) {
 		return FactoidAPI.iLands().getLandOrOutsideArea(location);
 	}
 

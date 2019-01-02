@@ -242,7 +242,7 @@ public class WorldListener extends CommonListener implements Listener {
 
 		}
 		// Crop trample
-		else if (matFrom == Material.SOIL
+		else if (matFrom == Material.FARMLAND
 				&& matTo == Material.DIRT
 				&& !land.getFlagAndInherit(FlagList.CROP_TRAMPLE.getFlagType()).getValueBoolean()) {
 			event.setCancelled(true);
@@ -263,7 +263,7 @@ public class WorldListener extends CommonListener implements Listener {
 			event.getEntity() instanceof Player &&
 			event.getNewState().getType() == Material.FROSTED_ICE &&
 			!checkPermission(land, (Player) event.getEntity(), PermissionList.FROST_WALKER.getPermissionType()) &&
-			(event.getBlock().getType() == Material.WATER || event.getBlock().getType() == Material.STATIONARY_WATER)
+			event.getBlock().getType() == Material.WATER
 		) {
 			event.setCancelled(true);
 		}
@@ -344,10 +344,11 @@ public class WorldListener extends CommonListener implements Listener {
 		final Material ml = event.getBlock().getType();
 
 		// Liquid flow
-		if (((ml == Material.LAVA || ml == Material.STATIONARY_LAVA)
+		if ((ml == Material.LAVA
 				&& !land.getFlagAndInherit(FlagList.LAVA_FLOW.getFlagType()).getValueBoolean())
-				|| ((ml == Material.WATER || ml == Material.STATIONARY_WATER)
-						&& !land.getFlagAndInherit(FlagList.WATER_FLOW.getFlagType()).getValueBoolean())) {
+				|| (ml == Material.WATER
+				&& !land.getFlagAndInherit(FlagList.WATER_FLOW.getFlagType()).getValueBoolean())
+		) {
 			event.setCancelled(true);
 		}
 	}

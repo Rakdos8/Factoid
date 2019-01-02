@@ -201,12 +201,15 @@ public class Lands implements ILands {
 	 * @return the land
 	 * @throws FactoidLandException the factoid land exception
 	 */
-	public Land createLand(final String landName, final IPlayerContainer owner, final ICuboidArea area,
-			final me.tabinol.factoidapi.lands.ILand parent, final double price, final IType type)
-			throws FactoidLandException {
-
+	public Land createLand(
+			final String landName,
+			final IPlayerContainer owner,
+			final ICuboidArea area,
+			final me.tabinol.factoidapi.lands.ILand parent,
+			final double price,
+			final IType type
+	) throws FactoidLandException {
 		getPriceFromPlayer(area.getWorldName(), owner, price);
-
 		return createLand(landName, owner, area, parent, 1, null, type);
 	}
 
@@ -224,31 +227,33 @@ public class Lands implements ILands {
 	 * @return the land
 	 * @throws FactoidLandException the factoid land exception
 	 */
-	public Land createLand(final String landName, final IPlayerContainer owner, final ICuboidArea area,
-			final me.tabinol.factoidapi.lands.ILand parent, final int areaId, final UUID uuid, final IType type)
-			throws FactoidLandException {
-
+	public Land createLand(
+			final String landName,
+			final IPlayerContainer owner,
+			final ICuboidArea area,
+			final me.tabinol.factoidapi.lands.ILand parent,
+			final int areaId,
+			final UUID uuid,
+			final IType type
+	) throws FactoidLandException {
 		final String landNameLower = landName.toLowerCase();
-		int genealogy = 0;
-		final Land land;
-		final UUID landUUID;
-
-		if (uuid == null) {
-			landUUID = UUID.randomUUID();
-		} else {
-			landUUID = uuid;
-		}
-
-		if (parent != null) {
-			genealogy = parent.getGenealogy() + 1;
-		}
+		final UUID landUUID = uuid == null
+				? UUID.randomUUID()
+				: uuid;
+		final int genealogy = parent != null
+				? parent.getGenealogy() + 1
+				: 0;
 
 		if (isNameExist(landName)) {
-			throw new FactoidLandException(landName, (CuboidArea) area,
-					LandAction.LAND_ADD, LandError.NAME_IN_USE);
+			throw new FactoidLandException(
+					landName,
+					(CuboidArea) area,
+					LandAction.LAND_ADD,
+					LandError.NAME_IN_USE
+			);
 		}
 
-		land = new Land(landNameLower, landUUID, owner, area, genealogy, (Land) parent, areaId, type);
+		final Land land = new Land(landNameLower, landUUID, owner, area, genealogy, (Land) parent, areaId, type);
 
 		addLandToList(land);
 		Factoid.getThisPlugin().iLog().write("add land: " + landNameLower);
@@ -264,7 +269,6 @@ public class Lands implements ILands {
 	 */
 	@Override
 	public boolean isNameExist(final String landName) {
-
 		return landList.containsKey(landName.toLowerCase());
 	}
 
@@ -565,12 +569,10 @@ public class Lands implements ILands {
 	 * @return the price from player
 	 */
 	protected boolean getPriceFromPlayer(final String worldName, final IPlayerContainer pc, final double price) {
-
 		if (pc.getContainerType() == EPlayerContainerType.PLAYER && price > 0) {
 			return Factoid.getThisPlugin().iPlayerMoney().getFromPlayer(((IPlayerContainerPlayer)pc).getOfflinePlayer(), worldName, price);
 		}
-
-	return true;
+		return true;
 	}
 
 	/**

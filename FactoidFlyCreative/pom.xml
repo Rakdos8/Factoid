@@ -7,10 +7,6 @@
 	<description>Plugin permettant de gérer le flag FLY et CREATIVE pour Factoid.</description>
 	<url>http://modulmonde.com</url>
 
-	<properties>
-		<plugin.version>1.0.3</plugin.version>
-	</properties>
-
 	<packaging>jar</packaging>
 
 	<parent>

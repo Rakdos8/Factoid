@@ -55,7 +55,7 @@ public class PlayerSelection {
 	private final EnumMap<SelectionType, RegionSelection> selectionList; // SelectionList for the player
 
 	/** The area to replace. */
-	ICuboidArea areaToReplace; // If it is an areaToReplace with an expand
+	private ICuboidArea areaToReplace; // If it is an areaToReplace with an expand
 
 	/**
 	 * Instantiates a new player selection.
@@ -63,10 +63,9 @@ public class PlayerSelection {
 	 * @param playerConfEntry the player conf entry
 	 */
 	public PlayerSelection(final IPlayerConfEntry playerConfEntry) {
-
 		this.playerConfEntry = playerConfEntry;
-		selectionList = new EnumMap<>(SelectionType.class);
-		areaToReplace = null;
+		this.selectionList = new EnumMap<>(SelectionType.class);
+		this.areaToReplace = null;
 	}
 
 	/**
@@ -75,7 +74,6 @@ public class PlayerSelection {
 	 * @return true, if successful
 	 */
 	public boolean hasSelection() {
-
 		return !selectionList.isEmpty();
 	}
 
@@ -85,7 +83,6 @@ public class PlayerSelection {
 	 * @return the selections
 	 */
 	public Collection<RegionSelection> getSelections() {
-
 		return selectionList.values();
 	}
 
@@ -95,7 +92,6 @@ public class PlayerSelection {
 	 * @param sel the sel
 	 */
 	public void addSelection(final RegionSelection sel) {
-
 		selectionList.put(sel.getSelectionType(), sel);
 	}
 
@@ -106,7 +102,6 @@ public class PlayerSelection {
 	 * @return the selection
 	 */
 	public RegionSelection getSelection(final SelectionType type) {
-
 		return selectionList.get(type);
 	}
 
@@ -117,11 +112,9 @@ public class PlayerSelection {
 	 * @return the region selection
 	 */
 	public RegionSelection removeSelection(final SelectionType type) {
-
 		final RegionSelection select = selectionList.remove(type);
 
 		if (select != null) {
-
 			// reset AreaToReplace if exist
 			areaToReplace = null;
 
@@ -135,7 +128,6 @@ public class PlayerSelection {
 	 * Refresh land selection.
 	 */
 	public void refreshLand() {
-
 		final ILand land = getLand();
 
 		if (land !=null) {
@@ -150,7 +142,6 @@ public class PlayerSelection {
 	 * @return the land
 	 */
 	public ILand getLand() {
-
 		final LandSelection sel = (LandSelection) selectionList.get(SelectionType.LAND);
 		if (sel != null) {
 			return sel.getLand();
@@ -164,7 +155,6 @@ public class PlayerSelection {
 	 * @return the cuboid area
 	 */
 	public ICuboidArea getCuboidArea() {
-
 		final AreaSelection sel = (AreaSelection) selectionList.get(SelectionType.AREA);
 		if (sel != null) {
 			return sel.getCuboidArea();
@@ -178,7 +168,6 @@ public class PlayerSelection {
 	 * @param areaToReplace the new area to replace
 	 */
 	public void setAreaToReplace(final ICuboidArea areaToReplace) {
-
 		this.areaToReplace = areaToReplace;
 	}
 
@@ -188,7 +177,6 @@ public class PlayerSelection {
 	 * @return the area to replace
 	 */
 	public ICuboidArea getAreaToReplace() {
-
 		return areaToReplace;
 	}
 
@@ -198,27 +186,25 @@ public class PlayerSelection {
 	 * @return the land create price
 	 */
 	public double getLandCreatePrice() {
-
 		if (!isPlayerMustPay()) {
 			return 0;
 		}
 
 		final ILand land = getLand();
 		final ICuboidArea area = getCuboidArea();
-		Double priceFlag;
+		final double priceFlag;
 		final IFlagType flagType = FlagList.ECO_BLOCK_PRICE.getFlagType();
 
 		// Get land price
 		if (land == null) {
 			priceFlag = Factoid.getThisPlugin().iLands().getOutsideArea(area.getWorldName())
 					.getFlagAndInherit(flagType).getValueDouble();
-
 		} else {
 			priceFlag = land.getFlagAndInherit(flagType).getValueDouble();
 		}
 
 		// Not set, return 0
-		if (priceFlag == 0D) {
+		if (priceFlag == 0d) {
 			return 0;
 		}
 
@@ -231,14 +217,13 @@ public class PlayerSelection {
 	 * @return the area add price
 	 */
 	public double getAreaAddPrice() {
-
 		if (!isPlayerMustPay()) {
 			return 0;
 		}
 
 		final ILand land = getLand();
 		final ICuboidArea area = getCuboidArea();
-		double priceFlag;
+		final double priceFlag;
 		final IFlagType flagType = FlagList.ECO_BLOCK_PRICE.getFlagType();
 
 		if (land == null) {
@@ -254,7 +239,7 @@ public class PlayerSelection {
 		}
 
 		// Not set, return 0
-		if (priceFlag == 0D) {
+		if (priceFlag == 0d) {
 			return 0;
 		}
 
@@ -284,14 +269,9 @@ public class PlayerSelection {
 	 * @return true, if is player must pay
 	 */
 	private boolean isPlayerMustPay() {
-
 		// Is Economy?
-		if (Factoid.getThisPlugin().iPlayerMoney() == null
-				|| !Factoid.getThisPlugin().iConf().useEconomy()
-				|| playerConfEntry.isAdminMod()) {
-			return false;
-		}
-
-		return true;
+		return Factoid.getThisPlugin().iPlayerMoney() != null
+				&& Factoid.getThisPlugin().iConf().useEconomy()
+				&& !playerConfEntry.isAdminMod();
 	}
 }

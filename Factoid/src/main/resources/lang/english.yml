@@ -101,7 +101,7 @@ HELP:
     PERMISSION:
       1: "/factoid permission list : List permissions."
       2: "/factoid permission set <player container> <perm> <value> : Add a permission."
-      3: "/factoid permission unset unset <player container> <perm> : Remove a permission."
+      3: "/factoid permission unset <player container> <perm> : Remove a permission."
     PRIORITY:
       1: "/factoid priority <number> : Change the land priority."
     REMOVE:
@@ -292,7 +292,7 @@ COMMAND:
     AREA:
       EMPTY: "You must specify an area number."
       INVALID: "The area number is invalid."
-    DONE: 
+    DONE:
       LAND: "You have removed the land % (% areas)."
       AREA: "You have removed the area of the land % ."
   PRIORITY:

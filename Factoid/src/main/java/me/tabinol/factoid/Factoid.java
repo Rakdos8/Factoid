@@ -53,7 +53,7 @@ import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
 public class Factoid extends JavaPlugin implements IFactoid {
 
 	/** The Economy schedule interval. */
-	public static final int ECO_SCHEDULE_INTERVAL = 20 * 60 * 5;
+	private static final int ECO_SCHEDULE_INTERVAL = 20 * 60 * 5;
 
 	/** The this plugin. */
 	private static Factoid thisPlugin;
@@ -69,30 +69,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 
 	/** The player conf. */
 	protected PlayerStaticConfig playerConf;
-
-	/** The Command listener. */
-	private OnCommand CommandListener;
-
-	/** The player listener. */
-	private PlayerListener playerListener;
-
-	/** The player listener 18. */
-	private PlayerListener18 playerListener18;
-
-	/** The player listener. */
-	private PvpListener pvpListener;
-
-	/** The world listener. */
-	private WorldListener worldListener;
-
-	/** The land listener. */
-	private LandListener landListener;
-
-	/** The chat listener. */
-	private ChatListener chatListener;
-
-	/** The economy scheduler. */
-	private EcoScheduler ecoScheduler;
 
 	/** The approve notif. */
 	private ApproveNotif approveNotif;
@@ -124,7 +100,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	 * @return the this plugin
 	 */
 	public static Factoid getThisPlugin() {
-
 		return thisPlugin;
 	}
 
@@ -165,10 +140,9 @@ public class Factoid extends JavaPlugin implements IFactoid {
 		conf = new Config();
 		log = new Log();
 		dependPlugin = new DependPlugin();
-		if ((conf.useEconomy() == true) && (dependPlugin.getEconomy() != null)) {
+		if (conf.useEconomy() && dependPlugin.getEconomy() != null) {
 			playerMoney = new PlayerMoney();
-		}
-		else {
+		} else {
 			playerMoney = null;
 		}
 		playerConf = new PlayerStaticConfig();
@@ -177,31 +151,23 @@ public class Factoid extends JavaPlugin implements IFactoid {
 		storageThread = new StorageThread();
 		lands = new Lands();
 		storageThread.loadAllAndStart();
-		worldListener = new WorldListener();
-		playerListener = new PlayerListener();
-		if (BKVersion.isPlayerInteractAtEntityEventExist()) {
-			playerListener18 = new PlayerListener18();
-		}
-		pvpListener = new PvpListener();
-		landListener = new LandListener();
-		chatListener = new ChatListener();
-		CommandListener = new OnCommand();
+		final OnCommand commandListener = new OnCommand();
 		approveNotif = new ApproveNotif ();
 		approveNotif.runApproveNotifLater();
-		ecoScheduler = new EcoScheduler();
+		final EcoScheduler ecoScheduler = new EcoScheduler();
 		ecoScheduler.runTaskTimer(this, ECO_SCHEDULE_INTERVAL, ECO_SCHEDULE_INTERVAL);
 		playersCache = new PlayersCache();
 		playersCache.start();
-		getServer().getPluginManager().registerEvents(worldListener, this);
-		getServer().getPluginManager().registerEvents(playerListener, this);
+		getServer().getPluginManager().registerEvents(new WorldListener(), this);
+		getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 		if (BKVersion.isPlayerInteractAtEntityEventExist()) {
-			getServer().getPluginManager().registerEvents(playerListener18, this);
+			getServer().getPluginManager().registerEvents(new PlayerListener18(), this);
 		}
-		getServer().getPluginManager().registerEvents(pvpListener, this);
-		getServer().getPluginManager().registerEvents(landListener, this);
-		getServer().getPluginManager().registerEvents(chatListener, this);
-		getCommand("factoid").setExecutor(CommandListener);
-		getCommand("faction").setExecutor(CommandListener);
+		getServer().getPluginManager().registerEvents(new PvpListener(), this);
+		getServer().getPluginManager().registerEvents(new LandListener(), this);
+		getServer().getPluginManager().registerEvents(new ChatListener(), this);
+		getCommand("factoid").setExecutor(commandListener);
+		getCommand("faction").setExecutor(commandListener);
 		log.write(iLanguage().getMessage("ENABLE"));
 	}
 
@@ -213,7 +179,7 @@ public class Factoid extends JavaPlugin implements IFactoid {
 		types = new Types();
 		// No reload of Parameters to avoid Deregistering external parameters
 		conf.reloadConfig();
-		if ((conf.useEconomy() == true) && (dependPlugin.getEconomy() != null)) {
+		if (conf.useEconomy() && dependPlugin.getEconomy() != null) {
 			playerMoney = new PlayerMoney();
 		}
 		else {
@@ -233,7 +199,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	 * @see org.bukkit.plugin.java.JavaPlugin#onDisable() */
 	@Override
 	public void onDisable() {
-
 		log.write(iLanguage().getMessage("DISABLE"));
 		playersCache.stopNextRun();
 		approveNotif.stopNextRun();
@@ -247,7 +212,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	 * @return the config
 	 */
 	public Config iConf() {
-
 		return conf;
 	}
 
@@ -255,7 +219,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	 * @see me.tabinol.factoidapi.IFactoid#iPlayerConf() */
 	@Override
 	public PlayerStaticConfig iPlayerConf() {
-
 		return playerConf;
 	}
 
@@ -265,7 +228,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	 * @return the lang
 	 */
 	public Lang iLanguage() {
-
 		return language;
 	}
 
@@ -275,7 +237,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	 * @return the log
 	 */
 	public Log iLog() {
-
 		return log;
 	}
 
@@ -283,7 +244,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	 * @see me.tabinol.factoidapi.IFactoid#iParameters() */
 	@Override
 	public Parameters iParameters() {
-
 		return parameters;
 	}
 
@@ -291,13 +251,11 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	 * @see me.tabinol.factoidapi.IFactoid#iLands() */
 	@Override
 	public Lands iLands() {
-
 		return lands;
 	}
 
 	@Override
 	public Types iTypes() {
-
 		return types;
 	}
 
@@ -307,7 +265,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	 * @return the storage thread
 	 */
 	public StorageThread iStorageThread() {
-
 		return storageThread;
 	}
 
@@ -317,7 +274,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	 * @return the depend plugin
 	 */
 	public DependPlugin iDependPlugin() {
-
 		return dependPlugin;
 	}
 
@@ -327,7 +283,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	 * @return the approve notif
 	 */
 	public ApproveNotif iApproveNotif () {
-
 		return approveNotif;
 	}
 
@@ -337,7 +292,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	 * @return the player money
 	 */
 	public PlayerMoney iPlayerMoney() {
-
 		return playerMoney;
 	}
 
@@ -347,7 +301,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	 * @return the players cache
 	 */
 	public PlayersCache iPlayersCache() {
-
 		return playersCache;
 	}
 
@@ -358,7 +311,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	 * me.tabinol.factoidapi.playercontainer.EPlayerContainerType, java.lang.String) */
 	@Override
 	public PlayerContainer createPlayerContainer(final ILand land, final EPlayerContainerType pct, final String name) {
-
 		return PlayerContainer.create(land, pct, name);
 	}
 
@@ -366,7 +318,6 @@ public class Factoid extends JavaPlugin implements IFactoid {
 	 * @see me.tabinol.factoidapi.IFactoid#createCuboidArea(java.lang.String, int, int, int, int, int, int) */
 	@Override
 	public ICuboidArea createCuboidArea(final String worldName, final int x1, final int y1, final int z1, final int x2, final int y2, final int z2) {
-
 		return new CuboidArea(worldName, x1, y1, z1, x2, y2, z2);
 	}
 
