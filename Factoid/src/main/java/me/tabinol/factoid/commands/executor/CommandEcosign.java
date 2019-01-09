@@ -74,14 +74,19 @@ public class CommandEcosign extends CommandExec {
 						land.getWorldName()) < land.getSalePrice()) {
 					throw new FactoidCommandException("Not enough money to buy a land", player, "COMMAND.ECONOMY.NOTENOUGHMONEY");
 				}
-				Factoid.getThisPlugin().iPlayerMoney().getFromPlayer(player,
-						land.getWorldName(), land.getSalePrice());
+				Factoid.getThisPlugin().iPlayerMoney()
+						.getFromPlayer(
+								player,
+								land.getWorldName(),
+								land.getSalePrice()
+						);
 				if (land.getOwner() instanceof IPlayerContainerPlayer) {
 					Factoid.getThisPlugin().iPlayerMoney()
 							.giveToPlayer(
-									((IPlayerContainerPlayer) land.getOwner())
-											.getOfflinePlayer(),
-									land.getWorldName(), land.getSalePrice());
+									((IPlayerContainerPlayer) land.getOwner()).getOfflinePlayer(),
+									land.getWorldName(),
+									land.getSalePrice()
+							);
 				}
 				try {
 					new EcoSign(land, land.getSaleSignLoc()).removeSign();
@@ -126,15 +131,19 @@ public class CommandEcosign extends CommandExec {
 							land.getWorldName()) < land.getRentPrice()) {
 						throw new FactoidCommandException("Not enough money to rent a land", player, "COMMAND.ECONOMY.NOTENOUGHMONEY");
 					}
-					Factoid.getThisPlugin().iPlayerMoney().getFromPlayer(player,
-							land.getWorldName(), land.getRentPrice());
+					Factoid.getThisPlugin().iPlayerMoney()
+							.getFromPlayer(
+									player,
+									land.getWorldName(),
+									land.getRentPrice()
+							);
 					if (land.getOwner() instanceof IPlayerContainerPlayer) {
 						Factoid.getThisPlugin().iPlayerMoney()
 								.giveToPlayer(
-										((IPlayerContainerPlayer) land
-												.getOwner()).getOfflinePlayer(),
+										((IPlayerContainerPlayer) land.getOwner()).getOfflinePlayer(),
 										land.getWorldName(),
-										land.getRentPrice());
+										land.getRentPrice()
+								);
 					}
 					((Land) land).setRented(playerConf.getPlayerContainer());
 					try {

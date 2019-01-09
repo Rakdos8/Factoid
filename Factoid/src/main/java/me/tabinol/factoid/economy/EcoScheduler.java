@@ -62,11 +62,19 @@ public class EcoScheduler extends BukkitRunnable {
 				}
 				// Renew rent
 				else {
-					Factoid.getThisPlugin().iPlayerMoney().getFromPlayer(land.getTenant().getOfflinePlayer(),
-						land.getWorldName(), land.getRentPrice());
+					Factoid.getThisPlugin().iPlayerMoney()
+							.getFromPlayer(
+									land.getTenant().getOfflinePlayer(),
+									land.getWorldName(),
+									land.getRentPrice()
+							);
 					if (land.getOwner() instanceof IPlayerContainerPlayer) {
-						Factoid.getThisPlugin().iPlayerMoney().giveToPlayer(((IPlayerContainerPlayer)land.getOwner()).getOfflinePlayer(),
-							land.getWorldName(), land.getRentPrice());
+						Factoid.getThisPlugin().iPlayerMoney()
+								.giveToPlayer(
+										((IPlayerContainerPlayer)land.getOwner()).getOfflinePlayer(),
+										land.getWorldName(),
+										land.getRentPrice()
+								);
 					}
 					((Land) land).setLastPaymentTime(new Timestamp(now.getTime().getTime()));
 				}

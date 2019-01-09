@@ -22,7 +22,6 @@ import org.bukkit.OfflinePlayer;
 import me.tabinol.factoid.Factoid;
 import net.milkbowl.vault.economy.Economy;
 
-
 /**
  * Money from players.
  *
@@ -37,8 +36,7 @@ public class PlayerMoney {
 	 * Instantiates a new player money.
 	 */
 	public PlayerMoney() {
-
-		economy = Factoid.getThisPlugin().iDependPlugin().getEconomy();
+		this.economy = Factoid.getThisPlugin().iDependPlugin().getEconomy();
 	}
 
 	/**
@@ -48,8 +46,7 @@ public class PlayerMoney {
 	 * @param worldName the world name
 	 * @return the player balance
 	 */
-	public Double getPlayerBalance(final OfflinePlayer offlinePlayer, final String worldName) {
-
+	public double getPlayerBalance(final OfflinePlayer offlinePlayer, final String worldName) {
 		return economy.getBalance(offlinePlayer, worldName);
 	}
 
@@ -61,8 +58,7 @@ public class PlayerMoney {
 	 * @param amount the amount
 	 * @return true, if successful
 	 */
-	public boolean giveToPlayer(final OfflinePlayer offlinePlayer, final String worldName, final Double amount) {
-
+	public boolean giveToPlayer(final OfflinePlayer offlinePlayer, final String worldName, final double amount) {
 		return economy.depositPlayer(offlinePlayer, worldName, amount).transactionSuccess();
 	}
 
@@ -74,8 +70,7 @@ public class PlayerMoney {
 	 * @param amount the amount
 	 * @return the from player
 	 */
-	public boolean getFromPlayer(final OfflinePlayer offlinePlayer, final String worldName, final Double amount) {
-
+	public boolean getFromPlayer(final OfflinePlayer offlinePlayer, final String worldName, final double amount) {
 		return economy.withdrawPlayer(offlinePlayer, worldName, amount).transactionSuccess();
 	}
 
@@ -86,7 +81,6 @@ public class PlayerMoney {
 	 * @return the string
 	 */
 	public String toFormat(final Double amount) {
-
 		return economy.format(amount);
 	}
 }
