@@ -259,7 +259,7 @@ public class PlayerSelection {
 			return 0;
 		}
 
-		// Check only with Area add. No refound for reduced area.
+		// Check only with Area add. No refund for reduced area.
 		return getAreaAddPrice();
 	}
 

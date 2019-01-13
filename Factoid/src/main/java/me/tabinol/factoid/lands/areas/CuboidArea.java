@@ -177,17 +177,17 @@ public class CuboidArea implements Comparable<CuboidArea>, ICuboidArea {
 	@Override
 	public long getTotalBlock() {
 		final World world = getWord();
-		final int y1;
-		final int y2;
+		final int curY1;
+		final int curY2;
 		if (world == null) {
 			Factoid.getThisPlugin().getLogger().warning("World is null when retrieving total block !");
-			y1 = this.y1;
-			y2 = this.y2;
+			curY1 = this.y1;
+			curY2 = this.y2;
 		} else {
-			y1 = world.getHighestBlockYAt(x1, z1);
-			y2 = world.getHighestBlockYAt(x2, z2);
+			curY1 = world.getHighestBlockYAt(x1, z1);
+			curY2 = world.getHighestBlockYAt(x2, z2);
 		}
-		final int mean = (y2 + y1) / 2;
+		final long mean = (curY1 + curY2) / 2;
 		return (x2 - x1 + 1) * mean * (z2 - z1 + 1);
 	}
 
