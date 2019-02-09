@@ -478,16 +478,14 @@ public class Lands implements ILands {
 	@Override
 	public DummyLand getOutsideArea(final String worldName) {
 		final String worldNameLower = worldName.toLowerCase();
-		DummyLand dummyLand = outsideArea.get(worldNameLower);
 
 		// Not exist, create one
-		if (dummyLand == null) {
-			dummyLand = new DummyLand(worldNameLower);
+		if (!outsideArea.containsKey(worldNameLower)) {
+			final DummyLand dummyLand = new DummyLand(worldNameLower);
 			outsideArea.get(Config.GLOBAL).copyPermsFlagsTo(dummyLand);
 			outsideArea.put(worldNameLower, dummyLand);
 		}
-
-		return dummyLand;
+		return outsideArea.get(worldNameLower);
 	}
 
 	/**
@@ -580,9 +578,13 @@ public class Lands implements ILands {
 	 */
 	protected boolean getPermissionInWorld(final String worldName, final Player player, final IPermissionType pt, final boolean onlyInherit) {
 		final DummyLand dl = outsideArea.get(worldName.toLowerCase());
-		return dl != null
-				? dl.getPermission(player, pt, onlyInherit)
-				: pt.getDefaultValue();
+		if (dl != null) {
+			final Boolean value = dl.getPermission(player, pt, onlyInherit);
+			return value != null
+					? value
+					: pt.getDefaultValue();
+		}
+		return pt.getDefaultValue();
 	}
 
 	/**
@@ -595,9 +597,13 @@ public class Lands implements ILands {
 	 */
 	protected IFlagValue getFlagInWorld(final String worldName, final IFlagType ft, final boolean onlyInherit) {
 		final DummyLand dl = outsideArea.get(worldName.toLowerCase());
-		return dl != null
-				? dl.getFlag(ft, onlyInherit)
-				: ft.getDefaultValue();
+		if (dl != null) {
+			final IFlagValue value = dl.getFlag(ft, onlyInherit);
+			return value != null
+					? value
+					: ft.getDefaultValue();
+		}
+		return ft.getDefaultValue();
 	}
 
 	/**

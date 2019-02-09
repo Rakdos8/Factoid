@@ -340,8 +340,8 @@ public class WorldListener extends CommonListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public final void onBlockFromTo(final BlockFromToEvent event) {
-		final IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(event.getBlock().getLocation());
 		final Material ml = event.getBlock().getType();
+		final IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(event.getBlock().getLocation());
 
 		// Liquid flow
 		if ((ml == Material.LAVA

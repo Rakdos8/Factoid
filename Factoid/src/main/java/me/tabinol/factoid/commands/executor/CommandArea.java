@@ -140,7 +140,7 @@ public class CommandArea extends CommandExec {
 
 				// Check for collision
 				if (checkCollision(land.getName(), land, null, LandAction.AREA_MODIFY, areaNb, area, land.getParent(),
-						land.getOwner(), price,  true)) {
+						land.getOwner(), price, true)) {
 					return;
 				}
 

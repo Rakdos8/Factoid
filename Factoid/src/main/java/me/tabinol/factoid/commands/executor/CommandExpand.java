@@ -24,6 +24,8 @@ import me.tabinol.factoid.commands.CommandEntities;
 import me.tabinol.factoid.commands.CommandExec;
 import me.tabinol.factoid.commands.InfoCommand;
 import me.tabinol.factoid.exceptions.FactoidCommandException;
+import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.lands.areas.CuboidArea;
 import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
 import me.tabinol.factoid.selection.region.AreaSelection;
 import me.tabinol.factoid.selection.region.ExpandAreaSelection;
@@ -79,7 +81,9 @@ public class CommandExpand extends CommandExec {
 			if (area == null) {
 				entity.playerConf.getSelection().addSelection(new ExpandAreaSelection(entity.player));
 			} else {
-				entity.playerConf.getSelection().addSelection(new ExpandAreaSelection(entity.player, area.copyOf()));
+				final CuboidArea copiedArea = (CuboidArea) area.copyOf();
+				copiedArea.setLand((Land) land);
+				entity.playerConf.getSelection().addSelection(new ExpandAreaSelection(entity.player, copiedArea));
 			}
 		} else if (curArg.equalsIgnoreCase("done")) {
 			// Expand done

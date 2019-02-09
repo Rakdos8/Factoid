@@ -35,11 +35,9 @@ public class ExpandAreaSelection extends ActiveAreaSelection {
 	 * @param player the player
 	 */
 	public ExpandAreaSelection(final Player player) {
-
 		super(player);
 	}
 
-	// When we know the area
 	/**
 	 * Instantiates a new expand area selection.
 	 *
@@ -47,17 +45,11 @@ public class ExpandAreaSelection extends ActiveAreaSelection {
 	 * @param area the area
 	 */
 	public ExpandAreaSelection(final Player player, final ICuboidArea area) {
-
 		super(player, area);
 	}
 
-	// Called from player listenner
-	/* (non-Javadoc)
-	 * @see me.tabinol.factoid.selection.region.ActiveAreaSelection#playerMove()
-	 */
 	@Override
 	public void playerMove() {
-
 		removeSelection();
 		final Location playerLoc = player.getLocation();
 
@@ -77,4 +69,5 @@ public class ExpandAreaSelection extends ActiveAreaSelection {
 
 		makeVisualSelection();
 	}
+
 }

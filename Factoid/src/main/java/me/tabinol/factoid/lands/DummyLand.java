@@ -46,7 +46,6 @@ import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
  * The Class DummyLand.
  */
 public class DummyLand implements IDummyLand {
-
 	/** The permissions. */
 	protected final TreeMap<IPlayerContainer, TreeMap<IPermissionType, IPermission>> permissions; // String for playerName
 
@@ -91,7 +90,6 @@ public class DummyLand implements IDummyLand {
 	public void copyPermsFlagsTo(final IDummyLand desLand) {
 		// copy permissions
 		for (final Map.Entry<IPlayerContainer, TreeMap<IPermissionType, IPermission>> pcEntry : permissions.entrySet()) {
-
 			final TreeMap<IPermissionType, IPermission> perms = new TreeMap<>();
 			for (final Map.Entry<IPermissionType, IPermission> permEntry : pcEntry.getValue().entrySet()) {
 				perms.put(permEntry.getKey(), permEntry.getValue().copyOf());
@@ -131,7 +129,6 @@ public class DummyLand implements IDummyLand {
 		if (this instanceof Land) {
 			if (perm.getPermType() == PermissionList.LAND_ENTER.getPermissionType()
 					&& perm.getValue() != perm.getPermType().getDefaultValue()) {
-
 				// Start Event for kick
 				Factoid.getThisPlugin().getServer().getPluginManager().callEvent(
 						new PlayerContainerAddNoEnterEvent((Land) this, pc));
@@ -225,7 +222,6 @@ public class DummyLand implements IDummyLand {
 	@Override
 	public boolean checkPermissionNoInherit(final Player player,
 			final IPermissionType pt) {
-
 		final Boolean value = getPermission(player, pt, false);
 
 		if (value != null) {
@@ -321,7 +317,6 @@ public class DummyLand implements IDummyLand {
 	 * @param flag the flag
 	 */
 	public void addFlag(final ILandFlag flag) {
-
 		flags.put(flag.getFlagType(), flag);
 		doSave();
 
@@ -339,7 +334,6 @@ public class DummyLand implements IDummyLand {
 	 * @return true, if successful
 	 */
 	public boolean removeFlag(final IFlagType flagType) {
-
 		final ILandFlag flag = flags.remove(flagType);
 
 		if (flag == null) {
@@ -363,13 +357,11 @@ public class DummyLand implements IDummyLand {
 	 */
 	@Override
 	public Collection<ILandFlag> getFlags() {
-
 		return flags.values();
 	}
 
 	@Override
 	public IFlagValue getFlagAndInherit(final IFlagType ft) {
-
 		return getFlagAndInherit(ft, false);
 	}
 
@@ -381,7 +373,6 @@ public class DummyLand implements IDummyLand {
 	 */
 	@Override
 	public IFlagValue getFlagNoInherit(final IFlagType ft) {
-
 		final IFlagValue value = getFlag(ft, false);
 
 		if (value != null) {
@@ -397,9 +388,10 @@ public class DummyLand implements IDummyLand {
 	 * @param onlyInherit the only inherit
 	 * @return the flag and inherit
 	 */
-	protected IFlagValue getFlagAndInherit(final IFlagType ft,
-			final boolean onlyInherit) {
-
+	protected IFlagValue getFlagAndInherit(
+			final IFlagType ft,
+			final boolean onlyInherit
+	) {
 		if (this instanceof Land) {
 			return ((Land) this).getLandFlagAndInherit(ft, onlyInherit);
 		}
@@ -414,7 +406,6 @@ public class DummyLand implements IDummyLand {
 	 * @return the flag value
 	 */
 	protected IFlagValue getFlag(final IFlagType ft, final boolean onlyInherit) {
-
 		final ILandFlag flag = flags.get(ft);
 		if (flag != null) {
 			Factoid.getThisPlugin().iLog().write("Flag: " + flag.toString());
@@ -426,7 +417,6 @@ public class DummyLand implements IDummyLand {
 
 		// Check in default flags
 		if (!onlyInherit && this instanceof Land) {
-
 			return ((Lands) FactoidAPI.iLands()).getDefaultConf(((Land) this).getType()).getFlag(ft, onlyInherit);
 		}
 
@@ -437,7 +427,6 @@ public class DummyLand implements IDummyLand {
 	 * Do save.
 	 */
 	protected void doSave() {
-
 		if (this instanceof Land) {
 			((Land) this).doSave();
 		}

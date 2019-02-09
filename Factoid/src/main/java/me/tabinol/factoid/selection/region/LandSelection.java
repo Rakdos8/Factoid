@@ -35,7 +35,7 @@ public class LandSelection extends RegionSelection {
 	private final ILand land;
 
 	/** The visual areas. */
-	private final TreeMap<ICuboidArea, AreaSelection> visualAreas; // Visuals arealist
+	private final TreeMap<ICuboidArea, AreaSelection> visualAreas = new TreeMap<>();
 
 	/**
 	 * Instantiates a new land selection.
@@ -44,10 +44,8 @@ public class LandSelection extends RegionSelection {
 	 * @param land the land
 	 */
 	public LandSelection(final Player player, final ILand land) {
-
 		super(SelectionType.LAND, player);
 		this.land = land;
-		visualAreas = new TreeMap<>();
 
 		// Add visual areas
 		for (final ICuboidArea area : land.getAreas()) {
@@ -61,20 +59,16 @@ public class LandSelection extends RegionSelection {
 	 * @return the land
 	 */
 	public ILand getLand() {
-
 		return land;
 	}
 
-	/* (non-Javadoc)
-	 * @see me.tabinol.factoid.selection.region.RegionSelection#removeSelection()
-	 */
 	@Override
 	public void removeSelection() {
-
 		for (final AreaSelection areaSel : visualAreas.values()) {
 			areaSel.removeSelection();
 		}
 
 		visualAreas.clear();
 	}
+
 }
