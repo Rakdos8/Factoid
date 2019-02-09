@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import me.tabinol.factoid.Factoid;
@@ -262,7 +261,6 @@ public class Collisions {
 	 */
 	private void checkCollisions() {
 		final List<ILand> landsToCheck = lands.getLands().stream()
-				.filter(Objects::nonNull)
 				// Remove Lands which has no area in the new area World
 				.filter(iLand -> iLand.getAreas().stream().anyMatch(area -> area.getWorldName().equals(newArea.getWorldName())))
 				// Remove Lands of the current owner
@@ -272,7 +270,7 @@ public class Collisions {
 		for (final ILand curLandToCheck : landsToCheck) {
 			// If it's not the same land and it's not a children one
 			if (!land.equals(curLandToCheck) && !isChildren(land, curLandToCheck)) {
-				// Check every land which can be in collision
+				// Check every area which can be in collision
 				for (final ICuboidArea area : curLandToCheck.getAreas()) {
 					if (newArea.isCollision(area)) {
 						coll.add(new CollisionsEntry(LandError.COLLISION, curLandToCheck, area.getKey()));
@@ -290,7 +288,7 @@ public class Collisions {
 	 * @return true if otherLand is a children {@link Land} of currentLand
 	 */
 	private boolean isChildren(final ILand currentLand, final ILand otherLand) {
-		if (currentLand == null || otherLand == null) {
+		if (currentLand == null) {
 			return false;
 		} else if (currentLand.isDescendants(otherLand)) {
 			return true;
