@@ -21,17 +21,16 @@ import org.bukkit.entity.Player;
 
 import me.tabinol.factoid.selection.PlayerSelection.SelectionType;
 
-
 /**
  * The Class RegionSelection.
  */
 public abstract class RegionSelection {
 
-	/** The selection type. */
-	final SelectionType selectionType;
-
 	/** The player. */
-	final Player player;
+	protected final Player player;
+
+	/** The selection type. */
+	private final SelectionType selectionType;
 
 	/**
 	 * Instantiates a new region selection.
@@ -40,9 +39,8 @@ public abstract class RegionSelection {
 	 * @param player the player
 	 */
 	RegionSelection(final SelectionType selectionType, final Player player) {
-
-		this.selectionType = selectionType;
 		this.player = player;
+		this.selectionType = selectionType;
 	}
 
 	/**
@@ -51,7 +49,6 @@ public abstract class RegionSelection {
 	 * @return the selection type
 	 */
 	public SelectionType getSelectionType() {
-
 		return selectionType;
 	}
 
@@ -59,4 +56,5 @@ public abstract class RegionSelection {
 	 * Remove any visual and replace blocks.
 	 */
 	public abstract void removeSelection();
+
 }

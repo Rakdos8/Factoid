@@ -36,9 +36,7 @@ public class ActiveAreaSelection extends AreaSelection implements PlayerMoveList
 	 * @param player the player
 	 */
 	public ActiveAreaSelection(final Player player) {
-
-		super(player);
-		setActiveSelection();
+		this(player, setActiveSelection(player));
 	}
 
 	/**
@@ -48,37 +46,36 @@ public class ActiveAreaSelection extends AreaSelection implements PlayerMoveList
 	 * @param area the area
 	 */
 	public ActiveAreaSelection(final Player player, final ICuboidArea area) {
+		super(player, area);
 
-		super(player);
 		this.area = area;
+		this.isCollision = false;
+	}
+
+	@Override
+	public void playerMove() {
+		removeSelection();
+
+		this.area = setActiveSelection(player);
 		makeVisualSelection();
 	}
 
 	/**
 	 * Sets the active selection.
 	 */
-	public final void setActiveSelection() {
-
-		isCollision = false;
-
+	private static CuboidArea setActiveSelection(final Player player) {
 		final Location loc = player.getLocation();
 		final int landXr = Factoid.getThisPlugin().iConf().getDefaultXSize() / 2;
 		final int landZr = Factoid.getThisPlugin().iConf().getDefaultZSize() / 2;
-		area = new CuboidArea(loc.getWorld().getName(),
-				loc.getBlockX() - landXr, Factoid.getThisPlugin().iConf().getDefaultBottom(), loc.getBlockZ() - landZr,
-				loc.getBlockX() + landXr, Factoid.getThisPlugin().iConf().getDefaultTop(), loc.getBlockZ() + landZr);
-
-		makeVisualSelection();
+		return new CuboidArea(
+				loc.getWorld().getName(),
+				loc.getBlockX() - landXr,
+				Factoid.getThisPlugin().iConf().getDefaultBottom(),
+				loc.getBlockZ() - landZr,
+				loc.getBlockX() + landXr,
+				Factoid.getThisPlugin().iConf().getDefaultTop(),
+				loc.getBlockZ() + landZr
+		);
 	}
 
-	// Called from player listenner
-	/* (non-Javadoc)
-	 * @see me.tabinol.factoid.selection.region.PlayerMoveListen#playerMove()
-	 */
-	@Override
-	public void playerMove() {
-
-		removeSelection();
-		setActiveSelection();
-	}
 }

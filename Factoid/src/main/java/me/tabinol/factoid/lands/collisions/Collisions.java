@@ -22,16 +22,19 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
+import me.tabinol.factoid.lands.Land;
+import me.tabinol.factoid.lands.Lands;
 import me.tabinol.factoidapi.lands.ILand;
 import me.tabinol.factoidapi.lands.ILands;
 import me.tabinol.factoidapi.lands.areas.ICuboidArea;
 import me.tabinol.factoidapi.playercontainer.EPlayerContainerType;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainer;
 import me.tabinol.factoidapi.playercontainer.IPlayerContainerPlayer;
-
 
 /**
  * The Class Collisions.
@@ -42,34 +45,27 @@ public class Collisions {
 	 * The Enum LandAction.
 	 */
 	public enum LandAction {
-
 		/** The land add. */
 		LAND_ADD,
-
 		/** The land rename. */
 		LAND_RENAME,
-
 		/** The land remove. */
 		LAND_REMOVE,
-
 		/** The land parent. */
 		LAND_PARENT,
-
 		/** The area add. */
 		AREA_ADD,
-
 		/** The area remove. */
 		AREA_REMOVE,
-
 		/** The area modify. */
-		AREA_MODIFY;
+		AREA_MODIFY,
+		;
 	}
 
 	/**
 	 * The Enum LandError.
 	 */
 	public enum LandError {
-
 		/** The collision. */
 		COLLISION(true),
 
@@ -100,8 +96,8 @@ public class Collisions {
 		/** A land must have one or more areas */
 		MUST_HAVE_AT_LEAST_ONE_AREA(false);
 
-		/** The can be approved. */
-		public final boolean canBeApproved; // False = No approve is possible
+		/** The can be approved. False = No approve is possible */
+		private final boolean canBeApproved;
 
 		/**
 		 * Instantiates a new land error.
@@ -111,6 +107,14 @@ public class Collisions {
 		private LandError(final boolean canBeApproved) {
 			this.canBeApproved = canBeApproved;
 		}
+
+		/**
+		 * @return true if it can be approved, false otherwise
+		 */
+		public boolean canBeApproved() {
+			return canBeApproved;
+		}
+
 	}
 
 	/** The coll. */
@@ -153,11 +157,19 @@ public class Collisions {
 	 * @param price the price
 	 * @param checkApproveList the check approve list
 	 */
-	public Collisions(final String landName, final ILand land, final LandAction action, final int removedAreaId, final ICuboidArea newArea, final ILand parent,
-			final IPlayerContainer owner, final double price, final boolean checkApproveList) {
-
-		coll = new ArrayList<>();
-		lands = Factoid.getThisPlugin().iLands();
+	public Collisions(
+			final String landName,
+			final ILand land,
+			final LandAction action,
+			final int removedAreaId,
+			final ICuboidArea newArea,
+			final ILand parent,
+			final IPlayerContainer owner,
+			final double price,
+			final boolean checkApproveList
+	) {
+		this.coll = new ArrayList<>();
+		this.lands = Factoid.getThisPlugin().iLands();
 		this.landName = landName;
 		this.land = land;
 		this.action = action;
@@ -203,13 +215,11 @@ public class Collisions {
 		}
 
 		// Pass 6 check if the name is already in Approve List
-		if (!checkApproveList &&
-				((me.tabinol.factoid.lands.Lands) lands).getApproveList().isInApprove(landName)) {
+		if (!checkApproveList && ((Lands) lands).getApproveList().isInApprove(landName)) {
 			coll.add(new CollisionsEntry(LandError.IN_APPROVE_LIST, null, 0));
 		}
 
 		if (owner.getContainerType() == EPlayerContainerType.PLAYER) {
-
 			// Pass 7 check if the player has enough money
 			if (price > 0 && newArea != null) {
 				final double playerBalance = Factoid.getThisPlugin().iPlayerMoney().getPlayerBalance(
@@ -240,7 +250,7 @@ public class Collisions {
 		// End check if the action can be done or approve
 		allowApprove = true;
 		for (final CollisionsEntry entry : coll) {
-			if (!entry.getError().canBeApproved) {
+			if (!entry.getError().canBeApproved()) {
 				allowApprove = false;
 				return;
 			}
@@ -251,12 +261,21 @@ public class Collisions {
 	 * Check collisions.
 	 */
 	private void checkCollisions() {
+		final List<ILand> landsToCheck = lands.getLands().stream()
+				.filter(Objects::nonNull)
+				// Remove Lands which has no area in the new area World
+				.filter(iLand -> iLand.getAreas().stream().anyMatch(area -> area.getWorldName().equals(newArea.getWorldName())))
+				// Remove Lands of the current owner
+				.filter(iLand -> !iLand.getOwner().equals(land.getOwner()))
+				.collect(Collectors.toList());
 
-		for (final ILand land2 : lands.getLands()) {
-			if (land != land2 && !isDescendants(land, land2) && !isDescendants(land2, parent)) {
-				for (final int areaId2 : land2.getAreasKey()) {
-					if (newArea.isCollision(land2.getArea(areaId2))) {
-						coll.add(new CollisionsEntry(LandError.COLLISION, land2, areaId2));
+		for (final ILand curLandToCheck : landsToCheck) {
+			// If it's not the same land and it's not a children one
+			if (!land.equals(curLandToCheck) && !isChildren(land, curLandToCheck)) {
+				// Check every land which can be in collision
+				for (final ICuboidArea area : curLandToCheck.getAreas()) {
+					if (newArea.isCollision(area)) {
+						coll.add(new CollisionsEntry(LandError.COLLISION, curLandToCheck, area.getKey()));
 					}
 				}
 			}
@@ -264,22 +283,19 @@ public class Collisions {
 	}
 
 	/**
-	 * Checks if is descendants.
+	 * Checks if is descendants recursively.
 	 *
-	 * @param land1 the land1
-	 * @param land2 the land2
-	 * @return true, if is descendants
+	 * @param currentLand the {@link Land} which can be a parent
+	 * @param otherLand the {@link Land} which can be a children
+	 * @return true if otherLand is a children {@link Land} of currentLand
 	 */
-	private boolean isDescendants(final ILand land1, final ILand land2) {
-
-		if (land1 == null || land2 == null) {
+	private boolean isChildren(final ILand currentLand, final ILand otherLand) {
+		if (currentLand == null || otherLand == null) {
 			return false;
-		}
-		if (land1.isDescendants(land2)) {
+		} else if (currentLand.isDescendants(otherLand)) {
 			return true;
 		}
-
-		return false;
+		return isChildren(currentLand.getParent(), otherLand);
 	}
 
 	/**
@@ -288,7 +304,6 @@ public class Collisions {
 	 * @return true if inside the parent
 	 */
 	private boolean checkIfInsideParent(final ICuboidArea area) {
-
 		if (checkIfAreaOutsideParent(area, parent.getAreas())) {
 			coll.add(new CollisionsEntry(LandError.OUT_OF_PARENT, parent, 0));
 			return false;
@@ -301,7 +316,6 @@ public class Collisions {
 	 * Check if children outside.
 	 */
 	private void checkIfChildrenOutside() {
-
 		final HashSet<ICuboidArea> areaList = new HashSet<>();
 
 		// If this is a Land remove, the list must be empty
@@ -326,7 +340,6 @@ public class Collisions {
 	 * Check if land has children.
 	 */
 	private void checkIfLandHasChildren() {
-
 		for (final ILand child : land.getChildren()) {
 			coll.add(new CollisionsEntry(LandError.HAS_CHILDREN, child, 0));
 		}
@@ -336,7 +349,6 @@ public class Collisions {
 	 * Check if name exist.
 	 */
 	private void checkIfNameExist() {
-
 		if (lands.isNameExist(landName)) {
 			coll.add(new CollisionsEntry(LandError.NAME_IN_USE, null, 0));
 		}
@@ -351,7 +363,6 @@ public class Collisions {
 	 * @return true, if successful
 	 */
 	private boolean checkIfAreaOutsideParent(final ICuboidArea childArea, final Collection<ICuboidArea> parentAreas) {
-
 		// area = this new area, areas2 = areas of parents
 		Collection<ICuboidArea> childAreas = new HashSet<>();
 		childAreas.add(childArea);
@@ -381,7 +392,6 @@ public class Collisions {
 	 * @return the prints
 	 */
 	public String getPrints() {
-
 		final StringBuilder str = new StringBuilder();
 
 		for (final CollisionsEntry ce : coll) {
@@ -397,8 +407,7 @@ public class Collisions {
 	 * @return true, if successful
 	 */
 	public boolean hasCollisions() {
-
-		return coll.size() > 0;
+		return !coll.isEmpty();
 	}
 
 	/**
@@ -407,7 +416,6 @@ public class Collisions {
 	 * @return the entries
 	 */
 	public Collection<CollisionsEntry> getEntries() {
-
 		return coll;
 	}
 
@@ -417,7 +425,6 @@ public class Collisions {
 	 * @return the allow approve
 	 */
 	public boolean getAllowApprove() {
-
 		return allowApprove;
 	}
 

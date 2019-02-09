@@ -21,7 +21,6 @@ import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.collisions.Collisions.LandError;
 import me.tabinol.factoidapi.lands.ILand;
 
-
 /**
  * The Class CollisionsEntry.
  */
@@ -44,7 +43,6 @@ public class CollisionsEntry {
 	 * @param areaId the area id
 	 */
 	public CollisionsEntry(final LandError error, final ILand land, final int areaId) {
-
 		this.error = error;
 		this.land = land;
 		this.areaId = areaId;
@@ -56,7 +54,6 @@ public class CollisionsEntry {
 	 * @return the error
 	 */
 	public LandError getError() {
-
 		return error;
 	}
 
@@ -66,7 +63,6 @@ public class CollisionsEntry {
 	 * @return the land
 	 */
 	public ILand getLand() {
-
 		return land;
 	}
 
@@ -76,7 +72,6 @@ public class CollisionsEntry {
 	 * @return the area id
 	 */
 	public int getAreaId() {
-
 		return areaId;
 	}
 
@@ -86,7 +81,6 @@ public class CollisionsEntry {
 	 * @return the prints the
 	 */
 	public String getPrint() {
-
 		if (error == LandError.COLLISION) {
 			return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.COLLISION", land.getName(), areaId + "");
 		} else if (error == LandError.OUT_OF_PARENT) {
@@ -108,7 +102,6 @@ public class CollisionsEntry {
 		} else if (error == LandError.MUST_HAVE_AT_LEAST_ONE_AREA) {
 			return Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.SHOW.MUST_HAVE_AT_LEAST_ONE_AREA");
 		}
-
 
 		return null;
 	}

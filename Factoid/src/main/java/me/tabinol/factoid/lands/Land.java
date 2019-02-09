@@ -795,7 +795,7 @@ public class Land extends DummyLand implements ILand {
 		}
 
 		for (final ILand landT : children.values()) {
-			if (landT.isDescendants(land) == true) {
+			if (landT.isDescendants(land)) {
 				return true;
 			}
 		}

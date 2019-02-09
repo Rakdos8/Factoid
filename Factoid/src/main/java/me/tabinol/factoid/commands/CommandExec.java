@@ -219,26 +219,44 @@ public abstract class CommandExec {
 	 * @return true, if successful
 	 * @throws FactoidCommandException the factoid command exception
 	 */
-	protected boolean checkCollision(final String landName, final ILand land, final IType type, final Collisions.LandAction action,
-			final int removeId, final ICuboidArea newArea, final ILand parent, final IPlayerContainer owner,
-			final double price, final boolean addForApprove) throws FactoidCommandException {
+	protected boolean checkCollision(
+			final String landName,
+			final ILand land,
+			final IType type,
+			final Collisions.LandAction action,
+			final int removeId,
+			final ICuboidArea newArea,
+			final ILand parent,
+			final IPlayerContainer owner,
+			final double price,
+			final boolean addForApprove
+	) throws FactoidCommandException {
 		// allowApprove: false: The command can absolutely not be done if there is error!
-		final Collisions coll = new Collisions(landName, land, action, removeId, newArea, parent,
-				owner, price, !addForApprove);
+		final Collisions coll = new Collisions(
+				landName,
+				land,
+				action,
+				removeId,
+				newArea,
+				parent,
+				owner,
+				price,
+				!addForApprove
+		);
 		final boolean allowApprove = coll.getAllowApprove();
 
 		if (coll.hasCollisions()) {
 			entity.sender.sendMessage(coll.getPrints());
 
 			if (addForApprove) {
-				if (Factoid.getThisPlugin().iConf().getAllowCollision() == Config.AllowCollisionType.APPROVE && allowApprove == true) {
+				if (Factoid.getThisPlugin().iConf().getAllowCollision() == Config.AllowCollisionType.APPROVE && allowApprove) {
 					entity.sender.sendMessage(ChatColor.RED + "[Factoid] " + Factoid.getThisPlugin().iLanguage().getMessage("COLLISION.GENERAL.NEEDAPPROVE", landName));
 					Factoid.getThisPlugin().iLog().write("land " + landName + " has collision and needs approval.");
 					Factoid.getThisPlugin().iLands().getApproveList().addApprove(new Approve(landName, type, action, removeId, newArea,
 							owner, parent, price, Calendar.getInstance()));
 					new CommandCancel(entity.playerConf, true).commandExecute();
 					return true;
-				} else if (Factoid.getThisPlugin().iConf().getAllowCollision() == Config.AllowCollisionType.FALSE || allowApprove == false) {
+				} else if (Factoid.getThisPlugin().iConf().getAllowCollision() == Config.AllowCollisionType.FALSE || !allowApprove) {
 					throw new FactoidCommandException("Land collision", entity.sender, "COLLISION.GENERAL.CANNOTDONE");
 				}
 			}
