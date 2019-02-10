@@ -140,6 +140,8 @@ public class Collisions {
 	/** The parent. */
 	private final ILand parent;
 
+	private final IPlayerContainer owner;
+
 	/** The allow approve. */
 	private boolean allowApprove;
 
@@ -175,6 +177,7 @@ public class Collisions {
 		this.removedAreaId = removedAreaId;
 		this.newArea = newArea;
 		this.parent = parent;
+		this.owner = owner;
 
 		// Pass 1 check if there is a collision
 		if (action == LandAction.LAND_ADD || action == LandAction.AREA_ADD || action == LandAction.AREA_MODIFY) {
@@ -264,12 +267,12 @@ public class Collisions {
 				// Remove Lands which has no area in the new area World
 				.filter(iLand -> iLand.getAreas().stream().anyMatch(area -> area.getWorldName().equals(newArea.getWorldName())))
 				// Remove Lands of the current owner
-				.filter(iLand -> !iLand.getOwner().equals(land.getOwner()))
+				.filter(iLand -> !owner.equals(iLand.getOwner()))
 				.collect(Collectors.toList());
 
 		for (final ILand curLandToCheck : landsToCheck) {
 			// If it's not the same land and it's not a children one
-			if (!land.equals(curLandToCheck) && !isChildren(land, curLandToCheck)) {
+			if (!curLandToCheck.equals(land) && !isChildren(land, curLandToCheck)) {
 				// Check every area which can be in collision
 				for (final ICuboidArea area : curLandToCheck.getAreas()) {
 					if (newArea.isCollision(area)) {
@@ -288,8 +291,10 @@ public class Collisions {
 	 * @return true if otherLand is a children {@link Land} of currentLand
 	 */
 	private boolean isChildren(final ILand currentLand, final ILand otherLand) {
+		// If the current land is null (new land)
 		if (currentLand == null) {
-			return false;
+			// It's a children only if it has a parent and the parent is the otherLand
+			return parent != null && parent.equals(otherLand);
 		} else if (currentLand.isDescendants(otherLand)) {
 			return true;
 		}
