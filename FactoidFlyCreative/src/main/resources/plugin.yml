@@ -1,8 +1,9 @@
 name: FactoidFlyCreative
 main: me.tabinol.factoidflycreative.FactoidFlyCreative
-version: ${plugin.version}
+version: ${project.version}
 api-version: 1.13
 depend: [Factoid]
+authors: [Tabinol, Rakdos8]
 commands:
     fcreload:
         description: Reload the configuration

@@ -1,9 +1,9 @@
 name: Factoid
 main: me.tabinol.factoid.Factoid
-version: ${plugin.version}
+version: ${project.version}
 api-version: 1.13
 description: Factoid
-author: [Kaz00,Tabinol]
+authors: [Kaz00,Tabinol,Rakdos8]
 depend: [Vault]
 softdepend: [WorldEdit,Essentials,VanishNoPacket]
 commands:
