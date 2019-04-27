@@ -51,6 +51,30 @@
 		</dependency>
 	</dependencies>
 
+	<scm>
+		<connection>scm:git:git@gitlab.com:modulmonde/FactoidPlugins.git</connection>
+		<developerConnection>scm:git:git@gitlab.com:modulmonde/FactoidPlugins.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>https://jenkins.modulmonde.com/</url>
+	</ciManagement>
+
+	<distributionManagement>
+		<repository>
+			<id>Modulmonde.com</id>
+			<name>ModulPlugins</name>
+			<url>https://nexus.modulmonde.com/content/repositories/factoid/</url>
+		</repository>
+		<snapshotRepository>
+			<id>Modulmonde.com</id>
+			<name>ModulPlugins Snapshot</name>
+			<url>https://nexus.modulmonde.com/content/repositories/factoid_snapshot/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<build>
 		<finalName>${project.artifactId}-${plugin.version}${build.number}</finalName>
 
@@ -97,56 +121,48 @@
 					</execution>
 				</executions>
 			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>3.0.1</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.0.0-M1</version>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<quiet>true</quiet>
-							<additionalparam>-Xdoclint:none</additionalparam>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 
-	<scm>
-		<connection>scm:hg:http://scm.modulmonde.com/hg/prod/FactoidPlugins</connection>
-	  <tag>FactoidPlugin-1.1.0</tag>
-  </scm>
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>3.0.1</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
 
-	<ciManagement>
-		<system>Jenkins</system>
-		<url>http://jenkins.modulmonde.com/</url>
-	</ciManagement>
-
-	<distributionManagement>
-		<repository>
-			<id>Modulmonde.com</id>
-			<name>Factoid</name>
-			<url>http://nexus.modulmonde.com/content/repositories/factoid/</url>
-		</repository>
-	</distributionManagement>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>3.0.0-M1</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+								<configuration>
+									<quiet>true</quiet>
+									<additionalparam>-Xdoclint:none</additionalparam>
+									<doclint>none</doclint>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
