@@ -20,13 +20,13 @@ package me.tabinol.factoid.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 
+import com.modulmonde.minecraft.util.MaterialUtils;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.lands.Land;
 import me.tabinol.factoidapi.lands.IDummyLand;
@@ -102,7 +102,7 @@ public class CommonListener {
 	 * @return true if the sign is attached
 	 */
 	private boolean hasEcoSign(final Block block, final Location ecoSignLoc) {
-		if ((block.getRelative(BlockFace.UP).getLocation().equals(ecoSignLoc) && block.getRelative(BlockFace.UP).getType() == Material.SIGN)
+		if ((block.getRelative(BlockFace.UP).getLocation().equals(ecoSignLoc) && MaterialUtils.isSign(block.getRelative(BlockFace.UP).getType()))
 				|| isEcoSignAttached(block, BlockFace.NORTH, ecoSignLoc)
 				|| isEcoSignAttached(block, BlockFace.SOUTH, ecoSignLoc)
 				|| isEcoSignAttached(block, BlockFace.EAST, ecoSignLoc)
@@ -116,7 +116,7 @@ public class CommonListener {
 	private boolean isEcoSignAttached(final Block block, final BlockFace face, final Location ecoSignLoc) {
 		final Block checkBlock = block.getRelative(face);
 
-		if (checkBlock.getLocation().equals(ecoSignLoc) && checkBlock.getType() == Material.WALL_SIGN
+		if (checkBlock.getLocation().equals(ecoSignLoc) && MaterialUtils.isSign(checkBlock.getType())
 				&& ((org.bukkit.material.Sign) checkBlock.getState().getData()).getFacing() == face) {
 			return true;
 		}

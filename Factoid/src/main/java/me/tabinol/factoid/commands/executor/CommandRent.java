@@ -19,8 +19,8 @@ package me.tabinol.factoid.commands.executor;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 
+import com.modulmonde.minecraft.util.MaterialUtils;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.CommandEntities;
 import me.tabinol.factoid.commands.CommandExec;
@@ -58,8 +58,8 @@ public class CommandRent extends CommandExec {
 		EcoSign ecoSign = null;
 
 		// Check for sign in hand
-		if (entity.player.getGameMode() != GameMode.CREATIVE &&
-			entity.player.getInventory().getItemInMainHand().getType() != Material.SIGN
+		if (entity.player.getGameMode() != GameMode.CREATIVE
+				&& MaterialUtils.isSign(entity.player.getInventory().getItemInMainHand().getType())
 		) {
 			throw new FactoidCommandException("Must have a sign in main hand", entity.player, "COMMAND.ECONOMY.MUSTHAVEISIGN");
 		}

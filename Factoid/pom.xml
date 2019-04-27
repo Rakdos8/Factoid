@@ -103,6 +103,7 @@
 						</goals>
 						<configuration>
 							<minimizeJar>true</minimizeJar>
+							<createDependencyReducedPom>false</createDependencyReducedPom>
 							<artifactSet>
 								<includes>
 									<include>com.google.code.gson:gson</include>

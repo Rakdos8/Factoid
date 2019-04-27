@@ -28,6 +28,7 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.modulmonde.minecraft.util.MaterialUtils;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.exceptions.SignException;
 import me.tabinol.factoidapi.lands.ILand;
@@ -119,9 +120,9 @@ public class EcoSign {
 		// Get Sign parameter
 		final Block blockPlace = location.getBlock();
 
-		if (blockPlace.getType() == Material.WALL_SIGN) {
+		if (MaterialUtils.isType(blockPlace.getType(), "WALL_SIGN")) {
 			isWallSign = true;
-		} else if (blockPlace.getType() == Material.SIGN) {
+		} else if (MaterialUtils.isSign(blockPlace.getType())) {
 			isWallSign = false;
 		} else {
 			throw new SignException();
@@ -202,7 +203,6 @@ public class EcoSign {
 	 * @throws SignException the sign exception
 	 */
 	public void createSign(final String[] lines) throws SignException {
-
 		final Block blockPlace = location.getBlock();
 
 		// Impossible to create the sign here
@@ -224,9 +224,9 @@ public class EcoSign {
 		// Determinate material
 		final Material mat;
 		if (isWallSign) {
-			mat = Material.WALL_SIGN;
+			mat = Material.OAK_WALL_SIGN;
 		} else {
-			mat = Material.SIGN;
+			mat = Material.OAK_SIGN;
 		}
 
 		// Create sign
@@ -259,18 +259,16 @@ public class EcoSign {
 	 * @param oldSignLocation the old sign location
 	 */
 	public void removeSign(final Location oldSignLocation) {
-
 		final Block block = oldSignLocation.getBlock();
 
 		block.getChunk().load();
 
 		// Remove only if it is a sign;
-		if (block.getType() == Material.SIGN
-				|| block.getType() == Material.WALL_SIGN) {
+		if (MaterialUtils.isSign(block.getType())) {
 			block.setType(Material.AIR);
 
 			//Drop item
-			oldSignLocation.getWorld().dropItem(oldSignLocation, new ItemStack(Material.SIGN, 1));
+			oldSignLocation.getWorld().dropItem(oldSignLocation, new ItemStack(block.getType(), 1));
 		}
 	}
 
@@ -281,7 +279,6 @@ public class EcoSign {
 	 * @return the block face
 	 */
 	private BlockFace signFacing(float yaw) {
-
 		final BlockFace facing;
 
 		if (yaw < 0) {

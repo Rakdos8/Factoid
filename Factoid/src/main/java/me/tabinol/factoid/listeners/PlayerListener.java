@@ -81,6 +81,7 @@ import org.bukkit.event.vehicle.VehicleDestroyEvent;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.plugin.PluginManager;
 
+import com.modulmonde.minecraft.util.MaterialUtils;
 import me.tabinol.factoid.BKVersion;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.commands.ArgList;
@@ -313,7 +314,7 @@ public class PlayerListener extends CommonListener implements Listener {
 		}
 		// For economy (buy or rent/unrent)
 		else if ((action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK)
-				&& (ml == Material.SIGN || ml == Material.WALL_SIGN)) {
+				&& (MaterialUtils.isSign(ml))) {
 			final ILand trueLand = Factoid.getThisPlugin().iLands().getLand(loc);
 
 			if (trueLand != null) {
