@@ -28,7 +28,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.ShulkerBox;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.ArmorStand;
@@ -42,6 +41,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Vehicle;
+import org.bukkit.entity.Villager;
 import org.bukkit.entity.minecart.StorageMinecart;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -56,7 +56,6 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.event.entity.PotionSplashEvent;
@@ -72,13 +71,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.event.vehicle.VehicleDestroyEvent;
-import org.bukkit.inventory.Merchant;
 import org.bukkit.plugin.PluginManager;
 
 import me.tabinol.factoid.BKVersion;
@@ -271,9 +270,9 @@ public class PlayerListener extends CommonListener implements Listener {
 						+ ", Material: " + ml.name());
 
 		// For infoItem
-		if (player.getInventory().getItemInMainHand() != null
+		if (player.getInventory().getItemInHand() != null
 				&& action == Action.LEFT_CLICK_BLOCK
-				&& player.getInventory().getItemInMainHand().getType() == conf.getInfoItem()) {
+				&& player.getInventory().getItemInHand().getType() == conf.getInfoItem()) {
 			try {
 				new CommandInfo(player,
 						Factoid.getThisPlugin().iLands().getCuboidArea(
@@ -286,9 +285,9 @@ public class PlayerListener extends CommonListener implements Listener {
 			event.setCancelled(true);
 		}
 		// For Select
-		else if (player.getInventory().getItemInMainHand() != null
+		else if (player.getInventory().getItemInHand() != null
 				&& action == Action.LEFT_CLICK_BLOCK
-				&& player.getInventory().getItemInMainHand().getType() == conf.getSelectItem()) {
+				&& player.getInventory().getItemInHand().getType() == conf.getSelectItem()) {
 			try {
 				new CommandSelect(player, new ArgList(new String[] { "here" },
 						player), event.getClickedBlock().getLocation())
@@ -299,9 +298,9 @@ public class PlayerListener extends CommonListener implements Listener {
 			event.setCancelled(true);
 		}
 		// For Select Cancel
-		else if (player.getInventory().getItemInMainHand() != null
+		else if (player.getInventory().getItemInHand() != null
 				&& action == Action.RIGHT_CLICK_BLOCK
-				&& player.getInventory().getItemInMainHand().getType() == conf.getSelectItem()
+				&& player.getInventory().getItemInHand().getType() == conf.getSelectItem()
 				&& entry != null
 				&& entry.getSelection().hasSelection()) {
 			try {
@@ -345,9 +344,9 @@ public class PlayerListener extends CommonListener implements Listener {
 					&& (BKVersion.isDoor(ml)
 							|| BKVersion.isButton(ml)
 							|| ml == Material.LEVER
-							|| ml == Material.ENCHANTING_TABLE
+							|| ml == Material.ENCHANTMENT_TABLE
 							|| ml == Material.ANVIL
-							|| ml == Material.SPAWNER
+							|| ml == Material.MOB_SPAWNER
 							|| ml == Material.DAYLIGHT_DETECTOR))
 							|| (action == Action.PHYSICAL && (BKVersion.isDoor(ml) || ml == Material.STRING))
 						) && !checkPermission(
@@ -374,17 +373,19 @@ public class PlayerListener extends CommonListener implements Listener {
 					|| (action == Action.PHYSICAL && ml == Material.STRING && !checkPermission(
 							land, player,
 							PermissionList.USE_STRING.getPermissionType()))
-					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.SPAWNER
+					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.MOB_SPAWNER
 							&& !checkPermission(land, player, PermissionList.USE_MOBSPAWNER.getPermissionType()))
 					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.DAYLIGHT_DETECTOR
 							&& !checkPermission(land, player, PermissionList.USE_LIGHTDETECTOR.getPermissionType()))
-					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.ENCHANTING_TABLE
+					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.ENCHANTMENT_TABLE
 							&& !checkPermission(land, player, PermissionList.USE_ENCHANTTABLE.getPermissionType()))
 					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.ANVIL
 							&& !checkPermission(land, player, PermissionList.USE_ANVIL.getPermissionType()))
-					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.REPEATER
+					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.DIODE_BLOCK_ON
 							&& !checkPermission(land, player, PermissionList.USE_REPEATER.getPermissionType()))
-					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.COMPARATOR
+					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.DIODE_BLOCK_OFF
+							&& !checkPermission(land, player, PermissionList.USE_REPEATER.getPermissionType()))
+					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.REDSTONE_COMPARATOR
 							&& !checkPermission(land, player, PermissionList.USE_COMPARATOR.getPermissionType()))
 					|| (action == Action.RIGHT_CLICK_BLOCK && ml == Material.NOTE_BLOCK
 							&& !checkPermission(land, player, PermissionList.USE_NOTEBLOCK.getPermissionType()))) {
@@ -397,7 +398,7 @@ public class PlayerListener extends CommonListener implements Listener {
 					&& (((ml == Material.CHEST // Begin of OPEN
 							|| ml == Material.TRAPPED_CHEST
 							|| ml == Material.ENDER_CHEST
-							|| ml == Material.CRAFTING_TABLE
+							|| ml == Material.WORKBENCH
 							|| ml == Material.BREWING_STAND
 							|| ml == Material.FURNACE
 							|| ml == Material.BEACON
@@ -405,7 +406,6 @@ public class PlayerListener extends CommonListener implements Listener {
 							|| ml == Material.HOPPER
 							|| ml == Material.DISPENSER
 							|| ml == Material.JUKEBOX
-							|| event.getClickedBlock().getState() instanceof ShulkerBox
 						) && !checkPermission(land, player, PermissionList.OPEN.getPermissionType())
 						) // End of OPEN
 							|| (ml == Material.CHEST && !checkPermission(land,
@@ -416,15 +416,11 @@ public class PlayerListener extends CommonListener implements Listener {
 									player,
 									PermissionList.OPEN_TRAPPEDCHEST
 											.getPermissionType()))
-							|| (event.getClickedBlock().getState() instanceof ShulkerBox && !checkPermission(
-									land, player,
-									PermissionList.OPEN_SHULKER_BOX
-											.getPermissionType()))
 							|| (ml == Material.ENDER_CHEST && !checkPermission(
 									land, player,
 									PermissionList.OPEN_ENDERCHEST
 											.getPermissionType()))
-							|| (ml == Material.CRAFTING_TABLE && !checkPermission(
+							|| (ml == Material.WORKBENCH && !checkPermission(
 									land, player,
 									PermissionList.OPEN_CRAFT
 											.getPermissionType()))
@@ -462,10 +458,10 @@ public class PlayerListener extends CommonListener implements Listener {
 				event.setCancelled(true);
 			}
 			// For armor stand and every type of minecart (tnt, storage, regular, etc)
-			else if (player.getInventory().getItemInMainHand() != null
+			else if (player.getInventory().getItemInHand() != null
 					&& action == Action.RIGHT_CLICK_BLOCK
-					&& (BKVersion.isArmorStand(player.getInventory().getItemInMainHand().getType()) ||
-						player.getInventory().getItemInMainHand().getType().name().contains("MINECART"))
+					&& (BKVersion.isArmorStand(player.getInventory().getItemInHand().getType()) ||
+						player.getInventory().getItemInHand().getType().name().contains("MINECART"))
 					&& ((land instanceof ILand && ((ILand) land).isBanned(event.getPlayer()))
 						|| !checkPermission(land, event.getPlayer(),
 								PermissionList.BUILD.getPermissionType())
@@ -476,17 +472,9 @@ public class PlayerListener extends CommonListener implements Listener {
 			}
 			// For head place fix (do not spawn a wither)
 			else if (action == Action.RIGHT_CLICK_BLOCK
-					&& event.getMaterial() == Material.PLAYER_HEAD
+					&& event.getMaterial() == Material.SKULL
 					&& (!checkPermission(land, event.getPlayer(), PermissionList.BUILD.getPermissionType()) ||
 						!checkPermission(land, event.getPlayer(), PermissionList.BUILD_PLACE.getPermissionType()))
-			) {
-				messagePermission(player);
-				event.setCancelled(true);
-			}
-			// End Crystal placed
-			else if (action == Action.RIGHT_CLICK_BLOCK &&
-				Material.END_CRYSTAL == event.getMaterial() &&
-				!checkPermission(land, player, PermissionList.PLACE_END_CRYSTAL.getPermissionType())
 			) {
 				messagePermission(player);
 				event.setCancelled(true);
@@ -577,7 +565,7 @@ public class PlayerListener extends CommonListener implements Listener {
 				) {
 					messagePermission(player);
 					event.setCancelled(true);
-				} else if (event.getRightClicked() instanceof Merchant &&
+				} else if (event.getRightClicked() instanceof Villager &&
 					!checkPermission(land, player, PermissionList.TRADE.getPermissionType())
 				) {
 					messagePermission(player);
@@ -696,11 +684,8 @@ public class PlayerListener extends CommonListener implements Listener {
 	 * @param event the event
 	 */
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onPlayerPickupItem(final EntityPickupItemEvent event) {
-		if (!(event.getEntity() instanceof Player)) {
-			return;
-		}
-		final Player player = (Player) event.getEntity();
+	public void onPlayerPickupItem(final PlayerPickupItemEvent event) {
+		final Player player = event.getPlayer();
 
 		if (!playerConf.get(player).isAdminMod()) {
 			final IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(player.getLocation());
@@ -755,7 +740,6 @@ public class PlayerListener extends CommonListener implements Listener {
 				if (entity instanceof Player &&
 					playerConf.get(entity) != null &&
 					(event.getDamager() instanceof Projectile || event.getCause() == DamageCause.FIRE_TICK) &&
-					event.getDamager().getType() != EntityType.SHULKER &&
 					!land.getFlagAndInherit(FlagList.FULL_PVP.getFlagType()).getValueBoolean()
 				) {
 					event.setCancelled(true);
@@ -884,7 +868,7 @@ public class PlayerListener extends CommonListener implements Listener {
 		if (event.getEntity() instanceof Player
 				&& playerConf.get(player = (Player) event.getEntity()) != null // Citizens bugfix
 		&& ((land instanceof ILand && ((ILand) land).isBanned(player))
-				|| (matFrom == Material.FARMLAND
+				|| (matFrom == Material.SOIL
 				&& matTo == Material.DIRT
 				&& !checkPermission(land, player,
 						PermissionList.CROP_TRAMPLE.getPermissionType())))) {
@@ -1010,14 +994,7 @@ public class PlayerListener extends CommonListener implements Listener {
 
 		if (entry != null && !entry.isAdminMod()) {
 			final IDummyLand land = Factoid.getThisPlugin().iLands().getLandOrOutsideArea(player.getLocation());
-			// Disallow the chorus fruit tp when eaten
-			if (event.getItem().getType() == Material.CHORUS_FRUIT &&
-					!land.getFlagAndInherit(FlagList.CHORUS_FRUIT_TP.getFlagType()).getValueBoolean()
-			) {
-				messagePermission(player);
-				event.setCancelled(true);
-			}
-			else if (!checkPermission(land, player, PermissionList.EAT.getPermissionType())) {
+			if (!checkPermission(land, player, PermissionList.EAT.getPermissionType())) {
 				messagePermission(player);
 				event.setCancelled(true);
 			}

@@ -26,7 +26,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -154,7 +153,7 @@ public class InventoryStorage {
 			if (enderChestOnly) {
 				configPlayerItemFile.set("Level", 0);
 				configPlayerItemFile.set("Exp", 0f);
-				configPlayerItemFile.set("Health", player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
+				configPlayerItemFile.set("Health", player.getHealth());
 				configPlayerItemFile.set("FoodLevel", MAX_FOOD_LEVEL);
 
 				final ItemStack[] itemEnderChest = player.getEnderChest().getContents();
@@ -174,8 +173,6 @@ public class InventoryStorage {
 				final ItemStack[] itemListSave = player.getInventory().getContents();
 				final ItemStack[] itemArmorSave = player.getInventory().getArmorContents();
 				final ItemStack[] itemEnderChest = player.getEnderChest().getContents();
-				final ItemStack itemOffhand = player.getInventory().getItemInOffHand();
-				configPlayerItemFile.set("OffHand.0", itemOffhand);
 				for (int t = 0; t < itemListSave.length; t++) {
 					configPlayerItemFile.set("Slot." + t, itemListSave[t]);
 				}
@@ -256,7 +253,7 @@ public class InventoryStorage {
 						player.setFoodLevel(configPlayerItemFile.getInt("FoodLevel"));
 					} else {
 						// Fix Death infinite loop
-						player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
+						player.setHealth(player.getMaxHealth());
 						player.setFoodLevel(MAX_FOOD_LEVEL);
 					}
 				}
@@ -264,7 +261,6 @@ public class InventoryStorage {
 				final ItemStack[] itemListLoad = new ItemStack[36];
 				final ItemStack[] itemArmorLoad = new ItemStack[4];
 				final ItemStack[] itemEnderChest = new ItemStack[27];
-				final ItemStack offHand = configPlayerItemFile.getItemStack("OffHand.0");
 				for (int t = 0; t < itemListLoad.length; t++) {
 					itemListLoad[t] = configPlayerItemFile.getItemStack("Slot." + t);
 				}
@@ -278,7 +274,6 @@ public class InventoryStorage {
 				player.getInventory().setContents(itemListLoad);
 				player.getInventory().setArmorContents(itemArmorLoad);
 				player.getEnderChest().setContents(itemEnderChest);
-				player.getInventory().setItemInOffHand(offHand);
 
 				// PotionsEffects
 				removePotionEffects(player);
@@ -307,7 +302,7 @@ public class InventoryStorage {
 			// The file is not existing, only clear all inventory
 			player.setLevel(0);
 			player.setExp(0);
-			player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
+			player.setHealth(player.getMaxHealth());
 			player.setFoodLevel(MAX_FOOD_LEVEL);
 			player.getInventory().clear();
 			player.getInventory().setBoots(new ItemStack(Material.AIR));

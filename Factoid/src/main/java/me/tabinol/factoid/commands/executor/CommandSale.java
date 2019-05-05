@@ -58,7 +58,7 @@ public class CommandSale extends CommandExec {
 
 		// Check for sign in hand
 		if (entity.player.getGameMode() != GameMode.CREATIVE &&
-			entity.player.getInventory().getItemInMainHand().getType() != Material.SIGN
+			entity.player.getInventory().getItemInHand().getType() != Material.SIGN
 		) {
 			throw new FactoidCommandException("Must have a sign in main hand", entity.player, "COMMAND.ECONOMY.MUSTHAVEISIGN");
 		}

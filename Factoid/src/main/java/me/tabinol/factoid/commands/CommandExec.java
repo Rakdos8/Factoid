@@ -278,10 +278,10 @@ public abstract class CommandExec {
 	 */
 	protected void removeSignFromHand() {
 		if (entity.player.getGameMode() != GameMode.CREATIVE) {
-			if (entity.player.getInventory().getItemInMainHand().getAmount() == 1) {
-				entity.player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+			if (entity.player.getInventory().getItemInHand().getAmount() == 1) {
+				entity.player.getInventory().setItemInHand(new ItemStack(Material.AIR));
 			} else {
-				entity.player.getInventory().getItemInMainHand().setAmount(entity.player.getInventory().getItemInMainHand().getAmount() - 1);
+				entity.player.getInventory().getItemInHand().setAmount(entity.player.getInventory().getItemInHand().getAmount() - 1);
 			}
 		}
 	}

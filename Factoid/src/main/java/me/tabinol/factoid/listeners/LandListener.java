@@ -22,7 +22,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -70,7 +69,7 @@ public class LandListener extends CommonListener implements Listener {
 					if (!player.isDead()) {
 						Factoid.getThisPlugin().iLog().write("Healing: " + player.getName());
 						player.setFoodLevel(20);
-						player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+						player.setHealth(player.getMaxHealth());
 					}
 				}
 			}
@@ -109,7 +108,7 @@ public class LandListener extends CommonListener implements Listener {
 		final Player player = event.getPlayer();
 		final ILand lastLand = event.getLastLand();
 		final ILand land = event.getLand();
-		IDummyLand dummyLand;
+		final IDummyLand dummyLand;
 		String value;
 
 		if (lastLand != null) {
@@ -213,7 +212,7 @@ public class LandListener extends CommonListener implements Listener {
 	 * @param message the message
 	 */
 	private void checkForBannedPlayers(final ILand land, final IPlayerContainer pc, final String message) {
-		checkForBannedPlayers(land, pc, message, new ArrayList<Player>());
+		checkForBannedPlayers(land, pc, message, new ArrayList<>());
 	}
 
 	/**

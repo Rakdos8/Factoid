@@ -18,7 +18,6 @@
 package me.tabinol.factoid.parameters;
 
 import org.bukkit.entity.Tameable;
-import org.bukkit.inventory.Merchant;
 
 /**
  * The Enum PermissionList.
@@ -129,7 +128,7 @@ public enum PermissionList {
 	/** For {@link Tameable} **/
 	USE_TAMEABLE(true),
 
-	/** For trading with a {@link Merchant} **/
+	/** For trading with a {@link org.bukkit.entity.Villager} **/
 	TRADE(true),
 
 	/** The place end crystal **/

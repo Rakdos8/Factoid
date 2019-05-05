@@ -28,7 +28,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Flying;
 import org.bukkit.entity.Hanging;
 import org.bukkit.entity.Monster;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Slime;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
@@ -38,7 +37,6 @@ import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
-import org.bukkit.event.block.EntityBlockFormEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
@@ -52,7 +50,6 @@ import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import me.tabinol.factoid.Factoid;
 import me.tabinol.factoid.config.Config;
 import me.tabinol.factoid.parameters.FlagList;
-import me.tabinol.factoid.parameters.PermissionList;
 import me.tabinol.factoidapi.lands.IDummyLand;
 import me.tabinol.factoidapi.parameters.IFlagType;
 import me.tabinol.factoidapi.parameters.IFlagValue;
@@ -242,29 +239,9 @@ public class WorldListener extends CommonListener implements Listener {
 
 		}
 		// Crop trample
-		else if (matFrom == Material.FARMLAND
+		else if (matFrom == Material.SOIL
 				&& matTo == Material.DIRT
 				&& !land.getFlagAndInherit(FlagList.CROP_TRAMPLE.getFlagType()).getValueBoolean()) {
-			event.setCancelled(true);
-		}
-	}
-
-	/**
-	 * On entity change block.
-	 *
-	 * @param event the event
-	 */
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public final void onEntityChangeBlock(final EntityBlockFormEvent event) {
-		final IDummyLand land = Factoid.getThisPlugin().iLands().getLand(event.getBlock().getLocation());
-
-		// Frost walker enchant
-		if (land != null &&
-			event.getEntity() instanceof Player &&
-			event.getNewState().getType() == Material.FROSTED_ICE &&
-			!checkPermission(land, (Player) event.getEntity(), PermissionList.FROST_WALKER.getPermissionType()) &&
-			event.getBlock().getType() == Material.WATER
-		) {
 			event.setCancelled(true);
 		}
 	}

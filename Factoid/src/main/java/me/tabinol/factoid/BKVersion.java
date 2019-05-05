@@ -62,23 +62,18 @@ public class BKVersion {
 		// Doors
 		try {
 			doors.add(Material.SPRUCE_DOOR);
-			doors.add(Material.SPRUCE_TRAPDOOR);
 			doors.add(Material.SPRUCE_FENCE_GATE);
 			doors.add(Material.BIRCH_DOOR);
-			doors.add(Material.BIRCH_TRAPDOOR);
 			doors.add(Material.BIRCH_FENCE_GATE);
 			doors.add(Material.JUNGLE_DOOR);
-			doors.add(Material.JUNGLE_TRAPDOOR);
 			doors.add(Material.JUNGLE_FENCE_GATE);
 			doors.add(Material.ACACIA_DOOR);
-			doors.add(Material.ACACIA_TRAPDOOR);
 			doors.add(Material.ACACIA_FENCE_GATE);
 			doors.add(Material.DARK_OAK_DOOR);
-			doors.add(Material.DARK_OAK_TRAPDOOR);
 			doors.add(Material.DARK_OAK_FENCE_GATE);
-			doors.add(Material.OAK_DOOR);
-			doors.add(Material.OAK_TRAPDOOR);
-			doors.add(Material.OAK_FENCE_GATE);
+			doors.add(Material.WOOD_DOOR);
+			doors.add(Material.FENCE);
+			doors.add(Material.FENCE_GATE);
 			doors.add(Material.IRON_DOOR);
 			doors.add(Material.IRON_TRAPDOOR);
 		} catch (final IllegalArgumentException ex) {
@@ -87,12 +82,8 @@ public class BKVersion {
 
 		// Buttons
 		try {
-			buttons.add(Material.SPRUCE_BUTTON);
-			buttons.add(Material.BIRCH_BUTTON);
-			buttons.add(Material.JUNGLE_BUTTON);
-			buttons.add(Material.ACACIA_BUTTON);
-			buttons.add(Material.DARK_OAK_BUTTON);
-			buttons.add(Material.OAK_BUTTON);
+			buttons.add(Material.STONE_BUTTON);
+			buttons.add(Material.WOOD_BUTTON);
 		} catch (final IllegalArgumentException ex) {
 			Factoid.getThisPlugin().getLogger().log(Level.WARNING, "Invalid button: " + ex.getMessage(), ex);
 		}
